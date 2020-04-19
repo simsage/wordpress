@@ -58,9 +58,9 @@
 
         </script>
 
-        <div class="operatorArea">
+        <div class="operator-area">
 
-            <div id="chatButtons" class="buttonList">
+            <div id="chatButtons" class="button-list">
                 <span class="menu-button">
                     <input id="btnReady" type="button" class="button" disabled
                            title="Signal that you are ready to go and converse with customers."
@@ -89,7 +89,7 @@
                     <div id="conversationList" class="conversation-container"></div>
                 </div>
                 <div>
-                    <span><input id="txtResponse" class="textResponse" type="text" disabled
+                    <span><input id="txtResponse" class="text-response" type="text" disabled
                            onkeyup="ops.operator_key_press(event, this.value)" placeholder="your response" aria-label="response" />
                     </span>
                     <span>
@@ -101,31 +101,31 @@
 
 
             <div id="learningSection" class="learnings">
-                <img id="tick" alt="success" class="learnTick" src="<?php echo $this->asset_folder . 'images/tick.svg'?>"/>
+                <img id="tick" alt="success" class="learn-tick" src="<?php echo $this->asset_folder . 'images/tick.svg'?>"/>
                 <div>
-                    <span class="learnLabel">question</span>
-                    <span id="txtQuestion" class="questionText"></span>
+                    <span class="learn-label">question</span>
+                    <span id="txtQuestion" class="question-text"></span>
                 </div>
                 <div>
-                    <span class="learnLabel">answer</span>
-                    <span id="txtAnswer" class="answerText"></span>
+                    <span class="learn-label">answer</span>
+                    <span id="txtAnswer" class="answer-text"></span>
                 </div>
 
                 <div id="twoSection">
-                    <input type="button" class="button learnButton" value="clear" onClick="ops.clearQA()" />
-                    <input type="button" class="button learnButton" value="teach SimSage" onClick="ops.teach()" />
+                    <input type="button" class="button learn-button" value="clear" onClick="ops.clearQA()" />
+                    <input type="button" class="button learn-button" value="teach SimSage" onClick="ops.teach()" />
                 </div>
-                <div id="oneSection" class="learnButtons">
-                    <input type="button" class="button learnButton" value="clear" onClick="ops.clearQA()" />
+                <div id="oneSection" class="learn-buttons">
+                    <input type="button" class="button learn-button" value="clear" onClick="ops.clearQA()" />
                 </div>
             </div>
 
-            <div id="previousAnswerSection" class="previousAnswer">
-                <div class="previousAnswerTitle">a previous answer to this question exists</div>
-                <div id="txtPreviousAnswer" class="previousAnswerAnswer"></div>
-                <div class="previousAnswerButtons">
-                    <input type="button" class="button learnButton" value="don't use" onClick="ops.dontUse()" />
-                    <input id="btnPreviousAnswer" type="button" class="button learnButton" value="use in 5 secs" onClick="ops.use()" />
+            <div id="previousAnswerSection" class="previous-answer">
+                <div class="previous-answer-title">a previous answer to this question exists</div>
+                <div id="txtPreviousAnswer" class="previous-answer-answer"></div>
+                <div class="previous-answer-buttons">
+                    <input type="button" class="button learn-button" value="don't use" onClick="ops.dontUse()" />
+                    <input id="btnPreviousAnswer" type="button" class="button learn-button" value="use in 5 secs" onClick="ops.use()" />
                 </div>
             </div>
 

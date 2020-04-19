@@ -396,16 +396,16 @@ function render_operator_conversations(ops) {
         const html_text = message.primary;
         const text = "'" + message.primary + "'";
         if (!message.is_simsage) {
-            const style = message.used ? 'chatUserBoxDark' : 'chatUserBox';
+            const style = message.used ? 'chat-user-box-dark' : 'chat-user-box';
             result.push('<div class="conversation"><div class="' + style + '" onClick="ops.selectForLearn(' + text + ')">\n' +
-                '    <img src="' + image_base + 'images/human.svg" class="chatUserImage" alt="user" onClick="ops.selectForLearn(' + text + ')" />\n' +
-                '    <div class="userMessageText" onClick="ops.selectForLearn(' + text + ')">' + html_text + '</div>\n' +
+                '    <img src="' + image_base + 'images/human.svg" class="chat-user-image" alt="user" onClick="ops.selectForLearn(' + text + ')" />\n' +
+                '    <div class="user-message-text" onClick="ops.selectForLearn(' + text + ')">' + html_text + '</div>\n' +
                 '    </div></div>\n');
         } else {
-            const style = message.used ? 'chatSimSageBoxDark' : 'chatSimSageBox';
+            const style = message.used ? 'chat-simsage-box-dark' : 'chat-simsage-box';
             result.push('<div class="conversation"><div class="' + style + '" onClick="ops.selectForLearn(' + text + ')">\n' +
-                '    <img src="' + image_base + 'images/tinman.svg" class="chatSimSageImage" alt="SimSage" onClick="ops.selectForLearn(' + text + ')" />\n' +
-                '    <div class="simSageMessageText" onClick="ops.selectForLearn(' + text + ')">' + html_text + '</div>\n' +
+                '    <img src="' + image_base + 'images/tinman.svg" class="chat-simsage-image" alt="SimSage" onClick="ops.selectForLearn(' + text + ')" />\n' +
+                '    <div class="simsage-message-text" onClick="ops.selectForLearn(' + text + ')">' + html_text + '</div>\n' +
                 '    </div></div>\n');
         }
     }
