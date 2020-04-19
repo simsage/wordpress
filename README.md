@@ -1,0 +1,2 @@
+# SimSage WordPress Search plugin
+
