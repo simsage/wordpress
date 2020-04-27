@@ -202,4 +202,3 @@ function is_valid_synonym($id, $synonym) {
     }
     return null;
 }
-

@@ -5,6 +5,7 @@ class simsage_operator
 {
     // location of the images folder
     private $asset_folder = '';
+    private $analytics = null;
 
     // constructor
     public function __construct() {
@@ -21,15 +22,17 @@ class simsage_operator
     private function init() {
         // init styles
         add_action( 'init', array( $this, 'register_script_and_style' ) );
-        // Admin menu for the plugin.
-        add_action( 'admin_menu', array( $this, 'add_operator_menu' ) );
     }
 
+    public function add_admin_menus( $analytics ) {
+        $this->analytics = $analytics;
+        add_action( 'admin_menu', array( $this, 'add_menus' ) );
+    }
 
     /**
      * add the administration menu for this plugin to wordpress
      */
-    public function add_operator_menu() {
+    public function add_menus() {
         add_menu_page(
             __( 'SimSage Operator', PLUGIN_NAME ), // page title.
             __( 'SimSage Operator', PLUGIN_NAME ), // menu title.
@@ -37,6 +40,15 @@ class simsage_operator
             "simsage-operator", // menu_slug.
             array( $this, 'load_settings_page' )
         );
+        if ( $this->analytics != null ) {
+            add_menu_page(
+                __('SimSage Data', PLUGIN_NAME), // page title.
+                __('SimSage Data', PLUGIN_NAME), // menu title.
+                'manage_options', // capability.
+                "simsage-data", // menu_slug.
+                array($this->analytics, 'load_settings_page')
+            );
+        }
     }
 
 

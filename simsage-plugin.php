@@ -39,6 +39,8 @@ include_once( PLUGIN_DIR . 'simsage_search.php' );
 include_once( PLUGIN_DIR . 'simsage_admin.php' );
 // include the SimSage operator interface
 include_once( PLUGIN_DIR . 'simsage_operator.php' );
+// include the SimSage analytics interface
+include_once( PLUGIN_DIR . 'simsage_analytics.php' );
 
 // create the main search class to use throughout
 $search = new simsage_search();
@@ -48,6 +50,12 @@ $admin = new simsage_admin();
 
 // create the SimSage operator
 $operator = new simsage_operator();
+
+// create SimSage analytics
+$analytics = new simsage_analytics();
+
+// add the pages for the SimSage plugin
+$operator->add_admin_menus( $analytics );
 
 // setup hooks into the main class for plugin activation / de-activation
 register_activation_hook(__FILE__, array($search, 'plugin_activate'));
