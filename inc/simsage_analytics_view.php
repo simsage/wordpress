@@ -41,6 +41,11 @@
 
     <div class="analytics-area">
 
+        <div id='layout'>
+            <div id='container'>
+                <svg />
+            </div>
+        </div>
 
     </div>
 

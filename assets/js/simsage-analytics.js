@@ -31,7 +31,6 @@ class SimsageAnalytics {
             'type': 'GET',
             'url': url,
             'success': function (data) {
-                alert(JSON.stringify(data));
                 self.refresh();
             }
 
