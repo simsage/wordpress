@@ -61,9 +61,6 @@ class simsage_admin
 		    if ($action == 'sign-in') {
 		    	// perform a sign-in
 		    	$this->do_sign_in($_POST[PLUGIN_NAME]['simsage_registration_key']);
-            } else if ($action == 'sites') {
-                // process data from the sites tab
-                $this->do_select_site($_POST[PLUGIN_NAME]['simsage_site']);
 		    } else if ($action == 'update-search') {
 		    	// do an update to the search posted values
 			    $this->check_form_parameters($_POST[PLUGIN_NAME], true);
@@ -159,9 +156,11 @@ class simsage_admin
                         $this->set_defaults( $plugin_options );
                         // save settings
                         update_option( PLUGIN_NAME, $plugin_options );
+                        // set the current site and upload the current WP content as is
+                        $this->setup_site();
                         // show we've successfully connected
                         add_settings_error('simsage_settings', 'success',
-                            "Retrieved your SimSage account information, please setup your <a href=" . admin_url('options-general.php?page=' . PLUGIN_NAME . '&tab=sites') . ">site</a> next.",
+                            "Successfully retrieved your SimSage account information.",
                             $type = 'info');
                     }
                 }
@@ -397,34 +396,6 @@ class simsage_admin
 
 
     /**
-     * Process the site tab of the admin screen.  Post data to SimSage
-     *
-     * @param $kbId     string the user's selected knowledge-base Id (aka. site)
-     * @return bool     true if the whole process succeeded, false if not
-     */
-    private function do_select_site($kbId) {
-        if ($kbId == "") {
-            add_settings_error('simsage_settings', 'invalid_site', 'Please select a site from the drop-down box', $type = 'error');
-        } else {
-            // get what we've selected
-            $site = $this->get_site_for_kbId( $kbId );
-            if ( $site != null ) {
-                $this->update_simsage( $site );
-                // show we've done all we need to do as a minimum
-                add_settings_error('simsage_settings', 'success',
-                    "Successfully setup this WordPress instance for site \"" . $site["name"] . "\".  Please allow five minutes for this site to become search-able.",
-                    $type = 'info');
-
-            } else {
-                add_settings_error('simsage_settings', 'invalid_site', 'Site can no longer be found.  Please login to SimSage again.', $type = 'error');
-            }
-
-        }
-        return false;
-    }
-
-
-    /**
      * @param $site array the SimSage site to update
      * @return bool success
      */
@@ -464,6 +435,7 @@ class simsage_admin
 
         } else {
             debug_log("zip failed");
+            return false;
         }
     }
 
@@ -525,22 +497,14 @@ class simsage_admin
 
 
     /**
-     * retrieve the {name: "", kbId: "", sid: ""} data structure for the given kbId
-     *
-     * @param $kbId string the knowledge-base Id (selected site) to retrieve a data-structure for
-     * @return array|null the data structure (or null if not found) associated with the kbId
+     * set the active site after sign-in from your SimSage account
      */
-	private function get_site_for_kbId($kbId) {
+	private function setup_site() {
         $plugin_options = get_option(PLUGIN_NAME);
         if ( isset($plugin_options["simsage_account"]) ) {
             $account = $plugin_options["simsage_account"];
             if ( isset($account["sites"]) ) {
-                $sites = $account["sites"];
-                foreach ($sites as $site) {
-                    if ( $site["kbId"] == $kbId ) {
-                        return $site;
-                    }
-                }
+                $this->update_simsage( $account["sites"][0] );
             }
         }
         return null;

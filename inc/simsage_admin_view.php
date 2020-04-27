@@ -53,7 +53,6 @@
 
     <h2 class="nav-tab-wrapper">
         <a href="?page=simsage-search&tab=account" class="nav-tab <?php echo ($active_tab == 'account' || $active_tab == '') ? 'nav-tab-active' : ''; ?>">Account</a>
-        <a href="?page=simsage-search&tab=sites" class="nav-tab <?php echo ($active_tab == 'sites') ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_account ) echo 'tab-disabled' ?>">Sites</a>
         <a href="?page=simsage-search&tab=search" class="nav-tab <?php echo $active_tab == 'search' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_sites ) echo 'tab-disabled' ?>">Search</a>
         <a href="?page=simsage-search&tab=bot" class="nav-tab <?php echo $active_tab == 'bot' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_sites ) echo 'tab-disabled' ?>">Bot</a>
         <a href="?page=simsage-search&tab=synonyms" class="nav-tab <?php echo $active_tab == 'synonyms' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_sites ) echo 'tab-disabled' ?>">Synonyms</a>
@@ -85,43 +84,6 @@
 	        <?php submit_button( 'Connect SimSage', 'primary','submit', true ); ?>
 
         <?php } ?>
-
-
-        <?php if ( $active_tab == 'sites' ) { ?>
-            <div class="tabbed-display">
-                <!-- check if account has been set - in which case we have a valid setup -->
-                <fieldset>
-                    <label>
-                        <select id="simsage_site" name="<?php echo PLUGIN_NAME ?>[simsage_site]" class="input-field">
-                            <option value="" <?php echo ( (!isset($options["simsage_site"]) || $options["simsage_site"]["kbId"] == "") ? "selected" : "") ?> >please select</option>
-                            <?php
-                                if (isset($options["simsage_account"]) ) {
-                                    $account = $options["simsage_account"];
-                                    if ( isset($account["sites"]) ) {
-                                        $sites = $account["sites"];
-                                        foreach ($sites as $site) {
-                                            $selected = (isset($options["simsage_site"]) && $options["simsage_site"]["kbId"] == $site["kbId"]) ? "selected" : "";
-                                            print("<option value='" . $site["kbId"] . "' " . $selected . " >" . $site["name"] . "</option>");
-                                        }
-                                    }
-                                }
-                            ?>
-                        </select>
-                        <span class="description">Please select the SimSage site you want to use for this WordPress site.</span>
-                    </label>
-                </fieldset>
-
-                <!-- check if account has been set - in which case we have a valid setup -->
-                <fieldset>
-                    <span class="description">your SimSage server: <?php echo $options["simsage_account"]["server"]; ?></span>
-                </fieldset>
-
-                <input type="hidden" name="action" value="sites">
-            </div>
-		    <?php submit_button( 'Set site and start indexing', 'primary','submit', true ); ?>
-
-	    <?php } ?>
-
 
 
         <?php if ($active_tab == 'search') { ?>
