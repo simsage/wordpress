@@ -166,7 +166,8 @@ class SimsageAnalytics {
         fetch(new Request(url), init)
             .then(function(response) {
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    self.error = `HTTP error! status: ${response.status}`;
+                    self.refresh();
                 } else {
                     return response.blob().then((b) => {
                         let a = document.createElement("a");
