@@ -30,16 +30,6 @@ function update_ui(analytics) {
             'Days', 'Number of Searches', 'April 2020',
             analytics.search_frequencies);
 
-        analytics.draw_graph("#bot-analytics",
-            'Monthly Bot Queries in April 2020',
-            'Days', 'Number of Bot Queries', 'April 2020',
-            analytics.bot_frequencies);
-
-        analytics.draw_graph("#general-analytics",
-            'General Statistics for April 2020',
-            'Data', 'Count', 'April 2020',
-            analytics.general_frequencies);
-
         analytics.draw_graph("#keyword-analytics",
             'Keyword Most often Searched for in April 2020',
             'Keyword', 'Number of Times used', 'April 2020',

@@ -45,8 +45,6 @@
         <h2 class="nav-tab-wrapper">
             <span id="tab_keywords" onclick="analytics.select_tab('keywords')" class="nav-tab tab-cursor nav-tab-active">Keywords</span>
             <span id="tab_searches" onclick="analytics.select_tab('searches')" class="nav-tab tab-cursor">Search Access</span>
-<!--            <span id="tab_bots" onclick="analytics.select_tab('bots')" class="nav-tab tab-cursor">Bot Access</span>-->
-            <span id="tab_general" onclick="analytics.select_tab('general')" class="nav-tab tab-cursor">General Statistics</span>
             <span id="tab_logs" onclick="analytics.select_tab('logs')" class="nav-tab tab-cursor">Download</span>
         </h2>
 
@@ -59,14 +57,6 @@
             <div id='div_searches' class="container" style="display: none;">
                 <svg id="search-analytics" />
             </div>
-
-            <div id='div_general' class="container" style="display: none;">
-                <svg id="general-analytics" />
-            </div>
-
-<!--            <div id='div_bots' class="container" style="display: none;">-->
-<!--                <svg id="bot-analytics" />-->
-<!--            </div>-->
 
             <div id='div_logs' style="display: none;">
             </div>

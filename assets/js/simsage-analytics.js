@@ -13,13 +13,10 @@ class SimsageAnalytics {
 
         // active tab
         this.tab = 'keywords';
-        // this.tab_list = ['keywords', 'searches', 'general', 'bots', 'logs'];
-        this.tab_list = ['keywords', 'searches', 'general', 'logs'];
+        this.tab_list = ['keywords', 'searches', 'logs'];
 
         // the stats
         this.search_frequencies = [];
-        this.bot_frequencies = [];
-        this.general_frequencies = [];
         this.search_keyword_frequencies = [];
     }
 
@@ -52,8 +49,6 @@ class SimsageAnalytics {
             'success': function (data) {
                 console.log(data);
                 self.search_frequencies = self.convert_months(data.searchAccessFrequency);
-                self.bot_frequencies = self.convert_months(data.botAccessFrequency);
-                self.general_frequencies = self.convert_dictionary(data.generalStatistics);
                 const kw_list = self.convert_dictionary(data.queryWordFrequency);
                 kw_list.sort(function(first, second) {
                     return second.value - first.value;
