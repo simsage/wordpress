@@ -230,8 +230,8 @@ function check_simsage_json_response($json) {
         $error = print_r( $json["error"], true);
         if ( $error != "" ) {
             // more friendly error messages
-            if ( strpos($error, "cURL error 28") !== false ) {
-                return "SimSage upload server not responding";
+            if ( strpos($error, "cURL error 28:") !== false || strpos($error, "cURL error 7:") !== false) {
+                return "SimSage Remote Upload Server not responding";
             }
             return $error;
         }
@@ -240,8 +240,8 @@ function check_simsage_json_response($json) {
         $error = print_r( $json["errors"], true);
         if ( $error != "" ) {
             // more friendly error messages
-            if ( strpos($error, "cURL error 28") !== false ) {
-                return "SimSage upload server not responding";
+            if ( strpos($error, "cURL error 28:") !== false || strpos($error, "cURL error 7:") !== false) {
+                return "SimSage Remote Upload Server not responding";
             }
             return $error;
         }

@@ -428,6 +428,7 @@ class simsage_admin
             if ( !unlink( $filename ) ) {
                 debug_log("warning: could not delete file \"" . $filename . "\"");
             }
+            add_settings_error('simsage_settings', 'uploaded', 'Content Successfully uploaded to SimSage', $type = 'info');
             return true;
 
         } else {
