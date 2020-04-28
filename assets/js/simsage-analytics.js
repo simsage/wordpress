@@ -56,7 +56,6 @@ class SimsageAnalytics {
             'type': 'GET',
             'url': url,
             'success': function (data) {
-                console.log(data);
                 self.search_frequencies = self.convert_months(data.searchAccessFrequency);
                 const kw_list = self.convert_dictionary(data.queryWordFrequency);
                 kw_list.sort(function(first, second) {
@@ -134,7 +133,50 @@ class SimsageAnalytics {
     dlQueryLog() {
     }
 
+    // helper - get pretty date for now
+    static getFormattedTime() {
+        const today = new Date();
+        const y = today.getFullYear();
+        // JavaScript months are 0-based.
+        const m = today.getMonth() + 1;
+        const d = today.getDate();
+        const h = today.getHours();
+        const mi = today.getMinutes();
+        const s = today.getSeconds();
+        return y + "-" + m + "-" + d + "-" + h + "-" + mi + "-" + s;
+    }
+
+    // invoke the SimSage mind-dump endpoint, to create a spreadsheet with language customizations
     dlLanguageCustomizations() {
+        const self = this;
+        this.error = '';
+        this.busy = true;
+        const url = settings.base_url + '/backup/wp-mind-dump';
+        const data = {organisationId: settings.organisationId, kbId: settings.kbId, sid: settings.sid};
+        const init = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'API-Version': settings.api_version,
+            },
+            body: JSON.stringify(data),
+            mode: 'cors',
+            cache: 'default'
+        };
+        fetch(new Request(url), init)
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                } else {
+                    return response.blob().then((b) => {
+                        let a = document.createElement("a");
+                        a.href = URL.createObjectURL(b);
+                        const filename = "mind-export-" + SimsageAnalytics.getFormattedTime() + ".xlsx";
+                        a.setAttribute("download", filename);
+                        a.click();
+                    });
+                }
+            });
     }
 
     dlContentAnalysis() {
