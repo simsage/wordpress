@@ -13,7 +13,9 @@
         .tab-cursor { cursor: pointer; }
     </style>
 
-	<?php
+    <h2>SimSage Data</h2>
+
+    <?php
 	$options = get_option( PLUGIN_NAME );
     // when we have selected a site, this variable will be set
     $has_sites = isset($options['simsage_site']);
