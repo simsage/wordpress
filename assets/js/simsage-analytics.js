@@ -11,8 +11,11 @@ class SimsageAnalytics {
         this.error = '';
         this.busy = true;
 
+        // date selected by ui
+        this.date = new Date();
+
         // active tab
-        this.tab = 'keywords';
+        this.tab = 'logs';
         this.tab_list = ['keywords', 'searches', 'logs'];
 
         // the stats
@@ -31,14 +34,20 @@ class SimsageAnalytics {
         this.refresh();
     }
 
+    set_date(date) {
+        this.date = date;
+    }
+
     // fetch the current set of analytics
     getAnalytics() {
         const self = this;
         this.error = '';
         this.busy = true;
 
+        const year = this.date.getFullYear();
+        const month = this.date.getMonth() + 1;
         const url = settings.base_url + '/stats/wp-stats/' + settings.organisationId + '/' +
-                    settings.kbId + '/' + settings.sid + '/2020/04/10';
+                    settings.kbId + '/' + settings.sid + '/' + year + '/' + month + '/10';
         jQuery.ajax({
             headers: {
                 'Content-Type': 'application/json',
@@ -82,8 +91,14 @@ class SimsageAnalytics {
                 data_list.push({label: "" + day, value: data[i]});
             }
             return data_list;
+        } else {
+            const data_list = [];
+            for (let i = 0; i < 31; i++) {
+                const day = i + 1;
+                data_list.push({label: "" + day, value: 0});
+            }
+            return data_list;
         }
-        return [];
     }
 
 
@@ -96,7 +111,6 @@ class SimsageAnalytics {
         if (data) {
             const data_list = [];
             for (let key in data) {
-                console.log("key =>" + key);
                 // check if the property/key is defined in the object itself, not in parent
                 if (data.hasOwnProperty(key)) {
                     const value = data[key];
@@ -114,6 +128,17 @@ class SimsageAnalytics {
         return [];
     }
 
+    dlOperatorConversations() {
+    }
+
+    dlQueryLog() {
+    }
+
+    dlLanguageCustomizations() {
+    }
+
+    dlContentAnalysis() {
+    }
 
 
     /**
@@ -261,7 +286,7 @@ class SimsageAnalytics {
             .attr('x', (a) => xScale(a.label) + xScale.bandwidth() / 2)
             .attr('y', (a) => yScale(a.value) + 20)
             .attr('text-anchor', 'middle')
-            .text((a) => (max_y > 10 && a.value < 10.0) ? '' : a.value)
+            .text((a) => ((max_y > 10 && a.value < 10.0) || a.value === 0) ? '' : a.value)
 
         svg
             .append('text')

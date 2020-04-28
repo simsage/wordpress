@@ -75,3 +75,20 @@ text.label {
 text.source {
     font-size: 10px;
 }
+
+.button-style {
+    width: 250px;
+}
+
+.button-row {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.button-help-text {
+    margin-left: 20px;
+}
+
+.date-picker-box {
+    float: right;
+}

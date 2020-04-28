@@ -7,6 +7,18 @@ jQuery(function($) {
     $(document).ready(function () {
         // get our analytics
         analytics.getAnalytics();
+        // setup the jQuery date picker
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'MM yy',
+            onClose: function(dateText, inst) {
+                const date = new Date(inst.selectedYear, inst.selectedMonth, 1);
+                $(this).datepicker('setDate', date);
+                analytics.set_date(date);
+            }
+        }).datepicker('setDate', new Date());
     })
 });
 
@@ -25,11 +37,14 @@ function update_ui(analytics) {
         $("#div_" + analytics.tab).show();
         $("#tab_" + analytics.tab).addClass("nav-tab-active");
 
+        // draw bar graphs
+        $("#search-analytics").html("");
         analytics.draw_graph("#search-analytics",
             'Monthly Searches in April 2020',
             'Days', 'Number of Searches', 'April 2020',
             analytics.search_frequencies);
 
+        $("#keyword-analytics").html("");
         analytics.draw_graph("#keyword-analytics",
             'Keyword Most often Searched for in April 2020',
             'Keyword', 'Number of Times used', 'April 2020',
