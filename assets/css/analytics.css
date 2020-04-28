@@ -92,3 +92,40 @@ text.source {
 .date-picker-box {
     float: right;
 }
+
+/***** error message box ******/
+
+.error-dialog {
+    padding: 20px;
+    display: none;
+    bottom: 0;
+    background-color: #f44336; /* Red */
+    border-radius: 5px;
+    color: white;
+    width: 80% !important;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    clear: both;
+}
+
+.error-text {
+    font-size: 1.0em;
+    color: white;
+}
+
+/* The close button */
+.close-button {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.close-button:hover {
+    color: black;
+}

@@ -15,7 +15,7 @@ class SimsageAnalytics {
         this.date = new Date();
 
         // active tab
-        this.tab = 'logs';
+        this.tab = 'keywords';
         this.tab_list = ['keywords', 'searches', 'logs'];
 
         // the stats
@@ -36,6 +36,12 @@ class SimsageAnalytics {
 
     set_date(date) {
         this.date = date;
+    }
+
+    // close the error dialog - remove any error settings
+    close_error() {
+        this.error = '';
+        this.busy = false;
     }
 
     // fetch the current set of analytics
@@ -232,6 +238,36 @@ class SimsageAnalytics {
     }
 
     dlContentAnalysis() {
+        const self = this;
+        this.error = '';
+        this.busy = true;
+        const url = settings.base_url + '/document/wp-inventorize';
+        const data = {organisationId: settings.organisationId, kbId: settings.kbId, sid: settings.sid};
+        const init = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'API-Version': settings.api_version,
+            },
+            body: JSON.stringify(data),
+            mode: 'cors',
+            cache: 'default'
+        };
+        fetch(new Request(url), init)
+            .then(function(response) {
+                if (!response.ok) {
+                    self.error = `HTTP error! status: ${response.status}`;
+                    self.refresh();
+                } else {
+                    return response.blob().then((b) => {
+                        let a = document.createElement("a");
+                        a.href = URL.createObjectURL(b);
+                        const filename = "content-analysis-" + SimsageAnalytics.getFormattedTime() + ".xlsx";
+                        a.setAttribute("download", filename);
+                        a.click();
+                    });
+                }
+            });
     }
 
 

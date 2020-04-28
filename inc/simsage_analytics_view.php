@@ -42,6 +42,12 @@
 
     <div class="analytics-area">
 
+        <!-- error message display bar -->
+        <div class="error-dialog">
+            <span class="close-button" onclick="this.parentElement.style.display='none'; analytics.close_error();">&times;</span>
+            <div class="error-text"></div>
+        </div>
+
         <div class="date-picker-box">
         <label><input type="text" class="datepicker tab-cursor" name="datepicker" value="" readonly /></label>
             <button onclick="analytics.getAnalytics()" class="button" title="Reload/Refresh statistical data">refresh</button>
@@ -55,7 +61,7 @@
 
         <div id='layout'>
 
-            <div id='div_keywords' class="container" style="display: none;">
+            <div id='div_keywords' class="container">
                 <svg id="keyword-analytics" />
             </div>
 
@@ -66,7 +72,7 @@
 
         </div>
 
-        <div id='div_logs'>
+        <div id='div_logs' style="display: none;">
             <div class="button-row">
                 <button onclick="analytics.dlOperatorConversations()" class="button button-style">Operator Conversation Spreadsheet</button>
                 <span class="button-help-text">Download a Spreadsheet containing all conversations between Operators and Clients.</span>

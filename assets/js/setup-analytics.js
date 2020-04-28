@@ -25,9 +25,12 @@ jQuery(function($) {
 
 function update_ui(analytics) {
     jQuery(function($) {
-        if (analytics.error !== '') {
-            alert(analytics.error);
-            analytics.error = '';
+        // do we have an error message to display?
+        if (analytics.error.length > 0) {
+            $(".error-text").html(analytics.error);
+            $(".error-dialog").show();
+        } else {
+            $(".error-dialog").hide();
         }
         // remove any classes for non active items
         for (const tab of analytics.tab_list) {
