@@ -139,37 +139,32 @@ class simsage_admin
             add_settings_error('simsage_settings', 'invalid_registration_key', 'Invalid SimSage registration-key', $type = 'error');
         } else {
             // try and sign-into SimSage given the user's credentials
-            $json = get_json(wp_remote_post(SIMSAGE_API_SERVER . '/api/auth/sign-in-registration-key',
+            $json = get_json(wp_remote_post( join_urls(SIMSAGE_API_SERVER, '/api/auth/sign-in-registration-key'),
                 array('headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                     'body' => '{"registrationKey": "' . trim($registration_key) . '"}')));
-            if ( isset($json["body"]) ) {
+            $error_str = check_simsage_json_response($json);
+
+            if ( $error_str == "" ) {
                 $body = get_json( $json["body"] ); // convert to an object
-                if ( isset($body['error']) ) {
-                    add_settings_error('simsage_settings', 'error', 'SimSage: ' . print_r($body['error'], true), $type = 'error');
+                if ( !isset($body['sites']) ) {
+                    add_settings_error('simsage_settings', 'invalid_response', 'Invalid SimSage response.  Please upgrade your plugin.', $type = 'error');
+
                 } else {
-                    if ( !isset($body['sites']) ) {
-                        add_settings_error('simsage_settings', 'invalid_response', 'Invalid SimSage response.  Please upgrade your plugin.', $type = 'error');
-                    } else {
-                        // set the account data we just got back (store it)
-                        $plugin_options["simsage_account"] = $body;
-                        // set our defaults (if not already set) for search and the bot and the site
-                        $this->set_defaults( $plugin_options );
-                        // save settings
-                        update_option( PLUGIN_NAME, $plugin_options );
-                        // set the current site and upload the current WP content as is
-                        $this->setup_site();
-                        // show we've successfully connected
-                        add_settings_error('simsage_settings', 'success',
-                            "Successfully retrieved your SimSage account information.",
-                            $type = 'info');
-                    }
+                    // set the account data we just got back (store it)
+                    $plugin_options["simsage_account"] = $body;
+                    // set our defaults (if not already set) for search and the bot and the site
+                    $this->set_defaults( $plugin_options );
+                    // save settings
+                    update_option( PLUGIN_NAME, $plugin_options );
+                    // set the current site and upload the current WP content as is
+                    $this->setup_site();
+                    // show we've successfully connected
+                    add_settings_error('simsage_settings', 'success',
+                        "Successfully retrieved your SimSage account information.",
+                        $type = 'info');
                 }
             } else {
-                if ( isset($json['errors']) ) {
-                    add_settings_error('simsage_settings', 'error', "Something went wrong talking to SimSage: " . print_r($json['errors'], true), $type = 'error');
-                } else {
-                    add_settings_error('simsage_settings', 'invalid_response', 'Something went wrong talking to SimSage, please try again.', $type = 'error');
-                }
+                add_settings_error('simsage_settings', 'error', $error_str, $type = 'error');
             }
         }
     }
@@ -426,7 +421,9 @@ class simsage_admin
         $filename = $this->create_content_zip();
         if ($filename != null) {
             debug_log("wrote zip to:" . $filename);
-            $this->upload_archive($server, $organisationId, $site["kbId"], $site["sid"], $filename);
+            if ( !$this->upload_archive($server, $organisationId, $site["kbId"], $site["sid"], $filename) ) {
+                return false;
+            }
             // remove the file after use
             if ( !unlink( $filename ) ) {
                 debug_log("warning: could not delete file \"" . $filename . "\"");
@@ -633,22 +630,26 @@ class simsage_admin
      * @param $kbId             string your site's id (called a knowledge-base Id in SimSage)
      * @param $sid              string a changeable SimSage security id for this site
      * @param $filename         string the location of the zipped archive to upload to SimSage
+     * @return bool return true on success
      */
     private function upload_archive( $server, $organisationId, $kbId, $sid, $filename ) {
         debug_log("uploading archive " . $filename . ", to: " . $server . ", org: " . $organisationId . ", kb: " . $kbId);
         $fileContent = file_get_contents($filename);
         $data = ";base64," . base64_encode($fileContent);
-        debug_log("data size " . strlen($data));
-        $json = get_json(wp_remote_post($server . 'api/crawler/document/upload/archive',
+        $url = join_urls($server, '/api/crawler/document/upload/archive');
+        $bodyStr = '{"organisationId": "' . $organisationId . '", "kbId": "' . $kbId . '", "sid": "' . $sid . '", "sourceId": 1, "data": "' . $data . '"}';
+        $json = get_json(wp_remote_post( $url,
             array('headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
-                'body' => '{"organisationId": "' . $organisationId . '", "kbId": "' . $kbId . '", "sid": "' . $sid . '", "sourceId": 1, "data": "' . $data . '"}')));
-        if ( isset($json["error"]) ) {
-            $error = $json["error"];
-            if ( $error != "" ) {
-                add_settings_error('simsage_settings', 'simsage_upload_error', $error, $type = 'error');
-            }
+                'body' => $bodyStr)));
+        $error_str = check_simsage_json_response($json);
+        if ( $error_str != "" ) {
+            add_settings_error('simsage_settings', 'simsage_upload_error', $error_str, $type = 'error');
+            return false;
         }
+        return true;
     }
+
+
 
 
 }

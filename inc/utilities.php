@@ -202,3 +202,70 @@ function is_valid_synonym($id, $synonym) {
     }
     return null;
 }
+
+
+/**
+ * Join two urls together with a / in between
+ * @param $url1 string first part of the url
+ * @param $url2 string second part of the url
+ * @return string the joined url
+ */
+function join_urls( $url1, $url2 ) {
+    if ( substr( $url1, strlen($url1) - 1, 1 ) === "/" && substr( $url1, 0, 1 ) === '/' ) {
+        return $url1 . substr($url2, 1);
+    } else if ( substr( $url1, strlen($url1) - 1, 1 ) === "/" || substr( $url1, 0, 1 ) === '/' ) {
+        return $url1 . $url2;
+    }
+    return $url1 . "/" . $url2;
+}
+
+
+/**
+ * @param $json array the data returned by SimSage from the server
+ * @return string an empty string if no error was found, otherwise a description of the error
+ */
+function check_simsage_json_response($json) {
+    // debug_log( print_r($json, true) );
+    if ( isset($json["error"]) ) {
+        $error = print_r( $json["error"], true);
+        if ( $error != "" ) {
+            // more friendly error messages
+            if ( strpos($error, "cURL error 28") !== false ) {
+                return "SimSage upload server not responding";
+            }
+            return $error;
+        }
+
+    } else if ( isset($json["errors"]) ) {
+        $error = print_r( $json["errors"], true);
+        if ( $error != "" ) {
+            // more friendly error messages
+            if ( strpos($error, "cURL error 28") !== false ) {
+                return "SimSage upload server not responding";
+            }
+            return $error;
+        }
+
+    } else if ( isset($json["body"]) ) {
+        // simsage itself has a specific internal error?
+        $body = get_json($json["body"]);
+        if ( isset($body["error"]) ) {
+            $error = $body["error"];
+            if ($error != "") {
+                return $error;
+            }
+        }
+
+    } else if ( isset($json["response"]) ) {
+        // finally, check the HTTP response code is within 200..299
+        $response = get_json($json["response"]);
+        if ( isset($response["code"]) ) {
+            $response_code = $response["code"];
+            if ($response_code < 200 || $response_code > 299) {
+                return "SimSage server return response code " . $response_code;
+            }
+        }
+    }
+    return "";
+}
+
