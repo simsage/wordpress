@@ -127,23 +127,74 @@ class SimsageAnalytics {
         return [];
     }
 
+
+    // download all conversations had between operators and clients for review
     dlOperatorConversations() {
+        const self = this;
+        this.error = '';
+        this.busy = true;
+        const url = settings.base_url + '/wp-operator-chats';
+        const data = {organisationId: settings.organisationId, kbId: settings.kbId, sid: settings.sid,
+                      year: this.date.getFullYear(), month: this.date.getMonth() + 1};
+        const init = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'API-Version': settings.api_version,
+            },
+            body: JSON.stringify(data),
+            mode: 'cors',
+            cache: 'default'
+        };
+        fetch(new Request(url), init)
+            .then(function(response) {
+                if (!response.ok) {
+                    self.error = `HTTP error! status: ${response.status}`;
+                    self.refresh();
+                } else {
+                    return response.blob().then((b) => {
+                        let a = document.createElement("a");
+                        a.href = URL.createObjectURL(b);
+                        const filename = "operator-conversations-" + SimsageAnalytics.getFormattedTime() + ".xlsx";
+                        a.setAttribute("download", filename);
+                        a.click();
+                    });
+                }
+            });
     }
 
     dlQueryLog() {
-    }
-
-    // helper - get pretty date for now
-    static getFormattedTime() {
-        const today = new Date();
-        const y = today.getFullYear();
-        // JavaScript months are 0-based.
-        const m = today.getMonth() + 1;
-        const d = today.getDate();
-        const h = today.getHours();
-        const mi = today.getMinutes();
-        const s = today.getSeconds();
-        return y + "-" + m + "-" + d + "-" + h + "-" + mi + "-" + s;
+        const self = this;
+        this.error = '';
+        this.busy = true;
+        const url = settings.base_url + '/stats/wp-query-logs';
+        const data = {organisationId: settings.organisationId, kbId: settings.kbId, sid: settings.sid,
+                      year: this.date.getFullYear(), month: this.date.getMonth() + 1};
+        const init = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'API-Version': settings.api_version,
+            },
+            body: JSON.stringify(data),
+            mode: 'cors',
+            cache: 'default'
+        };
+        fetch(new Request(url), init)
+            .then(function(response) {
+                if (!response.ok) {
+                    self.error = `HTTP error! status: ${response.status}`;
+                    self.refresh();
+                } else {
+                    return response.blob().then((b) => {
+                        let a = document.createElement("a");
+                        a.href = URL.createObjectURL(b);
+                        const filename = "query-logs-" + SimsageAnalytics.getFormattedTime() + ".xlsx";
+                        a.setAttribute("download", filename);
+                        a.click();
+                    });
+                }
+            });
     }
 
     // invoke the SimSage mind-dump endpoint, to create a spreadsheet with language customizations
@@ -363,5 +414,20 @@ class SimsageAnalytics {
                 .text('Source: SimSage, ' + date_str)
         }
     }
+
+
+    // helper - get pretty date for now
+    static getFormattedTime() {
+        const today = new Date();
+        const y = today.getFullYear();
+        // JavaScript months are 0-based.
+        const m = today.getMonth() + 1;
+        const d = today.getDate();
+        const h = today.getHours();
+        const mi = today.getMinutes();
+        const s = today.getSeconds();
+        return y + "-" + m + "-" + d + "-" + h + "-" + mi + "-" + s;
+    }
+
 
 }

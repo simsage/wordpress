@@ -25,7 +25,10 @@ jQuery(function($) {
 
 function update_ui(analytics) {
     jQuery(function($) {
-
+        if (analytics.error !== '') {
+            alert(analytics.error);
+            analytics.error = '';
+        }
         // remove any classes for non active items
         for (const tab of analytics.tab_list) {
             if (tab !== analytics.tab) {
