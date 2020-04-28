@@ -49,7 +49,7 @@
         </div>
 
         <div class="date-picker-box">
-        <label><input type="text" class="datepicker tab-cursor" name="datepicker" value="" readonly /></label>
+        <label><input type="text" id="txtDatePicker" class="datepicker tab-cursor" name="datepicker" value="" readonly /></label>
             <button onclick="analytics.getAnalytics()" class="button" title="Reload/Refresh statistical data">refresh</button>
         </div>
 
@@ -75,19 +75,19 @@
         <div id='div_logs' style="display: none;">
             <div class="button-row">
                 <button onclick="analytics.dlOperatorConversations()" class="button button-style">Operator Conversation Spreadsheet</button>
-                <span class="button-help-text">Download a Spreadsheet containing all conversations between Operators and Clients.</span>
+                <span class="button-help-text">Download a Spreadsheet containing all conversations between Operators and Clients for the selected month.</span>
             </div>
             <div class="button-row">
                 <button onclick="analytics.dlQueryLog()" class="button button-style">Search & Query Log Spreadsheet</button>
-                <span class="button-help-text">Download a log of what people have been searching / asking on this site.</span>
+                <span class="button-help-text">Download a log of what people have been searching / asking on this site for the selected month.</span>
             </div>
             <div class="button-row">
                 <button onclick="analytics.dlLanguageCustomizations()" class="button button-style" title="Download a Spreadsheet of all QA Pairs and Language Customizations">Content Spreadsheet</button>
-                <span class="button-help-text">Download a SimSage QA / language Sreadsheet containing all your customized content.</span>
+                <span class="button-help-text">Download a SimSage QA / language Spreadsheet containing all your customized content (not month specific).</span>
             </div>
             <div class="button-row">
                 <button onclick="analytics.dlContentAnalysis()" class="button button-style" title="Download a Content Analysis Spreadsheet">Content Analysis Spreadsheet</button>
-                <span class="button-help-text">Download a Spreadsheet containing all crawled content and a Semantic analysis for each item.</span>
+                <span class="button-help-text">Download a Spreadsheet containing all currently crawled content and a Semantic analysis for each item (not month specific).</span>
             </div>
         </div>
 

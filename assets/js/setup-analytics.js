@@ -44,16 +44,17 @@ function update_ui(analytics) {
         $("#tab_" + analytics.tab).addClass("nav-tab-active");
 
         // draw bar graphs
+        const dateLabel = $("#txtDatePicker").val();
         $("#search-analytics").html("");
         analytics.draw_graph("#search-analytics",
-            'Monthly Searches in April 2020',
-            'Days', 'Number of Searches', 'April 2020',
+            'Monthly Searches in ' + dateLabel,
+            'Days', 'Number of Searches', dateLabel,
             analytics.search_frequencies);
 
         $("#keyword-analytics").html("");
         analytics.draw_graph("#keyword-analytics",
-            'Keyword Most often Searched for in April 2020',
-            'Keyword', 'Number of Times used', 'April 2020',
+            'Keyword Most often Searched for in ' + dateLabel,
+            'Keyword', 'Number of Times used', dateLabel,
             analytics.search_keyword_frequencies);
     })
 }
