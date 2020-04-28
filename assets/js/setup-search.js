@@ -8,8 +8,7 @@ const search = new SemanticSearch(update_ui);
  * @param search
  */
 function update_ui(search) {
-    // should we display the advanced search menu?
-    jQuery(function($){
+    jQuery(function($) {
         const busy = search.busy; // are we busy searching at the moment?
 
         // do we have an error message to display?
