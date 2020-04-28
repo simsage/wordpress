@@ -171,7 +171,7 @@ class SimsageAnalytics {
                     return response.blob().then((b) => {
                         let a = document.createElement("a");
                         a.href = URL.createObjectURL(b);
-                        const filename = "mind-export-" + SimsageAnalytics.getFormattedTime() + ".xlsx";
+                        const filename = "language-customizations-" + SimsageAnalytics.getFormattedTime() + ".xlsx";
                         a.setAttribute("download", filename);
                         a.click();
                     });
