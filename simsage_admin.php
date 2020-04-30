@@ -134,28 +134,21 @@ class simsage_admin
      * add the administration menu for this plugin to wordpress
      */
     public function add_menus() {
-        $plan = get_plan();
         debug_log( 'add_menus' );
-        if ( $plan != null ) {
-            if ( $this->operator != null && isset( $plan['operatorEnabled'] ) && $plan['operatorEnabled'] ) {
-                add_menu_page(
-                    __('SimSage Operator', PLUGIN_NAME), // page title.
-                    __('SimSage Operator', PLUGIN_NAME), // menu title.
-                    'manage_options', // capability.
-                    "simsage-operator", // menu_slug.
-                    array($this->operator, 'load_settings_page')
-                );
-            }
-            if ( $this->analytics != null && isset( $plan['analyticsEnabled'] ) && $plan['analyticsEnabled'] ) {
-                add_menu_page(
-                    __('SimSage Data', PLUGIN_NAME), // page title.
-                    __('SimSage Data', PLUGIN_NAME), // menu title.
-                    'manage_options', // capability.
-                    "simsage-data", // menu_slug.
-                    array($this->analytics, 'load_settings_page')
-                );
-            }
-        }
+        add_menu_page(
+            __('SimSage Operator', PLUGIN_NAME), // page title.
+            __('SimSage Operator', PLUGIN_NAME), // menu title.
+            'manage_options', // capability.
+            "simsage-operator", // menu_slug.
+            array($this->operator, 'load_settings_page')
+        );
+        add_menu_page(
+            __('SimSage Data', PLUGIN_NAME), // page title.
+            __('SimSage Data', PLUGIN_NAME), // menu title.
+            'manage_options', // capability.
+            "simsage-data", // menu_slug.
+            array($this->analytics, 'load_settings_page')
+        );
     }
 
 
