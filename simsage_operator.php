@@ -24,33 +24,6 @@ class simsage_operator
         add_action( 'init', array( $this, 'register_script_and_style' ) );
     }
 
-    public function add_admin_menus( $analytics ) {
-        $this->analytics = $analytics;
-        add_action( 'admin_menu', array( $this, 'add_menus' ) );
-    }
-
-    /**
-     * add the administration menu for this plugin to wordpress
-     */
-    public function add_menus() {
-        add_menu_page(
-            __( 'SimSage Operator', PLUGIN_NAME ), // page title.
-            __( 'SimSage Operator', PLUGIN_NAME ), // menu title.
-            'manage_options', // capability.
-            "simsage-operator", // menu_slug.
-            array( $this, 'load_settings_page' )
-        );
-        if ( $this->analytics != null ) {
-            add_menu_page(
-                __('SimSage Data', PLUGIN_NAME), // page title.
-                __('SimSage Data', PLUGIN_NAME), // menu title.
-                'manage_options', // capability.
-                "simsage-data", // menu_slug.
-                array($this->analytics, 'load_settings_page')
-            );
-        }
-    }
-
 
     /**
      * callback - return the html, styles, and js to render and work the SimSage operator
@@ -97,16 +70,16 @@ class simsage_operator
 
 
     /**
-     * get a SimSage specific value from the selected site
+     * get a SimSage knowledge-base value
      *
+     * @param $key string the value to look for in the kb structure
      * @return string the value, or an empty string if not found
      */
     private function get_site_setting( $key ) {
-        $plugin_options = get_option(PLUGIN_NAME);
-        if ( isset($plugin_options["simsage_site"]) ) {
-            $site = $plugin_options["simsage_site"];
-            if ( isset($site[$key]) ) {
-                return $site[$key];
+        $kb = get_kb();
+        if ( $kb != null ) {
+            if ( isset($kb[$key]) ) {
+                return $kb[$key];
             }
         }
         return "";

@@ -29,6 +29,7 @@
 		$active_tab = $_GET[ 'tab' ];
 	} // end if
 	$options = get_option( PLUGIN_NAME );
+    $plan = get_plan();
 	// add the nonce, option_page, action and referer.
 	settings_fields( PLUGIN_NAME );
 	do_settings_sections( PLUGIN_NAME );
@@ -37,9 +38,13 @@
     // after signing-in we get an account set and saved locally
     $has_account = isset($options['simsage_account'] ) && isset($options['simsage_account']['id']);
     // when we have selected a site, this variable will be set
-    $has_sites = isset($options['simsage_site']);
+    $has_kb = $has_account && isset($options['simsage_account']['knowledgeBase']);
     // list of bot items (or initial empty array)
     $qa_list = isset($options['simsage_qa']) ? $options['simsage_qa'] : array();
+    // do we have Q&A settings?
+    $bot_enabled = ($plan != null && isset( $plan['botEnabled'] ) && $plan['botEnabled']);
+    // do we have language customization?
+    $language_enabled = ($plan != null && isset( $plan['languageEnabled'] ) && $plan['languageEnabled']);
     // list of synonyms
     $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms'] : array();
 	?>
@@ -51,12 +56,16 @@
         </div>
 	<?php } ?>
 
-    <h2 class="nav-tab-wrapper">
+    <div class="nav-tab-wrapper">
         <a href="?page=simsage-search&tab=account" class="nav-tab <?php echo ($active_tab == 'account' || $active_tab == '') ? 'nav-tab-active' : ''; ?>">Account</a>
-        <a href="?page=simsage-search&tab=search" class="nav-tab <?php echo $active_tab == 'search' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_sites ) echo 'tab-disabled' ?>">Search</a>
-        <a href="?page=simsage-search&tab=bot" class="nav-tab <?php echo $active_tab == 'bot' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_sites ) echo 'tab-disabled' ?>">Bot</a>
-        <a href="?page=simsage-search&tab=synonyms" class="nav-tab <?php echo $active_tab == 'synonyms' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_sites ) echo 'tab-disabled' ?>">Synonyms</a>
-    </h2>
+        <a href="?page=simsage-search&tab=search" class="nav-tab <?php echo $active_tab == 'search' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_kb ) echo 'tab-disabled' ?>">Search</a>
+        <?php if ( $bot_enabled ) { ?>
+        <a href="?page=simsage-search&tab=bot" class="nav-tab <?php echo $active_tab == 'bot' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_kb ) echo 'tab-disabled' ?>">Bot</a>
+        <?php } ?>
+        <?php if ( $language_enabled ) { ?>
+        <a href="?page=simsage-search&tab=synonyms" class="nav-tab <?php echo $active_tab == 'synonyms' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_kb ) echo 'tab-disabled' ?>">Synonyms</a>
+        <?php } ?>
+    </div>
 
     <form method="post" name="<?php echo PLUGIN_NAME; ?>_search_options">
 

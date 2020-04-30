@@ -17,9 +17,14 @@
 
     <?php
 	$options = get_option( PLUGIN_NAME );
+    $plan = get_plan();
+    // does this plan have operator access?
+    $has_access = ($plan != null && isset( $plan['analyticsEnabled'] ) && $plan['analyticsEnabled']);
     // when we have selected a site, this variable will be set
-    $has_sites = isset($options['simsage_site']);
+    $has_sites = (get_kb() != null);
     ?>
+
+    <?php if ( $has_access && $has_sites ) { ?>
 
     <script lang="js">
         // set an image base for all our templates to use (url bases for images)
@@ -94,5 +99,11 @@
         </div>
 
     </div>
+
+    <?php } else if ( $has_access ) { ?>
+        <div class="label-success">Please <a href="/wp-admin/options-general.php?page=simsage-search">configure</a> your SimSage plugin first.</div>
+    <?php } else if ( !$has_access ) { ?>
+        <div class="label-success">Your plan does not provide you with SimSage Analytics.  Please <a href="<?php echo SIMSAGE_REGO_SERVER; ?>/#/sign-in" target="_blank">upgrade your plan</a> if you wish to use SimSage Analytics.</div>
+    <?php } ?>
 
 </div>

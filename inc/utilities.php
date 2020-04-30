@@ -66,7 +66,7 @@ if ( ! function_exists('debug_log')) {
  * @param $data string|object
  * @return mixed
  */
-function get_json($data) {
+function get_json( $data ) {
 	if (gettype($data) == "string") {
 		return json_decode($data, true, 512);
 	} else {
@@ -80,7 +80,7 @@ function get_json($data) {
  *
  * @param $zip ZipArchive a zip archive to add items to
  */
-function add_wp_contents_to_zip($zip) {
+function add_wp_contents_to_zip( $zip ) {
     global $wpdb;
     $query = "SELECT * FROM $wpdb->posts WHERE post_status = 'publish'";
     $results = $wpdb->get_results($query);
@@ -108,7 +108,7 @@ function add_wp_contents_to_zip($zip) {
  * @param $zip ZipArchive a zip archive to add items to
  * @param $qa_list array a list of Question and Answer items
  */
-function add_bot_qas_to_zip($zip, $qa_list) {
+function add_bot_qas_to_zip( $zip, $qa_list ) {
     $str = "";
     foreach ($qa_list as $qa) {
         // format: url | title | mimeType | created | last-modified | data
@@ -124,7 +124,7 @@ function add_bot_qas_to_zip($zip, $qa_list) {
  * @param $zip ZipArchive a zip archive to add items to
  * @param $synonym_list array a list of synonym items
  */
-function add_synonyms_to_zip($zip, $synonym_list) {
+function add_synonyms_to_zip( $zip, $synonym_list ) {
     $str = "";
     foreach ($synonym_list as $synonym) {
         // format: url | title | mimeType | created | last-modified | data
@@ -139,7 +139,7 @@ function add_synonyms_to_zip($zip, $synonym_list) {
  * @param $str
  * @return string|null return a string with an error, or null if there is none
  */
-function is_valid_bot_str($str) {
+function is_valid_bot_str( $str ) {
     $invalid_chars = array( "(", ")", "|", "[", "]", "{", "}");
     if ( trim($str) == "" ) return "string is empty";
     if ( strlen( trim($str) ) > MAX_STRING_LENGTH ) return "string too long (maximum length allowed is " . MAX_STRING_LENGTH . " characters)";
@@ -153,11 +153,12 @@ function is_valid_bot_str($str) {
 /**
  * check if the text in the question / answer pair is correct / valid
  * $param $id int the id of the question answer pair
+ * @param $id string a unique id for this QA pair
  * @param $question string the question's text
  * @param $answer string the answer's text
  * @return string|null return a string with an error, or null if there is none
  */
-function is_valid_bot_qa_pair($id, $question, $answer) {
+function is_valid_bot_qa_pair( $id, $question, $answer ) {
     $error1 = is_valid_bot_str($question);
     if ( $error1 != null) return "Question " . $id . ": " . $error1;
     $error2 = is_valid_bot_str($answer);
@@ -171,7 +172,7 @@ function is_valid_bot_qa_pair($id, $question, $answer) {
  * @param $str
  * @return string|null return a string with an error, or null if there is none
  */
-function is_valid_synonym_str($str) {
+function is_valid_synonym_str( $str ) {
     $invalid_chars = array( "(", ")", "|", "[", "]", "{", "}", "-", ",", "_");
     if ( trim($str) == "" ) return "string is empty";
     $words = explode(",", $str);
@@ -189,10 +190,12 @@ function is_valid_synonym_str($str) {
 /**
  * check if the text of the synonyms is correct
  * $param $id int the id of the synonym
+ *
+ * @param $id string a unique id for this synonym
  * @param $synonym string the question's text
  * @return string|null return a string with an error, or null if there is none
  */
-function is_valid_synonym($id, $synonym) {
+function is_valid_synonym( $id, $synonym ) {
     if ( trim($synonym) == "" ) return "Synonym " . $id . " string is empty";
     $words = explode(",", $synonym);
     if ( count($words) == 1 ) return "Synonym " . $id . " must have comma separated words that are synonymous to it";
@@ -269,3 +272,34 @@ function check_simsage_json_response($json) {
     return "";
 }
 
+
+/**
+ * Access the knowledge-base for the current user (or null if dne)
+ * @return array|null return the knowledgeBase for this user
+ */
+function get_kb() {
+    $plugin_options = get_option(PLUGIN_NAME);
+    if ( isset($plugin_options["simsage_account"]) ) {
+        $account = $plugin_options["simsage_account"];
+        if ( isset( $account["knowledgeBase"] ) ) {
+            return $account["knowledgeBase"];
+        }
+    }
+    return null;
+}
+
+
+/**
+ * Access the plan for the current user (or null if dne)
+ * @return array|null return the plan for this user
+ */
+function get_plan() {
+    $plugin_options = get_option(PLUGIN_NAME);
+    if ( isset($plugin_options["simsage_account"]) ) {
+        $account = $plugin_options["simsage_account"];
+        if ( isset( $account["plan"] ) ) {
+            return $account["plan"];
+        }
+    }
+    return null;
+}

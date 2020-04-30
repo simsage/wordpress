@@ -62,16 +62,16 @@ class simsage_analytics
 
 
     /**
-     * get a SimSage specific value from the selected site
+     * get a SimSage specific knowledge-base value
      *
+     * @param $key string the key to look for
      * @return string the value, or an empty string if not found
      */
     private function get_site_setting( $key ) {
-        $plugin_options = get_option(PLUGIN_NAME);
-        if ( isset($plugin_options["simsage_site"]) ) {
-            $site = $plugin_options["simsage_site"];
-            if ( isset($site[$key]) ) {
-                return $site[$key];
+        $kb = get_kb();
+        if ( $kb != null ) {
+            if ( isset($kb[$key]) ) {
+                return $kb[$key];
             }
         }
         return "";

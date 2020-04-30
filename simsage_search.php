@@ -53,7 +53,7 @@ class simsage_search
         if ( $pagenow == 'plugins.php' ) {
             $plugin_options = get_option(PLUGIN_NAME); // get our plugin's db data
             // display the "visit the plugin settings" link if this plugin doesn't have any settings yet
-            if (empty($plugin_options) || !isset($plugin_options["simsage_site"])) {
+            if ( empty($plugin_options) || get_kb() == null ) {
                 $message = __('Please setup the SimSage plugin settings ', PLUGIN_NAME);
                 $plugin_settings_url = '<a href="' . admin_url('options-general.php?page=' . PLUGIN_NAME) . '">' .
                     __('SimSage plugin settings', PLUGIN_NAME) . '</a>';
@@ -86,16 +86,16 @@ class simsage_search
 
 
     /**
-     * get a SimSage specific value from the selected site
+     * get a SimSage specific value of the knowledge-base
      *
+     * @param $key string the key to look for in kb
      * @return string the value, or an empty string if not found
      */
     private function get_site_setting( $key ) {
-        $plugin_options = get_option(PLUGIN_NAME);
-        if ( isset($plugin_options["simsage_site"]) ) {
-            $site = $plugin_options["simsage_site"];
-            if ( isset($site[$key]) ) {
-                return $site[$key];
+        $kb = get_kb();
+        if ( $kb != null ) {
+            if ( isset($kb[$key]) ) {
+                return $kb[$key];
             }
         }
         return "";
@@ -187,7 +187,7 @@ class simsage_search
         $plugin_options = get_option( PLUGIN_NAME );
 		$this->add_script = true;
 		wp_enqueue_style('simsage-style'); // add our style-sheet (assets/css/search.css)
-        if ( isset( $plugin_options["simsage_site"] ) ) {
+        if ( get_kb() != null ) {
             // render simsage_search_view.php in the context of this class
             ob_start();
             include PLUGIN_DIR . 'inc/simsage_search_view.php';
@@ -200,8 +200,7 @@ class simsage_search
 	public function get_search_form( $content ) {
         $plugin_options = get_option( PLUGIN_NAME );
         // only replace the search_form if the plugin has been configured and it has been configured to do so by the user
-		if ( isset( $plugin_options["simsage_override_default_search"] ) && $plugin_options["simsage_override_default_search"] &&
-             isset( $plugin_options["simsage_site"] ) ) {
+		if ( isset( $plugin_options["simsage_override_default_search"] ) && $plugin_options["simsage_override_default_search"] && get_kb() != null ) {
 			wp_enqueue_style('simsage-style'); // add our style-sheet (assets/css/search.css)
 			// render simsage_search_view.php in the context of this class
 			ob_start();

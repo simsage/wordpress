@@ -29,6 +29,10 @@ class simsage_admin
         "bot_threshold" => array( "value" => 0.8125, "min" => 0.0, "max" => 1.0, "name" => "SimSage A.I. Bot threshold")
     );
 
+    // references to the operator and analytics classes for menu setup after registration
+    private $operator = null;
+    private $analytics = null;
+
 
     // constructor
     public function __construct() {
@@ -48,6 +52,18 @@ class simsage_admin
             PLUGIN_NAME, // menu_slug.
             array( $this, 'load_settings_page' )
         );
+    }
+
+
+    /**
+     * register operator and analytics classes for menu setup later
+     *
+     * @param $operator simsage_operator the operator class
+     * @param $analytics simsage_analytics the analytics class
+     */
+    public function prepare_admin_menus( $operator, $analytics ) {
+        $this->operator = $operator;
+        $this->analytics = $analytics;
     }
 
 
@@ -98,14 +114,50 @@ class simsage_admin
             // make sure the plugin has been setup before we react
             $plugin_options = get_option(PLUGIN_NAME);
             // this is where the data should travel to (if setup)
-            if (isset($plugin_options["simsage_site"])) {
-                debug_log("save_post(): start");
-                if ($this->update_simsage($plugin_options["simsage_site"])) {
-                    debug_log("save_post(): success");
-                }
+            debug_log("save_post(): start");
+            if ( $this->update_simsage() ) {
+                debug_log("save_post(): success");
             }
         }
     }
+
+
+    /**
+     * register admin menus after the plugin has been setup
+     */
+    public function add_admin_menus() {
+        add_action( 'admin_menu', array( $this, 'add_menus' ) );
+    }
+
+
+    /**
+     * add the administration menu for this plugin to wordpress
+     */
+    public function add_menus() {
+        $plan = get_plan();
+        debug_log( 'add_menus' );
+        if ( $plan != null ) {
+            if ( $this->operator != null && isset( $plan['operatorEnabled'] ) && $plan['operatorEnabled'] ) {
+                add_menu_page(
+                    __('SimSage Operator', PLUGIN_NAME), // page title.
+                    __('SimSage Operator', PLUGIN_NAME), // menu title.
+                    'manage_options', // capability.
+                    "simsage-operator", // menu_slug.
+                    array($this->operator, 'load_settings_page')
+                );
+            }
+            if ( $this->analytics != null && isset( $plan['analyticsEnabled'] ) && $plan['analyticsEnabled'] ) {
+                add_menu_page(
+                    __('SimSage Data', PLUGIN_NAME), // page title.
+                    __('SimSage Data', PLUGIN_NAME), // menu title.
+                    'manage_options', // capability.
+                    "simsage-data", // menu_slug.
+                    array($this->analytics, 'load_settings_page')
+                );
+            }
+        }
+    }
+
 
     /*****************************************************************************
      *
@@ -128,25 +180,22 @@ class simsage_admin
         if ( isset($plugin_options["simsage_account"]) ) {
             unset($plugin_options["simsage_account"]);
         }
-        // remove the selected site if it was previously set
-        if ( isset($plugin_options["simsage_site"]) ) {
-            unset($plugin_options["simsage_site"]);
-        }
-        update_option(PLUGIN_NAME, $plugin_options);
+        update_option( PLUGIN_NAME, $plugin_options );
 
         // check the registration-key size
         if ( strlen( trim( $registration_key ) ) != 19 ) {
             add_settings_error('simsage_settings', 'invalid_registration_key', 'Invalid SimSage registration-key', $type = 'error');
         } else {
-            // try and sign-into SimSage given the user's credentials
+            // try and sign-into SimSage given the user's key
             $json = get_json(wp_remote_post( join_urls(SIMSAGE_API_SERVER, '/api/auth/sign-in-registration-key'),
                 array('headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                     'body' => '{"registrationKey": "' . trim($registration_key) . '"}')));
-            $error_str = check_simsage_json_response($json);
-
+            $error_str = check_simsage_json_response( $json );
+            // no error?
             if ( $error_str == "" ) {
                 $body = get_json( $json["body"] ); // convert to an object
-                if ( !isset($body['sites']) ) {
+                if ( !isset($body['knowledgeBase']) || !isset($body['plan']) ) {
+                    debug_log( print_r($body, true) );
                     add_settings_error('simsage_settings', 'invalid_response', 'Invalid SimSage response.  Please upgrade your plugin.', $type = 'error');
 
                 } else {
@@ -157,7 +206,9 @@ class simsage_admin
                     // save settings
                     update_option( PLUGIN_NAME, $plugin_options );
                     // set the current site and upload the current WP content as is
-                    $this->setup_site();
+                    $this->update_simsage();
+                    // setup other parts of the plugin according to plan
+                    $this->add_admin_menus();
                     // show we've successfully connected
                     add_settings_error('simsage_settings', 'success',
                         "Successfully retrieved your SimSage account information.",
@@ -391,51 +442,56 @@ class simsage_admin
 
 
     /**
-     * @param $site array the SimSage site to update
-     * @return bool success
+     * Check all the settings are valid, create a ZIP of the current content and various language changes
+     * and send them all to SimSage for processing
+     *
+     * @return bool success, or false if anything went wrong
      */
-    private function update_simsage( $site ) {
-        // save the selected site
-        $plugin_options = get_option(PLUGIN_NAME);
-        $plugin_options["simsage_site"] = $site;
-        update_option(PLUGIN_NAME, $plugin_options);
-
-        $organisationId = $this->get_organisationId();
-        if ( $organisationId == null ) {
-            add_settings_error('simsage_settings', 'invalid_id', 'The user\'s id cannot be found.  Please login to SimSage again.', $type = 'error');
-            return false;
-        }
-        $server = $this->get_server();
-        if ( $server == null ) {
-            add_settings_error('simsage_settings', 'invalid_server', 'The SimSage server settings cannot be found.  Please login to SimSage again.', $type = 'error');
-            return false;
-        }
-
-        // make sure both the bot and synonyms validate
-        if (!$this->validate_qas() || !$this->validate_synonyms()) {
-            add_settings_error('simsage_settings', 'invalid_data', 'Please fix the above errors!', $type = 'error');
-            return false;
-        }
-
-        // and index / re-index the data associated with this site
-        $filename = $this->create_content_zip();
-        if ($filename != null) {
-            debug_log("wrote zip to:" . $filename);
-            if ( !$this->upload_archive($server, $organisationId, $site["kbId"], $site["sid"], $filename) ) {
+    private function update_simsage() {
+        $plan = get_plan();
+        $kb = get_kb();
+        if ( $plan != null && $kb != null ) {
+            $organisationId = $this->get_organisationId();
+            if ($organisationId == null) {
+                add_settings_error('simsage_settings', 'invalid_id', 'The user\'s id cannot be found.  Please login to SimSage again.', $type = 'error');
                 return false;
             }
-            // remove the file after use
-            if ( !unlink( $filename ) ) {
-                debug_log("warning: could not delete file \"" . $filename . "\"");
+            $server = $this->get_server();
+            if ($server == null) {
+                add_settings_error('simsage_settings', 'invalid_server', 'The SimSage server settings cannot be found.  Please login to SimSage again.', $type = 'error');
+                return false;
             }
-            add_settings_error('simsage_settings', 'uploaded', 'Content Successfully uploaded to SimSage', $type = 'info');
-            return true;
 
+            // make sure both the bot and synonyms validate
+            if (!$this->validate_qas() || !$this->validate_synonyms()) {
+                add_settings_error('simsage_settings', 'invalid_data', 'Please fix the above errors!', $type = 'error');
+                return false;
+            }
+
+            // and index / re-index the data associated with this site
+            $filename = $this->create_content_zip( $plan );
+            if ($filename != null) {
+                debug_log("wrote zip to:" . $filename);
+                if (!$this->upload_archive($server, $organisationId, $kb["kbId"], $kb["sid"], $filename)) {
+                    return false;
+                }
+                // remove the file after use
+                if (!unlink($filename)) {
+                    debug_log("warning: could not delete file \"" . $filename . "\"");
+                }
+                add_settings_error('simsage_settings', 'uploaded', 'Content Successfully uploaded to SimSage', $type = 'info');
+                return true;
+
+            } else {
+                debug_log("zip failed");
+                return false;
+            }
         } else {
-            debug_log("zip failed");
+            debug_log("could not get plan / kb");
             return false;
         }
     }
+
 
     /**
      * Check a save of the items in the search-tab are all valid and within range and save the values when this is the case
@@ -492,21 +548,6 @@ class simsage_admin
         // and any future updates are captured
         add_action( 'transition_post_status', array( $this, 'save_post' ), 10, 3 );
 	}
-
-
-    /**
-     * set the active site after sign-in from your SimSage account
-     */
-	private function setup_site() {
-        $plugin_options = get_option(PLUGIN_NAME);
-        if ( isset($plugin_options["simsage_account"]) ) {
-            $account = $plugin_options["simsage_account"];
-            if ( isset($account["sites"]) ) {
-                $this->update_simsage( $account["sites"][0] );
-            }
-        }
-        return null;
-    }
 
 
     /**
@@ -584,39 +625,53 @@ class simsage_admin
      * return its file-name on success, or null on failure (and sets a settings-error in that case)
      * Queries the WordPress database (wpdb) for its content
      *
+     * @param $plan array your subscription plan
      * @return string the filename to the zip-file in its temporary file location
      */
-	private function create_content_zip() {
-        $zip = new ZipArchive();
-        $plugin_options = get_option( PLUGIN_NAME );
-        $filename = tempnam(get_temp_dir(),  "simsage");
-        if ($zip->open($filename, ZipArchive::CREATE)) {
-            debug_log("starting " . $filename);
-            // add our bot teachings for SimSage
-            $qa_list = array();
-            if ( isset($plugin_options["simsage_qa"]) ) {
-                $qa_list = $plugin_options["simsage_qa"];
-            }
-            if ( count($qa_list) > 0 ) {
-                add_bot_qas_to_zip($zip, $qa_list);
-            }
-            // add our synonyms for SimSage
-            $synonyms_list = array();
-            if ( isset($plugin_options["simsage_synonyms"]) ) {
-                $synonyms_list = $plugin_options["simsage_synonyms"];
-            }
-            if ( count($synonyms_list) > 0 ) {
-                add_synonyms_to_zip($zip, $synonyms_list);
-            }
-            // add WordPress content to our zip file to send to SimSage
-            add_wp_contents_to_zip($zip);
-            // done!
-            $zip->close();
-            debug_log("finished writing " . $filename);
-            return $filename;
+	private function create_content_zip( $plan ) {
+	    if ( $plan != null ) {
+            $zip = new ZipArchive();
+            $plugin_options = get_option(PLUGIN_NAME);
+            $filename = tempnam(get_temp_dir(), "simsage");
+            if ($zip->open($filename, ZipArchive::CREATE)) {
+                debug_log("starting " . $filename);
 
+                // add our bot teachings for SimSage?
+                if ( isset( $plan["botEnabled"] ) && $plan["botEnabled"] ) {
+                    $qa_list = array();
+                    if (isset($plugin_options["simsage_qa"])) {
+                        $qa_list = $plugin_options["simsage_qa"];
+                    }
+                    if (count($qa_list) > 0) {
+                        debug_log("adding bot Q&A items to " . $filename);
+                        add_bot_qas_to_zip($zip, $qa_list);
+                    }
+                }
+
+                // add our synonyms for SimSage
+                if ( isset( $plan["languageEnabled"] ) && $plan["languageEnabled"] ) {
+                    $synonyms_list = array();
+                    if (isset($plugin_options["simsage_synonyms"])) {
+                        $synonyms_list = $plugin_options["simsage_synonyms"];
+                    }
+                    if (count($synonyms_list) > 0) {
+                        debug_log("adding synonyms to " . $filename);
+                        add_synonyms_to_zip($zip, $synonyms_list);
+                    }
+                }
+
+                // add WordPress content to our zip file to send to SimSage
+                add_wp_contents_to_zip($zip);
+                // done!
+                $zip->close();
+                debug_log("finished writing " . $filename);
+                return $filename;
+
+            } else {
+                add_settings_error('simsage_settings', 'simsage_archive_error', "Failed to create archive file(s) (could not create a temporary file on your system)", $type = 'error');
+            }
         } else {
-            add_settings_error('simsage_settings', 'simsage_archive_error', "Failed to create archive file(s) (could not create a temporary file on your system)", $type = 'error');
+            add_settings_error('simsage_settings', 'simsage_archive_error', "invalid plan (null)", $type = 'error');
         }
         return null;
     }
@@ -639,11 +694,11 @@ class simsage_admin
         $data = ";base64," . base64_encode($fileContent);
         $url = join_urls($server, '/api/crawler/document/upload/archive');
         $bodyStr = '{"organisationId": "' . $organisationId . '", "kbId": "' . $kbId . '", "sid": "' . $sid . '", "sourceId": 1, "data": "' . $data . '"}';
-        $json = get_json(wp_remote_post( $url,
+        $json = get_json(wp_remote_post($url,
             array('headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                 'body' => $bodyStr)));
         $error_str = check_simsage_json_response($json);
-        if ( $error_str != "" ) {
+        if ($error_str != "") {
             add_settings_error('simsage_settings', 'simsage_upload_error', $error_str, $type = 'error');
             return false;
         }

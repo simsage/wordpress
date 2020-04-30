@@ -23,13 +23,16 @@
 
 	<?php
 	$options = get_option( PLUGIN_NAME );
+	$plan = get_plan();
+    // does this plan have operator access?
+    $has_access = ($plan != null && isset( $plan['operatorEnabled'] ) && $plan['operatorEnabled']);
     // when we have selected a site, this variable will be set
-    $has_sites = isset($options['simsage_site']);
+    $has_sites = (get_kb() != null);
     // and is the operator enabled?
     $using_bot = isset($options["simsage_use_bot"]) && $options["simsage_use_bot"];
     ?>
 
-    <?php if ( $has_sites && $using_bot ) { ?>
+    <?php if ( $has_access && $has_sites && $using_bot ) { ?>
 
         <script lang="js">
             // set an image base for all our templates to use (url bases for images)
@@ -131,13 +134,15 @@
 
         </div>
 
-    <?php } else if ( $has_sites && !$using_bot ) { ?>
+    <?php } else if ( $has_access && $has_sites && !$using_bot ) { ?>
         <div class="label-success">You have elected not to use the bots, so the operator interface has been disabled.<br/>
             You can change this setting <a href="/wp-admin/options-general.php?page=simsage-search&tab=bot">here</a> (look for <i>Use the SimSage bot along with search</i>).
         </div>
 
-    <?php } else { ?>
+    <?php } else if ( $has_access ) { ?>
         <div class="label-success">Please <a href="/wp-admin/options-general.php?page=simsage-search">configure</a> your SimSage plugin first.</div>
+    <?php } else if ( !$has_access ) { ?>
+        <div class="label-success">Your plan does not provide you with Operator Access.  Please <a href="<?php echo SIMSAGE_REGO_SERVER; ?>/#/sign-in" target="_blank">upgrade your plan</a> if you wish to have Operator Support.</div>
     <?php } ?>
 
 </div>
