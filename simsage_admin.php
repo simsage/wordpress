@@ -190,7 +190,7 @@ class simsage_admin
             $json = get_json(wp_remote_post( join_urls(SIMSAGE_API_SERVER, '/api/auth/sign-in-registration-key'),
                 array('headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                     'body' => '{"registrationKey": "' . trim($registration_key) . '"}')));
-            $error_str = check_simsage_json_response( $json );
+            $error_str = check_simsage_json_response( SIMSAGE_API_SERVER, $json );
             // no error?
             if ( $error_str == "" ) {
                 $body = get_json( $json["body"] ); // convert to an object
@@ -705,7 +705,7 @@ class simsage_admin
         $json = get_json(wp_remote_post($url,
             array('headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                 'body' => $bodyStr)));
-        $error_str = check_simsage_json_response($json);
+        $error_str = check_simsage_json_response( $server, $json );
         if ($error_str != "") {
             add_settings_error('simsage_settings', 'simsage_upload_error', $error_str, $type = 'error');
             return false;

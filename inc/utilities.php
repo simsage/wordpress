@@ -224,19 +224,20 @@ function join_urls( $url1, $url2 ) {
 
 
 /**
+ * @param $server string the server we're trying to talk to
  * @param $json array the data returned by SimSage from the server
  * @return string an empty string if no error was found, otherwise a description of the error
  */
-function check_simsage_json_response($json) {
+function check_simsage_json_response( $server, $json ) {
     // debug_log( print_r($json, true) );
     if ( isset($json["error"]) ) {
         $error = print_r( $json["error"], true);
         if ( $error != "" ) {
             // more friendly error messages
             if ( strpos($error, "cURL error 28:") !== false || strpos($error, "cURL error 7:") !== false) {
-                return "SimSage Remote Upload Server not responding";
+                return "SimSage Remote Upload Server (" . $server . ") not responding";
             }
-            return $error;
+            return $server . ": " . $error;
         }
 
     } else if ( isset($json["errors"]) ) {
@@ -244,9 +245,9 @@ function check_simsage_json_response($json) {
         if ( $error != "" ) {
             // more friendly error messages
             if ( strpos($error, "cURL error 28:") !== false || strpos($error, "cURL error 7:") !== false) {
-                return "SimSage Remote Upload Server not responding";
+                return "SimSage Remote Upload Server (" . $server . ") not responding";
             }
-            return $error;
+            return $server . ": " . $error;
         }
 
     } else if ( isset($json["body"]) ) {
@@ -255,7 +256,7 @@ function check_simsage_json_response($json) {
         if ( isset($body["error"]) ) {
             $error = $body["error"];
             if ($error != "") {
-                return $error;
+                return $server . ": " . $error;
             }
         }
 
@@ -265,7 +266,7 @@ function check_simsage_json_response($json) {
         if ( isset($response["code"]) ) {
             $response_code = $response["code"];
             if ($response_code < 200 || $response_code > 299) {
-                return "SimSage server return response code " . $response_code;
+                return "SimSage server (" . $server . ") return response code " . $response_code;
             }
         }
     }
