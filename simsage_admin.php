@@ -463,9 +463,17 @@ class simsage_admin
             }
 
             // make sure both the bot and synonyms validate
-            if (!$this->validate_qas() || !$this->validate_synonyms()) {
-                add_settings_error('simsage_settings', 'invalid_data', 'Please fix the above errors!', $type = 'error');
-                return false;
+            if ( isset( $plan["languageEnabled"] ) && $plan["languageEnabled"] ) {
+                if ( !$this->validate_synonyms() ) {
+                    add_settings_error('simsage_settings', 'invalid_data', 'Please fix the above errors!', $type = 'error');
+                    return false;
+                }
+            }
+            if ( isset( $plan["botEnabled"] ) && $plan["botEnabled"] ) {
+                if ( !$this->validate_qas() ) {
+                    add_settings_error('simsage_settings', 'invalid_data', 'Please fix the above errors!', $type = 'error');
+                    return false;
+                }
             }
 
             // and index / re-index the data associated with this site
