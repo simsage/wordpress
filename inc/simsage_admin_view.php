@@ -86,6 +86,8 @@
                 <label>
                     <span class="description">don't have a Registration-key?&nbsp;&nbsp;<a href="<?php echo SIMSAGE_REGO_SERVER; ?>/#/create" target="_blank">Register here</a></span>
                 </label>
+                <br /><br />
+                <div>Changed plans?  Click the 'Connect Simsage' button below to refresh.</div>
             </fieldset>
 
             <input type="hidden" name="action" value="sign-in">
