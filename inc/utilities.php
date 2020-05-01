@@ -99,6 +99,7 @@ function add_wp_contents_to_zip( $zip ) {
         $zip->addFromString($counter . ".html", $str);
         $counter += 1;
     }
+    debug_log("added " . $counter . " pages to zip");
 }
 
 

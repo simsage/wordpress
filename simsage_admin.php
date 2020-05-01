@@ -634,7 +634,7 @@ class simsage_admin
             $zip = new ZipArchive();
             $plugin_options = get_option(PLUGIN_NAME);
             $filename = tempnam(get_temp_dir(), "simsage");
-            if ($zip->open($filename, ZipArchive::CREATE)) {
+            if ($zip->open($filename, ZipArchive::CREATE | ZIPARCHIVE::OVERWRITE)) {
                 debug_log("starting " . $filename);
 
                 // add our bot teachings for SimSage?
