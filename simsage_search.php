@@ -197,10 +197,12 @@ class simsage_search
         }
 	}
 
+	// SimSage override default search
 	public function get_search_form( $content ) {
         $plugin_options = get_option( PLUGIN_NAME );
         // only replace the search_form if the plugin has been configured and it has been configured to do so by the user
 		if ( isset( $plugin_options["simsage_override_default_search"] ) && $plugin_options["simsage_override_default_search"] && get_kb() != null ) {
+            $this->add_script = true;
 			wp_enqueue_style('simsage-style'); // add our style-sheet (assets/css/search.css)
 			// render simsage_search_view.php in the context of this class
 			ob_start();
