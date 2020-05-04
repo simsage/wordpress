@@ -65,6 +65,8 @@ class SemanticSearch extends SimSageCommon {
 
         // do we know this person's email address already?
         this.knowEmail = false;
+        // the email address the user has been typing
+        this.email = '';
     }
 
 
@@ -339,8 +341,7 @@ class SemanticSearch extends SimSageCommon {
     }
 
     send_email() {
-        let emailAddress = document.getElementById("email").value;
-        if (emailAddress && emailAddress.length > 0 && emailAddress.indexOf("@") > 0) {
+        if (this.email && this.email.length > 0 && this.email.indexOf("@") > 0) {
             this.searching = false;  // we're not performing a search
             this.stompClient.send("/ws/ops/email", {},
                 JSON.stringify({
@@ -348,7 +349,7 @@ class SemanticSearch extends SimSageCommon {
                     'organisationId': settings.organisationId,
                     'kbList': [{'kbId': settings.kbId, 'sid': ''}], // sids not used
                     'clientId': SemanticSearch.getClientId(),
-                    'emailAddress': emailAddress,
+                    'emailAddress': this.email,
                 }));
             this.error = '';
             this.knowEmail = true;
@@ -357,7 +358,8 @@ class SemanticSearch extends SimSageCommon {
     }
 
     // key handling for the email popup control inside the bot window
-    email_keypress(event) {
+    email_keypress(event, text) {
+        this.email = text;
         if (event && event.keyCode === 13) {
             this.send_email();
         }

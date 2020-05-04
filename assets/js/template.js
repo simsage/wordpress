@@ -293,7 +293,7 @@ function render_no_results(ask_for_email, know_email) {
 /* render getting the user's email address (asking for) */
 function render_get_user_email() {
     return  "<div class=\"email-ask\">" + ui_settings.email_message + "\n<br/>" +
-        "<input class='email-address' onkeypress='search.email_keypress(event)' type='text' placeholder='Email Address' />" +
+        "<input class='email-address' onkeypress='search.email_keypress(event, this.value)' type='text' placeholder='Email Address' />" +
         "<div class='send-email-button' onclick='search.send_email()' title='send email'><img src='" + image_base + "images/email.svg' alt='email' class='email-image' title='send us your email address so we can contact you' /></div></div>"
 }
 
