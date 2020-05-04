@@ -193,9 +193,43 @@
     cursor: pointer;
 }
 
+.chat-simsage-box {
+    float: left;
+    padding: 10px;
+    margin-left: 15px;
+    margin-right: 100px;
+    padding-left: 30px;
+    text-align: left;
+    max-width: 350px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: #dde;
+    cursor: pointer;
+}
+
+.chat-simsage-box-dark {
+    float: left;
+    padding: 10px;
+    margin-left: 15px;
+    margin-right: 100px;
+    padding-left: 30px;
+    text-align: left;
+    max-width: 350px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: #aac;
+}
+
+.chat-simsage-image {
+    float: left;
+    width: 48px;
+    margin-left: -30px;
+    cursor: pointer;
+}
+
 .simsage-message-text {
-    float: right;
-    margin-right: 10px;
+    float: left;
+    margin-left: 10px;
     max-width: 300px;
     cursor: pointer;
 }
