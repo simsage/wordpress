@@ -44,7 +44,7 @@ class Operator extends SimSageCommon {
         this.teachingSuccess = false;
 
         // number of bots connected to the server
-        this.numActiveConnections = 0;
+        this.connectionCount = 0;
     }
 
 
@@ -332,8 +332,7 @@ class Operator extends SimSageCommon {
             }
 
             else if (data.messageType === mt_ActiveConnections) {
-
-                this.numActiveConnections = data.connectionCount;
+                this.connectionCount = data.connectionCount;
                 this.refresh();
             }
 

@@ -23,7 +23,7 @@ function ops_update_ui(ops) {
             $("#btnBreak").removeAttr("disabled");
             $("#btnNextUser").removeAttr("disabled");
             $("#btnBanUser").removeAttr("disabled");
-            $("#botCount").html("users: " + ops.numActiveConnections);
+            $("#botCount").html("users: " + ops.connectionCount);
         }
 
         if (ops.clientId === "") {
