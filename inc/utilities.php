@@ -112,10 +112,14 @@ function add_wp_contents_to_zip( $zip ) {
 function add_bot_qas_to_zip( $zip, $qa_list ) {
     $str = "";
     foreach ($qa_list as $qa) {
-        // format: url | title | mimeType | created | last-modified | data
-        $str .= $qa["id"] . "|" . $qa["question"] . "|" . $qa["answer"] . "|" . $qa["link"] . "\n";
+        if ( strlen(trim($qa["question"])) > 0 && strlen(trim($qa["answer"])) > 0 ) {
+            // format: url | title | mimeType | created | last-modified | data
+            $str .= $qa["id"] . "|" . $qa["question"] . "|" . $qa["answer"] . "|" . $qa["link"] . "\n";
+        }
     }
-    $zip->addFromString(DOC_BOT_DATA, $str);
+    if ( strlen($str) > 0 ) {
+        $zip->addFromString(DOC_BOT_DATA, $str);
+    }
 }
 
 
@@ -128,10 +132,14 @@ function add_bot_qas_to_zip( $zip, $qa_list ) {
 function add_synonyms_to_zip( $zip, $synonym_list ) {
     $str = "";
     foreach ($synonym_list as $synonym) {
-        // format: url | title | mimeType | created | last-modified | data
-        $str .= $synonym["id"] . "|" . $synonym["words"] . "\n";
+        if ( strlen(trim($synonym["words"])) > 0 ) {
+            // format: url | title | mimeType | created | last-modified | data
+            $str .= $synonym["id"] . "|" . $synonym["words"] . "\n";
+        }
     }
-    $zip->addFromString(DOC_SYNONYM_DATA, $str);
+    if ( strlen($str) > 0 ) {
+        $zip->addFromString(DOC_SYNONYM_DATA, $str);
+    }
 }
 
 
@@ -142,7 +150,7 @@ function add_synonyms_to_zip( $zip, $synonym_list ) {
  */
 function is_valid_bot_str( $str ) {
     $invalid_chars = array( "(", ")", "|", "[", "]", "{", "}");
-    if ( trim($str) == "" ) return "string is empty";
+    if ( trim($str) == "" ) return "text is empty";
     if ( strlen( trim($str) ) > MAX_STRING_LENGTH ) return "string too long (maximum length allowed is " . MAX_STRING_LENGTH . " characters)";
     foreach ($invalid_chars as $ic) {
         if (strpos($str, $ic)) return "string must not contain " . $ic . " character(s)";
@@ -175,7 +183,7 @@ function is_valid_bot_qa_pair( $id, $question, $answer ) {
  */
 function is_valid_synonym_str( $str ) {
     $invalid_chars = array( "(", ")", "|", "[", "]", "{", "}", "-", ",", "_");
-    if ( trim($str) == "" ) return "string is empty";
+    if ( trim($str) == "" ) return "text is empty";
     $words = explode(",", $str);
     if ( count($words) > 2 ) return "no more than two words for a synonym";
     foreach ($words as $word) {
