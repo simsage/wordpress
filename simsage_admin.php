@@ -446,25 +446,37 @@ class simsage_admin
         if ( $plan != null && $kb != null ) {
             $organisationId = $this->get_organisationId();
             if ($organisationId == null) {
-                add_settings_error('simsage_settings', 'invalid_id', 'The user\'s id cannot be found.  Please login to SimSage again.', $type = 'error');
+                if ( function_exists('add_settings_error') )
+                    add_settings_error('simsage_settings', 'invalid_id', 'The user\'s id cannot be found.  Please login to SimSage again.', $type = 'error');
+                else
+                    debug_log('ERROR: simsage-invalid-id: the user\'s id cannot be found.  Please login to SimSage again.');
                 return false;
             }
             $server = $this->get_server();
             if ($server == null) {
-                add_settings_error('simsage_settings', 'invalid_server', 'The SimSage server settings cannot be found.  Please login to SimSage again.', $type = 'error');
+                if ( function_exists('add_settings_error') )
+                    add_settings_error('simsage_settings', 'invalid_server', 'The SimSage server settings cannot be found.  Please login to SimSage again.', $type = 'error');
+                else
+                    debug_log('ERROR: simsage-invalid-server: SimSage server settings cannot be found.  Please login to SimSage again.');
                 return false;
             }
 
             // make sure both the bot and synonyms validate
             if ( isset( $plan["languageEnabled"] ) && $plan["languageEnabled"] ) {
                 if ( !$this->validate_synonyms() ) {
-                    add_settings_error('simsage_settings', 'invalid_data', 'Please fix the above errors!', $type = 'error');
+                    if ( function_exists('add_settings_error') )
+                        add_settings_error('simsage_settings', 'invalid_data', 'Please fix the above errors!', $type = 'error');
+                    else
+                        debug_log('ERROR: simsage-invalid-data: Please fix entries');
                     return false;
                 }
             }
             if ( isset( $plan["botEnabled"] ) && $plan["botEnabled"] ) {
                 if ( !$this->validate_qas() ) {
-                    add_settings_error('simsage_settings', 'invalid_data', 'Please fix the above errors!', $type = 'error');
+                    if ( function_exists('add_settings_error') )
+                        add_settings_error('simsage_settings', 'invalid_data', 'Please fix the above errors!', $type = 'error');
+                    else
+                        debug_log('ERROR: simsage-invalid-data: Please fix entries');
                     return false;
                 }
             }
@@ -480,7 +492,10 @@ class simsage_admin
                 if (!unlink($filename)) {
                     debug_log("warning: could not delete file \"" . $filename . "\"");
                 }
-                add_settings_error('simsage_settings', 'uploaded', 'Content Successfully uploaded to SimSage', $type = 'info');
+                if ( function_exists('add_settings_error') )
+                    add_settings_error('simsage_settings', 'uploaded', 'Content Successfully uploaded to SimSage', $type = 'info');
+                else
+                    debug_log('SUCCESS: simsage archive uploaded.');
                 return true;
 
             } else {
@@ -700,7 +715,10 @@ class simsage_admin
                 'body' => $bodyStr)));
         $error_str = check_simsage_json_response( $server, $json );
         if ($error_str != "") {
-            add_settings_error('simsage_settings', 'simsage_upload_error', $error_str, $type = 'error');
+            if ( function_exists('add_settings_error') )
+                add_settings_error('simsage_settings', 'simsage_upload_error', $error_str, $type = 'error');
+            else
+                debug_log('ERROR: simsage-upload-error:' . $error_str);
             return false;
         }
         return true;
