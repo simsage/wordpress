@@ -115,7 +115,8 @@ class simsage_admin
             $plugin_options = get_option(PLUGIN_NAME);
             // this is where the data should travel to (if setup)
             debug_log("save_post(): start");
-            if ( $this->update_simsage() ) {
+            // just save the pages
+            if ( $this->update_simsage( true, false, false ) ) {
                 debug_log("save_post(): success");
             }
         }
@@ -198,8 +199,8 @@ class simsage_admin
                     $this->set_defaults( $plugin_options );
                     // save settings
                     update_option( PLUGIN_NAME, $plugin_options );
-                    // set the current site and upload the current WP content as is
-                    $this->update_simsage();
+                    // set the current site and upload the current WP content as is as well as any synonyms, and QAs
+                    $this->update_simsage(true, true, true);
                     // setup other parts of the plugin according to plan
                     $this->add_admin_menus();
                     // show we've successfully connected
@@ -295,7 +296,10 @@ class simsage_admin
             // check the form's other bot parameters are valid (the threshold)
             $this->check_form_parameters($params, false);
             // validate the form
-            $this->validate_qas();
+            if ( $this->validate_qas() ) {
+                // update the QAs (Save them to SimSage)
+                $this->update_simsage(false, true, false);
+            }
         }
     }
 
@@ -403,8 +407,10 @@ class simsage_admin
             // can we save it?
             $plugin_options["simsage_synonyms"] = $new_params;
             update_option(PLUGIN_NAME, $plugin_options);
-            // and run the validation checks
-            $this->validate_synonyms();
+            // and run the validation checks and save synonyms if ready
+            if ( $this->validate_synonyms() ) {
+                $this->update_simsage( false, false, true );
+            }
         }
     }
 
@@ -438,9 +444,12 @@ class simsage_admin
      * Check all the settings are valid, create a ZIP of the current content and various language changes
      * and send them all to SimSage for processing
      *
+     * @param $include_pages bool include all the pages in the update?
+     * @param $include_bot bool include the bot QA items in the update?
+     * @param $include_synonyms bool include the synonyms in the update?
      * @return bool success, or false if anything went wrong
      */
-    private function update_simsage() {
+    private function update_simsage( $include_pages, $include_bot, $include_synonyms ) {
         $plan = get_plan();
         $kb = get_kb();
         if ( $plan != null && $kb != null ) {
@@ -462,7 +471,7 @@ class simsage_admin
             }
 
             // make sure both the bot and synonyms validate
-            if ( isset( $plan["languageEnabled"] ) && $plan["languageEnabled"] ) {
+            if ( isset( $plan["languageEnabled"] ) && $plan["languageEnabled"] && $include_synonyms ) {
                 if ( !$this->validate_synonyms() ) {
                     if ( function_exists('add_settings_error') )
                         add_settings_error('simsage_settings', 'invalid_data', 'Please fix the above errors!', $type = 'error');
@@ -471,7 +480,7 @@ class simsage_admin
                     return false;
                 }
             }
-            if ( isset( $plan["botEnabled"] ) && $plan["botEnabled"] ) {
+            if ( isset( $plan["botEnabled"] ) && $plan["botEnabled"] && $include_bot ) {
                 if ( !$this->validate_qas() ) {
                     if ( function_exists('add_settings_error') )
                         add_settings_error('simsage_settings', 'invalid_data', 'Please fix the above errors!', $type = 'error');
@@ -482,7 +491,7 @@ class simsage_admin
             }
 
             // and index / re-index the data associated with this site
-            $filename = $this->create_content_zip( $plan );
+            $filename = $this->create_content_zip( $plan, $include_pages, $include_bot, $include_synonyms );
             if ($filename != null) {
                 debug_log("wrote zip to:" . $filename);
                 if (!$this->upload_archive($server, $organisationId, $kb["kbId"], $kb["sid"], $filename)) {
@@ -642,10 +651,16 @@ class simsage_admin
      * Queries the WordPress database (wpdb) for its content
      *
      * @param $plan array your subscription plan
-     * @return string the filename to the zip-file in its temporary file location
+     * @param $include_pages bool include the page content in the archive
+     * @param $include_bot bool include the bot QA content in the archive
+     * @param $include_synonyms bool include the synonyms in the archive
+     * @return string|null the filename to the zip-file in its temporary file location or null if invalid
      */
-	private function create_content_zip( $plan ) {
+	private function create_content_zip( $plan, $include_pages, $include_bot, $include_synonyms ) {
 	    if ( $plan != null ) {
+	        if ( !$include_pages && !$include_bot && !$include_synonyms ) {
+	            return null;
+            }
             $zip = new ZipArchive();
             $plugin_options = get_option(PLUGIN_NAME);
             $filename = tempnam(get_temp_dir(), "simsage");
@@ -653,7 +668,7 @@ class simsage_admin
                 debug_log("starting " . $filename);
 
                 // add our bot teachings for SimSage?
-                if ( isset( $plan["botEnabled"] ) && $plan["botEnabled"] ) {
+                if ( isset( $plan["botEnabled"] ) && $plan["botEnabled"] && $include_bot ) {
                     $qa_list = array();
                     if (isset($plugin_options["simsage_qa"])) {
                         $qa_list = $plugin_options["simsage_qa"];
@@ -665,7 +680,7 @@ class simsage_admin
                 }
 
                 // add our synonyms for SimSage
-                if ( isset( $plan["languageEnabled"] ) && $plan["languageEnabled"] ) {
+                if ( isset( $plan["languageEnabled"] ) && $plan["languageEnabled"] && $include_synonyms) {
                     $synonyms_list = array();
                     if (isset($plugin_options["simsage_synonyms"])) {
                         $synonyms_list = $plugin_options["simsage_synonyms"];
@@ -677,7 +692,9 @@ class simsage_admin
                 }
 
                 // add WordPress content to our zip file to send to SimSage
-                add_wp_contents_to_zip($zip);
+                if ( $include_pages ) {
+                    add_wp_contents_to_zip($zip);
+                }
                 // done!
                 $zip->close();
                 debug_log("finished writing " . $filename);
