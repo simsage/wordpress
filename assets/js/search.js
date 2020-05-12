@@ -465,13 +465,7 @@ class SemanticSearch extends SimSageCommon {
             else
                 query += " (";
             needsAnd = true;
-            const url = this.advanced_search_filter['url'];
-            for (const i in url) {
-                if (i > 0) {
-                    query += " and "
-                }
-                query += "url: " + url[i];
-            }
+            query += "url: " + this.advanced_search_filter['url'];
             query += ") "
         }
         if (this.advanced_search_filter['title'].length > 0) {
@@ -480,13 +474,7 @@ class SemanticSearch extends SimSageCommon {
             else
                 query += " (";
             needsAnd = true;
-            const title = this.advanced_search_filter['title'];
-            for (const i in title) {
-                if (i > 0) {
-                    query += " and "
-                }
-                query += "title: " + title[i];
-            }
+            query += "title: " + this.advanced_search_filter['title'];
             query += ") "
         }
         if (this.advanced_search_filter['author'].length > 0) {
@@ -495,13 +483,7 @@ class SemanticSearch extends SimSageCommon {
             else
                 query += " (";
             needsAnd = true;
-            const author = this.advanced_search_filter['author'];
-            for (const i in author) {
-                if (i > 0) {
-                    query += " and "
-                }
-                query += "author: " + author[i];
-            }
+            query += "author: " + this.advanced_search_filter['author'];
             query += ") "
         }
         if (this.advanced_search_filter['type'].length > 0 && this.advanced_search_filter['type'][0] !== '') {
@@ -630,17 +612,10 @@ class SemanticSearch extends SimSageCommon {
 
     // update the advanced filter
     update_advanced_search(data) {
+        if (data["title"]) data["title"] = data["title"].join('');
+        if (data["url"]) data["url"] = data["url"].join('');
+        if (data["author"]) data["author"] = data["author"].join('');
         this.advanced_search_filter = {...this.advanced_search_filter, ...data};
-        // remove the data from their arrays
-        if (Array.isArray(this.advanced_search_filter['url'])) {
-            this.advanced_search_filter['url'] = this.advanced_search_filter['url'][0];
-        }
-        if (Array.isArray(this.advanced_search_filter['title'])) {
-            this.advanced_search_filter['title'] = this.advanced_search_filter['title'][0];
-        }
-        if (Array.isArray(this.advanced_search_filter['author'])) {
-            this.advanced_search_filter['author'] = this.advanced_search_filter['author'][0];
-        }
         // check settings
         this.has_advanced_selection = false;
         const avd = this.advanced_search_filter;
