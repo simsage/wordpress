@@ -81,15 +81,15 @@
 			</div>
 			<div class="adv-search-row">
 				<span class="search-label">title</span>
-				<input class="metadata-text input-properties" placeholder="title filter" type="text" onkeyup="search.update_advanced_search({'title': [this.value]})" />
+				<input class="metadata-text input-properties" placeholder="title filter" type="text" onkeyup="search.update_advanced_search({'title': this.value})" />
 			</div>
 			<div class="adv-search-row">
 				<span class="search-label">url</span>
-				<input class="metadata-text input-properties" placeholder="url filter" type="text" onkeyup="search.update_advanced_search({'url': [this.value]})" />
+				<input class="metadata-text input-properties" placeholder="url filter" type="text" onkeyup="search.update_advanced_search({'url': this.value})" />
 			</div>
 			<div class="adv-search-row">
 				<span class="search-label">author</span>
-				<input class="metadata-text input-properties" placeholder="author filter" type="text" onkeyup="search.update_advanced_search({'author': [this.value]})" />
+				<input class="metadata-text input-properties" placeholder="author filter" type="text" onkeyup="search.update_advanced_search({'author': this.value})" />
 			</div>
 			<div class="button-row">
 				<div class="metadata-buttons input-properties" title="clear all filters"

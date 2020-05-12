@@ -631,7 +631,6 @@ class SemanticSearch extends SimSageCommon {
     // update the advanced filter
     update_advanced_search(data) {
         this.advanced_search_filter = {...this.advanced_search_filter, ...data};
-        console.log(this.advanced_search_filter);
         // check settings
         this.has_advanced_selection = false;
         const avd = this.advanced_search_filter;
