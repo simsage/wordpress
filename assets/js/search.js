@@ -631,6 +631,16 @@ class SemanticSearch extends SimSageCommon {
     // update the advanced filter
     update_advanced_search(data) {
         this.advanced_search_filter = {...this.advanced_search_filter, ...data};
+        // remove the data from their arrays
+        if (Array.isArray(this.advanced_search_filter['url'])) {
+            this.advanced_search_filter['url'] = this.advanced_search_filter['url'][0];
+        }
+        if (Array.isArray(this.advanced_search_filter['title'])) {
+            this.advanced_search_filter['title'] = this.advanced_search_filter['title'][0];
+        }
+        if (Array.isArray(this.advanced_search_filter['author'])) {
+            this.advanced_search_filter['author'] = this.advanced_search_filter['author'][0];
+        }
         // check settings
         this.has_advanced_selection = false;
         const avd = this.advanced_search_filter;
