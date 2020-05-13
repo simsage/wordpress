@@ -87,8 +87,21 @@ function add_wp_contents_to_zip( $zip ) {
     $counter = 1;
     foreach ($results as $row) {
         $obj = $row;
-        // format: url | title | mimeType | created | last-modified | data
-        $str = $obj->guid . "|" . $obj->post_title . "|text/html|";
+        // get the author for this item
+        $author = get_user_by('id', $obj->post_author);
+        $author_name = '';
+        if ( $author && $author->data ) {
+            if ($author->data->user_nicename)
+                $author_name = $author->data->user_nicename;
+            else if ($author->data->user_email)
+                $author_name = $author->data->user_email;
+        }
+        // make sure author has no nasty characters in it
+        $author_name = str_replace( "|", " ", $author_name);
+        $author_name = str_replace( "\n", " ", $author_name);
+
+        // format: url | title | author | mimeType | created | last-modified | data
+        $str = $obj->guid . "|" . $obj->post_title . "|" . $author_name . "|text/html|";
         $str = $str . strtotime($obj->post_date_gmt) . "000|";
         $str = $str . strtotime($obj->post_modified_gmt) . "000|" . $counter . ".html;base64,";
         // construct our "html" base64 string for SimSage
