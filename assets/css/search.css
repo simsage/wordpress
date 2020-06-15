@@ -609,8 +609,9 @@ a:active {
 	margin-left: 10px;
 	background-color: #d7dade;
 	width: 500px;
-	min-height: 80vh !important;
-	height: 100% !important;
+	height: 70vh !important;
+	max-height: 70vh !important;
+	overflow: auto;
 	padding: 10px;
 	border-radius: 2px;
 }
