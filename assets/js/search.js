@@ -93,6 +93,7 @@ class SemanticSearch extends SimSageCommon {
     // perform the semantic search
     do_semantic_search(text) {
         this.show_advanced_search = false;
+        this.show_details = false;
         const url = settings.base_url + '/ops/query';
         const self = this;
         this.error = '';
@@ -601,12 +602,14 @@ class SemanticSearch extends SimSageCommon {
     // show advanced filter menu
     toggle_advanced_search() {
         this.show_advanced_search = !this.show_advanced_search;
+        this.show_details = false;
         this.refresh();
     }
 
     // hide advanced filter menu
     hide_advanced_search() {
         this.show_advanced_search = false;
+        this.show_details = false;
         this.refresh();
     }
 
@@ -645,6 +648,7 @@ class SemanticSearch extends SimSageCommon {
         const text = SemanticSearch.highlight(document.textList[document.index]);
         this.details_html = render_details(base_url, organisation_id, kb_id, url_id, document, text, this.search_query);
         this.show_details = true;
+        this.show_advanced_search = false;
         this.refresh();
     }
 
@@ -652,6 +656,7 @@ class SemanticSearch extends SimSageCommon {
     closeDetails() {
         this.details_html = '';
         this.show_details = false;
+        this.show_advanced_search = false;
         this.refresh();
     }
 
