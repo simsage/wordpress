@@ -103,6 +103,10 @@ class SemanticSearch extends SimSageCommon {
             this.searching = true;  // we're searching!
             this.show_advanced_search = false;
             this.busy = true;
+            let source_id = 1;
+            if (this.source !== null) {
+                source_id = this.source.sourceId;
+            }
 
             const clientQuery = {
                 'organisationId': settings.organisationId,
@@ -120,7 +124,7 @@ class SemanticSearch extends SimSageCommon {
                 'maxWordDistance': settings.max_word_distance,
                 'searchThreshold': settings.score_threshold,
                 'spellingSuggest': settings.use_spelling_suggest,
-                'sourceId': 1,
+                'sourceId': source_id,
             };
 
             jQuery.ajax({
@@ -240,7 +244,11 @@ class SemanticSearch extends SimSageCommon {
 
                         if (!sr.botResult) {
                             // enhance search result for display
-                            sr['index'] = 0;  // inner offset index
+                            if (sr.textIndex >= 0 && sr.textIndex < sr.textList.length) {
+                                sr['index'] = sr.textIndex;  // inner offset index
+                            } else {
+                                sr['index'] = 0;  // inner offset index
+                            }
                             sr['num_results'] = sr.textList.length;
                             self.semantic_search_results.push(sr);  // add item
                             self.semantic_search_result_map[sr.url] = sr;
@@ -468,7 +476,7 @@ class SemanticSearch extends SimSageCommon {
             query += "url: " + this.advanced_search_filter['url'];
             query += ") "
         }
-        if (this.advanced_search_filter['title'].length > 0) {
+        if (this.title.length > 0) {
             if (needsAnd)
                 query += " and (";
             else
