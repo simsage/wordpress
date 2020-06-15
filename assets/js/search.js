@@ -104,7 +104,7 @@ class SemanticSearch extends SimSageCommon {
             this.show_advanced_search = false;
             this.busy = true;
             let source_id = 1;
-            if (this.source !== null) {
+            if (this.source && this.source.sourceId) {
                 source_id = this.source.sourceId;
             }
 
@@ -476,7 +476,7 @@ class SemanticSearch extends SimSageCommon {
             query += "url: " + this.advanced_search_filter['url'];
             query += ") "
         }
-        if (this.title.length > 0) {
+        if (this.advanced_search_filter['title'].length > 0) {
             if (needsAnd)
                 query += " and (";
             else
