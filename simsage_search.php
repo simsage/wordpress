@@ -197,8 +197,8 @@ class simsage_search
 		    $this->context = $attrs["context"];
         }
         $this->context_boost = "0.2";
-        if ( isset($attrs["context_boost"]) ) {
-            $this->context_boost = $attrs["context_boost"];
+        if ( isset($attrs["context-boost"]) ) {
+            $this->context_boost = $attrs["context-boost"];
         }
 
 		wp_enqueue_style('simsage-style'); // add our style-sheet (assets/css/search.css)
