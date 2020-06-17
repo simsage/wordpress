@@ -28,6 +28,8 @@
         max_word_distance: <?php echo $this->get_user_value("simsage_word_distance", 20) ?>,
         score_threshold: 0.0,
         use_spelling_suggest: false,
+        context_label: "<?php echo $this->context ?>",
+        context_match_boost: <?php echo $this->context_boost ?>,
         // bot settings
         bot_enabled: <?php echo $this->get_user_boolean_value("simsage_use_bot", true) ?>,
         // bot sensitivity - controls the A.I's replies - we suggest you don't change it!
@@ -41,6 +43,8 @@
         // image types for link name display
         image_types: [".jpg", ".jpeg", ".png", ".gif", ".svg"],
     };
+
+    console.log(settings);
 
 </script>
 

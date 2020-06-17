@@ -19,6 +19,10 @@ class simsage_search
 	// are we ready to add scripts, used by short-code renderer
 	private $add_script = false;
 
+	// context management
+    private $context = "";
+    private $context_boost = 0.2;
+
 
 	// constructor
     public function __construct(){
@@ -31,7 +35,7 @@ class simsage_search
     /**
      * Activate the plugin, check the versions of PhP and WP
      */
-    public function plugin_activate(){
+    public function plugin_activate() {
     	// make sure we have the right versions of WP and php, notify the user if not
         check_versions(); // defined in inc/utilities.php
         flush_rewrite_rules();
@@ -40,7 +44,7 @@ class simsage_search
     /**
      * user de-activates the plugin
      */
-    public function plugin_deactivate(){
+    public function plugin_deactivate() {
         flush_rewrite_rules();
     }
 
@@ -186,6 +190,17 @@ class simsage_search
 	function simsage_handle_shortcode( $attrs ) {
         $plugin_options = get_option( PLUGIN_NAME );
 		$this->add_script = true;
+
+		// get the context and context-boost settings
+		$this->context = "";
+		if ( isset($attrs["context"]) ) {
+		    $this->context = $attrs["context"];
+        }
+        $this->context_boost = "0.2";
+        if ( isset($attrs["context_boost"]) ) {
+            $this->context_boost = $attrs["context_boost"];
+        }
+
 		wp_enqueue_style('simsage-style'); // add our style-sheet (assets/css/search.css)
         if ( get_kb() != null ) {
             // render simsage_search_view.php in the context of this class

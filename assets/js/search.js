@@ -125,6 +125,8 @@ class SemanticSearch extends SimSageCommon {
                 'maxWordDistance': settings.max_word_distance,
                 'searchThreshold': settings.score_threshold,
                 'spellingSuggest': settings.use_spelling_suggest,
+                'contextLabel': settings.context_label,
+                'contextMatchBoost': settings.context_match_boost,
                 'sourceId': source_id,
             };
 
