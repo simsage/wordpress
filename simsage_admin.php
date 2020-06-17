@@ -161,6 +161,17 @@ class simsage_admin
 
 
     /**
+     * Replace and clean a string from escape characters
+     *
+     * @param $str string the string to check and replace items in
+     * @return string the string minus any \\ characters
+     */
+    private function remove_esc( $str ) {
+        return str_replace( "\\", "", $str);
+    }
+
+
+    /**
      * perform a sign-in using the user supplied data from the admin form
      *
      * @param $registration_key string your SimSage registration key

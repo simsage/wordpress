@@ -127,7 +127,11 @@ function add_bot_qas_to_zip( $zip, $qa_list ) {
     foreach ($qa_list as $qa) {
         if ( strlen(trim($qa["question"])) > 0 && strlen(trim($qa["answer"])) > 0 ) {
             // format: id | question | answer | context | link \n
-            $str .= $qa["id"] . "|" . $qa["question"] . "|" . $qa["answer"] . "|" . $qa["context"] . "|" . $qa["link"] . "\n";
+            $q = str_replace( "\\", "", $qa["question"]);
+            $a = str_replace( "\\", "", $qa["answer"]);
+            $c = str_replace( "\\", "", $qa["context"]);
+            $l = str_replace( "\\", "", $qa["link"]);
+            $str .= $qa["id"] . "|" . $q . "|" . $a . "|" . $c . "|" . $l . "\n";
         }
     }
     if ( strlen($str) > 0 ) {
@@ -147,7 +151,8 @@ function add_synonyms_to_zip( $zip, $synonym_list ) {
     foreach ($synonym_list as $synonym) {
         if ( strlen(trim($synonym["words"])) > 0 ) {
             // format: url | title | mimeType | created | last-modified | data
-            $str .= $synonym["id"] . "|" . $synonym["words"] . "\n";
+            $words = str_replace( "\\", "", $synonym["words"]);
+            $str .= $synonym["id"] . "|" . $words . "\n";
         }
     }
     if ( strlen($str) > 0 ) {

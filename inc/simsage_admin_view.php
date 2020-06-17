@@ -192,20 +192,20 @@
                         <fieldset>
                             <label>
                                 <input name="<?php echo PLUGIN_NAME ?>[simsage_qa][<?php echo $qa["id"] ?>][question]" type="text" class="input-field"
-                                       value="<?php echo $qa["question"]; ?>"
+                                       value="<?php echo $this->remove_esc($qa["question"]); ?>"
                                        maxlength="<?php echo MAX_STRING_LENGTH; ?>"
                                        placeholder="a single Question"/>
                             </label>
                             <label>
                                 <input name="<?php echo PLUGIN_NAME ?>[simsage_qa][<?php echo $qa["id"] ?>][answer]" type="text" class="input-field"
                                        maxlength="<?php echo MAX_STRING_LENGTH; ?>"
-                                       value="<?php echo $qa["answer"]; ?>"
+                                       value="<?php echo $this->remove_esc($qa["answer"]); ?>"
                                        placeholder="it's Answer"/>
                             </label>
                             <label>
                                 <input name="<?php echo PLUGIN_NAME ?>[simsage_qa][<?php echo $qa["id"] ?>][context]" type="text" class="input-field"
                                        maxlength="<?php echo MAX_STRING_LENGTH; ?>"
-                                       value="<?php echo $qa["context"]; ?>"
+                                       value="<?php echo $this->remove_esc($qa["context"]); ?>"
                                        placeholder="optional matching-context"/>
                             </label>
                             <?php submit_button( 'remove ' . $qa["id"], 'secondary','submit', false); ?>
@@ -229,7 +229,7 @@
                     <fieldset>
                         <label>
                             <input name="<?php echo PLUGIN_NAME ?>[simsage_synonyms][<?php echo $synonym["id"] ?>][words]" type="text" class="input-field wide-text"
-                                   value="<?php echo $synonym["words"]; ?>"
+                                   value="<?php echo $this->remove_esc($synonym["words"]); ?>"
                                    maxlength="<?php echo MAX_STRING_LENGTH; ?>"
                                    placeholder="comma separated list of Synonyms"/>
                         </label>
