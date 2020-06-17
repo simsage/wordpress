@@ -14,7 +14,8 @@ define( 'PLUGIN_DIR', dirname(__FILE__) . '/' );
 define( 'PLUGIN_NAME', 'simsage-search' );
 
 // SimSage registration-api-server address
-define( 'SIMSAGE_API_SERVER', 'http://192.168.1.89:8088');
+define( 'SIMSAGE_API_SERVER', 'http://192.168.1.232:8088');
+// define( 'SIMSAGE_API_SERVER', 'http://192.168.1.89:8088');
 // define( 'SIMSAGE_API_SERVER', 'https://pp-rego-cloud.simsage.nz');
 // define( 'SIMSAGE_API_SERVER', 'https://cloud01.simsage.ai');
 

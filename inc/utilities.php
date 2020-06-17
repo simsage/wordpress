@@ -126,8 +126,8 @@ function add_bot_qas_to_zip( $zip, $qa_list ) {
     $str = "";
     foreach ($qa_list as $qa) {
         if ( strlen(trim($qa["question"])) > 0 && strlen(trim($qa["answer"])) > 0 ) {
-            // format: url | title | mimeType | created | last-modified | data
-            $str .= $qa["id"] . "|" . $qa["question"] . "|" . $qa["answer"] . "|" . $qa["link"] . "\n";
+            // format: id | question | answer | context | link \n
+            $str .= $qa["id"] . "|" . $qa["question"] . "|" . $qa["answer"] . "|" . $qa["context"] . "|" . $qa["link"] . "\n";
         }
     }
     if ( strlen($str) > 0 ) {
@@ -173,6 +173,21 @@ function is_valid_bot_str( $str ) {
 
 
 /**
+ * helper - check a string is valid for bot context
+ * @param $str
+ * @return string|null return a string with an error, or null if there is none
+ */
+function is_valid_context_str( $str ) {
+    $invalid_chars = array( "(", ")", "|", "[", "]", "{", "}");
+    if ( strlen( trim($str) ) > MAX_STRING_LENGTH ) return "string too long (maximum length allowed is " . MAX_STRING_LENGTH . " characters)";
+    foreach ($invalid_chars as $ic) {
+        if (strpos($str, $ic)) return "string must not contain " . $ic . " character(s)";
+    }
+    return null;
+}
+
+
+/**
  * check if the text in the question / answer pair is correct / valid
  * $param $id int the id of the question answer pair
  * @param $id string a unique id for this QA pair
@@ -180,11 +195,13 @@ function is_valid_bot_str( $str ) {
  * @param $answer string the answer's text
  * @return string|null return a string with an error, or null if there is none
  */
-function is_valid_bot_qa_pair( $id, $question, $answer ) {
+function is_valid_bot_qa_pair( $id, $question, $answer, $context ) {
     $error1 = is_valid_bot_str($question);
     if ( $error1 != null) return "Question " . $id . ": " . $error1;
     $error2 = is_valid_bot_str($answer);
     if ( $error2 != null) return "Answer " . $id . ": " . $error2;
+    $error3 = is_valid_context_str($context);
+    if ( $error3 != null) return "Context " . $id . ": " . $error3;
     return null;
 }
 

@@ -245,7 +245,7 @@ class simsage_admin
             }
             if (!$has_empty) {
                 // add a new entry
-                $new_params[$id] = array("id" => $id, "question" => "", "answer" => "", "link" => "");
+                $new_params[$id] = array("id" => $id, "question" => "", "answer" => "", "context" => "", "link" => "");
                 // update all entries
                 $plugin_options = get_option( PLUGIN_NAME );
                 $plugin_options["simsage_qa"] = $new_params;
@@ -320,7 +320,7 @@ class simsage_admin
         // check all the questions and answers are to our liking
         $has_error = false;
         foreach ($existing_qa as $id => $qa) {
-            $error_str = is_valid_bot_qa_pair($id, $qa["question"], $qa["answer"]);
+            $error_str = is_valid_bot_qa_pair($id, $qa["question"], $qa["answer"], $qa["context"]);
             if ( $error_str != null ) {
                 add_settings_error('simsage_settings', 'simsage_bot_qa', $error_str, $type = 'error');
                 $has_error = true;
@@ -395,7 +395,7 @@ class simsage_admin
             if ( isset($params["simsage_synonyms"]) ) {
                 $existing_synonyms = $params["simsage_synonyms"];
             }
-            // check all the questions and answers are to our liking
+            // check all the synonyms are to our liking
             $id = 1;
             $new_params = array();
             foreach ($existing_synonyms as $synonym) {

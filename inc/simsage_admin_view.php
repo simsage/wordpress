@@ -202,6 +202,12 @@
                                        value="<?php echo $qa["answer"]; ?>"
                                        placeholder="it's Answer"/>
                             </label>
+                            <label>
+                                <input name="<?php echo PLUGIN_NAME ?>[simsage_qa][<?php echo $qa["id"] ?>][context]" type="text" class="input-field"
+                                       maxlength="<?php echo MAX_STRING_LENGTH; ?>"
+                                       value="<?php echo $qa["context"]; ?>"
+                                       placeholder="optional matching-context"/>
+                            </label>
                             <?php submit_button( 'remove ' . $qa["id"], 'secondary','submit', false); ?>
                         </fieldset>
                 <?php
