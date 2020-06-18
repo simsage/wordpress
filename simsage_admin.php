@@ -509,7 +509,7 @@ class simsage_admin
                     return false;
                 }
                 // remove the file after use
-                if (!unlink($filename)) {
+                if ( !unlink($filename) ) {
                     debug_log("warning: could not delete file \"" . $filename . "\"");
                 }
                 if ( function_exists('add_settings_error') )
