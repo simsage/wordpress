@@ -139,7 +139,7 @@ class SimSageCommon {
         const self = this;
         const data = {
             "organisationId": settings.organisationId,
-            "kbList": [{"kbId": settings.kbId, "sid": ""}], // sids not used
+            "kbList": [settings.kbId],
             "clientId": SimSageCommon.getClientId(),
         };
 

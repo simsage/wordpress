@@ -111,7 +111,7 @@ class SemanticSearch extends SimSageCommon {
 
             const clientQuery = {
                 'organisationId': settings.organisationId,
-                'kbList': [{'kbId': settings.kbId, 'sid': ''}], // sids not used
+                'kbList': [settings.kbId],
                 'clientId': SemanticSearch.getClientId(),
                 'semanticSearch': true,     // always a search
                 'query': search_query_str,  // search query
@@ -123,7 +123,6 @@ class SemanticSearch extends SimSageCommon {
                 'shardSizeList': this.shard_size_list,
                 'fragmentCount': settings.fragment_count,
                 'maxWordDistance': settings.max_word_distance,
-                'searchThreshold': settings.score_threshold,
                 'spellingSuggest': settings.use_spelling_suggest,
                 'contextLabel': settings.context_label,
                 'contextMatchBoost': settings.context_match_boost,
@@ -358,7 +357,7 @@ class SemanticSearch extends SimSageCommon {
                 JSON.stringify({
                     'messageType': mt_Email,
                     'organisationId': settings.organisationId,
-                    'kbList': [{'kbId': settings.kbId, 'sid': ''}], // sids not used
+                    'kbList': [settings.kbId],
                     'clientId': SemanticSearch.getClientId(),
                     'emailAddress': this.email,
                 }));

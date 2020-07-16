@@ -26,7 +26,6 @@
         page_size: <?php echo $this->get_user_value("simsage_page_size", 3) ?>,
         fragment_count: <?php echo $this->get_user_value("simsage_fragment_size", 3) ?>,
         max_word_distance: <?php echo $this->get_user_value("simsage_word_distance", 20) ?>,
-        score_threshold: 0.0,
         use_spelling_suggest: false,
         context_label: "<?php echo $this->context ?>",
         context_match_boost: <?php echo $this->context_boost ?>,
