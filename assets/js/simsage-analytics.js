@@ -62,7 +62,7 @@ class SimsageAnalytics {
             'type': 'GET',
             'url': url,
             'success': function (data) {
-                self.search_frequencies = self.convert_months(data.searchAccessFrequency);
+                self.search_frequencies = self.convert_months(data.accessFrequency);
                 const kw_list = self.convert_dictionary(data.queryWordFrequency);
                 kw_list.sort(function(first, second) {
                     return second.value - first.value;
