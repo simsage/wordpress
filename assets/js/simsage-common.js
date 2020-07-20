@@ -144,13 +144,6 @@ class SimSageCommon {
 
         }).fail(function (err) {
             console.error(JSON.stringify(err));
-            if (err && err["readyState"] === 0 && err["status"] === 0) {
-                self.error = "Server not responding, not connected.";
-            } else {
-                self.error = err;
-            }
-            self.busy = false;
-            self.refresh();
         });
     }
 
