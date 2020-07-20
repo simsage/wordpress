@@ -210,6 +210,10 @@ class SemanticSearch extends SimSageCommon {
             } else if (data.messageType === mt_IsTyping) {
                 this.isTyping(data.fromIsTyping);
 
+            } else if (data.messageType === mt_Email) {
+                this.knowEmail = true;
+                this.refresh();
+
             } else if (data.messageType === mt_SpellingSuggest) {
                 // speech bubble popup with actions
                 this.searching = false;
@@ -353,17 +357,15 @@ class SemanticSearch extends SimSageCommon {
     send_email() {
         if (this.email && this.email.length > 0 && this.email.indexOf("@") > 0) {
             this.searching = false;  // we're not performing a search
-            this.stompClient.send("/ws/ops/email", {},
-                JSON.stringify({
-                    'messageType': mt_Email,
-                    'organisationId': settings.organisationId,
-                    'kbList': [settings.kbId],
-                    'clientId': SemanticSearch.getClientId(),
-                    'emailAddress': this.email,
-                }));
             this.error = '';
-            this.knowEmail = true;
-            this.refresh();
+            const data = {
+                'messageType': mt_Email,
+                'organisationId': settings.organisationId,
+                'kbList': [settings.kbId],
+                'clientId': SemanticSearch.getClientId(),
+                'emailAddress': this.email,
+            };
+            this.post_message('/ops/email', data);
         }
     }
 

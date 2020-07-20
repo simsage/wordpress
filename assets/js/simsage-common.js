@@ -54,7 +54,7 @@ class SimSageCommon {
                 toId: this.assignedOperatorId,
                 isTyping: true
             };
-            this.send_message('/ws/ops/typing', data);
+            this.post_message('/ops/typing', data);
         }
     }
 
@@ -125,11 +125,33 @@ class SimSageCommon {
         this.refresh();
     }
 
-    send_message(endPoint, data) {
-        if (this.is_connected) {
-            this.error = '';
-            this.stompClient.send(endPoint, {}, JSON.stringify(data));
-        }
+    // post a message to the operator end-points
+    post_message(endPoint, data) {
+        const url = settings.base_url + endPoint;
+        const self = this;
+        jQuery.ajax({
+            headers: {
+                'Content-Type': 'application/json',
+                'API-Version': settings.api_version,
+            },
+            'data': JSON.stringify(data),
+            'type': 'POST',
+            'url': url,
+            'dataType': 'json',
+            'success': function (data) {
+                self.receive_ws_data(data);
+            }
+
+        }).fail(function (err) {
+            console.error(JSON.stringify(err));
+            if (err && err["readyState"] === 0 && err["status"] === 0) {
+                self.error = "Server not responding, not connected.";
+            } else {
+                self.error = err;
+            }
+            self.busy = false;
+            self.refresh();
+        });
     }
 
 

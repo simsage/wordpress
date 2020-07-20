@@ -98,7 +98,7 @@ class Operator extends SimSageCommon {
                 clientId: this.clientId,
                 text: text,
             };
-            this.send_message('/ws/ops/wp-chat', msg);
+            this.post_message('/ops/wp-chat', msg);
 
             // add this message to our list of items
             this.conversation_list.push({
@@ -132,7 +132,7 @@ class Operator extends SimSageCommon {
                 toId: this.clientId,
                 isTyping: true,
             };
-            this.send_message('/ws/ops/wp-typing', msg);
+            this.post_message('/ops/wp-typing', msg);
         }
     }
 
@@ -146,7 +146,7 @@ class Operator extends SimSageCommon {
                 sid: settings.sid,
                 operatorId: SimSageCommon.getOperatorId(),
             };
-            this.send_message('/ws/ops/wp-ready', data);
+            this.post_message('/ops/wp-ready', data);
             this.refresh();
         }
     }
@@ -163,7 +163,7 @@ class Operator extends SimSageCommon {
                 operatorId: SimSageCommon.getOperatorId(),
                 clientId: this.clientId,
             };
-            this.send_message('/ws/ops/wp-take-break', msg);
+            this.post_message('/ops/wp-take-break', msg);
 
             this.clientId = '';
             this.conversation_list = [];
@@ -183,7 +183,7 @@ class Operator extends SimSageCommon {
                 operatorId: SimSageCommon.getOperatorId(),
                 clientId: this.clientId,
             };
-            this.send_message('/ws/ops/wp-next-user', msg);
+            this.post_message('/ops/wp-next-user', msg);
 
             this.clientId = '';
             this.conversation_list = [];
@@ -203,7 +203,7 @@ class Operator extends SimSageCommon {
                 operatorId: SimSageCommon.getOperatorId(),
                 clientId: this.clientId,
             };
-            this.send_message('/ws/ops/wp-ban-user', msg);
+            this.post_message('/ops/wp-ban-user', msg);
 
             this.clientId = '';
             this.conversation_list = [];
@@ -221,7 +221,7 @@ class Operator extends SimSageCommon {
                 sid: settings.sid,
                 operatorList: [{operatorId: SimSageCommon.getOperatorId(), isTyping: this.is_typing, clientId: this.clientId}],
             };
-            this.send_message('/ws/ops/wp-refresh', msg);
+            this.post_message('/ops/wp-refresh', msg);
         }
     }
 
@@ -271,7 +271,7 @@ class Operator extends SimSageCommon {
             };
             this.answer_message.used = true;
             this.question_message.used = true;
-            this.send_message('/ws/ops/wp-teach', msg);
+            this.post_message('/ops/wp-teach', msg);
             this.refresh();
         }
     }
