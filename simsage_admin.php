@@ -187,11 +187,13 @@ class simsage_admin
                 add_settings_error('simsage_settings', 'invalid_password', 'Invalid SimSage password (too short)', $type = 'error');
 
             } else {
+                // the user wants to close their account - make sure all values are valid
                 $organisationId = $this->get_organisationId();
                 $kb = get_kb();
                 $email = $this->get_email();
+                // try and delete the account
                 if ( $this->close_simsage_account( $email, $organisationId, $kb["kbId"], $kb["sid"], $password ) ) {
-                    // clear the account information locally
+                    // success!  clear the account information locally
                     $plugin_options = get_option(PLUGIN_NAME);
                     $plugin_options["simsage_username"] = "";
                     $plugin_options["simsage_registration_key"] = "";
@@ -227,6 +229,7 @@ class simsage_admin
             // check the registration-key size
             if (strlen(trim($registration_key)) != 19) {
                 add_settings_error('simsage_settings', 'invalid_registration_key', 'Invalid SimSage registration-key', $type = 'error');
+
             } else {
                 // try and sign-into SimSage given the user's key
                 $json = get_json(wp_remote_post(join_urls(SIMSAGE_API_SERVER, '/api/auth/sign-in-registration-key'),
