@@ -103,7 +103,7 @@
     <?php } else if ( $has_access ) { ?>
         <div class="label-success">Please <a href="/wp-admin/options-general.php?page=simsage-search">configure</a> your SimSage plugin first.</div>
     <?php } else if ( !$has_access ) { ?>
-        <div class="label-success">Your plan does not provide you with SimSage Analytics.  Please <a href="<?php echo SIMSAGE_REGO_SERVER; ?>/#/sign-in" target="_blank">upgrade your plan</a> if you wish to use SimSage Analytics.</div>
+        <div class="label-success">Your plan does not provide you with SimSage Analytics.  Please <a href="<?php echo SIMSAGE_REGO_SERVER; ?>/#/sign-in?origin=plugin" target="_blank">upgrade your plan</a> if you wish to use SimSage Analytics.</div>
     <?php } ?>
 
 </div>
