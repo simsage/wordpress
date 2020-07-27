@@ -76,7 +76,7 @@ class simsage_admin
 		    debug_log("action:" . $action );
 		    if ($action == 'sign-in') {
 		    	// perform a sign-in
-		    	$this->do_sign_in($_POST[PLUGIN_NAME]['simsage_registration_key']);
+		    	$this->do_sign_in($_POST, $_POST[PLUGIN_NAME]['simsage_registration_key']);
 		    } else if ($action == 'update-search') {
 		    	// do an update to the search posted values
 			    $this->check_form_parameters($_POST[PLUGIN_NAME], true);
@@ -174,53 +174,91 @@ class simsage_admin
     /**
      * perform a sign-in using the user supplied data from the admin form
      *
+     * @param $post_data object data posted by simsage_admin_view
      * @param $registration_key string your SimSage registration key
      */
-    private function do_sign_in( $registration_key ) {
-        $plugin_options = get_option( PLUGIN_NAME );
+    private function do_sign_in( $post_data, $registration_key ) {
+        // this is the name of the button
+        $cmd = $post_data["submit"];
+        if ( $cmd == 'Close my SimSage Account' ) {
+            $params = $post_data[PLUGIN_NAME];
+            $password = $params['simsage_password'];
+            if (strlen(trim($password)) < 8) {
+                add_settings_error('simsage_settings', 'invalid_password', 'Invalid SimSage password (too short)', $type = 'error');
 
-        // save the user-name parameter but not the password for security reasons
-        $plugin_options["simsage_registration_key"] =  $registration_key;
-        // remove the account if it was set
-        if ( isset($plugin_options["simsage_account"]) ) {
-            unset($plugin_options["simsage_account"]);
-        }
-        update_option( PLUGIN_NAME, $plugin_options );
+            } else {
+                $organisationId = $this->get_organisationId();
+                $kb = get_kb();
+                $email = $this->get_email();
+                if ( $this->close_simsage_account( $email, $organisationId, $kb["kbId"], $kb["sid"], $password ) ) {
+                    // clear the account information locally
+                    $plugin_options = get_option(PLUGIN_NAME);
+                    $plugin_options["simsage_username"] = "";
+                    $plugin_options["simsage_registration_key"] = "";
+                    if (isset($plugin_options["simsage_account"])) {
+                        unset($plugin_options["simsage_account"]);
+                    }
+                    if (isset($plugin_options["simsage_qa"])) {
+                        unset($plugin_options["simsage_qa"]);
+                    }
+                    if (isset($plugin_options["simsage_synonyms"])) {
+                        unset($plugin_options["simsage_synonyms"]);
+                    }
+                    update_option(PLUGIN_NAME, $plugin_options);
 
-        // check the registration-key size
-        if ( strlen( trim( $registration_key ) ) != 19 ) {
-            add_settings_error('simsage_settings', 'invalid_registration_key', 'Invalid SimSage registration-key', $type = 'error');
-        } else {
-            // try and sign-into SimSage given the user's key
-            $json = get_json(wp_remote_post( join_urls(SIMSAGE_API_SERVER, '/api/auth/sign-in-registration-key'),
-                array('headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
-                    'body' => '{"registrationKey": "' . trim($registration_key) . '"}')));
-            $error_str = check_simsage_json_response( SIMSAGE_API_SERVER, $json );
-            // no error?
-            if ( $error_str == "" ) {
-                $body = get_json( $json["body"] ); // convert to an object
-                if ( !isset($body['knowledgeBase']) || !isset($body['plan']) ) {
-                    debug_log( print_r($body, true) );
-                    add_settings_error('simsage_settings', 'invalid_response', 'Invalid SimSage response.  Please upgrade your plugin.', $type = 'error');
-
-                } else {
-                    // set the account data we just got back (store it)
-                    $plugin_options["simsage_account"] = $body;
-                    // set our defaults (if not already set) for search and the bot and the site
-                    $this->set_defaults( $plugin_options );
-                    // save settings
-                    update_option( PLUGIN_NAME, $plugin_options );
-                    // set the current site and upload the current WP content as is as well as any synonyms, and QAs
-                    $this->update_simsage(true, true, true);
-                    // setup other parts of the plugin according to plan
-                    $this->add_admin_menus();
-                    // show we've successfully connected
+                    // show we've successfully removed the user's account
                     add_settings_error('simsage_settings', 'success',
-                        "Successfully retrieved your SimSage account information.",
+                        "We've removed all your SimSage account information.  You can now safely remove this plugin.  Thank you for using SimSage!",
                         $type = 'info');
                 }
+            }
+
+        } else if ( $cmd == 'Connect to SimSage' ) {
+            $plugin_options = get_option(PLUGIN_NAME);
+
+            // save the user-name parameter but not the password for security reasons
+            $plugin_options["simsage_registration_key"] = $registration_key;
+            // remove the account if it was set
+            if (isset($plugin_options["simsage_account"])) {
+                unset($plugin_options["simsage_account"]);
+            }
+            update_option(PLUGIN_NAME, $plugin_options);
+
+            // check the registration-key size
+            if (strlen(trim($registration_key)) != 19) {
+                add_settings_error('simsage_settings', 'invalid_registration_key', 'Invalid SimSage registration-key', $type = 'error');
             } else {
-                add_settings_error('simsage_settings', 'error', $error_str, $type = 'error');
+                // try and sign-into SimSage given the user's key
+                $json = get_json(wp_remote_post(join_urls(SIMSAGE_API_SERVER, '/api/auth/sign-in-registration-key'),
+                    array('timeout' => JSON_POST_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
+                        'body' => '{"registrationKey": "' . trim($registration_key) . '"}')));
+                $error_str = check_simsage_json_response(SIMSAGE_API_SERVER, $json);
+                // no error?
+                if ($error_str == "") {
+                    $body = get_json($json["body"]); // convert to an object
+                    if (!isset($body['knowledgeBase']) || !isset($body['plan'])) {
+                        debug_log(print_r($body, true));
+                        add_settings_error('simsage_settings', 'invalid_response', 'Invalid SimSage response.  Please upgrade your plugin.', $type = 'error');
+
+                    } else {
+                        // set the account data we just got back (store it)
+                        $plugin_options["simsage_account"] = $body;
+                        // set our defaults (if not already set) for search and the bot and the site
+                        $this->set_defaults($plugin_options);
+                        // save settings
+                        update_option(PLUGIN_NAME, $plugin_options);
+                        // set the current site and upload the current WP content as is as well as any synonyms, and QAs
+                        $this->update_simsage(true, true, true);
+                        // setup other parts of the plugin according to plan
+                        $this->add_admin_menus();
+                        // show we've successfully connected
+                        add_settings_error('simsage_settings', 'success',
+                            "Successfully retrieved your SimSage account information.",
+                            $type = 'info');
+                    }
+                } else {
+                    add_settings_error('simsage_settings', 'error', $error_str, $type = 'error');
+                }
             }
         }
     }
@@ -378,7 +416,7 @@ class simsage_admin
                 update_option(PLUGIN_NAME, $plugin_options);
 
             } else {
-                add_settings_error('simsage_settings', 'simsage_synonyms', 'Please fill-out all existing Synoynms before adding new rows.', $type = 'error');
+                add_settings_error('simsage_settings', 'simsage_synonyms', 'Please fill-out all existing Synonyms before adding new rows.', $type = 'error');
             }
 
         } else if ( substr( $cmd, 0, 6) == "remove" ) {
@@ -621,6 +659,23 @@ class simsage_admin
 
 
     /**
+     * get the user's email to use from our settings
+     *
+     * @return string|null the user's email address
+     */
+    private function get_email() {
+        $plugin_options = get_option(PLUGIN_NAME);
+        if ( isset($plugin_options["simsage_account"]) ) {
+            $account = $plugin_options["simsage_account"];
+            if ( isset($account["email"]) ) {
+                return $account["email"];
+            }
+        }
+        return null;
+    }
+
+
+    /**
      * Set all our defaults as required if they're not set yet for the sites, search, and the bot
      *
      * @param $options  array the set of options to check and amend
@@ -739,7 +794,7 @@ class simsage_admin
         $url = join_urls($server, '/api/crawler/document/upload/archive');
         $bodyStr = '{"organisationId": "' . $organisationId . '", "kbId": "' . $kbId . '", "sid": "' . $sid . '", "sourceId": 1, "data": "' . $data . '"}';
         $json = get_json(wp_remote_post($url,
-            array('headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
+            array('timeout' => JSON_POST_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                 'body' => $bodyStr)));
         $error_str = check_simsage_json_response( $server, $json );
         if ($error_str != "") {
@@ -753,6 +808,34 @@ class simsage_admin
     }
 
 
+    /**
+     * Close a SimSage account
+     *
+     * @param $email            string the user's email address
+     * @param $organisationId   string your user id (also the SimSage organisationId)
+     * @param $kbId             string your site's id (called a knowledge-base Id in SimSage)
+     * @param $sid              string a changeable SimSage security id for this site
+     * @param $password         string the user's account password
+     * @return bool return true on success
+     */
+    private function close_simsage_account( $email, $organisationId, $kbId, $sid, $password ) {
+        debug_log("closing account " . $email . ", org: " . $organisationId . ", kb: " . $kbId);
+        $url = join_urls(SIMSAGE_API_SERVER, '/api/auth/wp-close-account');
+        $bodyStr = '{"organisationId": "' . $organisationId . '", "kbId": "' . $kbId . '", "sid": "' . $sid .
+                    '", "password": "' . $password . '", "email": "' . $email . '"}';
+        $json = get_json(wp_remote_post($url,
+            array('timeout' => JSON_POST_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
+                  'body' => $bodyStr)));
+        $error_str = check_simsage_json_response( SIMSAGE_API_SERVER, $json );
+        if ($error_str != "") {
+            if ( function_exists('add_settings_error') )
+                add_settings_error('simsage_settings', 'simsage_close_account', $error_str, $type = 'error');
+            else
+                debug_log('ERROR: simsage-close-account-error:' . $error_str);
+            return false;
+        }
+        return true;
+    }
 
 
 }

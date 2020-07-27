@@ -14,8 +14,8 @@ define( 'PLUGIN_DIR', dirname(__FILE__) . '/' );
 define( 'PLUGIN_NAME', 'simsage-search' );
 
 // SimSage registration-api-server address
-define( 'SIMSAGE_API_SERVER', 'https://api.simsage.ai');
-// define( 'SIMSAGE_API_SERVER', 'http://192.168.1.232:8088');
+// define( 'SIMSAGE_API_SERVER', 'https://api.simsage.ai');
+define( 'SIMSAGE_API_SERVER', 'http://192.168.1.132:8088');
 // define( 'SIMSAGE_API_SERVER', 'http://192.168.1.89:8088');
 // define( 'SIMSAGE_API_SERVER', 'https://pp-rego-cloud.simsage.nz');
 
@@ -33,6 +33,9 @@ define( 'DOC_SEMANTIC_DATA', '-simsage-semantics.txt');
 
 // maximum length of a bot question or answer string
 define( 'MAX_STRING_LENGTH', 256 );
+
+// set timeout for json posts (in seconds) must not exceed PHP max_execution_time
+define( 'JSON_POST_TIMEOUT', 10 );
 
 // include the main search functionality class
 include_once( PLUGIN_DIR . 'simsage_search.php' );

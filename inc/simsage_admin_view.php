@@ -29,6 +29,7 @@
 		$active_tab = $_GET[ 'tab' ];
 	} // end if
 	$options = get_option( PLUGIN_NAME );
+	debug_log(print_r($options, true));
     $plan = get_plan();
 	// add the nonce, option_page, action and referer.
 	settings_fields( PLUGIN_NAME );
@@ -67,7 +68,7 @@
         <?php } ?>
     </div>
 
-    <form method="post" name="<?php echo PLUGIN_NAME; ?>_search_options">
+    <form method="post" id="adminForm" name="<?php echo PLUGIN_NAME; ?>_search_options">
 
         <?php if ( $active_tab == 'account' || $active_tab == '' ) { ?>
             <div class="tabbed-display">
@@ -87,12 +88,43 @@
                     <span class="description">don't have a Registration-key?&nbsp;&nbsp;<a href="<?php echo SIMSAGE_REGO_SERVER; ?>/#/create" target="_blank">Register here</a></span>
                 </label>
                 <br /><br />
-                <div>Changed plans?  Click the 'Connect Simsage' button below to refresh.</div>
+                <div>Changed plans?  Click the 'Connect to SimSage' button below to refresh.</div>
             </fieldset>
 
             <input type="hidden" name="action" value="sign-in">
             </div>
-	        <?php submit_button( 'Connect SimSage', 'primary','submit', true ); ?>
+            <div>
+                <div style="float: left; margin-right: 20px">
+                    <?php submit_button( 'Connect to SimSage', 'primary', 'submit', true ); ?>
+                </div>
+                <?php if ( $has_account ) { ?>
+                    <div id="btnPreClose" style="float: left;">
+                        <p class="submit">
+                            <span class="button" onclick="document.getElementById('btnCloseAccount').style.display='';
+                                                          document.getElementById('btnPreClose').style.display='none';">
+                                                          Close my SimSage Account</span>
+                        </p>
+                    </div>
+                <?php } ?>
+            </div>
+            <br clear="both" />
+            <div id="btnCloseAccount" style="display: none">
+                <span>
+                    <b>CAREFUL</b>!<br/><br/>
+                    Are you sure you want to CLOSE your SimSage account?<br/>
+                    This will REMOVE all your personal data from our systems,<br/>
+                    We will stop charging your credit card, and it will stop this plugin from working!<br/><br/>
+                    <b>this action cannot be undone!</b><br/><br/>
+                </span>
+                <label>
+                    <input type="password" name="<?php echo PLUGIN_NAME ?>[simsage_password]"
+                           class="input-field"
+                           value=""
+                           placeholder="your SimSage account password"/>
+                    <span class="description">Please enter your SimSage Password</span>
+                </label>
+                <?php submit_button( 'Close my SimSage Account', 'secondary', 'submit', true ); ?>
+            </div>
 
         <?php } ?>
 
