@@ -61,6 +61,9 @@ $analytics = new simsage_analytics();
 // add the pages for the SimSage plugin
 $admin->prepare_admin_menus( $operator, $analytics );
 $admin->add_admin_menus();
+// setup auto-update for content
+setup_cron_schedule();
+setup_cron_job( $admin );
 
 // setup hooks into the main class for plugin activation / de-activation
 register_activation_hook(__FILE__, array($search, 'plugin_activate'));

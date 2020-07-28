@@ -29,7 +29,6 @@
 		$active_tab = $_GET[ 'tab' ];
 	} // end if
 	$options = get_option( PLUGIN_NAME );
-	debug_log(print_r($options, true));
     $plan = get_plan();
 	// add the nonce, option_page, action and referer.
 	settings_fields( PLUGIN_NAME );

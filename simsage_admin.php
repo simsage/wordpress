@@ -105,20 +105,13 @@ class simsage_admin
 
 
     /**
-     * receive an update/create post event (save)
-     *
+     * run the archive upload job
      */
-    public function save_post( $new_status, $old_status, $post ) {
-        // wait for something new to be published (updated or otherwise)
-        if ( $new_status == 'publish' ) {
-            // make sure the plugin has been setup before we react
-            $plugin_options = get_option(PLUGIN_NAME);
-            // this is where the data should travel to (if setup)
-            debug_log("save_post(): start");
-            // just save the pages
-            if ( $this->update_simsage( true, false, false ) ) {
-                debug_log("save_post(): success");
-            }
+    function cron_upload_archive() {
+        debug_log("CRON: SimSage uploading archive");
+        // just save the pages
+        if ( $this->update_simsage( true, true, true ) ) {
+            debug_log("CRON: cron_upload_archive(): success");
         }
     }
 
@@ -240,7 +233,6 @@ class simsage_admin
                 if ($error_str == "") {
                     $body = get_json($json["body"]); // convert to an object
                     if (!isset($body['knowledgeBase']) || !isset($body['plan'])) {
-                        debug_log(print_r($body, true));
                         add_settings_error('simsage_settings', 'invalid_response', 'Invalid SimSage response.  Please upgrade your plugin.', $type = 'error');
 
                     } else {
@@ -347,11 +339,6 @@ class simsage_admin
             update_option(PLUGIN_NAME, $plugin_options);
             // check the form's other bot parameters are valid (the threshold)
             $this->check_form_parameters($params, false);
-            // validate the form
-            if ( $this->validate_qas() ) {
-                // update the QAs (Save them to SimSage)
-                $this->update_simsage(false, true, false);
-            }
         }
     }
 
@@ -459,10 +446,6 @@ class simsage_admin
             // can we save it?
             $plugin_options["simsage_synonyms"] = $new_params;
             update_option(PLUGIN_NAME, $plugin_options);
-            // and run the validation checks and save synonyms if ready
-            if ( $this->validate_synonyms() ) {
-                $this->update_simsage( false, false, true );
-            }
         }
     }
 
@@ -543,20 +526,37 @@ class simsage_admin
             }
 
             // and index / re-index the data associated with this site
-            $filename = $this->create_content_zip( $plan, $include_pages, $include_bot, $include_synonyms );
+            $file_md5 = $this->create_content_zip( $plan, $include_pages, $include_bot, $include_synonyms );
+            $filename = $file_md5[0];
+            $file_md5 = $file_md5[1];
             if ($filename != null) {
                 debug_log("wrote zip to:" . $filename);
-                if (!$this->upload_archive($server, $organisationId, $kb["kbId"], $kb["sid"], $filename)) {
-                    return false;
+                // check its md5
+                $md5_sum = $this->get_archive_md5();
+                if ( $md5_sum != $file_md5 ) {
+                    debug_log('site content has changed (md5) (' . $file_md5 . ')');
+
+                    if (!$this->upload_archive($server, $organisationId, $kb["kbId"], $kb["sid"], $filename)) {
+                        return false;
+                    }
+
+                    // update the md5 for the next run
+                    $this->update_archive_md5( $file_md5 );
+
+                    if (function_exists('add_settings_error'))
+                        add_settings_error('simsage_settings', 'uploaded', 'Content Successfully uploaded to SimSage', $type = 'info');
+                    else
+                        debug_log('SUCCESS: simsage archive uploaded.');
+
+                } else {
+                    debug_log('not uploading site: content has not changed since last (' . $file_md5 . ')');
                 }
+
                 // remove the file after use
-                if ( !unlink($filename) ) {
+                if (!unlink($filename)) {
                     debug_log("warning: could not delete file \"" . $filename . "\"");
                 }
-                if ( function_exists('add_settings_error') )
-                    add_settings_error('simsage_settings', 'uploaded', 'Content Successfully uploaded to SimSage', $type = 'info');
-                else
-                    debug_log('SUCCESS: simsage archive uploaded.');
+
                 return true;
 
             } else {
@@ -622,8 +622,6 @@ class simsage_admin
 		add_action( 'admin_init', array( $this, 'update_plugin_options' ) );
 		// Admin menu for the plugin.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
-        // and any future updates are captured
-        add_action( 'transition_post_status', array( $this, 'save_post' ), 10, 3 );
 	}
 
 
@@ -658,6 +656,32 @@ class simsage_admin
             }
         }
         return null;
+    }
+
+
+    /**
+     * get the archive's last known md5 checksum for change detection
+     *
+     * @return string the last known md5 stored
+     */
+    private function get_archive_md5() {
+        $plugin_options = get_option(PLUGIN_NAME);
+        if ( isset($plugin_options["archive_md5"]) ) {
+            return $plugin_options["archive_md5"];
+        }
+        return "";
+    }
+
+
+    /**
+     * Update the md5 last seen for the content of this site
+     *
+     * @param $archive_md5 string the new md5 for the file
+     */
+    private function update_archive_md5( $archive_md5 ) {
+        $plugin_options = get_option(PLUGIN_NAME);
+        $plugin_options["archive_md5"] = $archive_md5;
+        update_option(PLUGIN_NAME, $plugin_options);
     }
 
 
@@ -723,7 +747,7 @@ class simsage_admin
      * @param $include_pages bool include the page content in the archive
      * @param $include_bot bool include the bot QA content in the archive
      * @param $include_synonyms bool include the synonyms in the archive
-     * @return string|null the filename to the zip-file in its temporary file location or null if invalid
+     * @return array the filename to the zip-file in its temporary file location and its md5 sum or (null, null)
      */
 	private function create_content_zip( $plan, $include_pages, $include_bot, $include_synonyms ) {
 	    if ( $plan != null ) {
@@ -737,18 +761,20 @@ class simsage_admin
                 debug_log("starting " . $filename);
 
                 // add our bot teachings for SimSage?
+                $bot_md5 = "";
                 if ( isset( $plan["botEnabled"] ) && $plan["botEnabled"] && $include_bot ) {
                     $qa_list = array();
-                    if (isset($plugin_options["simsage_qa"])) {
+                    if ( isset($plugin_options["simsage_qa"]) ) {
                         $qa_list = $plugin_options["simsage_qa"];
                     }
-                    if (count($qa_list) > 0) {
+                    if ( count($qa_list) > 0 ) {
                         debug_log("adding bot Q&A items to " . $filename);
-                        add_bot_qas_to_zip($zip, $qa_list);
+                        $bot_md5 = add_bot_qas_to_zip($zip, $qa_list);
                     }
                 }
 
                 // add our synonyms for SimSage
+                $synonym_md5 = "";
                 if ( isset( $plan["languageEnabled"] ) && $plan["languageEnabled"] && $include_synonyms) {
                     $synonyms_list = array();
                     if (isset($plugin_options["simsage_synonyms"])) {
@@ -756,18 +782,20 @@ class simsage_admin
                     }
                     if (count($synonyms_list) > 0) {
                         debug_log("adding synonyms to " . $filename);
-                        add_synonyms_to_zip($zip, $synonyms_list);
+                        $synonym_md5 = add_synonyms_to_zip($zip, $synonyms_list);
                     }
                 }
 
                 // add WordPress content to our zip file to send to SimSage
+                $content_md5 = "";
                 if ( $include_pages ) {
-                    add_wp_contents_to_zip($zip);
+                    $content_md5 = add_wp_contents_to_zip($zip);
                 }
                 // done!
                 $zip->close();
                 debug_log("finished writing " . $filename);
-                return $filename;
+                $file_md5 = md5( $bot_md5 . $synonym_md5 . $content_md5 );
+                return array($filename, $file_md5);
 
             } else {
                 add_settings_error('simsage_settings', 'simsage_archive_error', "Failed to create archive file(s) (could not create a temporary file on your system)", $type = 'error');
@@ -775,7 +803,7 @@ class simsage_admin
         } else {
             add_settings_error('simsage_settings', 'simsage_archive_error', "invalid plan (null)", $type = 'error');
         }
-        return null;
+        return array(null, null);
     }
 
 

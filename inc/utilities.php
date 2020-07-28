@@ -79,12 +79,14 @@ function get_json( $data ) {
  * query word-press' content and add all published items to a zip archive
  *
  * @param $zip ZipArchive a zip archive to add items to
+ * @return string the combined md5s of the content
  */
 function add_wp_contents_to_zip( $zip ) {
     global $wpdb;
     $query = "SELECT * FROM $wpdb->posts WHERE post_status = 'publish'";
     $results = $wpdb->get_results($query);
     $counter = 1;
+    $md5_str = "";
     foreach ($results as $row) {
         $obj = $row;
         // get the author for this item
@@ -111,8 +113,11 @@ function add_wp_contents_to_zip( $zip ) {
         $str = $str . $base64Str . "\n";
         $zip->addFromString($counter . ".html", $str);
         $counter += 1;
+
+        $md5_str = md5( $md5_str . $str );
     }
     debug_log("added " . $counter . " pages to zip");
+    return $md5_str;
 }
 
 
@@ -121,6 +126,7 @@ function add_wp_contents_to_zip( $zip ) {
  *
  * @param $zip ZipArchive a zip archive to add items to
  * @param $qa_list array a list of Question and Answer items
+ * @return string the md5 of the content (or empty string)
  */
 function add_bot_qas_to_zip( $zip, $qa_list ) {
     $str = "";
@@ -136,7 +142,9 @@ function add_bot_qas_to_zip( $zip, $qa_list ) {
     }
     if ( strlen($str) > 0 ) {
         $zip->addFromString(DOC_BOT_DATA, $str);
+        return md5( $str );
     }
+    return "";
 }
 
 
@@ -145,6 +153,7 @@ function add_bot_qas_to_zip( $zip, $qa_list ) {
  *
  * @param $zip ZipArchive a zip archive to add items to
  * @param $synonym_list array a list of synonym items
+ * @return string the md5 of the content or empty string
  */
 function add_synonyms_to_zip( $zip, $synonym_list ) {
     $str = "";
@@ -157,7 +166,9 @@ function add_synonyms_to_zip( $zip, $synonym_list ) {
     }
     if ( strlen($str) > 0 ) {
         $zip->addFromString(DOC_SYNONYM_DATA, $str);
+        return md5( $str );
     }
+    return "";
 }
 
 
@@ -273,7 +284,6 @@ function join_urls( $url1, $url2 ) {
  * @return string an empty string if no error was found, otherwise a description of the error
  */
 function check_simsage_json_response( $server, $json ) {
-    // debug_log( print_r($json, true) );
     if ( isset($json["error"]) ) {
         $error = print_r( $json["error"], true);
         if ( $error != "" ) {
@@ -347,4 +357,38 @@ function get_plan() {
         }
     }
     return null;
+}
+
+
+/**
+ * make sure the twice daily job type exists
+ */
+function setup_cron_schedule() {
+    add_filter( 'cron_schedules', 'setup_archive_job_schedule' );
+}
+
+
+/**
+ * @param $schedules array the schedules
+ * @return mixed array the new schedule
+ */
+function setup_archive_job_schedule( $schedules ) {
+    if(!isset($schedules["twicedaily"])){
+        $schedules["twicedaily"] = array(
+            'interval' => 43200,
+            'display' => __('Twice Daily'));
+    }
+    return $schedules;
+}
+
+
+/**
+ * setup SimSage to execute itself twice daily
+ * @param $admin object the admin class
+ */
+function setup_cron_job( $admin ) {
+    if ( ! wp_next_scheduled('simsage_twicedaily', array($admin) ) ) {
+        wp_schedule_event(time(), 'twicedaily', 'simsage_twicedaily', array($admin));
+    }
+    add_action('simsage_twicedaily', array($admin, 'cron_upload_archive') );
 }
