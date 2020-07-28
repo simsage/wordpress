@@ -549,6 +549,7 @@ class simsage_admin
                         debug_log('SUCCESS: simsage archive uploaded.');
 
                 } else {
+                    add_settings_error('simsage_settings', 'simsage_up_to_date', 'Site content synchronized with SimSage', $type = 'info');
                     debug_log('not uploading site: content has not changed since last (' . $file_md5 . ')');
                 }
 
@@ -828,12 +829,18 @@ class simsage_admin
             array('timeout' => JSON_POST_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                 'body' => $bodyStr)));
         $error_str = check_simsage_json_response( $server, $json );
-        if ($error_str != "") {
-            if ( function_exists('add_settings_error') )
-                add_settings_error('simsage_settings', 'simsage_upload_error', $error_str, $type = 'error');
-            else
-                debug_log('ERROR: simsage-upload-error:' . $error_str);
+        if ( strpos( $error_str, "not time yet ") ) {
+            add_settings_error('simsage_settings', 'simsage_upload_error', "Content upload scheduled for later", $type = 'info');
             return false;
+
+        } else {
+            if ($error_str != "") {
+                if (function_exists('add_settings_error'))
+                    add_settings_error('simsage_settings', 'simsage_upload_error', $error_str, $type = 'error');
+                else
+                    debug_log('ERROR: simsage-upload-error:' . $error_str);
+                return false;
+            }
         }
         return true;
     }
