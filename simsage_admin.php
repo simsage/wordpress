@@ -232,7 +232,8 @@ class simsage_admin
                 // no error?
                 if ($error_str == "") {
                     $body = get_json($json["body"]); // convert to an object
-                    if (!isset($body['knowledgeBase']) || !isset($body['plan'])) {
+                    if (!isset($body['kbId']) || !isset($body['sid']) || !isset($body['plan'])  || !isset($body['server']) ||
+                        !isset($body['id']) || !isset($body['email'])) {
                         add_settings_error('simsage_settings', 'invalid_response', 'Invalid SimSage response.  Please upgrade your plugin.', $type = 'error');
 
                     } else {
@@ -506,7 +507,7 @@ class simsage_admin
             }
 
             // make sure both the bot and synonyms validate
-            if ( isset( $plan["languageEnabled"] ) && $plan["languageEnabled"] && $include_synonyms ) {
+            if ( $include_synonyms ) {
                 if ( !$this->validate_synonyms() ) {
                     if ( function_exists('add_settings_error') )
                         add_settings_error('simsage_settings', 'invalid_data', 'Please fix the above errors!', $type = 'error');
@@ -515,7 +516,7 @@ class simsage_admin
                     return false;
                 }
             }
-            if ( isset( $plan["botEnabled"] ) && $plan["botEnabled"] && $include_bot ) {
+            if ( $include_bot ) {
                 if ( !$this->validate_qas() ) {
                     if ( function_exists('add_settings_error') )
                         add_settings_error('simsage_settings', 'invalid_data', 'Please fix the above errors!', $type = 'error');
@@ -758,39 +759,48 @@ class simsage_admin
             $zip = new ZipArchive();
             $plugin_options = get_option(PLUGIN_NAME);
             $filename = tempnam(get_temp_dir(), "simsage");
+            $num_docs = $plan["numDocs"];
+            $num_qas = $plan["numQA"];
             if ($zip->open($filename, ZipArchive::CREATE | ZIPARCHIVE::OVERWRITE)) {
                 debug_log("starting " . $filename);
 
                 // add our bot teachings for SimSage?
                 $bot_md5 = "";
-                if ( isset( $plan["botEnabled"] ) && $plan["botEnabled"] && $include_bot ) {
+                if ( $include_bot ) {
                     $qa_list = array();
                     if ( isset($plugin_options["simsage_qa"]) ) {
                         $qa_list = $plugin_options["simsage_qa"];
                     }
+                    if ( count($qa_list) > $num_qas ) {
+                        // warn the user they have exceeded the allocation for QA items on their plan
+                        add_settings_error('simsage_settings', 'simsage_archive_error', "Your Q&A count (" . count($qa_list) .
+                                           ") exceeds the maximum allocated number of QAs for your plan (" . $num_qas . ").  " .
+                                           "Please remove " . (count($qa_list) - $num_qas) . " Q&As or upgrade your plan.  " .
+                                           "I will upload the first " . $num_qas . " Q&As only.", $type = 'error');
+                    }
                     if ( count($qa_list) > 0 ) {
                         debug_log("adding bot Q&A items to " . $filename);
-                        $bot_md5 = add_bot_qas_to_zip($zip, $qa_list);
+                        $bot_md5 = add_bot_qas_to_zip( $zip, $qa_list, $num_qas );
                     }
                 }
 
                 // add our synonyms for SimSage
                 $synonym_md5 = "";
-                if ( isset( $plan["languageEnabled"] ) && $plan["languageEnabled"] && $include_synonyms) {
+                if ( $include_synonyms ) {
                     $synonyms_list = array();
                     if (isset($plugin_options["simsage_synonyms"])) {
                         $synonyms_list = $plugin_options["simsage_synonyms"];
                     }
                     if (count($synonyms_list) > 0) {
                         debug_log("adding synonyms to " . $filename);
-                        $synonym_md5 = add_synonyms_to_zip($zip, $synonyms_list);
+                        $synonym_md5 = add_synonyms_to_zip( $zip, $synonyms_list );
                     }
                 }
 
                 // add WordPress content to our zip file to send to SimSage
                 $content_md5 = "";
                 if ( $include_pages ) {
-                    $content_md5 = add_wp_contents_to_zip($zip);
+                    $content_md5 = add_wp_contents_to_zip( $zip, $num_docs );
                 }
                 // done!
                 $zip->close();

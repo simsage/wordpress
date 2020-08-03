@@ -42,9 +42,9 @@
     // list of bot items (or initial empty array)
     $qa_list = isset($options['simsage_qa']) ? $options['simsage_qa'] : array();
     // do we have Q&A settings?
-    $bot_enabled = ($plan != null && isset( $plan['botEnabled'] ) && $plan['botEnabled']);
+    $bot_enabled = ($plan != null);
     // do we have language customization?
-    $language_enabled = ($plan != null && isset( $plan['languageEnabled'] ) && $plan['languageEnabled']);
+    $language_enabled = ($plan != null);
     // list of synonyms
     $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms'] : array();
 	?>

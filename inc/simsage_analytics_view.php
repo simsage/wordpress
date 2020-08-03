@@ -19,7 +19,7 @@
 	$options = get_option( PLUGIN_NAME );
     $plan = get_plan();
     // does this plan have operator access?
-    $has_access = ($plan != null && isset( $plan['analyticsEnabled'] ) && $plan['analyticsEnabled']);
+    $has_access = ($plan != null);
     // when we have selected a site, this variable will be set
     $has_sites = (get_kb() != null);
     ?>

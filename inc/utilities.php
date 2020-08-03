@@ -79,9 +79,10 @@ function get_json( $data ) {
  * query word-press' content and add all published items to a zip archive
  *
  * @param $zip ZipArchive a zip archive to add items to
+ * @param $num_docs int the maximum number of allowed documents for this site as per plan
  * @return string the combined md5s of the content
  */
-function add_wp_contents_to_zip( $zip ) {
+function add_wp_contents_to_zip( $zip, $num_docs ) {
     global $wpdb;
     $query = "SELECT * FROM $wpdb->posts WHERE post_status = 'publish'";
     $results = $wpdb->get_results($query);
@@ -113,8 +114,15 @@ function add_wp_contents_to_zip( $zip ) {
         $str = $str . $base64Str . "\n";
         $zip->addFromString($counter . ".html", $str);
         $counter += 1;
-
         $md5_str = md5( $md5_str . $str );
+
+        if ( $counter > $num_docs ) {  // we've reached the limit
+            // warn the user they have exceeded the allocation for number of pages on their plan
+            add_settings_error('simsage_settings', 'simsage_archive_error', "Your WordPress post count " .
+                "exceeds the maximum allocated number of posts for your plan (" . $num_docs . ").  " .
+                "We will upload the first " . $num_docs . " pages only.", $type = 'error');
+            break;
+        }
     }
     debug_log("added " . $counter . " pages to zip");
     return $md5_str;
@@ -126,10 +134,12 @@ function add_wp_contents_to_zip( $zip ) {
  *
  * @param $zip ZipArchive a zip archive to add items to
  * @param $qa_list array a list of Question and Answer items
+ * @param $num_qas int the maximum number of QAs allowed
  * @return string the md5 of the content (or empty string)
  */
-function add_bot_qas_to_zip( $zip, $qa_list ) {
+function add_bot_qas_to_zip( $zip, $qa_list, $num_qas ) {
     $str = "";
+    $counter = 0;
     foreach ($qa_list as $qa) {
         if ( strlen(trim($qa["question"])) > 0 && strlen(trim($qa["answer"])) > 0 ) {
             // format: id | question | answer | context | link \n
@@ -138,6 +148,10 @@ function add_bot_qas_to_zip( $zip, $qa_list ) {
             $c = str_replace( "\\", "", $qa["context"]);
             $l = str_replace( "\\", "", $qa["link"]);
             $str .= $qa["id"] . "|" . $q . "|" . $a . "|" . $c . "|" . $l . "\n";
+            $counter += 1;
+            if ( $counter > $num_qas ) { // exit when we've reached the maximum
+                break;
+            }
         }
     }
     if ( strlen($str) > 0 ) {
@@ -336,8 +350,8 @@ function get_kb() {
     $plugin_options = get_option(PLUGIN_NAME);
     if ( isset($plugin_options["simsage_account"]) ) {
         $account = $plugin_options["simsage_account"];
-        if ( isset( $account["knowledgeBase"] ) ) {
-            return $account["knowledgeBase"];
+        if ( isset($account["kbId"]) && isset($account["sid"]) ) {
+            return array("kbId" => $account["kbId"], "sid" => $account["sid"]);
         }
     }
     return null;
