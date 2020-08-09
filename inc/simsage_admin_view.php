@@ -38,7 +38,7 @@
     // after signing-in we get an account set and saved locally
     $has_account = isset($options['simsage_account'] ) && isset($options['simsage_account']['id']);
     // when we have selected a site, this variable will be set
-    $has_kb = $has_account && isset($options['simsage_account']['knowledgeBase']);
+    $has_kb = $has_account && isset($options['simsage_account']['kbId']);
     // list of bot items (or initial empty array)
     $qa_list = isset($options['simsage_qa']) ? $options['simsage_qa'] : array();
     // do we have Q&A settings?
