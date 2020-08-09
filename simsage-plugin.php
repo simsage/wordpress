@@ -14,10 +14,10 @@ define( 'PLUGIN_DIR', dirname(__FILE__) . '/' );
 define( 'PLUGIN_NAME', 'simsage-search' );
 
 // SimSage registration-api-server address
-define( 'SIMSAGE_API_SERVER', 'https://api.simsage.ai');
+define( 'SIMSAGE_API_SERVER', 'https://api.simsage.nz');
 
 // SimSage registration-ui-server address
-define( 'SIMSAGE_REGO_SERVER', 'https://simsage.ai');
+define( 'SIMSAGE_REGO_SERVER', 'https://simsage.nz');
 
 // SimSage special content file-names - do not change these
 // these are used to transmit Bot, synonym, and semantic information to SimSage
