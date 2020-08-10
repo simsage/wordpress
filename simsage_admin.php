@@ -534,7 +534,7 @@ class simsage_admin
                 debug_log("wrote zip to:" . $filename);
                 // check its md5
                 $md5_sum = $this->get_archive_md5();
-                if ( $md5_sum != $file_md5 ) {
+                if ( $md5_sum == $file_md5 ) {
                     debug_log('site content has changed (md5) (' . $file_md5 . ')');
 
                     if (!$this->upload_archive($server, $organisationId, $kb["kbId"], $kb["sid"], $filename)) {
@@ -550,7 +550,7 @@ class simsage_admin
                         debug_log('SUCCESS: simsage archive uploaded.');
 
                 } else {
-                    add_settings_error('simsage_settings', 'simsage_up_to_date', 'Site content synchronized with SimSage', $type = 'info');
+                    add_settings_error('simsage_settings', 'simsage_up_to_date', 'Site content already synchronized with SimSage (no changes detected, nothing uploaded)', $type = 'info');
                     debug_log('not uploading site: content has not changed since last (' . $file_md5 . ')');
                 }
 
