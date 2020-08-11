@@ -756,6 +756,7 @@ class simsage_admin
 	        if ( !$include_pages && !$include_bot && !$include_synonyms ) {
 	            return null;
             }
+	        $registration_key = get_registration_key();
             $zip = new ZipArchive();
             $plugin_options = get_option(PLUGIN_NAME);
             $filename = tempnam(get_temp_dir(), "simsage");
@@ -800,7 +801,7 @@ class simsage_admin
                 // add WordPress content to our zip file to send to SimSage
                 $content_md5 = "";
                 if ( $include_pages ) {
-                    $content_md5 = add_wp_contents_to_zip( $zip, $num_docs );
+                    $content_md5 = add_wp_contents_to_zip( $registration_key, $zip, $num_docs );
                 }
                 // done!
                 $zip->close();

@@ -78,16 +78,17 @@ function get_json( $data ) {
 /**
  * query word-press' content and add all published items to a zip archive
  *
+ * @param $registration_key string the system's registration key
  * @param $zip ZipArchive a zip archive to add items to
  * @param $num_docs int the maximum number of allowed documents for this site as per plan
  * @return string the combined md5s of the content
  */
-function add_wp_contents_to_zip( $zip, $num_docs ) {
+function add_wp_contents_to_zip( $registration_key, $zip, $num_docs ) {
     global $wpdb;
     $query = "SELECT * FROM $wpdb->posts WHERE post_status = 'publish'";
     $results = $wpdb->get_results($query);
     $counter = 1;
-    $md5_str = "";
+    $md5_str = md5( $registration_key );
     foreach ($results as $row) {
         $obj = $row;
         // get the author for this item
@@ -371,6 +372,20 @@ function get_plan() {
         }
     }
     return null;
+}
+
+
+
+/**
+ * Access the registration key for the current user (or empty string)
+ * @return string return this user's subscription / registration key
+ */
+function get_registration_key() {
+    $plugin_options = get_option(PLUGIN_NAME);
+    if ( isset($plugin_options["simsage_registration_key"]) ) {
+        return $plugin_options["simsage_registration_key"];
+    }
+    return "";
 }
 
 
