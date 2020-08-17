@@ -89,6 +89,7 @@ function add_wp_contents_to_zip( $registration_key, $zip, $num_docs ) {
     $results = $wpdb->get_results($query);
     $counter = 1;
     $md5_str = md5( $registration_key );
+    debug_log("md5 rego-key:" . $md5_str);
     foreach ($results as $row) {
         $obj = $row;
         // get the author for this item
@@ -125,7 +126,7 @@ function add_wp_contents_to_zip( $registration_key, $zip, $num_docs ) {
             break;
         }
     }
-    debug_log("added " . $counter . " pages to zip");
+    debug_log("added " . $counter . " pages to zip, md5 " . $md5_str);
     return $md5_str;
 }
 

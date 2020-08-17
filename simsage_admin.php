@@ -531,10 +531,10 @@ class simsage_admin
             $filename = $file_md5[0];
             $file_md5 = $file_md5[1];
             if ($filename != null) {
-                debug_log("wrote zip to:" . $filename);
                 // check its md5
                 $md5_sum = $this->get_archive_md5();
-                if ( $md5_sum == $file_md5 ) {
+                debug_log("wrote zip to:" . $filename . ", old md5:" . $md5_sum . ", current md5:" . $file_md5);
+                if ( $md5_sum != $file_md5 ) {
                     debug_log('site content has changed (md5) (' . $file_md5 . ')');
 
                     if (!$this->upload_archive($server, $organisationId, $kb["kbId"], $kb["sid"], $filename)) {
@@ -805,8 +805,8 @@ class simsage_admin
                 }
                 // done!
                 $zip->close();
-                debug_log("finished writing " . $filename);
                 $file_md5 = md5( $bot_md5 . $synonym_md5 . $content_md5 );
+                debug_log("finished writing " . $filename . ", md5s: " . $content_md5 . "," . $synonym_md5 . "," . $bot_md5 . "=>" . $file_md5);
                 return array($filename, $file_md5);
 
             } else {
