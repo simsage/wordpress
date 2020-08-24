@@ -529,7 +529,7 @@ class simsage_admin
             }
 
             // and index / re-index the data associated with this site
-            $file_md5 = $this->create_content_zip( $plan, $include_pages, $include_bot, $include_synonyms );
+            $file_md5 = $this->create_content_archive( $plan, $include_pages, $include_bot, $include_synonyms );
             $filename = $file_md5[0];
             $file_md5 = $file_md5[1];
             if ($filename != null) {
@@ -539,7 +539,7 @@ class simsage_admin
                 if ( $md5_sum != $file_md5 ) {
                     debug_log('site content has changed (md5) (' . $file_md5 . ')');
 
-                    if (!$this->upload_archive($server, $organisationId, $kb["kbId"], $kb["sid"], $filename)) {
+                    if (!$this->upload_archive( $server, $organisationId, $kb["kbId"], $kb["sid"], $filename )) {
                         return false;
                     }
 
@@ -743,7 +743,7 @@ class simsage_admin
 
 
     /**
-     * Create a zip file of all the content we're to send to SimSage in the temp folder of this machine
+     * Create a gzip file of all the content we're to send to SimSage in the temp folder of this machine
      * return its file-name on success, or null on failure (and sets a settings-error in that case)
      * Queries the WordPress database (wpdb) for its content
      *
@@ -753,18 +753,20 @@ class simsage_admin
      * @param $include_synonyms bool include the synonyms in the archive
      * @return array the filename to the zip-file in its temporary file location and its md5 sum or (null, null)
      */
-	private function create_content_zip( $plan, $include_pages, $include_bot, $include_synonyms ) {
+	private function create_content_archive($plan, $include_pages, $include_bot, $include_synonyms ) {
 	    if ( $plan != null ) {
 	        if ( !$include_pages && !$include_bot && !$include_synonyms ) {
 	            return null;
             }
 	        $registration_key = get_registration_key();
-            $zip = new ZipArchive();
-            $plugin_options = get_option(PLUGIN_NAME);
+
             $filename = tempnam(get_temp_dir(), "simsage");
+            $archive_file = fopen($filename, "wb");
+
+            $plugin_options = get_option(PLUGIN_NAME);
             $num_docs = $plan["numDocs"];
             $num_qas = $plan["numQA"];
-            if ($zip->open($filename, ZipArchive::CREATE | ZIPARCHIVE::OVERWRITE)) {
+            if ($archive_file) {
                 debug_log("starting " . $filename);
 
                 // add our bot teachings for SimSage?
@@ -783,7 +785,7 @@ class simsage_admin
                     }
                     if ( count($qa_list) > 0 ) {
                         debug_log("adding bot Q&A items to " . $filename);
-                        $bot_md5 = add_bot_qas_to_zip( $zip, $qa_list, $num_qas );
+                        $bot_md5 = add_bot_qas_to_archive( $archive_file, $qa_list, $num_qas );
                     }
                 }
 
@@ -796,20 +798,37 @@ class simsage_admin
                     }
                     if (count($synonyms_list) > 0) {
                         debug_log("adding synonyms to " . $filename);
-                        $synonym_md5 = add_synonyms_to_zip( $zip, $synonyms_list );
+                        $synonym_md5 = add_synonyms_to_archive( $archive_file, $synonyms_list );
                     }
                 }
 
                 // add WordPress content to our zip file to send to SimSage
                 $content_md5 = "";
                 if ( $include_pages ) {
-                    $content_md5 = add_wp_contents_to_zip( $registration_key, $zip, $num_docs );
+                    $content_md5 = add_wp_contents_to_archive( $registration_key, $archive_file, $num_docs );
                 }
-                // done!
-                $zip->close();
-                $file_md5 = md5( $bot_md5 . $synonym_md5 . $content_md5 );
-                debug_log("finished writing " . $filename . ", md5s: " . $content_md5 . "," . $synonym_md5 . "," . $bot_md5 . "=>" . $file_md5);
-                return array($filename, $file_md5);
+                // done writing the archive file
+                fclose( $archive_file );
+
+                // compress it!
+                $filename_compressed = tempnam(get_temp_dir(), "simsage-compressed");
+                if ( compress_file( $filename, $filename_compressed ) ) {
+
+                    // remove the archive file - we're done with it!
+                    if (!unlink( $filename )) {
+                        debug_log("warning: could not delete file \"" . $filename . "\"");
+                    }
+
+                    $file_md5 = md5($bot_md5 . $synonym_md5 . $content_md5);
+                    debug_log("finished writing " . $filename_compressed . ", content md5s: " . $content_md5 . "," . $synonym_md5 . "," . $bot_md5 . "=>" . $file_md5);
+                    return array($filename_compressed, $file_md5);
+
+                } else {
+                    // failed - remove the archive file
+                    if (!unlink( $filename )) {
+                        debug_log("warning: could not delete file \"" . $filename . "\"");
+                    }
+                }
 
             } else {
                 add_settings_error('simsage_settings', 'simsage_archive_error', "Failed to create archive file(s) (could not create a temporary file on your system)", $type = 'error');

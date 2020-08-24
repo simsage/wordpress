@@ -23,6 +23,7 @@ define( 'SIMSAGE_REGO_SERVER', 'https://simsage.ai');
 // SimSage special content file-names - do not change these
 // these are used to transmit Bot, synonym, and semantic information to SimSage
 // alongside other content from WordPress
+define( 'DOC_WP_DATA', '-simsage-wp.txt');
 define( 'DOC_BOT_DATA', '-simsage-bot.txt');
 define( 'DOC_SYNONYM_DATA', '-simsage-synonyms.txt');
 define( 'DOC_SEMANTIC_DATA', '-simsage-semantics.txt');

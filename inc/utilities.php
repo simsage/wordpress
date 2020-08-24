@@ -76,19 +76,21 @@ function get_json( $data ) {
 
 
 /**
- * query word-press' content and add all published items to a zip archive
+ * query word-press' content and add all published items to an archive
  *
  * @param $registration_key string the system's registration key
- * @param $zip ZipArchive a zip archive to add items to
+ * @param $archive_file resource an archive file to write to
  * @param $num_docs int the maximum number of allowed documents for this site as per plan
  * @return string the combined md5s of the content
  */
-function add_wp_contents_to_zip( $registration_key, $zip, $num_docs ) {
+function add_wp_contents_to_archive($registration_key, $archive_file, $num_docs ) {
     global $wpdb;
     $query = "SELECT * FROM $wpdb->posts WHERE post_status = 'publish'";
     $results = $wpdb->get_results($query);
     $counter = 1;
     $md5_str = md5( $registration_key );
+    // write the marker to file
+    fwrite( $archive_file, DOC_WP_DATA . "\n", strlen(DOC_WP_DATA) + 1 );
     debug_log("md5 rego-key:" . $md5_str);
     foreach ($results as $row) {
         $obj = $row;
@@ -114,7 +116,8 @@ function add_wp_contents_to_zip( $registration_key, $zip, $num_docs ) {
         // no CRs please
         $base64Str = str_replace("\n", "", $base64Str);
         $str = $str . $base64Str . "\n";
-        $zip->addFromString($counter . ".html", $str);
+        // write the item to file
+        fwrite( $archive_file, $str, strlen($str) );
         $counter += 1;
         $md5_str = md5( $md5_str . $str );
 
@@ -132,16 +135,17 @@ function add_wp_contents_to_zip( $registration_key, $zip, $num_docs ) {
 
 
 /**
- * Add all bot QA items to the zip file passed in as a string in a file called DOC_BOT_DATA
+ * Add all bot QA items to an archive file passed in as a string in marked by DOC_BOT_DATA
  *
- * @param $zip ZipArchive a zip archive to add items to
+ * @param $archive_file resource the file to write to
  * @param $qa_list array a list of Question and Answer items
  * @param $num_qas int the maximum number of QAs allowed
  * @return string the md5 of the content (or empty string)
  */
-function add_bot_qas_to_zip( $zip, $qa_list, $num_qas ) {
+function add_bot_qas_to_archive($archive_file, $qa_list, $num_qas ) {
     $str = "";
     $counter = 0;
+    fwrite( $archive_file, DOC_BOT_DATA . "\n", strlen(DOC_BOT_DATA) + 1 );
     foreach ($qa_list as $qa) {
         if ( strlen(trim($qa["question"])) > 0 && strlen(trim($qa["answer"])) > 0 ) {
             // format: id | question | answer | context | link \n
@@ -157,7 +161,7 @@ function add_bot_qas_to_zip( $zip, $qa_list, $num_qas ) {
         }
     }
     if ( strlen($str) > 0 ) {
-        $zip->addFromString(DOC_BOT_DATA, $str);
+        fwrite( $archive_file, $str, strlen($str) );
         return md5( $str );
     }
     return "";
@@ -165,14 +169,15 @@ function add_bot_qas_to_zip( $zip, $qa_list, $num_qas ) {
 
 
 /**
- * Add all Synonyms to the zip file passed in as a string in a file called DOC_SYNONYM_DATA
+ * Add all Synonyms to an archive file passed in as a string marked DOC_SYNONYM_DATA
  *
- * @param $zip ZipArchive a zip archive to add items to
+ * @param $archive_file resource an archive file to write to
  * @param $synonym_list array a list of synonym items
  * @return string the md5 of the content or empty string
  */
-function add_synonyms_to_zip( $zip, $synonym_list ) {
+function add_synonyms_to_archive($archive_file, $synonym_list ) {
     $str = "";
+    fwrite( $archive_file, DOC_SYNONYM_DATA . "\n", strlen(DOC_SYNONYM_DATA) + 1 );
     foreach ($synonym_list as $synonym) {
         if ( strlen(trim($synonym["words"])) > 0 ) {
             // format: url | title | mimeType | created | last-modified | data
@@ -181,7 +186,7 @@ function add_synonyms_to_zip( $zip, $synonym_list ) {
         }
     }
     if ( strlen($str) > 0 ) {
-        $zip->addFromString(DOC_SYNONYM_DATA, $str);
+        fwrite( $archive_file, $str, strlen($str) );
         return md5( $str );
     }
     return "";
@@ -422,3 +427,56 @@ function setup_cron_job( $admin ) {
     }
     add_action('simsage_twicedaily', array($admin, 'cron_upload_archive') );
 }
+
+
+/**
+ * @param $in_filename  string the file to read and compress
+ * @param $out_filename string the gzip file to create from in_filename
+ * @return bool true if successful in creating the archive
+ */
+function compress_file($in_filename, $out_filename) {
+    $in_file = fopen($in_filename, "rb");
+    if ($in_file !== FALSE) {
+        $out_file = fopen($out_filename, "wb");
+        if ($out_file !== FALSE) {
+            // write gzip header
+            fwrite($out_file, "\x1F\x8B\x08\x08".pack("V", filemtime($in_filename))."\0\xFF", 10);
+            // write the original file name
+            $out_name = str_replace("\0", "", basename($in_filename));
+            fwrite($out_file, $out_name."\0", 1+strlen($out_name));
+            // add the deflate filter using default compression level
+            $filter = stream_filter_append($out_file, "zlib.deflate", STREAM_FILTER_WRITE, -1);
+            // set up the CRC32 hashing context
+            $hash_context = hash_init("crc32b");
+            // turn off the time limit
+            if (!ini_get("safe_mode")) set_time_limit(0);
+            $con = TRUE;
+            $file_size = 0;
+            while (($con !== FALSE) && !feof($in_file)) {
+                // deflate works best with buffers >32K
+                $con = fread($in_file, 64 * 1024);
+                if ($con !== FALSE) {
+                    hash_update($hash_context, $con);
+                    $str_len = strlen($con);
+                    $file_size += $str_len;
+                    fwrite($out_file, $con, $str_len);
+                }
+            }
+            // remove the deflate filter
+            stream_filter_remove($filter);
+            // write the CRC32 value
+            // hash_final is a string, not an integer
+            $crc = hash_final($hash_context, TRUE);
+            // need to reverse the hash_final string so it's little endian
+            fwrite($out_file, $crc[3].$crc[2].$crc[1].$crc[0], 4);
+            // write the original uncompressed file size
+            fwrite($out_file, pack("V", $file_size), 4);
+            fclose($out_file);
+
+            return TRUE;
+        }
+        fclose($in_file);
+    }
+    return FALSE;
+}
+
