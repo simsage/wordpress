@@ -1,0 +1,116 @@
+
+.search-details {
+    position: absolute;
+    z-index: 10;
+    margin-top: 10px;
+    margin-left: 50px;
+    border-collapse: collapse;
+    width: 900px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #878787;
+}
+
+.search-details .header {
+    float: left;
+    width: 892px;
+}
+
+.search-details .details-text {
+    float: left;
+    margin-left: 10px;
+    margin-top: 4px;
+    color: #454545;
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    cursor: default;
+}
+
+.search-details .close-box {
+    cursor: pointer;
+    float: right;
+}
+
+.search-details .close-text {
+    float: right;
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    font-size: 0.9em;
+    color: #878787;
+    margin-top: 4px;
+    margin-right: 8px;
+}
+
+.search-details .close-image {
+    float: right;
+    margin-top: 4px;
+    width: 16px;
+    height: 16px;
+}
+
+.search-details .spacer {
+    height: 40px;
+}
+
+/* the table */
+
+.search-details .detail-table {
+    max-width: 892px;
+    width: 892px;
+    height: 500px;
+    max-height: 500px;
+    overflow: auto;
+}
+
+.search-details .row-height {
+}
+
+.search-details .align-top {
+    vertical-align: top;
+}
+
+.search-details .detail {
+    padding: 2px;
+}
+
+.search-details .preview-image {
+    max-width: 360px;
+    width: 360px;
+    height: 480px;
+    max-height: 480px;
+}
+
+.search-details .label {
+    margin-left: 10px;
+    margin-bottom: 4px;
+    vertical-align: top;
+    display: inline-block;
+    width: 180px;
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    color: #454545;
+    font-size: 12px;
+    cursor: default;
+}
+
+.search-details .text {
+    vertical-align: top;
+    margin-bottom: 4px;
+    display: inline-block;
+    width: 300px;
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    color: #454545;
+    font-size: 12px;
+    cursor: default;
+}
+
+.search-details .url {
+    vertical-align: top;
+    margin-bottom: 4px;
+    display: inline-block;
+    width: 300px;
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    color: #1e74ff;
+    font-size: 12px;
+    cursor: pointer;
+}

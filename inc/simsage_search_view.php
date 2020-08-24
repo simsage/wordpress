@@ -45,87 +45,349 @@
 
 </script>
 
-<!-- filter button, search bar, and search button -->
-<div class="centered-page">
-	<div class="search-control">
-		<div class="advanced-search-button advanced-search no-select input-properties" title="advanced search"
-             onclick="search.toggle_advanced_search()" style="<?php echo $this->get_user_boolean_value_conditionally("simsage_adv_filter", 'display: none;') ?>">
-            <div class="select-text">filter <span class="advanced-search-arrow">&#9660;</span></div>
-		</div>
-		<div class="search-text-box input-properties">
-			<input type="text" class="input-text search-box input-properties" onclick="search.hide_advanced_search()"
-                   onkeyup="search.search_key_press(event, this.value)">
-		</div>
-		<div class="search-button-box input-properties" title="search" onclick="search.search_click()">
-			<img src="<?php echo $this->asset_folder . 'images/search.svg'?>" class="search-image" alt="search">
-		</div>
-		<div class="operator-selector operator-button-box input-properties" title="call operator" onclick="search.getOperatorHelp()"
-             style="<?php echo $this->get_user_boolean_value_conditionally("use_operator", 'display: none;') ?>">
-			<img src="<?php echo $this->asset_folder . 'images/operator.svg'?>" class="operator-image" alt="call operator">
-		</div>
-	</div>
+<!-- ******************************************************************************* -->
+<!-- [ search box | search button | search options | spacer | chat ] -->
+<table class="search-table">
+    <tr class="search-row">
+        <!-- left bubble -->
+        <td class="left-bubble">
+        </td>
+        <!-- search box -->
+        <td class="search-text-box">
+            <label class="search-text-label" title="ask SimSage">
+                <input type="text" value="" class="search-text" onkeypress="search_typing(event)">
+            </label>
+        </td>
+        <!-- search clear (cross) -->
+        <td class="search-button-box" title="clear your query" onclick="clear_search()">
+                <span class="search-button-span-box">
+                    <img src="<?php echo $this->asset_folder . 'images/light-close.svg'?>" alt="select" class="clear-button-image">
+                </span>
+        </td>
+        <!-- search button (magnification glass) -->
+        <td class="search-button-box" title="query SimSage" onclick="do_search()">
+                <span class="search-button-span-box">
+                    <img src="<?php echo $this->asset_folder . 'images/magnification-glass.svg'?>" alt="select" class="search-button-image">
+                </span>
+        </td>
+        <td class="search-grey-divider">
+            <div class="vl"></div>
+        </td>
+        <!-- search options button and chevron -->
+        <td class="search-options-button" title="Search options" onclick="show_filter()">
+            <span class="search-options-text">Search Options</span>
+            <span class="search-options-chevron-box">
+                    <img src="<?php echo $this->asset_folder . 'images/chevron-down.svg'?>" alt="select" class="search-options-chevron">
+                </span>
+        </td>
+        <!-- right bubble -->
+        <td class="right-bubble">
+        </td>
+        <!-- blank space between control and contact us -->
+        <td class="blank-space-box">
+            <span class="blank-space">&nbsp;</span>
+        </td>
+        <td class="left-bubble-small">
+        </td>
+        <!-- chat with us button online -->
+        <td class="chat-with-us-online"  title="Chat with us" onclick="show_chat()">
+                <span class="chat-with-us-image-box">
+                    <img src="<?php echo $this->asset_folder . 'images/chat.svg'?>" alt="select" class="chat-with-us-image">
+                </span>
+            <span class="chat-with-us-text-box-online">
+                    Chat
+                </span>
+        </td>
+        <td class="right-bubble-small">
+        </td>
+    </tr>
+</table>
 
 
-    <!-- advanced search button and menu -->
-	<div class="advanced-search-area" style="display: none;">
-		<div class="floaty">
-			<div class="adv-search-row">
-				<span class="search-label">document type</span>
-				<select name="document-type" class="adv-search-item-select input-properties" onchange="search.update_advanced_search({'type': this.options[this.selectedIndex].value.split(',')})">
-					<option value="">not selected</option>
-					<option value="html,htm">web pages</option>
-					<option value="doc,docx">word documents</option>
-					<option value="pdf">PDF documents</option>
-					<option value="xls,xlsx">spreadsheets</option>
-					<option value="jpg,jpeg,png,gif">images</option>
-				</select>
-			</div>
-			<div class="adv-search-row">
-				<span class="search-label">title</span>
-				<input class="metadata-text input-properties" placeholder="title filter" type="text" onkeyup="search.update_advanced_search({'title': [this.value]})" />
-			</div>
-			<div class="adv-search-row">
-				<span class="search-label">url</span>
-				<input class="metadata-text input-properties" placeholder="url filter" type="text" onkeyup="search.update_advanced_search({'url': [this.value]})" />
-			</div>
-			<div class="adv-search-row">
-				<span class="search-label">author</span>
-				<input class="metadata-text input-properties" placeholder="author filter" type="text" onkeyup="search.update_advanced_search({'author': [this.value]})" />
-			</div>
-			<div class="button-row">
-				<div class="metadata-buttons input-properties" title="clear all filters"
-                     onclick="search.clear_advanced_search()">clear</div>
-			</div>
-		</div>
-	</div>
-
-    <!-- error message display bar -->
-    <div class="error-dialog">
-        <span class="close-button" onclick="this.parentElement.style.display='none'; search.close_error();">&times;</span>
-        <div class="error-text"></div>
+<!-- ****************************** -->
+<!-- Detail view of a specific item -->
+<div class="search-details" style="display: none;">
+    <div class="header">
+        <span class="details-text" title="details">DETAILS</span>
+        <span onclick="close_details()" title="Close" class="close-box">
+                <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
+                <span class="close-text">Close</span>
+            </span>
     </div>
-
-    <!-- semantic search details page -->
-    <div class="details-page">
+    <div class="spacer"></div>
+    <div class="detail-table">
     </div>
-
-    <!-- speech bubble for assistant replies -->
-	<div class="bubble-speech-container">
-        <div class="bubble-left">
-            <div class="bubble-speaker-icon"><img src="<?php echo $this->asset_folder . 'images/human.svg'?>" alt="SimSage image" class="bubble-speaker-icon-image" title="SimSage" /></div>
-            <div class="bubble-close-icon" title="close this speech bubble" onclick="search.hide_speech_bubble()">
-                <img src="<?php echo $this->asset_folder . 'images/dark-close.svg' ?>" alt="close" class="bubble-close-image"/>
-            </div>
-            <div class="bubble-text"></div>
-        </div>
-		<div class="bot-buttons"></div>
-	</div>
-
-    <!-- semantic search results container -->
-    <div class="search-centered-page">
-    </div>
-
-    <div class="no-results-centered-page">
-    </div>
-
 </div>
+
+
+
+<!-- ************************* -->
+<!-- the operator/bot chat box -->
+<div class="operator-chat-box" style="display: none;">
+    <div class="speech-bubble">
+        <div class="div-close" onclick="close_chat()" title="Close chat">
+            <span class="close-text">Close chat</span>
+            <span><img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" /></span>
+        </div>
+        <table class="chat-table">
+        </table>
+    </div>
+    <div class="chat-bar-bottom">
+            <span class="chat-text-box">
+                <label class="chat-box-text">
+                    <input type="text" placeholder="Type your message" class="chat-text" title="Type your message"
+                           onkeypress="chat_typing(event)">
+                </label>
+            </span>
+        <span class="chat-button" title="Send" onclick="do_chat()">
+                <span class="chat-send-text">Send</span>
+            </span>
+    </div>
+</div>
+
+
+<!-- ************************** -->
+<!-- advanced search filter box -->
+<div class="filter-box" style="display: none;">
+    <div class="speech-bubble">
+        <div class="title">
+            <span class="search-by-text" title="Search by:">SEARCH BY:</span>
+            <span onclick="close_filter()" title="Close" class="close-box">
+                    <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
+                    <span class="close-text">Close</span>
+                </span>
+        </div>
+        <table class="filter-table">
+            <tr class="tr-1">
+
+                <td class="col-1 sign-in-box" style="display: none;">
+                    <span class="category-text">Sign-in</span>
+                    <div class="category-item">
+                        <label class="sign-in-sel">
+                            <select name="sign-in" class="category-select dd-sign-in" onchange="">
+                            </select>
+                        </label>
+                    </div>
+                </td>
+                <td class="col-2 sign-in-text" style="display: none;">
+                        <span class="clear-text" title="sign-in"
+                              onclick="show_sign_in()">sign-in</span>
+                </td>
+                <td class="col-2 sign-out-text" style="display: none;">
+                        <span class="clear-text" title="sign-out"
+                              onclick="do_sign_out()">sign-out</span>
+                </td>
+
+                <td class="col-1">
+                    <span class="category-text">Document Type</span>
+                    <div class="category-item">
+                        <label class="document-type-sel">
+                            <select name="document-type" class="category-select" onchange="">
+                                <option value="">All Document Types</option>
+                                <option value="html,htm">Web</option>
+                                <option value="doc,docx">Word</option>
+                                <option value="pdf">PDF</option>
+                                <option value="xls,xlsx">Excel</option>
+                                <option value="jpg,jpeg,png,gif">Images</option>
+                            </select>
+                        </label>
+                    </div>
+                </td>
+                <td class="col-2">
+                        <span class="clear-text" title="Clear Document Type"
+                              onclick="reset_selection('document-type-sel')">Clear</span>
+                </td>
+
+                <td class="col-1">
+                    <span class="category-text">Knowledge Base</span>
+                    <div class="category-item">
+                        <label class="knowledge-base-sel">
+                            <select name="knowledge-base" class="category-select dd-knowledge-base"
+                                    onchange="do_change_kb()">
+                            </select>
+                        </label>
+                    </div>
+                </td>
+                <td class="col-2">
+                </td>
+
+                <td class="col-1">
+                    <span class="category-text">Source</span>
+                    <div class="category-item">
+                        <label class="source-sel">
+                            <select name="source" class="category-select dd-source">
+                            </select>
+                        </label>
+                    </div>
+                </td>
+                <td class="col-2">
+                    <span class="clear-text" title="Clear Source" onclick="reset_selection('source-sel')">Clear</span>
+                </td>
+
+                <td class="col-1" colspan="2">
+                    <span class="category-text">Title</span>
+                    <div class="category-item">
+                        <label>
+                            <input type="text" placeholder="Enter Title" class="category-input title-text" title="Enter Title">
+                        </label>
+                    </div>
+                </td>
+
+                <td class="col-1" colspan="2">
+                    <span class="category-text">URL</span>
+                    <div class="category-item">
+                        <label>
+                            <input type="text" placeholder="Enter URL" class="category-input url-text" title="Enter URL">
+                        </label>
+                    </div>
+                </td>
+
+                <td class="col-1" colspan="2">
+                    <span class="category-text">Author</span>
+                    <div class="category-item">
+                        <label>
+                            <input type="text" placeholder="Enter Author" class="category-input author-text" title="Enter Author">
+                        </label>
+                    </div>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+    <div class="bar-bottom">
+            <span class="clear-text-box">
+                <span class="clear-all-text" title="Clear all" onclick="clear_all()">Clear all</span>
+            </span>
+        <span class="done-button" title="Done" onclick="close_filter()">
+                <span class="done-text">Done</span>
+            </span>
+    </div>
+</div>
+
+
+<!-- ***************** -->
+<!-- Sign-in dialog box -->
+<div class="search-sign-in" style="display: none;">
+    <div class="search-sign-in-area">
+        <div class="header">
+            <span class="title sign-in-title" title="Sign-in">sign-in</span>
+            <span onclick="close_sign_in()" title="Close" class="close-box">
+                    <span class="close-text">Close</span>
+                    <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
+                </span>
+        </div>
+        <span class="category-text">username</span>
+        <div class="category-item">
+            <label>
+                <input type="text" placeholder="your username" class="category-input user-name" title="your username">
+            </label>
+        </div>
+        <span class="category-text">password</span>
+        <div class="category-item">
+            <label>
+                <input type="password" placeholder="your password" class="category-input password" title="your password">
+            </label>
+        </div>
+        <div class="spacer"></div>
+    </div>
+    <div class="bar-bottom">
+            <span class="clear-text-box">
+            </span>
+        <span class="sign-in-button" title="sign-in" onclick="do_sign_in()">
+                <span class="sign-in-text">sign-in</span>
+            </span>
+    </div>
+</div>
+
+
+<!-- ********************* -->
+<!-- Search result display -->
+<div class="search-results" style="display: none;">
+    <div class="speech-bubble">
+        <div class="pagination-box">
+        </div>
+        <div class="clear"></div>
+        <table class="search-result-table">
+            <tr>
+                <!-- this is where the search results are rendered into -->
+                <td class="search-results-td">
+                </td>
+                <!-- this is where the categories of semantics go -->
+                <td class="category-items">
+                </td>
+            </tr>
+        </table>
+        <div class="clear"></div>
+        <div class="pagination-box">
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+
+<!-- ***************** -->
+<!-- NO Search results -->
+<div class="no-search-results" style="display: none;">
+    <div class="no-results-found-box">
+        <span class="no-results-found">No Results found for</span>
+        <span class="not-found-words">&nbsp</span>
+        <span onclick="close_no_results()" title="Close" class="close-box">
+                <span class="close-text">Close</span>
+                <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
+            </span>
+    </div>
+    <div class="no-results-text">
+        If you would like us to follow up on your query by email, please enter your email address and we'll
+        get back to you with a response within 24 hours
+    </div>
+    <!-- email text box -->
+    <div>
+            <span class="email-text-box">
+                <label class="email-address-text">
+                    <input type="text" placeholder="Enter your email address" title="Enter your email address"
+                           onkeypress="email_typing(event)" class="email-text">
+                </label>
+            </span>
+        <span class="send-button float-left" title="Send" onclick="do_email()">
+                <span class="send-text">Send</span>
+            </span>
+    </div>
+    <!-- chat to one of our operators -->
+    <div class="chat-spacer"></div>
+    <div class="chat-to-operator">
+        Or chat to one of our operators
+    </div>
+    <!-- chat with us button online -->
+    <div class="online">
+            <span class="chat-with-us-online" title="Chat with us" onclick="show_chat()">
+                <span class="chat-with-us-image-box">
+                    <img src="<?php echo $this->asset_folder . 'images/chat.svg'?>" alt="select" class="chat-with-us-image">
+                </span>
+                <span class="chat-with-us-text-box-online">
+                    Chat
+                </span>
+            </span>
+    </div>
+    <div class="chat-spacer"></div>
+</div>
+
+
+<!-- ***************** -->
+<!-- Error dialog box -->
+<div class="error-dialog" style="display: none;">
+    <div class="header">
+        <span class="title" title="an error occurred">ERROR</span>
+        <span onclick="close_error()" title="Close" class="close-box">
+                <span class="close-text">Close</span>
+                <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
+            </span>
+    </div>
+    <div class="error-text"></div>
+    <div class="error-spacer"></div>
+</div>
+
+
+<script lang="js">
+
+
+</script>
