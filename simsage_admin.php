@@ -225,7 +225,9 @@ class simsage_admin
 
             } else {
                 // try and sign-into SimSage given the user's key
-                $json = get_json(wp_remote_post(join_urls(SIMSAGE_API_SERVER, '/api/auth/sign-in-registration-key'),
+                $url = join_urls(SIMSAGE_API_SERVER, '/api/auth/sign-in-registration-key');
+                debug_log("sign-in url:" . $url);
+                $json = get_json(wp_remote_post($url,
                     array('timeout' => JSON_POST_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                         'body' => '{"registrationKey": "' . trim($registration_key) . '"}')));
                 $error_str = check_simsage_json_response(SIMSAGE_API_SERVER, $json);
