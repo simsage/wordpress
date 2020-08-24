@@ -43,8 +43,6 @@
         image_types: [".jpg", ".jpeg", ".png", ".gif", ".svg"],
     };
 
-    console.log(settings);
-
 </script>
 
 <!-- filter button, search bar, and search button -->
