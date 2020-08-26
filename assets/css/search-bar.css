@@ -18,6 +18,7 @@ tr {
 table {
     padding: 0 !important;
     border: 0 solid;
+    margin: 0 !important;
 }
 
 tbody {
@@ -31,7 +32,7 @@ tbody {
     border-style: hidden;
 }
 
-.search-table .search-row {
+.search-row {
     border-collapse: collapse;
     border-style: hidden;
     display: inline-block;

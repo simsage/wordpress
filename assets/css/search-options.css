@@ -2,7 +2,7 @@
 .filter-box-view {
     position: absolute;
     z-index: 999;
-    left: min(calc(50% - 200px), 300px) !important;  /* aligns with rhs of contact us */
+    left: min(calc(30% - 200px), 300px) !important;  /* aligns with rhs of contact us */
     width: 400px !important;
 }
 

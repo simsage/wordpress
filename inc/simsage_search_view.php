@@ -45,9 +45,10 @@
 
 </script>
 
-<!-- ******************************************************************************* -->
-<!-- [ search box | search button | search options | spacer | chat ] -->
 <table class="search-table">
+
+    <!-- ******************************************************************************* -->
+    <!-- [ search box | search button | search options | spacer | chat ] -->
     <tr class="search-row">
         <!-- left bubble -->
         <td class="left-bubble">
@@ -134,10 +135,10 @@
     <!-- ************************* -->
     <!-- the operator/bot chat box -->
     <tr class="search-row operator-chat-box-view" style="display: none;">
-        <td colspan="13">
+        <td>
             <table class="operator-chat-box">
                 <tr class="speech-bubble">
-                    <td class="search-row">
+                    <td colspan="2" class="operator-close-width">
                         <div class="div-close" onclick="close_chat()" title="Close chat">
                             <span class="close-text">Close chat</span>
                             <span><img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" /></span>
@@ -165,7 +166,7 @@
 
     <!-- ************************** -->
     <!-- advanced search filter box -->
-    <tr class="filter-search-row filter-box-view" style="display: none;">
+    <tr class="search-row filter-box-view" style="display: none;">
         <td>
             <div class="filter-box" >
                 <div class="speech-bubble">
