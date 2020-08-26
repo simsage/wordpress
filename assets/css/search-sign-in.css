@@ -2,7 +2,7 @@
 .search-sign-in {
     position: absolute;
     z-index: 999;
-    left: min(312px, calc(50% - 200px));
+    left: min(312px, calc(30% - 200px));
     margin-top: 20px;
     max-width: 1024px;
 }
@@ -19,7 +19,7 @@
 }
 
 .search-sign-in .header {
-    width: 395px;
+    width: 365px;
     margin-bottom: 20px;
 }
 
@@ -84,7 +84,7 @@
 
 .search-sign-in .clear-text-box {
     float: left;
-    width: 350px;
+    width: 310px;
     height: 48px;
     border-bottom-left-radius: 10px;
     background-color: #ffffff;

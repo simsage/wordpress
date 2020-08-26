@@ -317,11 +317,11 @@
         <div class="spacer"></div>
     </div>
     <div class="bar-bottom">
-            <span class="clear-text-box">
-            </span>
+        <span class="clear-text-box">
+        </span>
         <span class="sign-in-button" title="sign-in" onclick="do_sign_in()">
-                <span class="sign-in-text">sign-in</span>
-            </span>
+            <span class="sign-in-text">sign-in</span>
+        </span>
     </div>
 </div>
 
