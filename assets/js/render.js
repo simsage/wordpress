@@ -99,6 +99,19 @@ function esc_html(str) {
 
 
 /**
+ * split a url by adding extra spaces around / _ -
+ * @param url the url string
+ * @return the same string with some spaces added to it
+ */
+function split(url) {
+    return url
+        .replace(/\//g, "/ ")
+        .replace(/-/g, "- ")
+        .replace(/_/g, "_ ")
+}
+
+
+/**
  * render the query that didn't yield any results
  */
 function render_no_results(str) {
@@ -127,22 +140,23 @@ function render_url(url) {
  */
 function render_search_text_result(id, url, title, fragment, fragment_index, num_fragments) {
     let str = "<div class=\"search-result\">\n" +
-        "    <table>\n" +
-        "        <tr>\n" +
+        "    <table class=\"search-result-inside-table\">\n" +
+        "    <tbody class=\"search-result-inside-table\">\n" +
+        "        <tr class=\"tr-1\">\n" +
         "            <td title=\"visit [url]>\" class=\"search-text-width\">\n" +
-        "                <a href=\"[url]\" target=\"_blank\"><span class=\"url-text\">[url]</span></a>\n" +
+        "                <a href=\"[url]\" target=\"_blank\"><span class=\"url-text\">[split-url]</span></a>\n" +
         "            </td>\n" +
-        "            <td rowspan=\"4\" title=\"view more details\" onclick=\"show_details([id]);\">\n" +
+        "            <td rowspan=\"4\" title=\"view more details\" onclick=\"show_details([id]);\" class=\"search-image-width\">\n" +
         "                <img src=\"[thumbnail_src]\" alt=\"[title]\" class=\"result-image\"/>\n" +
         "            </td>\n" +
         "        </tr>\n" +
-        "        <tr>\n" +
+        "        <tr class=\"tr-1\">\n" +
         "            <td title=\"view more details\" onclick=\"show_details([id]);\"><span class=\"title-text\">[title]</span></td>\n" +
         "        </tr>\n" +
-        "        <tr>\n" +
+        "        <tr class=\"tr-1\">\n" +
         "            <td><span class=\"result-text\">[fragment]</span></td>\n" +
         "        </tr>\n" +
-        "        <tr>\n" +
+        "        <tr class=\"tr-1\">\n" +
         "            <td class=\"navigate-td\">\n";
         if (fragment_index > 0) {
             str += "                <span class=\"navigate-left\" title=\"view the previous relevant fragment in this document\" onclick=\"prev_fragment([id]);\"><img src=\"images/left.svg\" class=\"navigate-left-image\" alt=\"previous\" /></span>\n";
@@ -157,6 +171,7 @@ function render_search_text_result(id, url, title, fragment, fragment_index, num
         str += "                <span class=\"navigate-text\" title=\"Scroll through other relevant search results on this page\">Scroll through other relevant search results on this page</span>\n" +
         "            </td>\n" +
         "        </tr>\n" +
+        "    </tbody>\n" +
         "    </table>\n" +
         "</div>\n";
     const fragment_str = esc_html(fragment)
@@ -166,6 +181,7 @@ function render_search_text_result(id, url, title, fragment, fragment_index, num
         .replace(/{:hl2}/g, "</span>");
     str = str
         .replace(/\[url]/g, esc_html(url))
+        .replace(/\[split-url]/g, esc_html(split(url)))
         .replace(/\[id]/g, esc_html(id))
         .replace(/\[thumbnail_src]/g, search.get_preview_url() + '/' + esc_html(id) + '/-1')
         .replace(/\[title]/g, title && title.length > 0 ? esc_html(title) : "(no title)")
@@ -332,8 +348,8 @@ function render_details(url_id, result_list) {
     let result = get_result_by_id(url_id, result_list);
     if (result === null) return "";
     let str = "<table>\n" +
-        "    <tr class=\"align-top\">\n" +
-        "        <td class=\"detail align-top\">\n";
+        "    <tr class=\"align-top whole-row\">\n" +
+        "        <td class=\"align-top row-1\">\n";
 
     str += render_single_detail_url("url", result.url);
     if (result.title) {
@@ -397,7 +413,7 @@ function render_details(url_id, result_list) {
         }
     }
     str += "        </td>\n" +
-        "        <td rowspan=\"20\" class=\"align-top\">\n" +
+        "        <td rowspan=\"20\" class=\"image-row align-top\">\n" +
         "            <img src=\"[image]\" class=\"preview-image\" alt=\"page preview\" />\n" +
         "        </td>\n" +
         "    </tr>\n" +
@@ -449,7 +465,7 @@ function render_single_chat(chat_item) {
     str = str
         .replace(/\[who]/g, esc_html(chat_item.who))
         .replace(/\[when]/g, esc_html(chat_item.when))
-        .replace(/\[what]/g, esc_html(chat_item.what));
+        .replace(/\[what]/g, chat_item.what);
     return str;
 }
 
@@ -506,7 +522,7 @@ function render_single_category_item(title, item_obj_list) {
         if (item.frequency > 1) {
             frequency_str = " (" + item.frequency + ")";
         }
-        str += "  <div class=\"category-text\" title=\"further refine your search using " + item.word + "\"" +
+        str += "<div class=\"category-text\" title=\"further refine your search using " + item.word + "\"" +
                " onclick=\"add_search('" + esc_html(item.word) + "');\">" + adjust_size(esc_html(item.word), 20) + frequency_str + "</div>\n";
     }
     str += "</div>\n";
@@ -514,14 +530,51 @@ function render_single_category_item(title, item_obj_list) {
 }
 
 
+// render a synset
+function render_single_synset(synset, selected_syn_sets) {
+    const result = [];
+    const syn_set = SimSageCommon.get_synset(synset);
+    if (syn_set) {
+        const word = syn_set["word"];
+        const clouds = syn_set["clouds"];
+        const selected = selected_syn_sets[word.toLowerCase().trim()];
+        if (clouds.length > 1) {
+            result.push('<div class="synset-entry">');
+            result.push('<div class="synset-title" title="select different meanings of \'' + word +'\'">' + word + '</div>');
+            result.push('<select class="synset-selector" onchange=\'select_syn_set("' + word + '",this.selectedIndex - 1);\'>');
+            result.push('<option value="-1">all meanings</option>');
+            for (const i in clouds) {
+                if (clouds.hasOwnProperty(i)) {
+                    if (selected == i) {
+                        result.push('<option value="' + i + '" selected>' + clouds[i] + '</option>');
+                    } else {
+                        result.push('<option value="' + i + '">' + clouds[i] + '</option>');
+                    }
+                }
+            }
+            result.push('</select>');
+            result.push('</div>');
+        }
+    }
+    return result.join('\n');
+}
+
+
 /**
  * Render a dictionary of category-items
  *
+ * @param synset_list       the synsets
  * @param category_set      the set
+ * @param selected_syn_sets the user's synset selection
  * @return {string}         the render HTML
  */
-function render_category_items(category_set) {
+function render_category_items(synset_list, selected_syn_sets, category_set) {
     let str = "";
+    for (const key in synset_list) {
+        if (synset_list.hasOwnProperty(key)) {
+            str += render_single_synset(synset_list[key], selected_syn_sets);
+        }
+    }
     for (const key in category_set) {
         if (category_set.hasOwnProperty(key)) {
             str += render_single_category_item(key, category_set[key]);

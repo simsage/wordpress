@@ -1,12 +1,13 @@
 
 .no-search-results {
     margin-top: 25px;
-    margin-left: 50px;
+    margin-left: 5%;
     border: 0 solid;
     background-color: #ffffff;
-    width: 920px;
+    width: 80%;
     padding: 20px;
     border-radius: 10px;
+    max-width: 900px;
 }
 
 .no-search-results .close-box {
@@ -30,7 +31,7 @@
 
 .no-search-results .no-results-found-box {
     float: left;
-    width: 900px;
+    width: 100%;
     margin-bottom: 40px;
 }
 
@@ -61,7 +62,7 @@
 .no-search-results .email-text-box {
     background-color: #e3e3e3;
     border: 0 solid;
-    width: 820px;
+    width: 70%;
     float: left;
 }
 
@@ -84,7 +85,7 @@
     margin-left: 10px;
     border: 0 solid;
     height: 48px;
-    width: 800px;
+    width: 70%;
     color: #454545;
 }
 

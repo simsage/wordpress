@@ -2,8 +2,8 @@
 .error-dialog {
     position: absolute;
     z-index: 999;
-    width: 750px;
-    margin-left: 100px;
+    width: 70%;
+    margin-left: 10%;
     margin-top: 20px;
     background-color: #ffffff;
     padding: 20px;
@@ -12,7 +12,7 @@
 }
 
 .error-dialog .header {
-    width: 740px;
+    width: 100%;
     margin-bottom: 20px;
 }
 

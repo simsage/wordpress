@@ -12,7 +12,6 @@ class SimSageCommon {
         this.stompClient = null;      // the connection
         this.ws_base = settings.ws_base;    // endpoint
 
-        this.searching = false;     // was the engine performing a search or other duties?
         this.connection_retry_count = 1;
         // kb information
         this.kb_list = [];
@@ -28,7 +27,6 @@ class SimSageCommon {
 
     // get the knowledge-base information for this organisation (set in settings.js)
     init_simsage() {
-        this.searching = false;  // we're not performing a search
         const self = this;
         const url = settings.base_url + '/knowledgebase/search/info/' + encodeURIComponent(settings.organisationId);
 
@@ -55,10 +53,18 @@ class SimSageCommon {
                 self.connect();
                 // setup is-typing check
                 window.setInterval(() => self.operator_is_typing(false), 1000);
+                // focus on the search field
+                focus_on_search();
             }
 
         }).fail(function (err) {
-            error(err);
+            if (self.connection_retry_count > 1) {
+                error('not connected, trying to re-connect, please wait (try ' + self.connection_retry_count + ')');
+            } else {
+                error(err);
+            }
+            setTimeout(() => self.init_simsage(), 5000); // try and re-connect as a one-off in 5 seconds
+            self.connection_retry_count += 1;
         });
     }
 
@@ -272,7 +278,6 @@ class SimSageCommon {
 
     // ask the platform to provide access to an operator now
     ask_operator_for_help() {
-        this.searching = false;  // we're not performing a search
         const self = this;
         const kb_list = [];
         for (const kb of this.kb_list) {
@@ -369,7 +374,6 @@ class SimSageCommon {
             busy(true);
             error('');
             const self = this;
-            this.searching = false;  // we're not performing a search
             const url = settings.base_url + '/ops/ad/sign-in';
             const adSignInData = {
                 'organisationId': settings.organisationId,
@@ -402,7 +406,6 @@ class SimSageCommon {
     sign_out() {
         error('');
         const self = this;
-        this.searching = false;  // we're not performing a search
         busy(true);
         this.remove_office365_user();
         const url = settings.base_url + '/ops/ad/sign-out';
@@ -484,7 +487,6 @@ class SimSageCommon {
                 const urlParams = new URLSearchParams(window.location.search);
                 const code = urlParams.get('code');  // do we have a code pending in the URL?
                 if (code) {
-                    this.searching = false;  // we're not performing a search
                     const url = settings.base_url + '/auth/sign-in/office365';
                     const self = this;
                     const kbList = [];

@@ -1,16 +1,19 @@
 
-.filter-box {
+.filter-box-view {
     position: absolute;
     z-index: 999;
-    width: 600px;
+    left: min(calc(50% - 200px), 300px);  /* aligns with rhs of contact us */
+    width: 400px;
+}
+
+.filter-box {
 }
 
 .filter-box .speech-bubble {
     position:relative;
-    width: 400px;
+    max-width: 400px;
     height: 450px;
-    padding: 20px;
-    margin-left: 460px;  /* aligns with rhs of contact us */
+    padding: 2%;
     margin-top: 22px;
     background-color: #ffffff;
     border: 0 solid;
@@ -29,7 +32,7 @@
     display:block;
     position:absolute;
     top: -20px;
-    left: 260px;
+    left: 60%;
     z-index: 2;
     width: 0;
     height: 0;
@@ -60,13 +63,13 @@
 
 .filter-box .col-1 {
     float: left;
-    width: 330px;
+    width: 80%;
     display: inline-block;
 }
 
 .filter-box .col-2 {
     float: left;
-    width: 50px;
+    width: 18%;
     display: inline-block;
 }
 
@@ -118,7 +121,7 @@
 
 .filter-box .category-item {
     margin-top: 4px;
-    width: 100%;
+    width: 90%;
 }
 
 .filter-box select {
@@ -155,9 +158,8 @@
 }
 
 .filter-box .bar-bottom {
-    width: 444px;
     height: 48px;
-    margin-left: 460px;  /* aligns with rhs of contact us */
+    left: calc(50% - 200px);  /* aligns with rhs of contact us */
 }
 
 .filter-box .done-button {
@@ -182,7 +184,7 @@
 
 .filter-box .clear-text-box {
     float: left;
-    width: 350px;
+    width: calc(100% - 92px);
     height: 48px;
     display: inline-block;
     border-bottom-left-radius: 10px;

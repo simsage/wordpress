@@ -23,13 +23,17 @@ class SemanticSearch extends SimSageCommon {
         this.page = 0;
         this.num_results = 0;
         this.num_pages = 0;
+        this.chat_closed_for_last_query = false;
+        this.add_text_to_query_window = false;
         this.last_query = "";
         this.advanced_filter = {};
         this.semantic_search_results = [];
         this.semantic_set = {};
         this.syn_sets_seen = {};
-
-        this.chat_window = [];
+        // list of ambigous items to pick from
+        this.synset_list = [];
+        // conversation list between operator, bots, and the user
+        this.chat_list = [];
 
         // operator's id if we're chatting with someone
         this.assignedOperatorId = '';
@@ -40,21 +44,26 @@ class SemanticSearch extends SimSageCommon {
     // add a chat message and then do a normal search
     do_chat(page, text, advanced_filter) {
         if (text.trim() !== '') {
-            // add the user's text to the chat stream
-            const dt = unix_time_convert(SimSageCommon.get_system_time());
-            const user_chat = {"who": "You", "what": text, "when": dt};
-            this.chat_window.push(user_chat)
+            // and do the search
+            this.do_semantic_search(page, text, advanced_filter, true);
             // show the updated chat window
             update_ui(this.page, this.num_pages, this.num_results, this.semantic_search_results,
-                this.semantic_set, this.chat_window, false, true);
-            // and do the search
-            this.do_semantic_search(page, text, advanced_filter);
+                this.semantic_set, this.synset_list, this.chat_list, false,
+                !this.chat_closed_for_last_query);
         }
     }
 
     // perform the semantic search
-    do_semantic_search(page, text, advanced_filter) {
+    do_semantic_search(page, text, advanced_filter, add_text_to_query_window) {
         if (this.kb && text.trim() !== '') {
+            this.add_text_to_query_window = add_text_to_query_window;
+            if (add_text_to_query_window) {
+                // add the user's text to the chat stream
+                const dt = unix_time_convert(SimSageCommon.get_system_time());
+                const user_chat = {"who": "You", "what": text, "when": dt};
+                this.chat_list.push(user_chat)
+            }
+
             // do we need to reset the pagination?
             this.reset_pagination(page, text);
             this.advanced_filter = advanced_filter; // copy
@@ -64,8 +73,8 @@ class SemanticSearch extends SimSageCommon {
 
             text = this.cleanup_query_text(text);
             const search_query_str = this.semantic_search_query_str(text, advanced_filter);
+            console.log(search_query_str);
             if (search_query_str !== '()') {
-                this.searching = true;  // we're searching!
                 this.search_query = text;
                 this.show_advanced_search = false;
                 this.show_details = false;
@@ -95,8 +104,6 @@ class SemanticSearch extends SimSageCommon {
                     'sourceId': source_id,
                 };
 
-                console.log(clientQuery);
-
                 jQuery.ajax({
                     headers: {
                         'Content-Type': 'application/json',
@@ -117,6 +124,8 @@ class SemanticSearch extends SimSageCommon {
             } else {
                 error("Please enter a query to start searching.");
             }
+        } else if (!this.kb) {
+            error("Server not responding, not connected.");
         }
     }
 
@@ -132,6 +141,7 @@ class SemanticSearch extends SimSageCommon {
             this.last_query = query_text;
             this.page = 0;  // reset to page 0
             this.num_pages = 0;
+            this.chat_closed_for_last_query = false;
             this.shard_size_list = [];
         } else {
             this.page = page;
@@ -140,11 +150,15 @@ class SemanticSearch extends SimSageCommon {
         this.semantic_set = {};
     }
 
+    close_query_window() {
+        this.chat_closed_for_last_query = true;
+    }
+
     // pagination - previous page set
     prev_page() {
         if (this.page > 0) {
             this.page -= 1;
-            this.do_semantic_search(this.page, this.search_query, this.advanced_filter);
+            this.do_semantic_search(this.page, this.search_query, this.advanced_filter, false);
         }
     }
 
@@ -152,7 +166,7 @@ class SemanticSearch extends SimSageCommon {
     next_page() {
         if ((this.page + 1) < this.num_pages) {
             this.page += 1;
-            this.do_semantic_search(this.page, this.search_query, this.advanced_filter);
+            this.do_semantic_search(this.page, this.search_query, this.advanced_filter, false);
         }
     }
 
@@ -163,9 +177,7 @@ class SemanticSearch extends SimSageCommon {
     // correct the spelling
     correct_spelling(text) {
         document.getElementById("txtSearch").value = text;
-        this.bot_text = '';
-        this.bot_buttons = [];
-        this.do_semantic_search(text);
+        this.do_semantic_search(this.page, this.search_query, this.advanced_filter, true);
     }
 
     // overwrite: generic web socket receiver
@@ -173,18 +185,15 @@ class SemanticSearch extends SimSageCommon {
         busy(false);
         if (data) {
             if (data.messageType === mt_Error && data.error.length > 0) {
-                this.searching = false;
                 error(data.error);  // set an error
 
             } else if (data.messageType === mt_Disconnect) {
-                this.searching = false;
                 this.assignedOperatorId = ''; // disconnect any operator
 
             } else if (data.messageType === mt_Email) {
                 this.knowEmail = true;
 
             } else if (data.messageType === mt_SignIn) {
-                this.searching = false;
                 if (data.errorMessage && data.errorMessage.length > 0) {
                     error(data.errorMessage);  // set an error
                     this.signed_in = false;
@@ -200,15 +209,11 @@ class SemanticSearch extends SimSageCommon {
 
             } else if (data.messageType === mt_SpellingSuggest) {
                 // speech bubble popup with actions
-                this.searching = false;
-                this.bot_text = "Did you mean: " + data.text;
-                this.bot_buttons = [];
-                this.bot_buttons.push({text: "yes", action: 'search.correct_spelling("' + data.text + '");'});
+                // this.bot_text = "Did you mean: " + data.text;
                 // todo: spelling suggest
 
             } else if (data.messageType === mt_SignOut) {
 
-                this.searching = false;
                 if (data.errorMessage && data.errorMessage.length > 0) {
                     error(data.errorMessage);  // set an error
                 } else {
@@ -221,13 +226,11 @@ class SemanticSearch extends SimSageCommon {
             } else if (data.messageType === mt_Message) {
 
                 const self = this;
-                this.bot_text = '';
                 this.is_typing = false;
                 this.semantic_search_results = [];
                 this.semantic_search_result_map = {};
                 this.semantic_set = {};
-                this.context_stack = []; // includes syn_sets of selected_syn_sets
-                this.bot_buttons = [];
+                this.synset_list = []; // includes syn_sets of selected_syn_sets
                 // set the assigned operator
                 this.assignedOperatorId = data.assignedOperatorId;
                 if (this.assignedOperatorId == null) { // compatibility with older versions of SimSage
@@ -240,7 +243,7 @@ class SemanticSearch extends SimSageCommon {
                     const self = this;
                     this.shard_size_list = data.shardSizeList;
                     this.semantic_set = data.semanticSet;
-                    this.context_stack = data.contextStack;
+                    this.synset_list = data.contextStack;
                     data.resultList.map(function (sr) {
 
                         if (!sr.botResult) {
@@ -267,11 +270,11 @@ class SemanticSearch extends SimSageCommon {
                 // did we get an NLP result?
                 const nlp_reply = [];
                 const dt = unix_time_convert(SimSageCommon.get_system_time());
-                if (data.hasResult && data.text && data.text.length > 0) {
+                if (data.hasResult && data.text && data.text.length > 0 && this.add_text_to_query_window) {
                     const nlp_data = {"who": "Bot", "what": data.text, "when": dt};
                     const url_list = [];
                     nlp_reply.push(nlp_data);
-                    this.chat_window.push(nlp_data)
+                    this.chat_list.push(nlp_data)
                     if (data.urlList && data.urlList.length > 0) {
                         for (const url of data.urlList) {
                             if (url.trim().length > 0) {
@@ -288,42 +291,7 @@ class SemanticSearch extends SimSageCommon {
                         nlp_data.what += render_url(url);
                     }
 
-                } else {
-                    // todo: no bot results - can we ask about a syn-set not yet seen / selected?
-                    if (Array.isArray(this.context_stack)) {
-                        for (const context_item of this.context_stack) {
-                            const syn_set = SimSageCommon.get_synset(context_item);
-                            const search_words = {};
-                            const search_word_list = SimSageCommon.get_unique_words_as_list(this.search_query);
-                            for (const search_word of search_word_list) {
-                                search_words[search_word.toLowerCase()] = 1;
-                            }
-                            if (syn_set) {
-                                const word = syn_set["word"];
-                                const clouds = syn_set["clouds"];
-                                if (!this.syn_sets_seen[word] && clouds.length > 1 && search_words[word]) {
-                                    // add a question for the bot
-                                    this.bot_text = "What type of <b>" + word + "</b> are you looking for?";
-                                    this.bot_buttons = [];
-                                    for (const i in clouds) {
-                                        if (clouds.hasOwnProperty(i)) {
-                                            this.bot_buttons.push({
-                                                text: clouds[i],
-                                                action: 'search.select_syn_set("' + word + '", ' + i + ');'
-                                            });
-                                        }
-                                    }
-                                    this.bot_buttons.push({
-                                        text: "all",
-                                        action: 'search.select_syn_set("' + word + '", -1);'
-                                    });
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                } // end of else if no bot results
+                }
 
                 // copy the know email flag from our results
                 if (!this.knowEmail && data.knowEmail) {
@@ -332,10 +300,11 @@ class SemanticSearch extends SimSageCommon {
 
                 if (data.hasResult) {
                     update_ui(this.page, this.num_pages, this.num_results, this.semantic_search_results,
-                              this.semantic_set, this.chat_window, false, nlp_reply.length > 0);
+                              this.semantic_set, this.synset_list, this.chat_list, false,
+                            nlp_reply.length > 0 && !this.chat_closed_for_last_query);
 
                 } else {
-                    update_ui(0, 0, 0, [], {}, [],
+                    update_ui(0, 0, 0, [], {}, [], [],
                         true, false);
                 }
 
@@ -351,7 +320,6 @@ class SemanticSearch extends SimSageCommon {
             error('');
             const self = this;
             const url = settings.base_url + '/ops/email';
-            this.searching = false;  // we're not performing a search
             const emailMessage = {
                 'messageType': mt_Email,
                 'organisationId': settings.organisationId,
@@ -381,12 +349,12 @@ class SemanticSearch extends SimSageCommon {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // remove duplicate strings from body search text and add synset items
-    process_body_string(text) {
+    process_body_string(text, selected_syn_sets) {
         const parts = SimSageCommon.get_unique_words_as_list(text);
         const newList = [];
         for (const _part of parts) {
             const part = _part.trim().toLowerCase();
-            const synSet = this.selected_syn_sets[part];
+            const synSet = selected_syn_sets[part];
             if (typeof synSet !== 'undefined' && parseInt(synSet) >= 0) {
                 newList.push(_part.trim() + '/' + synSet);
             } else {
@@ -409,7 +377,7 @@ class SemanticSearch extends SimSageCommon {
         let query = "(";
         let needsAnd = false;
         if (text.length > 0) {
-            query += "body: " + this.process_body_string(text);
+            query += "body: " + this.process_body_string(text, af["syn-sets"]);
             needsAnd = true;
         }
         if (af.url.length > 0 && af.url[0].length > 0) {
@@ -470,18 +438,6 @@ class SemanticSearch extends SimSageCommon {
         }
         query += ")";
         return query;
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////
-    // syn-set context management
-
-    // select a syn-set
-    select_syn_set(word, value) {
-        this.selected_syn_sets[word.toLowerCase().trim()] = value;
-        this.syn_sets_seen[word.toLowerCase().trim()] = 1; // mark it as 'seen' and done
-        this.bot_text = "";
-        this.bot_buttons = [];
-        this.do_semantic_search(this.search_query);
     }
 
 }

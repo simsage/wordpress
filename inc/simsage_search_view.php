@@ -55,14 +55,14 @@
         <!-- search box -->
         <td class="search-text-box">
             <label class="search-text-label" title="ask SimSage">
-                <input type="text" value="" class="search-text" onkeypress="search_typing(event)">
+                <input type="text" value="" class="search-text" maxlength="100" onkeypress="search_typing(event)">
             </label>
         </td>
         <!-- search clear (cross) -->
         <td class="search-button-box" title="clear your query" onclick="clear_search()">
-                <span class="search-button-span-box">
-                    <img src="<?php echo $this->asset_folder . 'images/light-close.svg'?>" alt="select" class="clear-button-image">
-                </span>
+            <span class="search-button-span-box">
+                <img src="<?php echo $this->asset_folder . 'images/light-close.svg'?>" alt="select" class="clear-button-image">
+            </span>
         </td>
         <!-- search button (magnification glass) -->
         <td class="search-button-box" title="query SimSage" onclick="do_search()">
@@ -76,9 +76,11 @@
         <!-- search options button and chevron -->
         <td class="search-options-button" title="Search options" onclick="show_filter()">
             <span class="search-options-text">Search Options</span>
-            <span class="search-options-chevron-box">
-                    <img src="<?php echo $this->asset_folder . 'images/chevron-down.svg'?>" alt="select" class="search-options-chevron">
-                </span>
+        </td>
+        <td class="search-options-chevron-box" title="Search options" onclick="show_filter()">
+            <div class="search-options-chevron-image-box">
+                <img src="<?php echo $this->asset_folder . 'images/chevron-down.svg'?>" alt="select" class="search-options-chevron">
+            </div>
         </td>
         <!-- right bubble -->
         <td class="right-bubble">
@@ -90,179 +92,202 @@
         <td class="left-bubble-small">
         </td>
         <!-- chat with us button online -->
-        <td class="chat-with-us-online"  title="Chat with us" onclick="show_chat()">
-                <span class="chat-with-us-image-box">
-                    <img src="<?php echo $this->asset_folder . 'images/chat.svg'?>" alt="select" class="chat-with-us-image">
-                </span>
-            <span class="chat-with-us-text-box-online">
-                    Chat
-                </span>
+        <td class="chat-with-us"  title="Chat with us" onclick="show_chat()">
+            <span class="chat-with-us-image-box">
+                <img src="<?php echo $this->asset_folder . 'images/chat.svg'?>" alt="select" class="chat-with-us-image">
+            </span>
+        </td>
+        <td class="chat-with-us"  title="Chat with us" onclick="show_chat()">
+            <span class="chat-with-us-text">
+                Chat
+            </span>
         </td>
         <td class="right-bubble-small">
         </td>
     </tr>
+
+
+    <!-- ****************************** -->
+    <!-- Detail view of a specific item -->
+    <tr class="search-row search-details-view" style="display: none;">
+
+        <td colspan="13">
+            <div class="search-details" >
+                <div class="header">
+                    <span class="details-text" title="details">DETAILS</span>
+                    <span onclick="close_details()" title="Close" class="close-box">
+                        <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
+                        </span>
+                    <span onclick="close_details()" title="Close" class="close-box">
+                            <span class="close-text">Close</span>
+                        </span>
+                </div>
+                <div class="spacer"></div>
+                <div class="detail-table"></div>
+            </div>
+
+        </td>
+
+    </tr>
+
+
+    <!-- ************************* -->
+    <!-- the operator/bot chat box -->
+    <tr class="search-row operator-chat-box-view" style="display: none;">
+        <td colspan="13">
+            <table class="operator-chat-box">
+                <tr class="speech-bubble">
+                    <td class="search-row">
+                        <div class="div-close" onclick="close_chat()" title="Close chat">
+                            <span class="close-text">Close chat</span>
+                            <span><img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" /></span>
+                        </div>
+                        <table class="chat-table">
+                        </table>
+                    </td>
+                </tr>
+                <tr class="chat-bar-bottom">
+                    <td class="chat-text-box">
+                        <label class="chat-box-text">
+                            <input type="text" placeholder="Type your message" class="chat-text" title="Type your message"
+                                   maxlength="200" onkeypress="chat_typing(event)">
+                        </label>
+                    </td>
+                    <td class="chat-button" title="Send" onclick="do_chat()">
+                        <span class="chat-send-text">Send</span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+
+
+    <!-- ************************** -->
+    <!-- advanced search filter box -->
+    <tr class="filter-search-row filter-box-view" style="display: none;">
+        <td>
+            <div class="filter-box" >
+                <div class="speech-bubble">
+                    <div class="title">
+                        <span class="search-by-text" title="Search by:">SEARCH BY:</span>
+                        <span onclick="close_filter()" title="Close" class="close-box">
+                                <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
+                                <span class="close-text">Close</span>
+                            </span>
+                    </div>
+                    <table class="filter-table">
+                        <tr class="tr-1">
+
+                            <td class="col-1 sign-in-box" style="display: none;">
+                                <span class="category-text">Sign-in</span>
+                                <div class="category-item">
+                                    <label class="sign-in-sel">
+                                        <select name="sign-in" class="category-select dd-sign-in" onchange="">
+                                        </select>
+                                    </label>
+                                </div>
+                            </td>
+                            <td class="col-2 sign-in-text" style="display: none;">
+                                    <span class="clear-text" title="sign-in"
+                                          onclick="show_sign_in()">sign-in</span>
+                            </td>
+                            <td class="col-2 sign-out-text" style="display: none;">
+                                <span class="clear-text" title="sign-out" onclick="do_sign_out()">sign-out</span>
+                            </td>
+
+                            <td class="col-1">
+                                <span class="category-text">Document Type</span>
+                                <div class="category-item">
+                                    <label class="document-type-sel">
+                                        <select name="document-type" class="category-select" onchange="">
+                                            <option value="">All Document Types</option>
+                                            <option value="html,htm">Web</option>
+                                            <option value="doc,docx">Word</option>
+                                            <option value="pdf">PDF</option>
+                                            <option value="xls,xlsx">Excel</option>
+                                            <option value="jpg,jpeg,png,gif">Images</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </td>
+                            <td class="col-2">
+                                <span class="clear-text" title="Clear Document Type" onclick="reset_selection('document-type-sel')">Clear</span>
+                            </td>
+
+                            <td class="col-1">
+                                <span class="category-text">Knowledge Base</span>
+                                <div class="category-item">
+                                    <label class="knowledge-base-sel">
+                                        <select name="knowledge-base" class="category-select dd-knowledge-base"
+                                                onchange="do_change_kb()">
+                                        </select>
+                                    </label>
+                                </div>
+                            </td>
+                            <td class="col-2">
+                            </td>
+
+                            <td class="col-1">
+                                <span class="category-text">Source</span>
+                                <div class="category-item">
+                                    <label class="source-sel">
+                                        <select name="source" class="category-select dd-source">
+                                        </select>
+                                    </label>
+                                </div>
+                            </td>
+                            <td class="col-2">
+                                <span class="clear-text" title="Clear Source" onclick="reset_selection('source-sel')">Clear</span>
+                            </td>
+
+                            <td class="col-1" colspan="2">
+                                <span class="category-text">Title</span>
+                                <div class="category-item">
+                                    <label>
+                                        <input type="text" maxlength="100" placeholder="Enter Title" class="category-input title-text" title="Enter Title">
+                                    </label>
+                                </div>
+                            </td>
+
+                            <td class="col-1" colspan="2">
+                                <span class="category-text">URL</span>
+                                <div class="category-item">
+                                    <label>
+                                        <input type="text" maxlength="100" placeholder="Enter URL" class="category-input url-text" title="Enter URL">
+                                    </label>
+                                </div>
+                            </td>
+
+                            <td class="col-1" colspan="2">
+                                <span class="category-text">Author</span>
+                                <div class="category-item">
+                                    <label>
+                                        <input type="text" maxlength="100" placeholder="Enter Author" class="category-input author-text" title="Enter Author">
+                                    </label>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+                <div class="bar-bottom">
+                        <span class="clear-text-box">
+                            <span class="clear-all-text" title="Clear all" onclick="clear_all()">Clear all</span>
+                        </span>
+                    <span class="done-button" title="Done" onclick="close_filter()">
+                            <span class="done-text">Done</span>
+                        </span>
+                </div>
+            </div>
+
+        </td>
+    </tr>
+
+
+
 </table>
 
-
-<!-- ****************************** -->
-<!-- Detail view of a specific item -->
-<div class="search-details" style="display: none;">
-    <div class="header">
-        <span class="details-text" title="details">DETAILS</span>
-        <span onclick="close_details()" title="Close" class="close-box">
-                <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
-                <span class="close-text">Close</span>
-            </span>
-    </div>
-    <div class="spacer"></div>
-    <div class="detail-table">
-    </div>
-</div>
-
-
-
-<!-- ************************* -->
-<!-- the operator/bot chat box -->
-<div class="operator-chat-box" style="display: none;">
-    <div class="speech-bubble">
-        <div class="div-close" onclick="close_chat()" title="Close chat">
-            <span class="close-text">Close chat</span>
-            <span><img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" /></span>
-        </div>
-        <table class="chat-table">
-        </table>
-    </div>
-    <div class="chat-bar-bottom">
-            <span class="chat-text-box">
-                <label class="chat-box-text">
-                    <input type="text" placeholder="Type your message" class="chat-text" title="Type your message"
-                           onkeypress="chat_typing(event)">
-                </label>
-            </span>
-        <span class="chat-button" title="Send" onclick="do_chat()">
-                <span class="chat-send-text">Send</span>
-            </span>
-    </div>
-</div>
-
-
-<!-- ************************** -->
-<!-- advanced search filter box -->
-<div class="filter-box" style="display: none;">
-    <div class="speech-bubble">
-        <div class="title">
-            <span class="search-by-text" title="Search by:">SEARCH BY:</span>
-            <span onclick="close_filter()" title="Close" class="close-box">
-                    <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
-                    <span class="close-text">Close</span>
-                </span>
-        </div>
-        <table class="filter-table">
-            <tr class="tr-1">
-
-                <td class="col-1 sign-in-box" style="display: none;">
-                    <span class="category-text">Sign-in</span>
-                    <div class="category-item">
-                        <label class="sign-in-sel">
-                            <select name="sign-in" class="category-select dd-sign-in" onchange="">
-                            </select>
-                        </label>
-                    </div>
-                </td>
-                <td class="col-2 sign-in-text" style="display: none;">
-                        <span class="clear-text" title="sign-in"
-                              onclick="show_sign_in()">sign-in</span>
-                </td>
-                <td class="col-2 sign-out-text" style="display: none;">
-                        <span class="clear-text" title="sign-out"
-                              onclick="do_sign_out()">sign-out</span>
-                </td>
-
-                <td class="col-1">
-                    <span class="category-text">Document Type</span>
-                    <div class="category-item">
-                        <label class="document-type-sel">
-                            <select name="document-type" class="category-select" onchange="">
-                                <option value="">All Document Types</option>
-                                <option value="html,htm">Web</option>
-                                <option value="doc,docx">Word</option>
-                                <option value="pdf">PDF</option>
-                                <option value="xls,xlsx">Excel</option>
-                                <option value="jpg,jpeg,png,gif">Images</option>
-                            </select>
-                        </label>
-                    </div>
-                </td>
-                <td class="col-2">
-                        <span class="clear-text" title="Clear Document Type"
-                              onclick="reset_selection('document-type-sel')">Clear</span>
-                </td>
-
-                <td class="col-1">
-                    <span class="category-text">Knowledge Base</span>
-                    <div class="category-item">
-                        <label class="knowledge-base-sel">
-                            <select name="knowledge-base" class="category-select dd-knowledge-base"
-                                    onchange="do_change_kb()">
-                            </select>
-                        </label>
-                    </div>
-                </td>
-                <td class="col-2">
-                </td>
-
-                <td class="col-1">
-                    <span class="category-text">Source</span>
-                    <div class="category-item">
-                        <label class="source-sel">
-                            <select name="source" class="category-select dd-source">
-                            </select>
-                        </label>
-                    </div>
-                </td>
-                <td class="col-2">
-                    <span class="clear-text" title="Clear Source" onclick="reset_selection('source-sel')">Clear</span>
-                </td>
-
-                <td class="col-1" colspan="2">
-                    <span class="category-text">Title</span>
-                    <div class="category-item">
-                        <label>
-                            <input type="text" placeholder="Enter Title" class="category-input title-text" title="Enter Title">
-                        </label>
-                    </div>
-                </td>
-
-                <td class="col-1" colspan="2">
-                    <span class="category-text">URL</span>
-                    <div class="category-item">
-                        <label>
-                            <input type="text" placeholder="Enter URL" class="category-input url-text" title="Enter URL">
-                        </label>
-                    </div>
-                </td>
-
-                <td class="col-1" colspan="2">
-                    <span class="category-text">Author</span>
-                    <div class="category-item">
-                        <label>
-                            <input type="text" placeholder="Enter Author" class="category-input author-text" title="Enter Author">
-                        </label>
-                    </div>
-                </td>
-
-            </tr>
-        </table>
-    </div>
-    <div class="bar-bottom">
-            <span class="clear-text-box">
-                <span class="clear-all-text" title="Clear all" onclick="clear_all()">Clear all</span>
-            </span>
-        <span class="done-button" title="Done" onclick="close_filter()">
-                <span class="done-text">Done</span>
-            </span>
-    </div>
-</div>
 
 
 <!-- ***************** -->
@@ -279,13 +304,13 @@
         <span class="category-text">username</span>
         <div class="category-item">
             <label>
-                <input type="text" placeholder="your username" class="category-input user-name" title="your username">
+                <input type="text" maxlength="100" placeholder="your username" class="category-input user-name" title="your username">
             </label>
         </div>
         <span class="category-text">password</span>
         <div class="category-item">
             <label>
-                <input type="password" placeholder="your password" class="category-input password" title="your password">
+                <input type="password" maxlength="80" placeholder="your password" class="category-input password" title="your password">
             </label>
         </div>
         <div class="spacer"></div>
@@ -308,12 +333,12 @@
         </div>
         <div class="clear"></div>
         <table class="search-result-table">
-            <tr>
+            <tr style="width: 100%;">
                 <!-- this is where the search results are rendered into -->
                 <td class="search-results-td">
                 </td>
                 <!-- this is where the categories of semantics go -->
-                <td class="category-items">
+                <td class="category-items-td">
                 </td>
             </tr>
         </table>
@@ -345,7 +370,7 @@
             <span class="email-text-box">
                 <label class="email-address-text">
                     <input type="text" placeholder="Enter your email address" title="Enter your email address"
-                           onkeypress="email_typing(event)" class="email-text">
+                           maxlength="100" onkeypress="email_typing(event)" class="email-text">
                 </label>
             </span>
         <span class="send-button float-left" title="Send" onclick="do_email()">
@@ -385,9 +410,3 @@
     <div class="error-text"></div>
     <div class="error-spacer"></div>
 </div>
-
-
-<script lang="js">
-
-
-</script>

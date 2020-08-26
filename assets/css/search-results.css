@@ -1,15 +1,14 @@
 
 .search-results {
     margin-top: 25px;
-    margin-left: 10px;
-    min-width: 1024px;
+    width: 95%;
 }
 
 .search-results .speech-bubble {
-    position:relative;
-    width: 980px;
+    position: relative;
+    width: 90%;
     padding: 10px;
-    margin-left: 10px;  /* aligns with rhs of contact us */
+    margin-left: 5%;  /* aligns with rhs of contact us */
     margin-top: 22px;
     background-color: #ffffff;
     border: 0 solid;
@@ -24,7 +23,7 @@
     display:block;
     position:absolute;
     top: -20px;
-    left: 100px;
+    left: 5%;
     width: 0;
     height: 0;
     overflow: hidden;
@@ -36,66 +35,38 @@
     top: -21px;
 }
 
-.search-results .search-results-td {
-    vertical-align: top;
-}
+/* main display */
 
 .search-results .search-result-table {
     border-collapse: collapse;
+    width: 100%;
+}
+
+/* two columns */
+.search-results .search-results-td {
+    vertical-align: top;
+    width: 80%;
+}
+
+.search-results .category-items-td {
+    vertical-align: top;
+    padding: 10px;
+    width: 20%;
+}
+
+.search-results .search-result-inside-table {
+    border-collapse: collapse;
+    width: 100%;
 }
 
 .search-results .search-result {
     border: 0 solid;
-    display: inline-block;
     background-color: #fafafa;
-    width: 720px;
-    padding: 10px;
+    width: 100%;
+    padding-left: 10px;
+    padding-top: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
-}
-
-.search-results .search-result-images {
-    border: 0 solid;
-    background-color: #fafafa;
-    width: 720px;
-    min-width: 720px;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-}
-
-.search-results .image-result {
-    float: left;
-    padding: 10px;
-    margin-bottom: 10px;
-}
-
-.search-results .image-image {
-}
-
-.search-results .image-text {
-    color: #878787;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-    font-size: 0.9em;
-    cursor: default;
-    max-width: 200px;
-}
-
-.search-results .end-marker-images {
-    clear: both;
-}
-
-.search-results .result-image-image {
-    width: 200px;
-    max-width: 200px;
-    max-height: 300px;
-    cursor: pointer;
-}
-
-.search-results .result-image {
-    width: 100px;
-    height: 100px;
-    cursor: pointer;
 }
 
 .search-results .url-text {
@@ -125,7 +96,22 @@
 }
 
 .search-result .search-text-width {
-    width: 800px;
+    width: 80%;
+    display: inline-block;
+}
+
+.search-result .search-image-width {
+    width: 20%;
+}
+
+.search-result .tr-1 {
+    width: 100%;
+}
+
+.search-results .result-image {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
 }
 
 .search-results .hl1 {
@@ -155,8 +141,8 @@
 }
 
 .search-results .navigate-left-image {
-    width: 24px;
-    height: 24px;
+    width: 24px !important;
+    height: 24px !important;
 }
 
 .search-results .navigate-right {
@@ -172,8 +158,8 @@
 }
 
 .search-results .navigate-right-image {
-    width: 24px;
-    height: 24px;
+    width: 24px !important;
+    height: 24px !important;
 }
 
 .search-results .navigate-text {
@@ -189,17 +175,11 @@
 
 /** category items at the RHS of the search results **/
 
-.search-results .category-items {
-    vertical-align: top;
-}
-
 .search-results .category-item {
-    margin-left: 10px;
     padding: 10px;
     border: 0 solid;
     background-color: #fafafa;
     border-radius: 10px;
-    width: 200px;
     margin-bottom: 10px;
 }
 
@@ -209,6 +189,7 @@
     font-size: 14px;
     cursor: default;
     font-weight: 600;
+    width: 100%;
     margin-bottom: 5px;
 }
 
@@ -216,6 +197,7 @@
     color: black;
     font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 12px;
+    width: 100%;
     cursor: pointer;
     margin-bottom: 5px;
     text-decoration: underline;
@@ -227,7 +209,7 @@
     float: left;
     border: 0 solid;
     background-color: #ffffff;
-    width: 926px;
+    width: 95%;
     padding: 2px;
     margin-bottom: 10px;
     clear-after: both;
@@ -239,8 +221,8 @@
 
 /* prev and next images */
 .search-results .prev-page-image {
-    width: 21px;
-    height: 21px
+    width: 21px !important;
+    height: 21px !important;
 }
 
 .search-results .prev-page-box {
@@ -256,8 +238,8 @@
 }
 
 .search-results .next-page-image {
-    width: 21px;
-    height: 21px
+    width: 21px !important;
+    height: 21px !important;
 }
 
 .search-results .next-page-box {
@@ -322,7 +304,72 @@
 }
 
 .search-results .view-image {
-    width: 20px;
-    height: 20px;
+    width: 20px !important;
+    height: 20px !important;
 }
 
+/* image display from render */
+
+.search-results .search-result-images {
+    border: 0 solid;
+    background-color: #fafafa;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.search-results .image-result {
+    float: left;
+    padding: 10px;
+    height: 420px;
+    margin-bottom: 10px;
+}
+
+.search-results .image-text {
+    color: #000000;
+    margin-top: 4px;
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    font-size: 0.8em;
+    cursor: default;
+    width: 200px;
+    max-width: 200px;
+}
+
+.search-results .end-marker-images {
+    clear: both;
+}
+
+.search-results .result-image-image {
+    width: 200px;
+    max-width: 200px;
+    max-height: 300px;
+    height: 300px;
+    cursor: pointer;
+}
+
+.search-results .result-image {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+/* synset items */
+.search-results .synset-entry {
+    background-color: #fafafa;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.search-results .synset-title {
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    font-size: 1.0em;
+    font-weight: 600;
+    width: 80%;
+    color: #000000;
+    cursor: default;
+}
+
+.search-results .synset-selector {
+    width: 150px;
+}
