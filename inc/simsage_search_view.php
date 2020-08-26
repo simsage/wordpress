@@ -353,7 +353,7 @@
 
 <!-- ***************** -->
 <!-- NO Search results -->
-<div class="no-search-results" >
+<div class="no-search-results" style="display: none;">
     <div class="no-results-found-box">
         <span class="no-results-found">No Results found for</span>
         <span class="not-found-words">&nbsp</span>

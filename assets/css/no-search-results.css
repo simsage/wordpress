@@ -1,12 +1,13 @@
 
 .no-search-results {
-    margin-top: 60px !important;
+    position: absolute;
+    z-index: 999;
+    margin-top: 55px !important;
     border: 0 solid;
     background-color: #ffffff;
-    width: 100%;
     padding: 20px;
     border-radius: 10px;
-    max-width: 900px !important;
+    width: 600px !important;
 }
 
 .no-search-results:before {
