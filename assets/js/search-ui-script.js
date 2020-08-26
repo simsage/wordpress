@@ -90,7 +90,7 @@ function update_ui(page, num_pages, num_results, result_list, category_set,
         }
 
     } else {
-        const text = jQuery("label.search-text-label input").val();
+        const text = jQuery(".search-text").val();
         jQuery(".not-found-words").html("\"" + render_no_results(text) + "\"");
         jQuery(".search-results").hide();
         jQuery(".no-search-results").show();
@@ -292,7 +292,7 @@ function close_details() {
 }
 // add a search term (or remove) to the search text from the semantics / categories box
 function add_search(term) {
-    const ctl = jQuery("label.search-text-label input");
+    const ctl = jQuery(".search-text");
     let text = " " + ctl.val() + " ";
     if (text.indexOf(" " + term + " ") >= 0) {
         text = text.replace(" " + term + " ", " ");
@@ -325,20 +325,20 @@ function next_fragment(id) {
 // start a search
 function do_search() {
     const af = get_advanced_filter(); // get advanced search options
-    const text = jQuery("label.search-text-label input").val();
+    const text = jQuery(".search-text").val();
     if (callback.do_search) {
         callback.do_search(page_cache, text, af);
     }
 }
 // clear the search text input
 function clear_search() {
-    jQuery("label.search-text-label input").val("");
+    jQuery(".search-text").val("");
 }
 // send a chat message to the system
 function do_chat() {
     const af = get_advanced_filter(); // get advanced search options
     const text = jQuery("label.chat-box-text input").val();
-    jQuery("label.search-text-label input").val(text);
+    jQuery(".search-text").val(text);
     if (callback.do_chat) {
         callback.do_chat(page_cache, text, af);
     }

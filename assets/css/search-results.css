@@ -1,14 +1,16 @@
 
 .search-results {
-    margin-top: 25px;
-    width: 95%;
+    position: absolute;
+    z-index: 1;
+    margin-top: 55px;
+    width: 80% !important;
+    border: 0 solid;
+    background-color: #ffffff;
 }
 
 .search-results .speech-bubble {
     position: relative;
-    width: 90%;
     padding: 10px;
-    margin-left: 5%;  /* aligns with rhs of contact us */
     margin-top: 22px;
     background-color: #ffffff;
     border: 0 solid;
