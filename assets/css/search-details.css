@@ -2,14 +2,12 @@
 .search-details-view {
     position: absolute;
     z-index: 10;
+    margin-top: 10px;
 }
 
 .search-details {
-    margin-top: 1%;
-    margin-left: 5%;
-    margin-right: 5%;
     border-collapse: collapse;
-    width: 80%;
+    width: 580px !important;
     background-color: #ffffff;
     border-radius: 10px;
     padding: 10px;
@@ -35,7 +33,7 @@
 .search-details .close-box {
     cursor: pointer;
     float: right;
-    margin-right: 1%;
+    margin-right: 5px;
 }
 
 .search-details .close-text {
@@ -44,7 +42,7 @@
     font-size: 0.9em;
     color: #878787;
     margin-top: 4px;
-    margin-right: 2%;
+    margin-right: 20px;
 }
 
 .search-details .close-image {

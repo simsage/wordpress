@@ -110,7 +110,7 @@
 
     <!-- ****************************** -->
     <!-- Detail view of a specific item -->
-    <tr class="search-row search-details-view" style="display: none;">
+    <tr class="search-row search-details-view" >
 
         <td colspan="13">
             <div class="search-details" >
