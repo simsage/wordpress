@@ -6,6 +6,23 @@
 
 td {
     padding: 0 !important;
+    border: 0 solid;
+}
+
+tr {
+    padding: 0 !important;
+    border: 0 solid;
+    display: inline-block;
+}
+
+table {
+    padding: 0 !important;
+    border: 0 solid;
+}
+
+tbody {
+    padding: 0 !important;
+    border: 0 solid;
 }
 
 .search-table {
@@ -25,7 +42,6 @@ td {
     border-collapse: collapse;
     border-style: hidden;
     display: inline-block;
-    width: 100% !important;
 }
 
 /* search text */

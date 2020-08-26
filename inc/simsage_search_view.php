@@ -183,7 +183,7 @@
                                 <span class="category-text">Sign-in</span>
                                 <div class="category-item">
                                     <label class="sign-in-sel">
-                                        <select name="sign-in" class="category-select dd-sign-in" onchange="">
+                                        <select name="sign-in" class="category-select dd-sign-in">
                                         </select>
                                     </label>
                                 </div>
