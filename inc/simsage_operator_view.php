@@ -92,7 +92,7 @@
                     <div id="conversationList" class="conversation-container"></div>
                 </div>
                 <div>
-                    <span><input id="txtResponse" class="text-response" type="text" disabled
+                    <span><input id="txtResponse" class="text-response" type="text" disabled maxlength="200"
                            onkeyup="ops.operator_key_press(event, this.value)" placeholder="your response" aria-label="response" />
                     </span>
                     <span>

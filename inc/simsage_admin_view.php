@@ -75,7 +75,7 @@
             <fieldset>
                 <label>
                     <input name="<?php echo PLUGIN_NAME ?>[simsage_registration_key]" type="text"
-                           class="input-field" id="simsage_registration_key"
+                           class="input-field" id="simsage_registration_key" maxlength="20"
                            value="<?php echo (isset($options['simsage_registration_key']) && $options['simsage_registration_key'] != '') ? $options['simsage_registration_key'] : ''; ?>"
                            placeholder="your SimSage Registration Key"/>
                     <span class="description">Please enter your SimSage Registration-key</span>
@@ -117,8 +117,7 @@
                 </span>
                 <label>
                     <input type="password" name="<?php echo PLUGIN_NAME ?>[simsage_password]"
-                           class="input-field"
-                           value=""
+                           class="input-field" value="" maxlength="100"
                            placeholder="your SimSage account password"/>
                     <span class="description">Please enter your SimSage Password</span>
                 </label>
@@ -132,7 +131,7 @@
             <div class="tabbed-display">
                 <fieldset>
                     <label>
-                        <input name="<?php echo PLUGIN_NAME ?>[simsage_page_size]" type="text" class="number-field" id="simsage_page_size"
+                        <input name="<?php echo PLUGIN_NAME ?>[simsage_page_size]" type="number" class="number-field" id="simsage_page_size"
                                value="<?php echo (isset($options['simsage_page_size']) && $options['simsage_page_size'] != '') ? $options['simsage_page_size'] : '3'; ?>"
                                placeholder="number of search-results per page"/>
                         <span class="description">Page size, the number of search-results per page, between <?php echo $this->get_default_field("simsage_page_size", "min") ?> and <?php echo $this->get_default_field("simsage_page_size", "max") ?> (default <?php echo $this->get_default_field("simsage_page_size", "value") ?>)</span>
@@ -141,16 +140,16 @@
 
                 <fieldset>
                     <label>
-                        <input name="<?php echo PLUGIN_NAME ?>[simsage_fragment_size]" type="text" class="number-field" id="simsage_fragment_size"
+                        <input name="<?php echo PLUGIN_NAME ?>[simsage_fragment_size]" type="number" class="number-field" id="simsage_fragment_size"
                                value="<?php echo (isset($options['simsage_fragment_size']) && $options['simsage_fragment_size'] != '') ? $options['simsage_fragment_size'] : '3'; ?>"
-                               placeholder="number of fragments per search-result"/>
+                               placeholder="number of fragments per search-result" />
                         <span class="description">Fragment size, the number of matches shown inside each document, between <?php echo $this->get_default_field("simsage_fragment_size", "min") ?> and <?php echo $this->get_default_field("simsage_fragment_size", "max") ?> (default <?php echo $this->get_default_field("simsage_fragment_size", "value") ?>)</span>
                     </label>
                 </fieldset>
 
                 <fieldset>
                     <label>
-                        <input name="<?php echo PLUGIN_NAME ?>[simsage_word_distance]" type="text" class="number-field" id="simsage_word_distance"
+                        <input name="<?php echo PLUGIN_NAME ?>[simsage_word_distance]" type="number" class="number-field" id="simsage_word_distance"
                                value="<?php echo (isset($options['simsage_word_distance']) && $options['simsage_word_distance'] != '') ? $options['simsage_word_distance'] : '20'; ?>"
                                placeholder="maximum distance between keywords"/>
                         <span class="description">Maximum distance between keywords between <?php echo $this->get_default_field("simsage_word_distance", "min") ?> and <?php echo $this->get_default_field("simsage_word_distance", "max") ?> (use 0 for document level search, default <?php echo $this->get_default_field("simsage_word_distance", "value") ?>)</span>
@@ -209,7 +208,7 @@
                     <label>
                         <input name="<?php echo PLUGIN_NAME ?>[bot_threshold]" type="text" class="number-field" id="bot_threshold"
                                value="<?php echo (isset($options['bot_threshold']) && $options['bot_threshold'] != '') ? $options['bot_threshold'] : '0.8125'; ?>"
-                               placeholder="maximum distance between keywords"/>
+                               placeholder="bot threshold"/>
                         <span class="description">SimSage bot threshold, a number between <?php echo $this->get_default_field("bot_threshold", "min") ?> and <?php echo $this->get_default_field("bot_threshold", "max") ?> setting the accuracy of the bot (default <?php echo $this->get_default_field("bot_threshold", "value") ?>)</span>
                     </label>
                 </fieldset>
