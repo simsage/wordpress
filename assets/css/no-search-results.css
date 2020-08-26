@@ -1,13 +1,16 @@
 
 .no-search-results {
-    margin-top: 25px;
-    margin-left: 5%;
+    margin-top: 60px !important;
     border: 0 solid;
     background-color: #ffffff;
-    width: 80%;
+    width: 100%;
     padding: 20px;
     border-radius: 10px;
-    max-width: 900px;
+    max-width: 900px !important;
+}
+
+.no-search-results:before {
+    clear: both;
 }
 
 .no-search-results .close-box {
@@ -63,6 +66,8 @@
     background-color: #e3e3e3;
     border: 0 solid;
     width: 70%;
+    height: 48px !important;
+    padding: 0;
     float: left;
 }
 
@@ -85,7 +90,7 @@
     margin-left: 10px;
     border: 0 solid;
     height: 48px;
-    width: 70%;
+    width: 100%;
     color: #454545;
 }
 

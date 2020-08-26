@@ -26,6 +26,11 @@ tbody {
     border: 0 solid;
 }
 
+input {
+    padding: 0 !important;
+    border: 0 solid;
+}
+
 .search-table {
     width: 100% !important;
     max-width: 1024px !important;

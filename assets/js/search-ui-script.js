@@ -2,7 +2,7 @@
 
 // call update_ui(0, 0, 0, [], {}, [], false, false) to draw the UI
 // call setup_dropdowns([], []) to setup the advanced search kb and sources
-// see: $(document).ready() below for an example
+// see: jQuery(document).ready() below for an example
 
 
 // create an instance of our object
@@ -75,17 +75,13 @@ function update_ui(page, num_pages, num_results, result_list, category_set,
 
     if (!show_not_found) {
         if (result_list.length > 0) {
-            jQuery(function($) {
-                $(".search-results-td").html(render_search_results(result_list, is_text_view));
-                $(".category-items-td").html(render_category_items(synset_list, selected_syn_sets, category_set));
-                $(".search-results").show();
-                $(".no-search-results").hide();
-            });
+            jQuery(".search-results-td").html(render_search_results(result_list, is_text_view));
+            jQuery(".category-items-td").html(render_category_items(synset_list, selected_syn_sets, category_set));
+            jQuery(".search-results").show();
+            jQuery(".no-search-results").hide();
             setup_pagination();
         } else {
-            jQuery(function($) {
-                $(".search-results").hide();
-            });
+            jQuery(".search-results").hide();
         }
         if (has_chat) {
             show_chat();
@@ -94,12 +90,10 @@ function update_ui(page, num_pages, num_results, result_list, category_set,
         }
 
     } else {
-        jQuery(function($) {
-            const text = $("label.search-text-label input").val();
-            $(".not-found-words").html("\"" + render_no_results(text) + "\"");
-            $(".search-results").hide();
-            $(".no-search-results").show();
-        });
+        const text = jQuery("label.search-text-label input").val();
+        jQuery(".not-found-words").html("\"" + render_no_results(text) + "\"");
+        jQuery(".search-results").hide();
+        jQuery(".no-search-results").show();
         focus_on_search();
     }
 }
@@ -112,36 +106,32 @@ function update_ui(page, num_pages, num_results, result_list, category_set,
  * @param source_list       a list of source items {id, name}
  */
 function setup_dropdowns(kb_list, source_list) {
-    jQuery(function($) {
-        let str1 = "";
-        for (const kb of kb_list) {
-            str1 += "<option value=\"" + esc_html(kb.id) + "\">" + esc_html(kb.name) + "</option>";
-        }
-        $(".dd-knowledge-base").html(str1);
+    let str1 = "";
+    for (const kb of kb_list) {
+        str1 += "<option value=\"" + esc_html(kb.id) + "\">" + esc_html(kb.name) + "</option>";
+    }
+    jQuery(".dd-knowledge-base").html(str1);
 
-        let str2 = "<option value=\"\">All Sources</option>";
-        for (const source of source_list) {
-            str2 += "<option value=\"" + esc_html(source.id) + "\">" + esc_html(source.name) + "</option>";
-        }
-        $(".dd-source").html(str2);
-    });
+    let str2 = "<option value=\"\">All Sources</option>";
+    for (const source of source_list) {
+        str2 += "<option value=\"" + esc_html(source.id) + "\">" + esc_html(source.name) + "</option>";
+    }
+    jQuery(".dd-source").html(str2);
 }
 
 // tell the system we are busy (or not)
 function busy(is_busy) {
-    jQuery(function($) {
-        if (is_busy) {
-            $(".search-table input").attr("disabled", true);
-            $(".operator-chat-box input").attr("disabled", true);
-            $(".filter-box input").attr("disabled", true);
-            $(".search-sign-in input").attr("disabled", true);
-        } else {
-            $(".search-table input").removeAttr("disabled");
-            $(".operator-chat-box input").removeAttr("disabled");
-            $(".filter-box input").removeAttr("disabled");
-            $(".search-sign-in input").removeAttr("disabled");
-        }
-    });
+    if (is_busy) {
+        jQuery(".search-table input").attr("disabled", true);
+        jQuery(".operator-chat-box input").attr("disabled", true);
+        jQuery(".filter-box input").attr("disabled", true);
+        jQuery(".search-sign-in input").attr("disabled", true);
+    } else {
+        jQuery(".search-table input").removeAttr("disabled");
+        jQuery(".operator-chat-box input").removeAttr("disabled");
+        jQuery(".filter-box input").removeAttr("disabled");
+        jQuery(".search-sign-in input").removeAttr("disabled");
+    }
 }
 
 // tell us there is an error
@@ -157,25 +147,19 @@ function error(err) {
             err_str = err;
         }
         if (err_str && err_str.trim && err_str.trim().length > 0) {
-            jQuery(function($) {
-                $(".error-text").html(esc_html(err_str));
-                $(".error-dialog").show();
-            });
+            jQuery(".error-text").html(esc_html(err_str));
+            jQuery(".error-dialog").show();
         }
     } else {
         close_error();
     }
 }
 function close_error() {
-    jQuery(function($) {
-        $(".error-dialog").hide();
-    });
+    jQuery(".error-dialog").hide();
 }
 
 function close_no_results() {
-    jQuery(function($) {
-        $(".no-search-results").hide();
-    });
+    jQuery(".no-search-results").hide();
 }
 
 // user selects a syn-set to use
@@ -185,13 +169,11 @@ function select_syn_set(word, index) {
 
 // set text focus on an item and make sure the text cursor is at the end of that field
 function focus_text(ctrl) {
-    jQuery(function($) {
-        const c = $(ctrl);
-        c.focus();
-        const value = c.val();
-        c.val("");
-        c.val(value);
-    });
+    const c = jQuery(ctrl);
+    c.focus();
+    const value = c.val();
+    c.val("");
+    c.val(value);
 }
 function focus_on_search() {
     focus_text(".search-text");
@@ -199,9 +181,7 @@ function focus_on_search() {
 // a user decides to change their kb
 function do_change_kb() {
     if (callback.change_kb) {
-        jQuery(function($) {
-            callback.change_kb($(".dd-knowledge-base").val());
-        });
+        callback.change_kb(jQuery(".dd-knowledge-base").val());
     }
 }
 // user wishes to view the previous page
@@ -219,87 +199,67 @@ function next_page() {
 // we just got a message that the operator's typing status has changed
 function notify_operator_is_typing(is_typing) {
     is_typing_cache = is_typing;
-    jQuery(function($) {
-        const ct = $(".chat-table");
-        ct.html(render_chats(conversation_list_cache, is_typing_cache));
-        ct.animate({scrollTop: ct.prop("scrollHeight")}, 10);
-    });
+    const ct = jQuery(".chat-table");
+    ct.html(render_chats(conversation_list_cache, is_typing_cache));
+    ct.animate({scrollTop: ct.prop("scrollHeight")}, 10);
 }
 // setup render pagination
 function setup_pagination() {
-    jQuery(function($) {
-        $(".pagination-box").html(render_pagination(page_cache, num_results_cache,
-            num_pages_cache, is_text_view));
-    });
+    jQuery(".pagination-box").html(render_pagination(page_cache, num_results_cache,
+        num_pages_cache, is_text_view));
 }
 
 // reset selection to default for a drop-down
 function reset_selection(selection_class) {
-    jQuery(function($) {
-        $('label.' + selection_class + ' select').val("");
-    });
+    jQuery('label.' + selection_class + ' select').val("");
 }
 
 // reset all selections and text in the advanced search filter
 function clear_all() {
     reset_selection('document-type-sel');
     reset_selection('source-sel');
-    jQuery(function($) {
-        $(".title-text").val("");
-        $(".url-text").val("");
-        $(".author-text").val("");
-    });
+    jQuery(".title-text").val("");
+    jQuery(".url-text").val("");
+    jQuery(".author-text").val("");
 }
 // return the values of the advanced filter box
 function get_advanced_filter() {
-    let data = {};
-    jQuery(function($) {
-        data = {
-            "document_type": $('label.document-type-sel select').val().split(','),
-            "kb": $('label.knowledge-base-sel select').val(),
-            "source_id": $('label.source-sel select').val(),
-            "title": [$('.title-text').val()],
-            "url": [$('.url-text').val()],
-            "author": [$('.author-text').val()],
+    return {
+            "document_type": jQuery('label.document-type-sel select').val().split(','),
+            "kb": jQuery('label.knowledge-base-sel select').val(),
+            "source_id": jQuery('label.source-sel select').val(),
+            "title": [jQuery('.title-text').val()],
+            "url": [jQuery('.url-text').val()],
+            "author": [jQuery('.author-text').val()],
             "syn-sets": selected_syn_sets,
         };
-    });
-    return data;
 }
 // search results text-view
 function select_text_view() {
     is_text_view = true;
-    jQuery(function($) {
-        $(".search-results-td").html(render_search_results(result_list_cache, is_text_view));
-    });
+    jQuery(".search-results-td").html(render_search_results(result_list_cache, is_text_view));
     setup_pagination();
 }
 // search results image-view
 function select_image_view() {
     is_text_view = false;
-    jQuery(function($) {
-        $(".search-results-td").html(render_search_results(result_list_cache, is_text_view));
-    });
+    jQuery(".search-results-td").html(render_search_results(result_list_cache, is_text_view));
     setup_pagination();
 }
 // show the chat dialog and render its text and scroll down
 function show_chat() {
-    jQuery(function($) {
-        $(".operator-chat-box-view").show();
-        $(".filter-box-view").hide();
-        $(".search-details-view").hide();
-        close_sign_in();
-        const ct = $(".chat-table");
-        ct.html(render_chats(conversation_list_cache, is_typing_cache));
-        ct.animate({scrollTop: ct.prop("scrollHeight")}, 10);
-    });
+    jQuery(".operator-chat-box-view").show();
+    jQuery(".filter-box-view").hide();
+    jQuery(".search-details-view").hide();
+    close_sign_in();
+    const ct = jQuery(".chat-table");
+    ct.html(render_chats(conversation_list_cache, is_typing_cache));
+    ct.animate({scrollTop: ct.prop("scrollHeight")}, 10);
     focus_text(".chat-text")
 }
 // close the chat dialog
 function close_chat() {
-    jQuery(function($) {
-        $(".operator-chat-box-view").hide();
-    });
+    jQuery(".operator-chat-box-view").hide();
     if (callback.do_close_query_window) {
         callback.do_close_query_window();
     }
@@ -307,49 +267,39 @@ function close_chat() {
 }
 // show the advanced search filter
 function show_filter() {
-    jQuery(function($) {
-        $(".filter-box-view").show();
-        $(".operator-chat-box-view").hide();
-        $(".search-details-view").hide();
-    });
+    jQuery(".filter-box-view").show();
+    jQuery(".operator-chat-box-view").hide();
+    jQuery(".search-details-view").hide();
     close_sign_in();
     focus_text(".chat-text")
 }
 // close the advanced search filter
 function close_filter() {
-    jQuery(function($) {
-        $(".filter-box-view").hide();
-    });
+    jQuery(".filter-box-view").hide();
     focus_on_search();
 }
 // show all details for a particular result
 function show_details(id) {
-    jQuery(function($) {
-        $(".filter-box-view").hide();
-        $(".operator-chat-box-view").hide();
-        $(".search-details-view").show();
-        $(".detail-table").html(render_details(id, result_list_cache));
-    });
+    jQuery(".filter-box-view").hide();
+    jQuery(".operator-chat-box-view").hide();
+    jQuery(".search-details-view").show();
+    jQuery(".detail-table").html(render_details(id, result_list_cache));
 }
 // close the details view of a particular result
 function close_details() {
-    jQuery(function($) {
-        $(".search-details-view").hide();
-    });
+    jQuery(".search-details-view").hide();
     focus_on_search();
 }
 // add a search term (or remove) to the search text from the semantics / categories box
 function add_search(term) {
-    jQuery(function($) {
-        const ctl = $("label.search-text-label input");
-        let text = " " + ctl.val() + " ";
-        if (text.indexOf(" " + term + " ") >= 0) {
-            text = text.replace(" " + term + " ", " ");
-        } else {
-            text = text + " " + term;
-        }
-        ctl.val(text.trim());
-    });
+    const ctl = jQuery("label.search-text-label input");
+    let text = " " + ctl.val() + " ";
+    if (text.indexOf(" " + term + " ") >= 0) {
+        text = text.replace(" " + term + " ", " ");
+    } else {
+        text = text + " " + term;
+    }
+    ctl.val(text.trim());
     focus_on_search();
 }
 // fragment browser prev
@@ -358,9 +308,7 @@ function prev_fragment(id) {
     if (result != null) {
         if (result.textIndex > 0) {
             result.textIndex -= 1;
-            jQuery(function($) {
-                $(".search-results-td").html(render_search_results(result_list_cache, is_text_view));
-            });
+            jQuery(".search-results-td").html(render_search_results(result_list_cache, is_text_view));
         }
     }
 }
@@ -370,47 +318,37 @@ function next_fragment(id) {
     if (result != null) {
         if (result.textIndex + 1 < result.textList.length) {
             result.textIndex += 1;
-            jQuery(function($) {
-                $(".search-results-td").html(render_search_results(result_list_cache, is_text_view));
-            });
+            jQuery(".search-results-td").html(render_search_results(result_list_cache, is_text_view));
         }
     }
 }
 // start a search
 function do_search() {
-    jQuery(function($) {
-        const af = get_advanced_filter(); // get advanced search options
-        const text = $("label.search-text-label input").val();
-        if (callback.do_search) {
-            callback.do_search(page_cache, text, af);
-        }
-    });
+    const af = get_advanced_filter(); // get advanced search options
+    const text = jQuery("label.search-text-label input").val();
+    if (callback.do_search) {
+        callback.do_search(page_cache, text, af);
+    }
 }
 // clear the search text input
 function clear_search() {
-    jQuery(function($) {
-        $("label.search-text-label input").val("");
-    });
+    jQuery("label.search-text-label input").val("");
 }
 // send a chat message to the system
 function do_chat() {
     const af = get_advanced_filter(); // get advanced search options
-    jQuery(function($) {
-        const text = $("label.chat-box-text input").val();
-        $("label.search-text-label input").val(text);
-        if (callback.do_chat) {
-            callback.do_chat(page_cache, text, af);
-        }
-    });
+    const text = jQuery("label.chat-box-text input").val();
+    jQuery("label.search-text-label input").val(text);
+    if (callback.do_chat) {
+        callback.do_chat(page_cache, text, af);
+    }
 }
 // send an "email me" request to the server
 function do_email() {
-    jQuery(function($) {
-        const text = $("label.email-address-text input").val();
-        if (callback.do_email) {
-            callback.do_email(text);
-        }
-    });
+    const text = jQuery("label.email-address-text input").val();
+    if (callback.do_email) {
+        callback.do_email(text);
+    }
 }
 // signal system that a client is typing on their keyboard
 function user_is_typing() {
@@ -441,47 +379,41 @@ function email_typing(event) {
 // simsage notifies the ui we have domains to sign-in to {sourceId, name (of source), domain_type}
 function setup_sign_in(domain_list) {
     domain_list_cache = domain_list;
-    jQuery(function($) {
-        $(".sign-out-text").hide(); // always hidden until signed-in
-        if (domain_list && domain_list.length > 0 && callback.do_sign_in) {
-            let str = "";
-            for (const domain of domain_list) {
-                str += "<option value=\"" + esc_html(domain.sourceId) + "\">" + esc_html(domain.name) +
-                    " (" + esc_html(domain.domain_type) + ")</option>";
-            }
-            $(".dd-sign-in").html(str);
-            $(".sign-in-box").show();
-            $(".sign-in-text").show();
-        } else {
-            $(".sign-in-box").hide();
-            $(".sign-in-text").hide();
+    jQuery(".sign-out-text").hide(); // always hidden until signed-in
+    if (domain_list && domain_list.length > 0 && callback.do_sign_in) {
+        let str = "";
+        for (const domain of domain_list) {
+            str += "<option value=\"" + esc_html(domain.sourceId) + "\">" + esc_html(domain.name) +
+                " (" + esc_html(domain.domain_type) + ")</option>";
         }
-    });
+        jQuery(".dd-sign-in").html(str);
+        jQuery(".sign-in-box").show();
+        jQuery(".sign-in-text").show();
+    } else {
+        jQuery(".sign-in-box").hide();
+        jQuery(".sign-in-text").hide();
+    }
 }
 // helper for sign-in
 function get_selected_domain() {
     let selected_domain = null;
-    jQuery(function($) {
-        const selected_source_id = $('label.sign-in-sel select').val();
-        for (const domain of domain_list_cache) {
-            if (domain.sourceId == selected_source_id) {
-                selected_domain = domain;
-                break;
-            }
+    const selected_source_id = jQuery('label.sign-in-sel select').val();
+    for (const domain of domain_list_cache) {
+        if (domain.sourceId == selected_source_id) {
+            selected_domain = domain;
+            break;
         }
-    });
+    }
     return selected_domain;
 }
 // reset selection to default for a drop-down
 function show_sign_in() {
     let selected_domain = get_selected_domain();
     if (selected_domain) {
-        jQuery(function($) {
-            $(".filter-box-view").hide();
-            $(".sign-in-title").html("sign-in to \"" + esc_html(selected_domain.name) + ", " +
+        jQuery(".filter-box-view").hide();
+        jQuery(".sign-in-title").html("sign-in to \"" + esc_html(selected_domain.name) + ", " +
                 esc_html(selected_domain.domain_type) + "\"");
-            $(".search-sign-in").show();
-        });
+        jQuery(".search-sign-in").show();
         focus_text(".user-name");
     }
 }
@@ -492,53 +424,43 @@ function do_sign_out() {
     }
 }
 function close_sign_in() {
-    jQuery(function($) {
-        $(".search-sign-in").hide();
-    });
+    jQuery(".search-sign-in").hide();
 }
 function do_sign_in() {
     let selected_domain = get_selected_domain();
     if (selected_domain && callback.do_sign_in) {
-        jQuery(function($) {
-            callback.do_sign_in(selected_domain.sourceId, $(".user-name").val(), $(".password").val());
-        });
+        callback.do_sign_in(selected_domain.sourceId, jQuery(".user-name").val(), jQuery(".password").val());
     }
 }
 // update the sign-in status (close), are we signed in or not?
 function sign_in_status(signed_in) {
-    jQuery(function($) {
-        $(".search-sign-in").hide(); // in all cases, close the sign-in dialog
-        // change the text on the filter dialog
-        if (signed_in) {
-            $(".sign-out-text").show();
-            $(".sign-in-text").hide();
-        } else {
-            $(".sign-in-text").show();
-            $(".sign-out-text").hide();
-        }
-    });
+    jQuery(".search-sign-in").hide(); // in all cases, close the sign-in dialog
+    // change the text on the filter dialog
+    if (signed_in) {
+        jQuery(".sign-out-text").show();
+        jQuery(".sign-in-text").hide();
+    } else {
+        jQuery(".sign-in-text").show();
+        jQuery(".sign-out-text").hide();
+    }
 }
 // monitor the ESC key to close dialog boxes
-jQuery(function($) {
-    $(document).on('keydown', function (event) {
-        if (event.key === "Escape") {
-            const err_ctrl = $(".error-dialog");
-            if (err_ctrl.is(":visible")) {
-                err_ctrl.hide();
-            } else {
-                close_chat();
-                $(".filter-box-view").hide();
-                $(".search-details-view").hide();
-                $(".search-sign-in").hide();
-                $(".no-search-results").hide();
-            }
+jQuery(document).on('keydown', function (event) {
+    if (event.key === "Escape") {
+        const err_ctrl = jQuery(".error-dialog");
+        if (err_ctrl.is(":visible")) {
+            err_ctrl.hide();
+        } else {
+            close_chat();
+            jQuery(".filter-box-view").hide();
+            jQuery(".search-details-view").hide();
+            jQuery(".search-sign-in").hide();
+            jQuery(".no-search-results").hide();
         }
-    });
+    }
 });
 
-jQuery(function($) {
-    $(document).ready(function () {
-        setup_dropdowns([], []);
-        update_ui(0, 0, 0, [], {}, [], [], false, false);
-    });
+jQuery(document).ready(function () {
+    setup_dropdowns([], []);
+    update_ui(0, 0, 0, [], {}, [], [], false, false);
 });

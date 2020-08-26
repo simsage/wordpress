@@ -80,7 +80,7 @@ class SemanticSearch extends SimSageCommon {
                 this.show_details = false;
                 busy(true);
                 let source_id = '';
-                if (advanced_filter.source_id.length > 0) {
+                if (advanced_filter.source_id && advanced_filter.source_id.length > 0) {
                     source_id = advanced_filter.source_id;
                 }
 
@@ -354,11 +354,13 @@ class SemanticSearch extends SimSageCommon {
         const newList = [];
         for (const _part of parts) {
             const part = _part.trim().toLowerCase();
-            const synSet = selected_syn_sets[part];
-            if (typeof synSet !== 'undefined' && parseInt(synSet) >= 0) {
-                newList.push(_part.trim() + '/' + synSet);
-            } else {
-                newList.push(_part.trim());
+            if (selected_syn_sets) {
+                const synSet = selected_syn_sets[part];
+                if (typeof synSet !== 'undefined' && parseInt(synSet) >= 0) {
+                    newList.push(_part.trim() + '/' + synSet);
+                } else {
+                    newList.push(_part.trim());
+                }
             }
         }
         return newList.join(" ");
@@ -380,7 +382,7 @@ class SemanticSearch extends SimSageCommon {
             query += "body: " + this.process_body_string(text, af["syn-sets"]);
             needsAnd = true;
         }
-        if (af.url.length > 0 && af.url[0].length > 0) {
+        if (af.url && af.url.length > 0 && af.url[0].length > 0) {
             if (needsAnd)
                 query += " and (";
             else
@@ -394,7 +396,7 @@ class SemanticSearch extends SimSageCommon {
             }
             query += ") "
         }
-        if (af.title.length > 0 && af.title[0].length > 0) {
+        if (af.title && af.title.length > 0 && af.title[0].length > 0) {
             if (needsAnd)
                 query += " and (";
             else
@@ -408,7 +410,7 @@ class SemanticSearch extends SimSageCommon {
             }
             query += ") "
         }
-        if (af.author.length > 0 && af.author[0].length > 0) {
+        if (af.author && af.author.length > 0 && af.author[0].length > 0) {
             if (needsAnd)
                 query += " and (";
             else
@@ -422,7 +424,7 @@ class SemanticSearch extends SimSageCommon {
             }
             query += ") "
         }
-        if (af.document_type.length > 0 && af.document_type[0].length > 0) {
+        if (af.document_type && af.document_type.length > 0 && af.document_type[0].length > 0) {
             if (needsAnd)
                 query += " and (";
             else
