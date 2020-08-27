@@ -54,11 +54,6 @@
     width: 20%;
 }
 
-.search-results .search-result-inside-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
 .search-results .search-result {
     border: 0 solid;
     background-color: #fafafa;
@@ -96,11 +91,12 @@
 }
 
 .search-result .search-text-width {
-    width: 79% !important;
-    display: inline-block;
+    float: left;
+    width: 80% !important;
 }
 
 .search-result .search-image-width {
+    float: right;
     width: 20% !important;
 }
 
@@ -109,8 +105,8 @@
 }
 
 .search-results .result-image {
-    width: 100px;
-    height: 100px;
+    width: 100px !important;
+    height: 100px !important;
     cursor: pointer;
 }
 

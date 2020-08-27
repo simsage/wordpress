@@ -140,37 +140,28 @@ function render_url(url) {
  */
 function render_search_text_result(id, url, title, fragment, fragment_index, num_fragments) {
     let str = "<div class=\"search-result\">\n" +
-        "    <table class=\"search-result-inside-table\">\n" +
-        "        <tr class=\"tr-1\">\n" +
-        "            <td title=\"visit [url]>\" class=\"search-text-width\">\n" +
-        "                <a href=\"[url]\" target=\"_blank\"><span class=\"url-text\">[split-url]</span></a>\n" +
-        "            </td>\n" +
-        "            <td rowspan=\"4\" title=\"view more details\" onclick=\"show_details([id]);\" class=\"search-image-width\">\n" +
-        "                <img src=\"[thumbnail_src]\" alt=\"[title]\" class=\"result-image\"/>\n" +
-        "            </td>\n" +
-        "        </tr>\n" +
-        "        <tr class=\"tr-1\">\n" +
-        "            <td title=\"view more details\" onclick=\"show_details([id]);\"><span class=\"title-text\">[title]</span></td>\n" +
-        "        </tr>\n" +
-        "        <tr class=\"tr-1\">\n" +
-        "            <td><span class=\"result-text\">[fragment]</span></td>\n" +
-        "        </tr>\n" +
-        "        <tr class=\"tr-1\">\n" +
-        "            <td class=\"navigate-td\">\n";
-        if (fragment_index > 0) {
-            str += "                <span class=\"navigate-left\" title=\"view the previous relevant fragment in this document\" onclick=\"prev_fragment([id]);\"><img src=\"" + image_base + "images/left.svg\" class=\"navigate-left-image\" alt=\"previous\" /></span>\n";
-        } else {
-            str += "                <span class=\"no-navigate-left\" title=\"there is no previous fragment in this document\"><img src=\"" + image_base + "images/left-disabled.svg\" class=\"navigate-left-image\" alt=\"no previous\" /></span>\n";
-        }
-        if ((fragment_index + 1) < num_fragments) {
-            str += "                <span class=\"navigate-right\" title=\"view the next relevant fragment in this document\" onclick=\"next_fragment([id]);\"><img src=\"" + image_base + "images/right.svg\" class=\"navigate-right-image\" alt=\"next\" /></span>\n";
-        } else {
-            str += "                <span class=\"no-navigate-right\" title=\"there is no next fragment in this document\"><img src=\"" + image_base + "images/right-disabled.svg\" class=\"navigate-right-image\" alt=\"no next\" /></span>\n";
-        }
-        str += "                <span class=\"navigate-text\" title=\"Scroll through other relevant search results on this page\">Scroll through other relevant search results on this page</span>\n" +
-        "            </td>\n" +
-        "        </tr>\n" +
-        "    </table>\n" +
+        "          <div title=\"visit [url]>\" class=\"search-text-width\">\n" +
+        "              <a href=\"[url]\" target=\"_blank\"><span class=\"url-text\">[split-url]</span></a>\n" +
+        "              <div title=\"view more details\" onclick=\"show_details([id]);\"><span class=\"title-text\">[title]</span></div>\n" +
+        "              <div><span class=\"result-text\">[fragment]</span></div>\n" +
+        "              <div class=\"navigate-td\">\n";
+    if (fragment_index > 0) {
+        str += "              <span class=\"navigate-left\" title=\"view the previous relevant fragment in this document\" onclick=\"prev_fragment([id]);\"><img src=\"" + image_base + "images/left.svg\" class=\"navigate-left-image\" alt=\"previous\" /></span>\n";
+    } else {
+        str += "              <span class=\"no-navigate-left\" title=\"there is no previous fragment in this document\"><img src=\"" + image_base + "images/left-disabled.svg\" class=\"navigate-left-image\" alt=\"no previous\" /></span>\n";
+    }
+    if ((fragment_index + 1) < num_fragments) {
+        str += "              <span class=\"navigate-right\" title=\"view the next relevant fragment in this document\" onclick=\"next_fragment([id]);\"><img src=\"" + image_base + "images/right.svg\" class=\"navigate-right-image\" alt=\"next\" /></span>\n";
+    } else {
+        str += "              <span class=\"no-navigate-right\" title=\"there is no next fragment in this document\"><img src=\"" + image_base + "images/right-disabled.svg\" class=\"navigate-right-image\" alt=\"no next\" /></span>\n";
+    }
+    str += "              <span class=\"navigate-text\" title=\"Scroll through other relevant search results on this page\">Scroll through other relevant search results on this page</span>\n" +
+        "              </div>\n" +
+        "          </div>\n" +
+
+        "          <div title=\"view more details\" onclick=\"show_details([id]);\" class=\"search-image-width\">\n" +
+        "              <img src=\"[thumbnail_src]\" alt=\"[title]\" class=\"result-image\"/>\n" +
+        "          </div>\n" +
         "</div>\n";
     const fragment_str = esc_html(fragment)
         .replace(/{hl1:}/g, "<span class='hl1'>")
