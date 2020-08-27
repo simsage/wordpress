@@ -55,7 +55,7 @@ class SemanticSearch extends SimSageCommon {
 
     // perform the semantic search
     do_semantic_search(page, text, advanced_filter, add_text_to_query_window) {
-        if (this.kb && text.trim() !== '') {
+        if (this.kb && text && text.trim() !== '') {
             this.add_text_to_query_window = add_text_to_query_window;
             if (add_text_to_query_window) {
                 // add the user's text to the chat stream

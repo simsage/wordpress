@@ -323,9 +323,8 @@ function next_fragment(id) {
     }
 }
 // start a search
-function do_search() {
+function do_search(text) {
     const af = get_advanced_filter(); // get advanced search options
-    const text = jQuery(".search-text").val();
     if (callback.do_search) {
         callback.do_search(page_cache, text, af);
     }
@@ -358,9 +357,8 @@ function user_is_typing() {
 }
 // test enter and/or typing on the search box
 function search_typing(event, text) {
-    console.log(text);
     if (event.keyCode === 13) {
-        do_search();
+        do_search(text);
     }
 }
 // test enter and/or typing on the search box
