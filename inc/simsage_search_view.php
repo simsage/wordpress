@@ -281,26 +281,24 @@
     <!-- Search result display -->
     <tr class="search-row search-results" style="display: none;">
         <td colspan="13">
-            <div class="search-results">
-                <div class="speech-bubble">
-                    <div class="pagination-box">
-                    </div>
-                    <div class="clear"></div>
-                    <table class="search-result-table">
-                        <tr style="width: 100%;">
-                            <!-- this is where the search results are rendered into -->
-                            <td class="search-results-td">
-                            </td>
-                            <!-- this is where the categories of semantics go -->
-                            <td class="category-items-td">
-                            </td>
-                        </tr>
-                    </table>
-                    <div class="clear"></div>
-                    <div class="pagination-box">
-                    </div>
-                    <div class="clear"></div>
+            <div class="speech-bubble">
+                <div class="pagination-box">
                 </div>
+                <div class="clear"></div>
+                <table class="search-result-table">
+                    <tr style="width: 100%;">
+                        <!-- this is where the search results are rendered into -->
+                        <td class="search-results-td">
+                        </td>
+                        <!-- this is where the categories of semantics go -->
+                        <td class="category-items-td">
+                        </td>
+                    </tr>
+                </table>
+                <div class="clear"></div>
+                <div class="pagination-box">
+                </div>
+                <div class="clear"></div>
             </div>
         </td>
     </tr>

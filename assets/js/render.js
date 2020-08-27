@@ -141,7 +141,6 @@ function render_url(url) {
 function render_search_text_result(id, url, title, fragment, fragment_index, num_fragments) {
     let str = "<div class=\"search-result\">\n" +
         "    <table class=\"search-result-inside-table\">\n" +
-        "    <tbody class=\"search-result-inside-table\">\n" +
         "        <tr class=\"tr-1\">\n" +
         "            <td title=\"visit [url]>\" class=\"search-text-width\">\n" +
         "                <a href=\"[url]\" target=\"_blank\"><span class=\"url-text\">[split-url]</span></a>\n" +
@@ -171,7 +170,6 @@ function render_search_text_result(id, url, title, fragment, fragment_index, num
         str += "                <span class=\"navigate-text\" title=\"Scroll through other relevant search results on this page\">Scroll through other relevant search results on this page</span>\n" +
         "            </td>\n" +
         "        </tr>\n" +
-        "    </tbody>\n" +
         "    </table>\n" +
         "</div>\n";
     const fragment_str = esc_html(fragment)
