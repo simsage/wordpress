@@ -271,7 +271,6 @@ function show_chat(parent) {
     nop();
     const box = jQuery(".operator-chat-box-view").last();
     const rect = abs_offset(parent);
-    console.log(rect.height);
     box.css({top: rect.top + rect.height + 34, left: (rect.left - box.width()) + 100, position:'absolute'});
     box.show();
     jQuery(".filter-box-view").hide();
