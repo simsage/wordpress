@@ -3,12 +3,13 @@
     position: absolute;
     z-index: 999;
     height: 600px !important;
+    width: 600px !important;
+    cursor: default;
 }
 
 .operator-chat-box {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
-    width: 600px !important;
 }
 
 .operator-chat-box .speech-bubble {
@@ -59,9 +60,10 @@
 .operator-chat-box .chat-table {
     margin-top: 14px;
     width: 100% !important;
-    height: 280px !important;
+    height: 260px !important;
     display: inline-block;
     overflow-y: auto;
+    cursor: default;
 }
 
 .operator-chat-box .tr-1 {
@@ -202,6 +204,7 @@
 .operator-chat-box .chat-bar-bottom {
     width: 572px !important;
     height: 48px !important;
+    cursor: text;
 }
 
 .operator-chat-box .chat-text-box {
@@ -214,6 +217,10 @@
     border-left: 1px solid #878787;
     border-bottom: 1px solid #878787;
     float: left;
+}
+
+.operator-chat-box .chat-box-text {
+    cursor: text;
 }
 
 .operator-chat-box .chat-text {

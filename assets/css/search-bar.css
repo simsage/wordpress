@@ -40,8 +40,8 @@ input {
 .search-row {
     border-collapse: collapse;
     border-style: hidden;
-    display: inline-block;
     width: 100% !important;
+    max-width: 1024px;
 }
 
 .search-table .filter-search-row {

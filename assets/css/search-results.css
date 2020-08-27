@@ -1,9 +1,6 @@
 
 .search-results {
-    position: absolute;
-    z-index: 1;
-    margin-top: 55px;
-    width: 80% !important;
+    width: 100% !important;
     max-width: 1024px;
     border: 0 solid;
     background-color: #ffffff;

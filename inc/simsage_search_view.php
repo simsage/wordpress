@@ -93,12 +93,39 @@
         <td class="left-bubble-small">
         </td>
         <!-- chat with us button online -->
-        <td class="chat-with-us"  title="Chat with us" onclick="show_chat()">
+        <td class="chat-with-us"  title="Chat with us" onclick="show_chat(this)">
             <span class="chat-with-us-image-box">
                 <img src="<?php echo $this->asset_folder . 'images/chat.svg'?>" alt="select" class="chat-with-us-image">
             </span>
+            <!-- ************************* -->
+            <!-- the operator/bot chat box -->
+            <div class="operator-chat-box-view" style="display: none;" onclick="nop()">
+                <table class="operator-chat-box">
+                    <tr class="speech-bubble">
+                        <td colspan="2" class="operator-close-width">
+                            <div class="div-close" onclick="close_chat()" title="Close chat">
+                                <span class="close-text">Close chat</span>
+                                <span><img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" /></span>
+                            </div>
+                            <table class="chat-table">
+                            </table>
+                        </td>
+                    </tr>
+                    <tr class="chat-bar-bottom">
+                        <td class="chat-text-box">
+                            <label class="chat-box-text">
+                                <input type="text" placeholder="Type your message" class="chat-text" title="Type your message"
+                                       maxlength="200" onkeypress="chat_typing(event)">
+                            </label>
+                        </td>
+                        <td class="chat-button" title="Send" onclick="do_chat()">
+                            <span class="chat-send-text">Send</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </td>
-        <td class="chat-with-us"  title="Chat with us" onclick="show_chat()">
+        <td class="chat-with-us"  title="Chat with us" onclick="show_chat(this)">
             <span class="chat-with-us-text">
                 Chat
             </span>
@@ -111,7 +138,6 @@
     <!-- ****************************** -->
     <!-- Detail view of a specific item -->
     <tr class="search-row search-details-view" style="display: none">
-
         <td colspan="13">
             <div class="search-details" >
                 <div class="header">
@@ -126,42 +152,8 @@
                 <div class="spacer"></div>
                 <div class="detail-table"></div>
             </div>
-
-        </td>
-
-    </tr>
-
-
-    <!-- ************************* -->
-    <!-- the operator/bot chat box -->
-    <tr class="search-row operator-chat-box-view" style="display: none;">
-        <td>
-            <table class="operator-chat-box">
-                <tr class="speech-bubble">
-                    <td colspan="2" class="operator-close-width">
-                        <div class="div-close" onclick="close_chat()" title="Close chat">
-                            <span class="close-text">Close chat</span>
-                            <span><img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" /></span>
-                        </div>
-                        <table class="chat-table">
-                        </table>
-                    </td>
-                </tr>
-                <tr class="chat-bar-bottom">
-                    <td class="chat-text-box">
-                        <label class="chat-box-text">
-                            <input type="text" placeholder="Type your message" class="chat-text" title="Type your message"
-                                   maxlength="200" onkeypress="chat_typing(event)">
-                        </label>
-                    </td>
-                    <td class="chat-button" title="Send" onclick="do_chat()">
-                        <span class="chat-send-text">Send</span>
-                    </td>
-                </tr>
-            </table>
         </td>
     </tr>
-
 
 
     <!-- ************************** -->
@@ -286,6 +278,33 @@
     </tr>
 
 
+    <!-- ********************* -->
+    <!-- Search result display -->
+    <tr class="search-row search-results" style="display: none;">
+        <td colspan="13">
+            <div class="search-results">
+                <div class="speech-bubble">
+                    <div class="pagination-box">
+                    </div>
+                    <div class="clear"></div>
+                    <table class="search-result-table">
+                        <tr style="width: 100%;">
+                            <!-- this is where the search results are rendered into -->
+                            <td class="search-results-td">
+                            </td>
+                            <!-- this is where the categories of semantics go -->
+                            <td class="category-items-td">
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="clear"></div>
+                    <div class="pagination-box">
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </td>
+    </tr>
 
 </table>
 
@@ -322,31 +341,6 @@
         <span class="sign-in-button" title="sign-in" onclick="do_sign_in()">
             <span class="sign-in-text">sign-in</span>
         </span>
-    </div>
-</div>
-
-
-<!-- ********************* -->
-<!-- Search result display -->
-<div class="search-results" style="display: none;">
-    <div class="speech-bubble">
-        <div class="pagination-box">
-        </div>
-        <div class="clear"></div>
-        <table class="search-result-table">
-            <tr style="width: 100%;">
-                <!-- this is where the search results are rendered into -->
-                <td class="search-results-td">
-                </td>
-                <!-- this is where the categories of semantics go -->
-                <td class="category-items-td">
-                </td>
-            </tr>
-        </table>
-        <div class="clear"></div>
-        <div class="pagination-box">
-        </div>
-        <div class="clear"></div>
     </div>
 </div>
 

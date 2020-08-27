@@ -1,13 +1,14 @@
 
 .search-details-view {
     position: absolute;
-    z-index: 10;
-    margin-top: 10px;
+    z-index: 100;
+    left: 50px !important;
+    margin-top: 70px;
+    width: 100% !important;
 }
 
 .search-details {
     border-collapse: collapse;
-    width: 580px !important;
     background-color: #ffffff;
     border-radius: 10px;
     padding: 10px;

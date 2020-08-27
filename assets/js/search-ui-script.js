@@ -246,9 +246,25 @@ function select_image_view() {
     jQuery(".search-results-td").html(render_search_results(result_list_cache, is_text_view));
     setup_pagination();
 }
+function abs_offset(element) {
+    let top = 0, left = 0;
+    do {
+        top += element.offsetTop  || 0;
+        left += element.offsetLeft || 0;
+        element = element.offsetParent;
+    } while(element);
+    return {
+        top: top,
+        left: left
+    };
+}
 // show the chat dialog and render its text and scroll down
-function show_chat() {
-    jQuery(".operator-chat-box-view").show();
+function show_chat(parent) {
+    nop();
+    const box = jQuery(".operator-chat-box-view").last();
+    const rect = abs_offset(parent);
+    box.css({top: rect.top + 80, left: (rect.left - box.width()) + 100, position:'absolute'});
+    box.show();
     jQuery(".filter-box-view").hide();
     jQuery(".search-details-view").hide();
     close_sign_in();
@@ -256,14 +272,21 @@ function show_chat() {
     ct.html(render_chats(conversation_list_cache, is_typing_cache));
     ct.animate({scrollTop: ct.prop("scrollHeight")}, 10);
     focus_text(".chat-text")
+    return false;
 }
 // close the chat dialog
 function close_chat() {
+    nop();
     jQuery(".operator-chat-box-view").hide();
     if (callback.do_close_query_window) {
         callback.do_close_query_window();
     }
     focus_on_search();
+    return false;
+}
+// for click events, stop propagating
+function nop() {
+    if (event) event.stopPropagation()
 }
 // show the advanced search filter
 function show_filter() {
