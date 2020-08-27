@@ -340,8 +340,7 @@ function add_search(term) {
         text = text + " " + term;
     }
     text_cache = text.trim();
-    ctl.val(text.trim());
-    focus_on_search();
+    do_search();
 }
 // fragment browser prev
 function prev_fragment(id) {
