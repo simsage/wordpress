@@ -379,7 +379,7 @@
     </div>
     <!-- chat with us button online -->
     <div class="online">
-            <span class="chat-with-us-online" title="Chat with us" onclick="show_chat()">
+            <span class="chat-with-us-online" title="Chat with us" onclick="click_chat()">
                 <span class="chat-with-us-image-box">
                     <img src="<?php echo $this->asset_folder . 'images/chat.svg'?>" alt="select" class="chat-with-us-image">
                 </span>
