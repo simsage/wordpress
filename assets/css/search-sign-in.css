@@ -39,6 +39,7 @@
 
 .search-sign-in .close-text {
     float: left;
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     color: #878787;
     font-size: 0.9em;
     margin-right: 8px;

@@ -48,7 +48,7 @@
 }
 
 .operator-chat-box .operator-close-width {
-    width: 520px !important;
+    width: 530px !important;
 }
 
 .operator-chat-box .speech-bubble:before {
@@ -108,8 +108,8 @@
 }
 
 .operator-chat-box .div-close {
-    padding-right: 10px;
-    padding-top: 10px;
+    padding-right: 4px;
+    padding-top: 4px;
     float: right;
     color: #878787;
     font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
@@ -119,6 +119,7 @@
 
 .operator-chat-box .close-text {
     float: left;
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     color: #878787;
     font-size: 0.9em;
     margin-right: 8px;
@@ -126,8 +127,8 @@
 
 .operator-chat-box .close-image {
     float: left;
-    width: 16px;
-    height: 16px;
+    width: 16px !important;
+    height: 16px !important;
 }
 
 .operator-chat-box .person-image-size {
