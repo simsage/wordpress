@@ -248,14 +248,17 @@ function select_image_view() {
 }
 function abs_offset(element) {
     let top = 0, left = 0;
+    let parent = element;
     do {
-        top += element.offsetTop  || 0;
-        left += element.offsetLeft || 0;
-        element = element.offsetParent;
-    } while(element);
+        top += parent.offsetTop  || 0;
+        left += parent.offsetLeft || 0;
+        parent = parent.offsetParent;
+    } while (parent);
     return {
         top: top,
-        left: left
+        left: left,
+        height: element.offsetHeight || 0,
+        width: element.offsetWidth || 0,
     };
 }
 function click_chat() {
@@ -267,7 +270,8 @@ function show_chat(parent) {
     nop();
     const box = jQuery(".operator-chat-box-view").last();
     const rect = abs_offset(parent);
-    box.css({top: rect.top + 80, left: (rect.left - box.width()) + 100, position:'absolute'});
+    console.log(rect.height);
+    box.css({top: rect.top + rect.height + 34, left: (rect.left - box.width()) + 100, position:'absolute'});
     box.show();
     jQuery(".filter-box-view").hide();
     jQuery(".search-details-view").hide();
@@ -293,15 +297,24 @@ function nop() {
     if (event) event.stopPropagation()
 }
 // show the advanced search filter
-function show_filter() {
-    jQuery(".filter-box-view").show();
+function show_filter(parent) {
+    nop();
+    const box = jQuery(".filter-box-view").last();
+    const rect = abs_offset(parent);
+    box.css({top: rect.top + rect.height + 34, left: (rect.left - 200), position:'absolute'});
+    box.show();
     jQuery(".operator-chat-box-view").hide();
     jQuery(".search-details-view").hide();
     close_sign_in();
     focus_text(".chat-text")
 }
+function click_filter() {
+    nop();
+    jQuery('.search-options-button:visible').first().click()
+}
 // close the advanced search filter
 function close_filter() {
+    nop();
     jQuery(".filter-box-view").hide();
     focus_on_search();
 }

@@ -75,13 +75,133 @@
             <div class="vl"></div>
         </td>
         <!-- search options button and chevron -->
-        <td class="search-options-button" title="Search options" onclick="show_filter()">
+        <td class="search-options-button" title="Search options" onclick="show_filter(this)">
             <span class="search-options-text">Search Options</span>
         </td>
-        <td class="search-options-chevron-box" title="Search options" onclick="show_filter()">
-            <div class="search-options-chevron-image-box">
+        <td class="search-options-chevron-box" title="Search options">
+            <div class="search-options-chevron-image-box" onclick="click_filter()">
                 <img src="<?php echo $this->asset_folder . 'images/chevron-down.svg'?>" alt="select" class="search-options-chevron">
             </div>
+
+            <!-- ************************** -->
+            <!-- advanced search filter box -->
+            <div class="filter-box-view" style="display: none;" onclick="nop()">
+                <div class="filter-box" >
+                    <div class="speech-bubble">
+                        <div class="title">
+                            <span class="search-by-text" title="Search by:">SEARCH BY:</span>
+                            <span onclick="close_filter()" title="Close" class="close-box">
+                                    <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
+                                    <span class="close-text">Close</span>
+                                </span>
+                        </div>
+                        <table class="filter-table">
+                            <tr class="tr-1">
+
+                                <td class="col-1 sign-in-box" style="display: none;">
+                                    <span class="category-text">Sign-in</span>
+                                    <div class="category-item">
+                                        <label class="sign-in-sel">
+                                            <select name="sign-in" class="category-select dd-sign-in">
+                                            </select>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="col-2 sign-in-text" style="display: none;">
+                                        <span class="clear-text" title="sign-in"
+                                              onclick="show_sign_in()">sign-in</span>
+                                </td>
+                                <td class="col-2 sign-out-text" style="display: none;">
+                                    <span class="clear-text" title="sign-out" onclick="do_sign_out()">sign-out</span>
+                                </td>
+
+                                <td class="col-1">
+                                    <span class="category-text">Document Type</span>
+                                    <div class="category-item">
+                                        <label class="document-type-sel">
+                                            <select name="document-type" class="category-select" onchange="">
+                                                <option value="">All Document Types</option>
+                                                <option value="html,htm">Web</option>
+                                                <option value="doc,docx">Word</option>
+                                                <option value="pdf">PDF</option>
+                                                <option value="xls,xlsx">Excel</option>
+                                                <option value="jpg,jpeg,png,gif">Images</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="col-2">
+                                    <span class="clear-text" title="Clear Document Type" onclick="reset_selection('document-type-sel')">Clear</span>
+                                </td>
+
+                                <td class="col-1">
+                                    <span class="category-text">Knowledge Base</span>
+                                    <div class="category-item">
+                                        <label class="knowledge-base-sel">
+                                            <select name="knowledge-base" class="category-select dd-knowledge-base"
+                                                    onchange="do_change_kb()">
+                                            </select>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="col-2">
+                                </td>
+
+                                <td class="col-1">
+                                    <span class="category-text">Source</span>
+                                    <div class="category-item">
+                                        <label class="source-sel">
+                                            <select name="source" class="category-select dd-source">
+                                            </select>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="col-2">
+                                    <span class="clear-text" title="Clear Source" onclick="reset_selection('source-sel')">Clear</span>
+                                </td>
+
+                                <td class="col-1" colspan="2">
+                                    <span class="category-text">Title</span>
+                                    <div class="category-item">
+                                        <label>
+                                            <input type="text" maxlength="100" placeholder="Enter Title" class="category-input title-text" title="Enter Title">
+                                        </label>
+                                    </div>
+                                </td>
+
+                                <td class="col-1" colspan="2">
+                                    <span class="category-text">URL</span>
+                                    <div class="category-item">
+                                        <label>
+                                            <input type="text" maxlength="100" placeholder="Enter URL" class="category-input url-text" title="Enter URL">
+                                        </label>
+                                    </div>
+                                </td>
+
+                                <td class="col-1" colspan="2">
+                                    <span class="category-text">Author</span>
+                                    <div class="category-item">
+                                        <label>
+                                            <input type="text" maxlength="100" placeholder="Enter Author" class="category-input author-text" title="Enter Author">
+                                        </label>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="bar-bottom">
+                            <span class="clear-text-box">
+                                <span class="clear-all-text" title="Clear all" onclick="clear_all()">Clear all</span>
+                            </span>
+                        <span class="done-button" title="Done" onclick="close_filter()">
+                                <span class="done-text">Done</span>
+                            </span>
+                    </div>
+                </div>
+            </div>
+
+
         </td>
         <!-- right bubble -->
         <td class="right-bubble">
@@ -155,127 +275,6 @@
         </td>
     </tr>
 
-
-    <!-- ************************** -->
-    <!-- advanced search filter box -->
-    <tr class="search-row filter-box-view" style="display: none;">
-        <td>
-            <div class="filter-box" >
-                <div class="speech-bubble">
-                    <div class="title">
-                        <span class="search-by-text" title="Search by:">SEARCH BY:</span>
-                        <span onclick="close_filter()" title="Close" class="close-box">
-                                <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
-                                <span class="close-text">Close</span>
-                            </span>
-                    </div>
-                    <table class="filter-table">
-                        <tr class="tr-1">
-
-                            <td class="col-1 sign-in-box" style="display: none;">
-                                <span class="category-text">Sign-in</span>
-                                <div class="category-item">
-                                    <label class="sign-in-sel">
-                                        <select name="sign-in" class="category-select dd-sign-in">
-                                        </select>
-                                    </label>
-                                </div>
-                            </td>
-                            <td class="col-2 sign-in-text" style="display: none;">
-                                    <span class="clear-text" title="sign-in"
-                                          onclick="show_sign_in()">sign-in</span>
-                            </td>
-                            <td class="col-2 sign-out-text" style="display: none;">
-                                <span class="clear-text" title="sign-out" onclick="do_sign_out()">sign-out</span>
-                            </td>
-
-                            <td class="col-1">
-                                <span class="category-text">Document Type</span>
-                                <div class="category-item">
-                                    <label class="document-type-sel">
-                                        <select name="document-type" class="category-select" onchange="">
-                                            <option value="">All Document Types</option>
-                                            <option value="html,htm">Web</option>
-                                            <option value="doc,docx">Word</option>
-                                            <option value="pdf">PDF</option>
-                                            <option value="xls,xlsx">Excel</option>
-                                            <option value="jpg,jpeg,png,gif">Images</option>
-                                        </select>
-                                    </label>
-                                </div>
-                            </td>
-                            <td class="col-2">
-                                <span class="clear-text" title="Clear Document Type" onclick="reset_selection('document-type-sel')">Clear</span>
-                            </td>
-
-                            <td class="col-1">
-                                <span class="category-text">Knowledge Base</span>
-                                <div class="category-item">
-                                    <label class="knowledge-base-sel">
-                                        <select name="knowledge-base" class="category-select dd-knowledge-base"
-                                                onchange="do_change_kb()">
-                                        </select>
-                                    </label>
-                                </div>
-                            </td>
-                            <td class="col-2">
-                            </td>
-
-                            <td class="col-1">
-                                <span class="category-text">Source</span>
-                                <div class="category-item">
-                                    <label class="source-sel">
-                                        <select name="source" class="category-select dd-source">
-                                        </select>
-                                    </label>
-                                </div>
-                            </td>
-                            <td class="col-2">
-                                <span class="clear-text" title="Clear Source" onclick="reset_selection('source-sel')">Clear</span>
-                            </td>
-
-                            <td class="col-1" colspan="2">
-                                <span class="category-text">Title</span>
-                                <div class="category-item">
-                                    <label>
-                                        <input type="text" maxlength="100" placeholder="Enter Title" class="category-input title-text" title="Enter Title">
-                                    </label>
-                                </div>
-                            </td>
-
-                            <td class="col-1" colspan="2">
-                                <span class="category-text">URL</span>
-                                <div class="category-item">
-                                    <label>
-                                        <input type="text" maxlength="100" placeholder="Enter URL" class="category-input url-text" title="Enter URL">
-                                    </label>
-                                </div>
-                            </td>
-
-                            <td class="col-1" colspan="2">
-                                <span class="category-text">Author</span>
-                                <div class="category-item">
-                                    <label>
-                                        <input type="text" maxlength="100" placeholder="Enter Author" class="category-input author-text" title="Enter Author">
-                                    </label>
-                                </div>
-                            </td>
-
-                        </tr>
-                    </table>
-                </div>
-                <div class="bar-bottom">
-                        <span class="clear-text-box">
-                            <span class="clear-all-text" title="Clear all" onclick="clear_all()">Clear all</span>
-                        </span>
-                    <span class="done-button" title="Done" onclick="close_filter()">
-                            <span class="done-text">Done</span>
-                        </span>
-                </div>
-            </div>
-
-        </td>
-    </tr>
 
 
     <!-- ********************* -->

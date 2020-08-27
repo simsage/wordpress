@@ -162,6 +162,7 @@ input {
     margin-top: 4px !important;
     height: 24px !important;
     width: 24px !important;
+    cursor: pointer;
 }
 
 .search-table .search-options-chevron {
