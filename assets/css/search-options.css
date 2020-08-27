@@ -64,7 +64,7 @@
 .filter-box .col-1 {
     float: left;
     width: 80% !important;
-    display: inline-block !important;
+    display: inline-block;
 }
 
 .filter-box .col-2 {
