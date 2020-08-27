@@ -258,6 +258,10 @@ function abs_offset(element) {
         left: left
     };
 }
+function click_chat() {
+    nop();
+    jQuery('.chat-with-us-second:visible').first().click()
+}
 // show the chat dialog and render its text and scroll down
 function show_chat(parent) {
     nop();

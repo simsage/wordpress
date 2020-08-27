@@ -93,7 +93,7 @@
         <td class="left-bubble-small">
         </td>
         <!-- chat with us button online -->
-        <td class="chat-with-us"  title="Chat with us" onclick="show_chat(this)">
+        <td class="chat-with-us"  title="Chat with us" onclick="click_chat()">
             <span class="chat-with-us-image-box">
                 <img src="<?php echo $this->asset_folder . 'images/chat.svg'?>" alt="select" class="chat-with-us-image">
             </span>
@@ -125,7 +125,7 @@
                 </table>
             </div>
         </td>
-        <td class="chat-with-us"  title="Chat with us" onclick="show_chat(this)">
+        <td class="chat-with-us-second"  title="Chat with us" onclick="show_chat(this)">
             <span class="chat-with-us-text">
                 Chat
             </span>

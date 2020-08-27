@@ -219,6 +219,15 @@ input {
     cursor: pointer;
 }
 
+.search-table .chat-with-us-second {
+    height: 48px !important;
+    width: 8% !important;
+    background-color: #f0f0f0;
+    max-width: 50px !important;
+    border: 0 solid;
+    cursor: pointer;
+}
+
 .search-table .chat-with-us-text {
     float: left;
     margin-left: 2px !important;
