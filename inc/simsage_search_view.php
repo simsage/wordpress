@@ -56,7 +56,7 @@
         <!-- search box -->
         <td class="search-text-box">
             <label class="search-text-label" title="ask SimSage">
-                <input type="text" value="" class="search-text" maxlength="100" onkeypress="search_typing(event)">
+                <input type="text" value="" class="search-text" maxlength="100" onkeypress="search_typing(event, text)">
             </label>
         </td>
         <!-- search clear (cross) -->

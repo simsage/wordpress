@@ -357,7 +357,8 @@ function user_is_typing() {
     }
 }
 // test enter and/or typing on the search box
-function search_typing(event) {
+function search_typing(event, text) {
+    console.log(text);
     if (event.keyCode === 13) {
         do_search();
     }
