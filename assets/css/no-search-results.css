@@ -1,7 +1,7 @@
 
 .no-search-results {
     position: absolute;
-    z-index: 999;
+    z-index: 800;
     margin-top: 55px !important;
     border: 0 solid;
     background-color: #ffffff;

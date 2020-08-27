@@ -160,6 +160,8 @@ input {
 .search-table .search-options-chevron-image-box {
     margin-left: 2px !important;
     margin-top: 4px !important;
+    height: 24px !important;
+    width: 24px !important;
 }
 
 .search-table .search-options-chevron {
