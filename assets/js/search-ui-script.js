@@ -34,6 +34,9 @@ page_cache = 0;
 num_pages_cache = 0;
 num_results_cache = 0;
 
+// the current query - cached
+text_cache = "";
+
 // data items - cache for the UI
 result_list_cache = [];
 conversation_list_cache = [];
@@ -90,8 +93,7 @@ function update_ui(page, num_pages, num_results, result_list, category_set,
         }
 
     } else {
-        const text = jQuery(".search-text").val();
-        jQuery(".not-found-words").html("\"" + render_no_results(text) + "\"");
+        jQuery(".not-found-words").html("\"" + render_no_results(text_cache) + "\"");
         jQuery(".search-results").hide();
         jQuery(".no-search-results").show();
         focus_on_search();
@@ -171,9 +173,8 @@ function select_syn_set(word, index) {
 function focus_text(ctrl) {
     const c = jQuery(ctrl);
     c.focus();
-    const value = c.val();
     c.val("");
-    c.val(value);
+    c.val(text_cache);
 }
 function focus_on_search() {
     focus_text(".search-text");
@@ -332,13 +333,13 @@ function close_details() {
 }
 // add a search term (or remove) to the search text from the semantics / categories box
 function add_search(term) {
-    const ctl = jQuery(".search-text");
-    let text = " " + ctl.val() + " ";
+    let text = " " + text_cache + " ";
     if (text.indexOf(" " + term + " ") >= 0) {
         text = text.replace(" " + term + " ", " ");
     } else {
         text = text + " " + term;
     }
+    text_cache = text.trim();
     ctl.val(text.trim());
     focus_on_search();
 }
@@ -363,23 +364,23 @@ function next_fragment(id) {
     }
 }
 // start a search
-function do_search(text) {
+function do_search() {
     const af = get_advanced_filter(); // get advanced search options
     if (callback.do_search) {
-        callback.do_search(page_cache, text, af);
+        callback.do_search(page_cache, text_cache, af);
     }
 }
 // clear the search text input
 function clear_search() {
+    text_cache = "";
     jQuery(".search-text").val("");
 }
 // send a chat message to the system
 function do_chat() {
     const af = get_advanced_filter(); // get advanced search options
-    const text = jQuery("label.chat-box-text input").val();
-    jQuery(".search-text").val(text);
+    jQuery(".search-text").val(text_cache);
     if (callback.do_chat) {
-        callback.do_chat(page_cache, text, af);
+        callback.do_chat(page_cache, text_cache, af);
     }
 }
 // send an "email me" request to the server
@@ -397,12 +398,14 @@ function user_is_typing() {
 }
 // test enter and/or typing on the search box
 function search_typing(event, text) {
+    text_cache = text;
     if (event.keyCode === 13) {
-        do_search(text);
+        do_search();
     }
 }
 // test enter and/or typing on the search box
-function chat_typing(event) {
+function chat_typing(event, text) {
+    text_cache = text;
     if (event.keyCode === 13) {
         do_chat();
     } else {

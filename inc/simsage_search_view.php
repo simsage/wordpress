@@ -66,8 +66,8 @@
             </span>
         </td>
         <!-- search button (magnification glass) -->
-        <td class="search-button-box" title="query SimSage" onclick="do_search()">
-                <span class="search-button-span-box">
+        <td class="search-button-box" title="query SimSage">
+                <span class="search-button-span-box" onclick="do_search()">
                     <img src="<?php echo $this->asset_folder . 'images/magnification-glass.svg'?>" alt="select" class="search-button-image">
                 </span>
         </td>
@@ -235,7 +235,7 @@
                         <td class="chat-text-box">
                             <label class="chat-box-text">
                                 <input type="text" placeholder="Type your message" class="chat-text" title="Type your message"
-                                       maxlength="200" onkeypress="chat_typing(event)">
+                                       maxlength="200" onkeyup="chat_typing(event, this.value)">
                             </label>
                         </td>
                         <td class="chat-button" title="Send" onclick="do_chat()">
