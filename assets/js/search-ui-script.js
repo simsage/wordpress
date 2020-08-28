@@ -11,7 +11,7 @@ search.init_simsage();
 
 // callbacks fns to set to use this UI
 callback = {
-    do_search: (page, text, filter) => search.do_semantic_search(page, text, filter),
+    do_search: (page, text, filter) => search.do_semantic_search(page, text, filter, true),
     do_chat: (page, text, filter) => search.do_chat(page, text, filter),
     do_email: (email) => search.send_email(email),
     do_sign_in: (source_id, user, password) => search.sign_in(source_id, user, password),
