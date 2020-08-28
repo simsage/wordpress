@@ -459,8 +459,8 @@ function show_sign_in() {
 }
 // tell simsage we'd like to sign-out
 function do_sign_out() {
-    if (do_sign_out) {
-        do_sign_out();
+    if (callback.do_sign_out) {
+        callback.do_sign_out();
     }
 }
 function close_sign_in() {
