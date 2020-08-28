@@ -17,7 +17,7 @@ define( 'PLUGIN_NAME', 'simsage-search' );
 define( 'SIMSAGE_API_SERVER', 'https://api.simsage.ai');
 
 // SimSage registration-ui-server address
-define( 'SIMSAGE_REGO_SERVER', 'https://simsage.ai');
+define( 'SIMSAGE_REGO_SERVER', 'https://portal.simsage.ai');
 
 // SimSage special content file-names - do not change these
 // these are used to transmit Bot, synonym, and semantic information to SimSage
