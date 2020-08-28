@@ -540,6 +540,11 @@ jQuery(document).ready(function () {
         mx = event.pageX;
         my = event.pageY;
     });
+    jQuery(window).resize(() => {
+        // these need to hide while resizing the ui
+        jQuery(".filter-box-view").hide();
+        jQuery(".operator-chat-box-view").hide();
+    });
     setup_dropdowns([], []);
     update_ui(0, 0, 0, [], {}, [],
         [], false, false, false);
