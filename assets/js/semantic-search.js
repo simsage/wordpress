@@ -112,7 +112,6 @@ class SemanticSearch extends SimSageCommon {
                     'url': url,
                     'dataType': 'json',
                     'success': function (data) {
-                        // self.receive_ws_data(data);
                     }
 
                 }).fail(function (err) {
@@ -297,6 +296,7 @@ class SemanticSearch extends SimSageCommon {
                 }
 
                 if (data.hasResult) {
+                    console.log(this.chat_list);
                     update_ui(this.page, this.num_pages, this.num_results, this.semantic_search_results,
                               this.semantic_set, this.synset_list, this.chat_list, false,
                             nlp_reply.length > 0 && !this.chat_closed_for_last_query, this.is_typing);

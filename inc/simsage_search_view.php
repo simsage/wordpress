@@ -75,7 +75,7 @@
             <div class="vl"></div>
         </td>
         <!-- search options button and chevron -->
-        <td class="search-options-button" title="Search options" onclick="show_filter(this)">
+        <td class="search-options-button" title="Search options" onclick="show_filter()">
             <span class="search-options-text">Search Options</span>
         </td>
         <td class="search-options-chevron-box" title="Search options">
@@ -245,7 +245,7 @@
                 </table>
             </div>
         </td>
-        <td class="chat-with-us-second"  title="Chat with us" onclick="show_chat(this)">
+        <td class="chat-with-us-second"  title="Chat with us" onclick="show_chat()">
             <span class="chat-with-us-text">
                 Chat
             </span>

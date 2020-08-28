@@ -34,6 +34,10 @@ page_cache = 0;
 num_pages_cache = 0;
 num_results_cache = 0;
 
+// mouse x and y
+mx = 0;
+my = 0;
+
 // the current query - cached
 text_cache = "";
 
@@ -254,39 +258,56 @@ function select_image_view() {
     jQuery(".search-results-td").html(render_search_results(result_list_cache, is_text_view));
     setup_pagination();
 }
-function abs_offset(element) {
-    let top = 0, left = 0;
-    let parent = element;
-    do {
-        top += parent.offsetTop  || 0;
-        left += parent.offsetLeft || 0;
-        parent = parent.offsetParent;
-    } while (parent);
-    return {
-        top: top,
-        left: left,
-        height: element.offsetHeight || 0,
-        width: element.offsetWidth || 0,
-    };
+function find_closest_parent(parent_class) {
+    // find the closest parent to the mouse position
+    const boxes = jQuery(parent_class);
+    let best_index = 0;
+    let parent = null;
+    if (boxes) {
+        let best_distance = -1;
+        boxes.each(function (index) {
+            const offset = jQuery(this).offset();
+            const dist_x = (offset.left - mx);
+            const dist_y = (offset.top - my);
+            const dist = dist_x * dist_x + dist_y * dist_y;
+            if (best_distance === -1 || dist < best_distance) {
+                best_distance = dist;
+                best_index = index;
+                parent = jQuery(this);
+            }
+        });
+    }
+    return {"parent": parent, "index": best_index};
 }
 function click_chat() {
     nop();
     jQuery('.chat-with-us-second:visible').first().click()
 }
 // show the chat dialog and render its text and scroll down
-function show_chat(parent) {
+function show_chat() {
     nop();
-    const box = jQuery(".operator-chat-box-view").last();
-    const rect = abs_offset(parent);
-    box.css({top: rect.top + rect.height + 34, left: (rect.left - box.width()) + 100, position:'absolute'});
-    box.show();
-    jQuery(".filter-box-view").hide();
-    jQuery(".search-details-view").hide();
-    close_sign_in();
-    const ct = jQuery(".chat-table");
-    ct.html(render_chats(conversation_list_cache, is_typing_cache));
-    ct.animate({scrollTop: ct.prop("scrollHeight")}, 10);
-    focus_text(".chat-text")
+    // find the closest parent to the mouse position
+    const parent_data = find_closest_parent(".chat-with-us")
+    if (parent_data.parent) {
+        const parent = parent_data.parent;
+        const parent_index = parent_data.index;
+        const offset = parent.offset();
+        const box = parent.find(".operator-chat-box-view");
+        box.css({top: offset.top + 22 + ((parent_index > 0) ? 34 : 0),
+                 left: (offset.left - box.width()) + 150, position:'absolute'});
+        box.show();
+
+        // close other boxes
+        jQuery(".filter-box-view").hide();
+        jQuery(".search-details-view").hide();
+        close_sign_in();
+        const ct = jQuery(".chat-table:visible");
+        if (ct.is(":visible")) {
+            ct.html(render_chats(conversation_list_cache, is_typing_cache));
+            ct.animate({scrollTop: ct.prop("scrollHeight")}, 10);
+            focus_text(".chat-text")
+        }
+    }
     return false;
 }
 // close the chat dialog
@@ -304,16 +325,23 @@ function nop() {
     if (event) event.stopPropagation()
 }
 // show the advanced search filter
-function show_filter(parent) {
+function show_filter() {
     nop();
-    const box = jQuery(".filter-box-view").last();
-    const rect = abs_offset(parent);
-    box.css({top: rect.top + rect.height + 34, left: (rect.left - 200), position:'absolute'});
-    box.show();
-    jQuery(".operator-chat-box-view").hide();
-    jQuery(".search-details-view").hide();
-    close_sign_in();
-    focus_text(".chat-text")
+    const parent_data = find_closest_parent(".search-options-chevron-box");
+    if (parent_data && parent_data.parent) {
+        const parent = parent_data.parent;
+        const parent_index = parent_data.index;
+        const offset = parent.offset();
+        const box = parent.find(".filter-box-view");
+        box.css({top: offset.top + 22 + ((parent_index > 0) ? 34 : 0),
+                 left: offset.left - Math.floor(box.width() * 0.75), position:'absolute'});
+        box.show();
+        // hide other controls
+        jQuery(".operator-chat-box-view").hide();
+        jQuery(".search-details-view").hide();
+        close_sign_in();
+        focus_text(".chat-text");
+    }
 }
 function click_filter() {
     nop();
@@ -492,7 +520,7 @@ function sign_in_status(signed_in) {
     }
 }
 // monitor the ESC key to close dialog boxes
-jQuery(document).on('keydown', function (event) {
+jQuery(document).on('keydown', function(event) {
     if (event.key === "Escape") {
         const err_ctrl = jQuery(".error-dialog-box");
         if (err_ctrl.is(":visible")) {
@@ -508,6 +536,10 @@ jQuery(document).on('keydown', function (event) {
 });
 
 jQuery(document).ready(function () {
+    this.addEventListener('mousemove', (event) => {
+        mx = event.pageX;
+        my = event.pageY;
+    });
     setup_dropdowns([], []);
     update_ui(0, 0, 0, [], {}, [],
         [], false, false, false);
