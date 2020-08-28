@@ -343,6 +343,58 @@
 
 
     <!-- ***************** -->
+    <!-- NO Search results -->
+    <tr class="no-search-results" >
+        <td>
+            <div class="no-results-found-box">
+                <span class="no-results-found">No Results found for</span>
+                <span class="not-found-words">&nbsp</span>
+                <span onclick="close_no_results()" title="Close" class="close-box">
+                    <span class="close-text">Close</span>
+                    <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
+                </span>
+            </div>
+            <div class="no-results-text">
+                If you would like us to follow up on your query by email, please enter your email address and we'll
+                get back to you with a response within 24 hours
+            </div>
+            <!-- email text box -->
+            <div>
+            <span class="email-text-box">
+                <label class="email-address-text">
+                    <input type="text" placeholder="Enter your email address" title="Enter your email address"
+                           maxlength="100" onkeypress="email_typing(event)" class="email-text">
+                </label>
+            </span>
+                <span class="send-button float-left" title="Send" onclick="do_email()">
+                    <span class="send-text">Send</span>
+                </span>
+            </div>
+            <!-- chat to one of our operators -->
+            <div class="chat-spacer"></div>
+            <div class="chat-to-operator">
+                Or chat to one of our operators
+            </div>
+            <!-- chat with us button online -->
+            <div class="online">
+            <span class="chat-with-us-online" title="Chat with us" onclick="click_chat()">
+                <span class="chat-with-us-image-box">
+                    <img src="<?php echo $this->asset_folder . 'images/chat.svg'?>" alt="select" class="chat-with-us-image">
+                </span>
+                <span class="chat-with-us-text-box-online">
+                    Chat
+                </span>
+            </span>
+            </div>
+            <div class="chat-spacer"></div>
+        </td>
+    </tr>
+
+
+
+
+
+    <!-- ***************** -->
     <!-- Error dialog box -->
     <tr class="error-dialog-box" style="display: none;">
         <td class="error-dialog" >
@@ -360,53 +412,3 @@
 
 
 </table>
-
-
-
-
-
-<!-- ***************** -->
-<!-- NO Search results -->
-<div class="no-search-results" style="display: none;">
-    <div class="no-results-found-box">
-        <span class="no-results-found">No Results found for</span>
-        <span class="not-found-words">&nbsp</span>
-        <span onclick="close_no_results()" title="Close" class="close-box">
-                <span class="close-text">Close</span>
-                <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
-            </span>
-    </div>
-    <div class="no-results-text">
-        If you would like us to follow up on your query by email, please enter your email address and we'll
-        get back to you with a response within 24 hours
-    </div>
-    <!-- email text box -->
-    <div>
-        <span class="email-text-box">
-            <label class="email-address-text">
-                <input type="text" placeholder="Enter your email address" title="Enter your email address"
-                       maxlength="100" onkeypress="email_typing(event)" class="email-text">
-            </label>
-        </span>
-        <span class="send-button float-left" title="Send" onclick="do_email()">
-                <span class="send-text">Send</span>
-            </span>
-    </div>
-    <!-- chat to one of our operators -->
-    <div class="chat-spacer"></div>
-    <div class="chat-to-operator">
-        Or chat to one of our operators
-    </div>
-    <!-- chat with us button online -->
-    <div class="online">
-        <span class="chat-with-us-online" title="Chat with us" onclick="click_chat()">
-            <span class="chat-with-us-image-box">
-                <img src="<?php echo $this->asset_folder . 'images/chat.svg'?>" alt="select" class="chat-with-us-image">
-            </span>
-            <span class="chat-with-us-text-box-online">
-                Chat
-            </span>
-        </span>
-    </div>
-    <div class="chat-spacer"></div>
-</div>
