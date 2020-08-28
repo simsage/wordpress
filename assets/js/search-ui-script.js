@@ -1,6 +1,6 @@
 
 
-// call update_ui(0, 0, 0, [], {}, [], false, false) to draw the UI
+// call update_ui(0, 0, 0, [], {}, [], false, false, false) to draw the UI
 // call setup_dropdowns([], []) to setup the advanced search kb and sources
 // see: jQuery(document).ready() below for an example
 
@@ -64,9 +64,10 @@ is_typing_cache = false;
  * @param conversation_list     a bot conversation list
  * @param show_not_found        display "no results found"?
  * @param has_chat              do we need to show the chat bot window?
+ * @param is_typing             is the connected operator typing?
  */
 function update_ui(page, num_pages, num_results, result_list, category_set,
-                   synset_list, conversation_list, show_not_found, has_chat) {
+                   synset_list, conversation_list, show_not_found, has_chat, is_typing) {
     // set locally for other update functions
     result_list_cache = result_list;
     conversation_list_cache = conversation_list;
@@ -91,6 +92,9 @@ function update_ui(page, num_pages, num_results, result_list, category_set,
         } else {
             focus_on_search();
         }
+
+        // update the content of the chat window in any case
+        update_chat_window(conversation_list, is_typing);
 
     } else {
         jQuery(".not-found-words").html("\"" + render_no_results(text_cache) + "\"");
@@ -198,11 +202,14 @@ function next_page() {
     }
 }
 // we just got a message that the operator's typing status has changed
-function notify_operator_is_typing(is_typing) {
+function update_chat_window(chat_list, is_typing) {
+    conversation_list_cache = chat_list;
     is_typing_cache = is_typing;
-    const ct = jQuery(".chat-table");
-    ct.html(render_chats(conversation_list_cache, is_typing_cache));
-    ct.animate({scrollTop: ct.prop("scrollHeight")}, 10);
+    const ct = jQuery(".chat-table:visible");
+    if (ct.is(":visible")) {
+        ct.html(render_chats(conversation_list_cache, is_typing_cache));
+        ct.animate({scrollTop: ct.prop("scrollHeight")}, 10);
+    }
 }
 // setup render pagination
 function setup_pagination() {
@@ -502,5 +509,6 @@ jQuery(document).on('keydown', function (event) {
 
 jQuery(document).ready(function () {
     setup_dropdowns([], []);
-    update_ui(0, 0, 0, [], {}, [], [], false, false);
+    update_ui(0, 0, 0, [], {}, [],
+        [], false, false, false);
 });

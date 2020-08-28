@@ -1,6 +1,6 @@
 
 // create an instance of this class
-const analytics = new SimsageAnalytics(update_ui);
+const analytics = new SimsageAnalytics(an_update_ui);
 
 // startup - connect our plugin to a SimSage server
 jQuery(function($) {
@@ -23,7 +23,7 @@ jQuery(function($) {
 });
 
 
-function update_ui(analytics) {
+function an_update_ui(analytics) {
     jQuery(function($) {
         // do we have an error message to display?
         if (analytics.error.length > 0) {

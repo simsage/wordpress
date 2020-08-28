@@ -22,6 +22,9 @@ class SimSageCommon {
         // assigned operator
         this.assignedOperatorId = '';
         this.signed_in = false;
+
+        // conversation list between operator, bots, and the user
+        this.chat_list = [];
     }
 
 
@@ -96,11 +99,11 @@ class SimSageCommon {
             this.typing_last_seen = now + 2000;
             if (!this.is_typing && isTyping) {
                 this.is_typing = isTyping;
-                notify_operator_is_typing(true);
+                update_chat_window(this.chat_list, this.is_typing);
             }
         } else if (this.typing_last_seen < now  && this.is_typing) {
             this.is_typing = false;
-            notify_operator_is_typing(false);
+            update_chat_window(this.chat_list, this.is_typing);
         }
     }
 

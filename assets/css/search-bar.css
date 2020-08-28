@@ -33,6 +33,7 @@ input {
 
 .search-table {
     width: 100% !important;
+    min-width: 600px !important;
     max-width: 1024px !important;
     border-style: hidden;
 }

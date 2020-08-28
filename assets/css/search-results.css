@@ -3,36 +3,10 @@
     width: 100% !important;
     max-width: 1024px;
     border: 0 solid;
-    background-color: #ffffff;
-}
-
-.search-results .speech-bubble {
-    position: relative;
     padding: 10px;
-    margin-top: 22px;
-    background-color: #ffffff;
-    border: 0 solid;
     border-radius: 10px;
-}
-.search-results .speech-bubble p {
-    font-size: 1.25em;
-}
-.search-results .speech-bubble:before,
-.search-results .speech-bubble:after {
-    content: "\0020";
-    display:block;
-    position:absolute;
-    top: -20px;
-    left: 5%;
-    width: 0;
-    height: 0;
-    overflow: hidden;
-    border: solid 21px transparent;
-    border-top: 0;
-    border-bottom-color: #ffffff;
-}
-.search-results .speech-bubble:before {
-    top: -21px;
+    background-color: #ffffff;
+    margin-top: 22px;
 }
 
 /* main display */

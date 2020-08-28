@@ -32,8 +32,6 @@ class SemanticSearch extends SimSageCommon {
         this.syn_sets_seen = {};
         // list of ambigous items to pick from
         this.synset_list = [];
-        // conversation list between operator, bots, and the user
-        this.chat_list = [];
 
         // operator's id if we're chatting with someone
         this.assignedOperatorId = '';
@@ -49,7 +47,7 @@ class SemanticSearch extends SimSageCommon {
             // show the updated chat window
             update_ui(this.page, this.num_pages, this.num_results, this.semantic_search_results,
                 this.semantic_set, this.synset_list, this.chat_list, false,
-                !this.chat_closed_for_last_query);
+                !this.chat_closed_for_last_query, this.is_typing);
         }
     }
 
@@ -301,11 +299,11 @@ class SemanticSearch extends SimSageCommon {
                 if (data.hasResult) {
                     update_ui(this.page, this.num_pages, this.num_results, this.semantic_search_results,
                               this.semantic_set, this.synset_list, this.chat_list, false,
-                            nlp_reply.length > 0 && !this.chat_closed_for_last_query);
+                            nlp_reply.length > 0 && !this.chat_closed_for_last_query, this.is_typing);
 
                 } else {
                     update_ui(0, 0, 0, [], {}, [], [],
-                        true, false);
+                        true, false, false);
                 }
 
             }

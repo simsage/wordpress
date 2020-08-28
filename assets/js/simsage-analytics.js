@@ -5,8 +5,8 @@
 
 class SimsageAnalytics {
 
-    constructor(update_ui) {
-        this.update_ui = update_ui;
+    constructor(an_update_ui) {
+        this.an_update_ui = an_update_ui;
         this.response = '';
         this.error = '';
         this.busy = true;
@@ -24,8 +24,8 @@ class SimsageAnalytics {
     }
 
     refresh() {
-        if (this.update_ui) {
-            this.update_ui(this);
+        if (this.an_update_ui) {
+            this.an_update_ui(this);
         }
     }
 

@@ -14,7 +14,7 @@
 
 .operator-chat-box .speech-bubble {
     position: relative;
-    width: 550px !important;
+    width: 500px !important;
     height: 300px !important;
     padding: 10px !important;
     margin-top: 24px !important;
@@ -48,7 +48,7 @@
 }
 
 .operator-chat-box .operator-close-width {
-    width: 530px !important;
+    width: 480px !important;
 }
 
 .operator-chat-box .speech-bubble:before {
@@ -203,7 +203,7 @@
 }
 
 .operator-chat-box .chat-bar-bottom {
-    width: 572px !important;
+    width: 522px !important;
     height: 48px !important;
     cursor: text;
 }

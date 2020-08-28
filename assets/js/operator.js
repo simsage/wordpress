@@ -21,9 +21,9 @@ const mt_Disconnect = "disconnect";
 // operator class
 class Operator extends SimSageCommon {
 
-    constructor(update_ui) {
+    constructor(ops_update_ui) {
         super();
-        this.update_ui = update_ui;
+        this.ops_update_ui = ops_update_ui;
         this.response = '';
         this.endpointId = SimSageCommon.getOperatorId();  // end-point for operators
 
@@ -67,8 +67,8 @@ class Operator extends SimSageCommon {
 
     // overwrite: call refresh ui
     refresh() {
-        if (this.update_ui) {
-            this.update_ui(this);
+        if (this.ops_update_ui) {
+            this.ops_update_ui(this);
         }
     }
 
