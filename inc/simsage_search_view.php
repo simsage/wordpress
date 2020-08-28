@@ -303,43 +303,66 @@
         </td>
     </tr>
 
+
+    <!-- ***************** -->
+    <!-- Sign-in dialog box -->
+    <tr class="search-sign-in" style="display: none;">
+        <td>
+            <div class="search-sign-in-area">
+                <div class="header">
+                    <span class="title sign-in-title" title="Sign-in">sign-in</span>
+                    <span onclick="close_sign_in()" title="Close" class="close-box">
+                        <span class="close-text">Close</span>
+                        <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
+                    </span>
+                </div>
+                <span class="category-text">username</span>
+                <div class="category-item">
+                    <label>
+                        <input type="text" maxlength="100" placeholder="your username" class="category-input user-name" title="your username">
+                    </label>
+                </div>
+                <span class="category-text">password</span>
+                <div class="category-item">
+                    <label>
+                        <input type="password" maxlength="80" placeholder="your password" class="category-input password" title="your password">
+                    </label>
+                </div>
+                <div class="spacer"></div>
+            </div>
+            <div class="bar-bottom">
+            <span class="clear-text-box">
+            </span>
+                <span class="sign-in-button" title="sign-in" onclick="do_sign_in()">
+                <span class="sign-in-text">sign-in</span>
+            </span>
+            </div>
+        </td>
+    </tr>
+
+
+
+    <!-- ***************** -->
+    <!-- Error dialog box -->
+    <tr class="error-dialog-box" style="display: none;">
+        <td class="error-dialog" >
+            <div class="header">
+                <span class="title" title="an error occurred">ERROR</span>
+                <span onclick="close_error()" title="Close" class="close-box">
+                    <span class="close-text">Close</span>
+                    <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
+                </span>
+            </div>
+            <div class="error-text"></div>
+            <div class="error-spacer"></div>
+        </td>
+    </tr>
+
+
 </table>
 
 
 
-<!-- ***************** -->
-<!-- Sign-in dialog box -->
-<div class="search-sign-in" style="display: none;">
-    <div class="search-sign-in-area">
-        <div class="header">
-            <span class="title sign-in-title" title="Sign-in">sign-in</span>
-            <span onclick="close_sign_in()" title="Close" class="close-box">
-                    <span class="close-text">Close</span>
-                    <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
-                </span>
-        </div>
-        <span class="category-text">username</span>
-        <div class="category-item">
-            <label>
-                <input type="text" maxlength="100" placeholder="your username" class="category-input user-name" title="your username">
-            </label>
-        </div>
-        <span class="category-text">password</span>
-        <div class="category-item">
-            <label>
-                <input type="password" maxlength="80" placeholder="your password" class="category-input password" title="your password">
-            </label>
-        </div>
-        <div class="spacer"></div>
-    </div>
-    <div class="bar-bottom">
-        <span class="clear-text-box">
-        </span>
-        <span class="sign-in-button" title="sign-in" onclick="do_sign_in()">
-            <span class="sign-in-text">sign-in</span>
-        </span>
-    </div>
-</div>
 
 
 <!-- ***************** -->
@@ -359,12 +382,12 @@
     </div>
     <!-- email text box -->
     <div>
-            <span class="email-text-box">
-                <label class="email-address-text">
-                    <input type="text" placeholder="Enter your email address" title="Enter your email address"
-                           maxlength="100" onkeypress="email_typing(event)" class="email-text">
-                </label>
-            </span>
+        <span class="email-text-box">
+            <label class="email-address-text">
+                <input type="text" placeholder="Enter your email address" title="Enter your email address"
+                       maxlength="100" onkeypress="email_typing(event)" class="email-text">
+            </label>
+        </span>
         <span class="send-button float-left" title="Send" onclick="do_email()">
                 <span class="send-text">Send</span>
             </span>
@@ -376,29 +399,14 @@
     </div>
     <!-- chat with us button online -->
     <div class="online">
-            <span class="chat-with-us-online" title="Chat with us" onclick="click_chat()">
-                <span class="chat-with-us-image-box">
-                    <img src="<?php echo $this->asset_folder . 'images/chat.svg'?>" alt="select" class="chat-with-us-image">
-                </span>
-                <span class="chat-with-us-text-box-online">
-                    Chat
-                </span>
+        <span class="chat-with-us-online" title="Chat with us" onclick="click_chat()">
+            <span class="chat-with-us-image-box">
+                <img src="<?php echo $this->asset_folder . 'images/chat.svg'?>" alt="select" class="chat-with-us-image">
             </span>
+            <span class="chat-with-us-text-box-online">
+                Chat
+            </span>
+        </span>
     </div>
     <div class="chat-spacer"></div>
-</div>
-
-
-<!-- ***************** -->
-<!-- Error dialog box -->
-<div class="error-dialog" style="display: none;">
-    <div class="header">
-        <span class="title" title="an error occurred">ERROR</span>
-        <span onclick="close_error()" title="Close" class="close-box">
-                <span class="close-text">Close</span>
-                <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
-            </span>
-    </div>
-    <div class="error-text"></div>
-    <div class="error-spacer"></div>
 </div>

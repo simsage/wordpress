@@ -150,14 +150,14 @@ function error(err) {
         }
         if (err_str && err_str.trim && err_str.trim().length > 0) {
             jQuery(".error-text").html(esc_html(err_str));
-            jQuery(".error-dialog").show();
+            jQuery(".error-dialog-box").show();
         }
     } else {
         close_error();
     }
 }
 function close_error() {
-    jQuery(".error-dialog").hide();
+    jQuery(".error-dialog-box").hide();
 }
 
 function close_no_results() {
@@ -487,7 +487,7 @@ function sign_in_status(signed_in) {
 // monitor the ESC key to close dialog boxes
 jQuery(document).on('keydown', function (event) {
     if (event.key === "Escape") {
-        const err_ctrl = jQuery(".error-dialog");
+        const err_ctrl = jQuery(".error-dialog-box");
         if (err_ctrl.is(":visible")) {
             err_ctrl.hide();
         } else {
