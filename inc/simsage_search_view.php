@@ -279,8 +279,8 @@
 
     <!-- ********************* -->
     <!-- Search result display -->
-    <tr class="search-results" style="display: none;">
-        <td colspan="13">
+    <tr class="search-row search-results" style="display: none;">
+        <td class="search-results-top-td">
             <div class="pagination-box">
             </div>
             <div class="clear"></div>

@@ -76,7 +76,8 @@
 }
 
 .operator-chat-box .col-1 {
-    width: 370px;
+    float: left;
+    width: 238px;
     display: inline-block;
 }
 
@@ -103,7 +104,8 @@
 }
 
 .operator-chat-box .col-2 {
-    width: 370px;
+    width: 238px;
+    float: right;
     display: inline-block;
 }
 
