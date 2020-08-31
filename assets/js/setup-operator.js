@@ -288,6 +288,14 @@ function add_bot_response(text) {
     });
 }
 
+// if connected, let the system know we're still here at some interval
+function operator_present_tick() {
+    if (ready_to_rcv && ops.is_connected && callback.operator_refresh_tick) {
+        console.log("refresh");
+        callback.operator_refresh_tick();
+    }
+}
+
 // notification of a previous conversation list being available
 function add_previous_conversation_context(prev_conversation_list) {
     if (conversation_list.length === 0) {
@@ -330,6 +338,8 @@ jQuery(function($) {
     jQuery(document).ready(function () {
         // connect to our web-sockets for two way conversations
         ops.init_simsage();
+        // setup operator timer ticks
+        window.setInterval(() => operator_present_tick(), operatorRefreshRate);
     })
 });
 
