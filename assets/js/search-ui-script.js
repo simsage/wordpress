@@ -7,7 +7,6 @@
 
 // create an instance of our object
 search = new SemanticSearch();
-search.init_simsage();
 
 // callbacks fns to set to use this UI
 callback = {
@@ -142,6 +141,10 @@ function busy(is_busy) {
         jQuery(".filter-box input").removeAttr("disabled");
         jQuery(".search-sign-in input").removeAttr("disabled");
     }
+}
+
+// we get notified that simsage has connected
+function simsage_connected() {
 }
 
 // tell us there is an error
@@ -548,4 +551,5 @@ jQuery(document).ready(function () {
     setup_dropdowns([], []);
     update_ui(0, 0, 0, [], {}, [],
         [], false, false, false);
+    search.init_simsage();
 });

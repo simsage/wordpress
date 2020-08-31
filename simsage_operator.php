@@ -38,7 +38,7 @@ class simsage_operator
         wp_enqueue_script( 'simsage-script-2', plugins_url( 'assets/js/stomp.js', __FILE__ ), array('jquery'), '1.0', true );
         // todo: investigate!
         // wp_enqueue_script( 'simsage-script-5', plugins_url( 'assets/js/template.js', __FILE__ ), array('jquery'), '1.0', true );
-        wp_enqueue_script( 'simsage-script-6', plugins_url( 'assets/js/simsage-common.js', __FILE__ ), array('jquery'), '1.0', true );
+        wp_enqueue_script( 'simsage-script-4', plugins_url( 'assets/js/simsage-common.js', __FILE__ ), array('jquery'), '1.0', true );
         wp_enqueue_script( 'ops-script-1', plugins_url( 'assets/js/operator.js', __FILE__ ), array('jquery'), '1.0', true );
         wp_enqueue_script( 'ops-script-2', plugins_url( 'assets/js/setup-operator.js', __FILE__ ), array('jquery'), '1.0', true );
         // this is the html of the admin page, rendered in the context of this class

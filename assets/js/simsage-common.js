@@ -162,7 +162,6 @@ class SimSageCommon {
     }
 
     set_connected(is_connected) {
-        console.log('is_connected:' + is_connected);
         this.is_connected = is_connected;
         if (!is_connected) {
             if (this.stompClient !== null) {
@@ -179,7 +178,30 @@ class SimSageCommon {
             error('');
             this.connection_retry_count = 1;
             this.stompClient.debug = null;
+            simsage_connected();
         }
+    }
+
+    // post a message to the operator end-points
+    post_message(endPoint, data) {
+        const url = settings.base_url + endPoint;
+        const self = this;
+        jQuery.ajax({
+            headers: {
+                'Content-Type': 'application/json',
+                'API-Version': settings.api_version,
+            },
+            'data': JSON.stringify(data),
+            'type': 'POST',
+            'url': url,
+            'dataType': 'json',
+            'success': function (data) {
+                self.receive_ws_data(data);
+            }
+
+        }).fail(function (err) {
+            console.error(JSON.stringify(err));
+        });
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -516,13 +538,11 @@ class SimSageCommon {
                             self.set_office365_user(signedInUSer);
                             window.location.href = domain.redirectUrl;
                             self.signed_in = true;
-                            self.refresh();
                         }
                     }).fail(function (err) {
                         window.location.href = domain.redirectUrl;
                         console.error(err);
                         self.signed_in = false;
-                        self.refresh();
                         alert('office 365 sign-in failed');
                     });
                 }

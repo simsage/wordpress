@@ -67,22 +67,22 @@
                 <span class="menu-button">
                     <input id="btnReady" type="button" class="button" disabled
                            title="Signal that you are ready to go and converse with customers."
-                           value="ready for a chat" onClick="ops.operatorReady()" />
+                           value="ready for a chat" onClick="operator_ready()" />
                 </span>
                 <span class="menu-button">
                     <input id="btnBreak" type="button" class="button" disabled
                            title="take a break, stop participating in conversations while you have a break."
-                           value="take a break" onClick="ops.operatorTakeBreak()" />
+                           value="take a break" onClick="operator_take_break()" />
                 </span>
                 <span class="menu-button">
                     <input id="btnNextUser" type="button" class="button" disabled
                            title="We have finished the current conversation and are ready for a next one."
-                           value="next user" onClick="ops.operatorNextUser()" />
+                           value="next user" onClick="operator_next_user()" />
                 </span>
                 <span class="menu-button">
                     <input id="btnBanUser" type="button" class="button" disabled
                            title="The current conversation is abusive or bad spirited, ban this user from the system."
-                           value="ban user" onClick="ops.confirmBanUser()" />
+                           value="ban user" onClick="confirm_ban_user()" />
                 </span>
                 <span id="botCount"></span>
             </div>
@@ -93,11 +93,11 @@
                 </div>
                 <div>
                     <span><input id="txtResponse" class="text-response" type="text" disabled maxlength="200"
-                           onkeyup="ops.operator_key_press(event, this.value)" placeholder="your response" aria-label="response" />
+                           onkeyup="operator_key_press(event, this.value)" placeholder="your response" aria-label="response" />
                     </span>
                     <span>
                         <input type="button" id="btnChat" class="button" value="chat" disabled
-                               title="your response (available when connected to a user)" onClick="ops.reply_click(null)" />
+                               title="your response (available when connected to a user)" onClick="reply_click()" />
                     </span>
                 </div>
             </div>
@@ -115,11 +115,11 @@
                 </div>
 
                 <div id="twoSection">
-                    <input type="button" class="button learn-button" value="clear" onClick="ops.clearQA()" />
-                    <input type="button" class="button learn-button" value="teach SimSage" onClick="ops.teach()" />
+                    <input type="button" class="button learn-button" value="clear" onClick="clearQA()" />
+                    <input type="button" class="button learn-button" value="teach SimSage" onClick="teach()" />
                 </div>
                 <div id="oneSection" class="learn-buttons">
-                    <input type="button" class="button learn-button" value="clear" onClick="ops.clearQA()" />
+                    <input type="button" class="button learn-button" value="clear" onClick="clearQA()" />
                 </div>
             </div>
 
@@ -127,8 +127,8 @@
                 <div class="previous-answer-title">a previous answer to this question exists</div>
                 <div id="txtPreviousAnswer" class="previous-answer-answer"></div>
                 <div class="previous-answer-buttons">
-                    <input type="button" class="button learn-button" value="don't use" onClick="ops.dontUse()" />
-                    <input id="btnPreviousAnswer" type="button" class="button learn-button" value="use in 5 secs" onClick="ops.use()" />
+                    <input type="button" class="button learn-button" value="don't use" onClick="dont_use()" />
+                    <input id="btnPreviousAnswer" type="button" class="button learn-button" value="use in 5 secs" onClick="use()" />
                 </div>
             </div>
 
