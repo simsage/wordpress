@@ -291,7 +291,6 @@ function add_bot_response(text) {
 // if connected, let the system know we're still here at some interval
 function operator_present_tick() {
     if (ready_to_rcv && ops.is_connected && callback.operator_refresh_tick) {
-        console.log("refresh");
         callback.operator_refresh_tick();
     }
 }
