@@ -13,8 +13,10 @@ ops = new Operator(ops_update_ui);
 response = '';
 
 ready_to_rcv = false;           // operator ready to do some work?
-clientId = '';           // who we're connected to
-clientKbId = '';         // and re- what knowledge-base
+clientId = '';                  // who we're connected to
+clientKbId = '';                // and re- what knowledge-base
+assignedOperatorId = '';
+is_typing = false;
 
 conversation_list = [];
 previousAnswer = '';
@@ -33,7 +35,7 @@ connectionCount = 0;
 callback = {
     operator_ready: () => ops.operator_ready(),
     operator_take_break: () => ops.operator_take_break(),
-    signal_operator_is_typing: () => ops.signal_operator_is_typing(),
+    signal_operator_is_typing: (clientId) => ops.signal_operator_is_typing(clientId),
     confirm_ban_user: () => ops.confirm_ban_user(),
     operator_ban_user: () => ops.operator_ban_user(),
     operator_next_user: () => ops.operator_next_user(),
@@ -53,15 +55,6 @@ function ops_update_ui(ops) {
 
     busy();
 
-    const txtResponse = jQuery("#txtResponse");
-    if (ops.is_connected && ops.ready_to_rcv && ops.clientId.length > 0) {
-        txtResponse.removeAttr("disabled");
-        txtResponse.focus();
-        jQuery("#btnChat").removeAttr("disabled");
-    } else {
-        txtResponse.attr("disabled", "true");
-        jQuery("#btnChat").attr("disabled", "true");
-    }
     if (ops.response === '') {
         txtResponse.val(ops.response);
     }
@@ -94,8 +87,6 @@ function ops_update_ui(ops) {
     } else {
         jQuery("#previousAnswerSection").hide();
     }
-    // the conversation list
-    jQuery("#conversationList").html(render_operator_conversations(ops));
 }
 
 function update_buttons() {
@@ -108,7 +99,6 @@ function update_buttons() {
         jQuery("#btnBreak").removeAttr("disabled");
         jQuery("#btnNextUser").removeAttr("disabled");
         jQuery("#btnBanUser").removeAttr("disabled");
-        jQuery("#botCount").html("users: " + connectionCount);
     }
     if (clientId === "") {
         jQuery("#btnNextUser").attr("disabled", "true");
@@ -174,11 +164,11 @@ function operator_ban_user() {
 
 function operator_key_press(event, text) {
     if (event.keyCode === 13) {
-        reply_click('');
+        reply_click(null);
     } else {
         response = text;
-        if (ready_to_rcv && clientId.length > 0 && callback.signal_operator_is_typing) {
-            callback.signal_operator_is_typing();
+        if (ready_to_rcv && clientId && clientId.length > 0 && callback.signal_operator_is_typing) {
+            callback.signal_operator_is_typing(clientId);
         }
     }
 }
@@ -241,10 +231,12 @@ function client_disconnected() {
 
 function set_active_connections(count) {
     connectionCount = count;
-    update_buttons();
+    jQuery("#botCount").html("users: " + connectionCount);
 }
 
 function client_is_typing(typing) {
+    is_typing = typing;
+    render_operator_conversations()
 }
 
 // callback from operator message list to select a message for teaching
@@ -263,11 +255,70 @@ function select_for_learn(message_key) {
     }
 }
 
+// render a busy message (animating dots)
+function render_simsage_busy() {
+    return  "<div class=\"busy-image-container\"><img class=\"busy-image\" src=\"" + image_base + "images/dots.gif\" alt=\"there is some typing going on\"></div>";
+}
+
+// render the operator's conversation list
+function render_operator_conversations() {
+    const result = [];
+    for (const message of conversation_list) {
+        const html_text = message.primary;
+        const text = "'" + message.primary + "'";
+        if (!message.is_simsage) {
+            const style = message.used ? 'chat-user-box-dark' : 'chat-user-box';
+            result.push('<div class="conversation"><div class="' + style + '" onClick="select_for_learn(' + text + ')">\n' +
+                '    <img src="' + image_base + 'images/human.svg" class="chat-user-image" alt="user" onClick="select_for_learn(' + text + ')" />\n' +
+                '    <div class="user-message-text" onClick="select_for_learn(' + text + ')">' + html_text + '</div>\n' +
+                '    </div></div>\n');
+        } else {
+            const style = message.used ? 'chat-simsage-box-dark' : 'chat-simsage-box';
+            result.push('<div class="conversation"><div class="' + style + '" onClick="select_for_learn(' + text + ')">\n' +
+                '    <img src="' + image_base + 'images/tinman.svg" class="chat-simsage-image" alt="SimSage" onClick="select_for_learn(' + text + ')" />\n' +
+                '    <div class="simsage-message-text" onClick="select_for_learn(' + text + ')">' + html_text + '</div>\n' +
+                '    </div></div>\n');
+        }
+    }
+    if (is_typing) {
+        result.push(render_simsage_busy());
+    }
+    return result.reverse().join('\n');
+}
+
 // notification of client_id has been set
-function set_client_id(client_id, client_kb_id) {
-    clientId = client_id;
-    clientKbId = client_kb_id;
-    update_buttons();
+function set_client_id(client_id, client_kb_id, text, prev_conversation_list) {
+    if (client_id === '') {
+        // disconnected
+        clientId = '';
+        clientKbId = '';
+        conversation_list = [];
+        is_typing = false;
+        // disable the text field and chat button
+        jQuery("#txtResponse").attr("disabled", "true");
+        jQuery("#btnChat").attr("disabled", "true");
+    } else {
+        clientId = client_id;
+        clientKbId = client_kb_id;
+        is_typing = false;
+        const prev_empty = (conversation_list.length === 0);
+        // render any previous conversations if not done so already
+        add_previous_conversation_context(prev_conversation_list);
+        // add the user's text?
+        if (!prev_empty) {
+            conversation_list.push({
+                id: conversation_list.length + 1, primary: text,
+                secondary: "user", used: false, is_simsage: false
+            });
+        }
+        // render the conversation list
+        jQuery("#conversationList").html(render_operator_conversations());
+        // enable chat field and button
+        const txtResponse = jQuery("#txtResponse");
+        txtResponse.removeAttr("disabled");
+        txtResponse.focus();
+        jQuery("#btnChat").removeAttr("disabled");
+    }
 }
 
 // notification of a previous answer being available
@@ -297,7 +348,7 @@ function operator_present_tick() {
 
 // notification of a previous conversation list being available
 function add_previous_conversation_context(prev_conversation_list) {
-    if (conversation_list.length === 0) {
+    if (conversation_list.length === 0 && prev_conversation_list && prev_conversation_list.length > 0) {
         // does the message come with some of the conversation data of previous attempts
         conversation_list = []; // reset the list - we have data
         let count = 1;

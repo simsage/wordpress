@@ -45,7 +45,11 @@ class SimSageCommon {
             'dataType': 'json',
             'success': function (data) {
                 self.kb_list = data.kbList;
-                if (self.kb_list.length > 0) {
+                // wordpress override
+                if (settings && settings.kbId && settings.kbId.length > 0) {
+                    self.kb = {"name": "wordpress knowledge-base", "id": settings.kbId, "sourceList": []};
+                    self.on_change_kb(self.kb.id);
+                } else if (self.kb_list.length > 0) {
                     self.kb = self.kb_list[0];
                     self.on_change_kb(self.kb.id);
                 }

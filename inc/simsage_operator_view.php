@@ -97,7 +97,7 @@
                     </span>
                     <span>
                         <input type="button" id="btnChat" class="button" value="chat" disabled
-                               title="your response (available when connected to a user)" onClick="reply_click()" />
+                               title="your response (available when connected to a user)" onClick="reply_click(null)" />
                     </span>
                 </div>
             </div>

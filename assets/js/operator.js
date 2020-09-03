@@ -40,13 +40,13 @@ class Operator extends SimSageCommon {
     }
 
     // the operator is typing - send a message to the client if there is one
-    signal_operator_is_typing() {
+    signal_operator_is_typing(clientId) {
         const msg = {
             organisationId: settings.organisationId,
             kbId: settings.kbId,
             sid: settings.sid,
             fromId: SimSageCommon.get_client_id(),
-            toId: this.clientId,
+            toId: clientId,
             isTyping: true,
         };
         this.post_message('/ops/wp-typing', msg);
@@ -178,17 +178,6 @@ class Operator extends SimSageCommon {
 
                 } else {
 
-                    // stop the typing
-                    client_is_typing(false);
-
-                    // only get the conversation list if we haven't got one yet
-                    if (data.conversationList && data.conversationList.length > 0) {
-                        add_previous_conversation_context(data.conversationList);
-
-                    } else if (data.text && data.text.length > 0) {
-                        add_bot_response(data.text);
-                    }
-
                     // html 5 notifications enabled?
                     if (data.text && data.text.length > 0 &&
                         window.Notification && window.Notification.permission === "granted") {  // we have notification permission?
@@ -206,8 +195,11 @@ class Operator extends SimSageCommon {
                         set_previous_answer(data.previousAnswer);
                     }
 
-                    if (data.clientId.length > 5) {
-                        set_client_id(data.clientId, data.kbId);
+                    // have we been assigned an operator?
+                    if (data.assignedOperatorId && data.assignedOperatorId.length > 5) {
+                        set_client_id(data.assignedOperatorId, data.kbId, data.text, data.conversationList);
+                    } else {
+                        set_client_id('', '', '', []);
                     }
 
                 }
