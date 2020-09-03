@@ -145,10 +145,13 @@ function reply_click(_text) {
             callback.chat(clientId, text);
         }
         // // add this message to our list of items
-        // conversation_list.push({
-        //     id: conversation_list.length + 1, primary: text, secondary: "You", used: false, is_simsage: true
-        // });
+        conversation_list.push({
+            id: conversation_list.length + 1, primary: text, secondary: "You", used: false, is_simsage: true
+        });
         response = '';
+        jQuery("#txtResponse").val("");
+        // re-render the conversation list
+        jQuery("#conversationList").html(render_operator_conversations());
     }
 }
 
