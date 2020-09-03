@@ -90,21 +90,6 @@ function ops_update_ui(ops) {
 }
 
 function update_buttons() {
-    if (!ready_to_rcv || !ops.is_connected) {
-        jQuery("#btnBreak").attr("disabled", "true");
-        jQuery("#btnNextUser").attr("disabled", "true");
-        jQuery("#btnBanUser").attr("disabled", "true");
-        jQuery("#botCount").html("");
-    } else {
-        jQuery("#btnBreak").removeAttr("disabled");
-        jQuery("#btnNextUser").removeAttr("disabled");
-        jQuery("#btnBanUser").removeAttr("disabled");
-    }
-    if (clientId === "") {
-        jQuery("#btnNextUser").attr("disabled", "true");
-        jQuery("#btnBanUser").attr("disabled", "true");
-        jQuery("#conversationList").html("");
-    }
 }
 
 
@@ -119,31 +104,27 @@ function operator_ready() {
         callback.operator_ready();
         ready_to_rcv = true;
         jQuery("#btnReady").attr("disabled", "true");
-        update_buttons();
+        jQuery("#btnBreak").removeAttr("disabled");
     }
 }
 
 function operator_take_break() {
     if (ops.is_connected && callback.operator_take_break) {
-        ready_to_rcv = false;
-        clientId = '';
-        conversation_list = [];
-
+        client_disconnected();
         callback.operator_take_break();
 
+        ready_to_rcv = false; // but not ready to receive
         jQuery("#btnReady").removeAttr("disabled");
-        update_buttons();
+        jQuery("#btnBreak").attr("disabled", "true");
     }
 }
 
 function operator_next_user() {
     if (ops.is_connected) {
-        ready_to_rcv = true;
-        clientId = '';
-        conversation_list = [];
         if (callback.operator_next_user) {
             callback.operator_next_user();
         }
+        client_disconnected();
     }
 }
 
@@ -151,15 +132,14 @@ function confirm_ban_user() {
     if (ops.is_connected && callback.confirm_ban_user) {
         callback.confirm_ban_user();
     }
+    client_disconnected();
 }
 
 function operator_ban_user() {
     if (this.is_connected && callback.operator_ban_user) {
-        ready_to_rcv = true;
-        clientId = '';
-        conversation_list = [];
         callback.operator_ban_user();
     }
+    client_disconnected();
 }
 
 function operator_key_press(event, text) {
@@ -224,9 +204,8 @@ function use() {
 
 // a message has come from the operator that she has disconnected us
 function client_disconnected() {
-    clientId = '';
-    conversation_list = [];
-    update_buttons();
+    // disconnect any client
+    connect_to_client('', '', []);
 }
 
 function set_active_connections(count) {
@@ -287,16 +266,21 @@ function render_operator_conversations() {
 }
 
 // notification of client_id has been set
-function set_client_id(client_id, client_kb_id, text, prev_conversation_list) {
+function connect_to_client(client_id, client_kb_id, prev_conversation_list) {
     if (client_id === '') {
         // disconnected
         clientId = '';
         clientKbId = '';
         conversation_list = [];
         is_typing = false;
-        // disable the text field and chat button
+        // disable the text field and chat button and others
         jQuery("#txtResponse").attr("disabled", "true");
         jQuery("#btnChat").attr("disabled", "true");
+        jQuery("#btnNextUser").attr("disabled", "true");
+        jQuery("#btnBanUser").attr("disabled", "true");
+        jQuery("#botCount").html("");
+        jQuery("#conversationList").html("");
+
     } else {
         clientId = client_id;
         clientKbId = client_kb_id;
@@ -304,13 +288,6 @@ function set_client_id(client_id, client_kb_id, text, prev_conversation_list) {
         const prev_empty = (conversation_list.length === 0);
         // render any previous conversations if not done so already
         add_previous_conversation_context(prev_conversation_list);
-        // add the user's text?
-        if (!prev_empty) {
-            conversation_list.push({
-                id: conversation_list.length + 1, primary: text,
-                secondary: "user", used: false, is_simsage: false
-            });
-        }
         // render the conversation list
         jQuery("#conversationList").html(render_operator_conversations());
         // enable chat field and button
@@ -318,6 +295,9 @@ function set_client_id(client_id, client_kb_id, text, prev_conversation_list) {
         txtResponse.removeAttr("disabled");
         txtResponse.focus();
         jQuery("#btnChat").removeAttr("disabled");
+        jQuery("#btnBreak").removeAttr("disabled");
+        jQuery("#btnNextUser").removeAttr("disabled");
+        jQuery("#btnBanUser").removeAttr("disabled");
     }
 }
 

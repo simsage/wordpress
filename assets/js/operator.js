@@ -197,9 +197,9 @@ class Operator extends SimSageCommon {
 
                     // have we been assigned an operator?
                     if (data.assignedOperatorId && data.assignedOperatorId.length > 5) {
-                        set_client_id(data.assignedOperatorId, data.kbId, data.text, data.conversationList);
+                        connect_to_client(data.assignedOperatorId, data.kbId, data.conversationList);
                     } else {
-                        set_client_id('', '', '', []);
+                        client_disconnected();
                     }
 
                 }
