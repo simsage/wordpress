@@ -36,7 +36,6 @@ callback = {
     operator_ready: () => ops.operator_ready(),
     operator_take_break: () => ops.operator_take_break(),
     signal_operator_is_typing: (clientId) => ops.signal_operator_is_typing(clientId),
-    confirm_ban_user: () => ops.confirm_ban_user(),
     operator_ban_user: () => ops.operator_ban_user(),
     operator_next_user: () => ops.operator_next_user(),
     operator_refresh_tick: () => ops.operator_refresh_tick(),
@@ -112,10 +111,9 @@ function operator_next_user() {
 }
 
 function confirm_ban_user() {
-    if (ops.is_connected && callback.confirm_ban_user) {
-        callback.confirm_ban_user();
+    if (confirm("Are you SURE you want to BAN this user from the System?")) {
+        operator_ban_user();
     }
-    client_disconnected();
 }
 
 function operator_ban_user() {

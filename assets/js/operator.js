@@ -19,13 +19,6 @@ class Operator extends SimSageCommon {
     }
 
 
-    // better make sure we are sure before doing something accidentally
-    confirm_ban_user() {
-        if (confirm("Are you SURE you want to BAN this user from the System?")) {
-            operator_ban_user();
-        }
-    }
-
     // send a chat message to SimSage
     chat(client_id, text) {
         const msg = {
