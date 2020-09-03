@@ -144,13 +144,11 @@ function reply_click(_text) {
         if (callback.chat) {
             callback.chat(clientId, text);
         }
-        // add this message to our list of items
-        conversation_list.push({
-            id: conversation_list.length + 1, primary: text, secondary: "You", used: false, is_simsage: true
-        });
-        if (_text === '') {
-            response = '';
-        }
+        // // add this message to our list of items
+        // conversation_list.push({
+        //     id: conversation_list.length + 1, primary: text, secondary: "You", used: false, is_simsage: true
+        // });
+        response = '';
     }
 }
 
@@ -388,7 +386,7 @@ function operator_present_tick() {
 
 // notification of a previous conversation list being available
 function add_previous_conversation_context(prev_conversation_list) {
-    if (conversation_list.length === 0 && prev_conversation_list && prev_conversation_list.length > 0) {
+    if (prev_conversation_list && prev_conversation_list.length > 0) {
         // does the message come with some of the conversation data of previous attempts
         conversation_list = []; // reset the list - we have data
         let count = 1;
@@ -414,9 +412,6 @@ function error(err_message) {
     if (err_message !== '') {
         console.log("err_message:" + err_message);
     }
-}
-
-function focus_on_search() {
 }
 
 function simsage_connected() {

@@ -69,7 +69,6 @@ class SemanticSearch extends SimSageCommon {
 
             text = this.cleanup_query_text(text);
             const search_query_str = this.semantic_search_query_str(text, advanced_filter);
-            console.log(search_query_str);
             if (search_query_str !== '()') {
                 this.search_query = text;
                 this.show_advanced_search = false;
@@ -110,6 +109,7 @@ class SemanticSearch extends SimSageCommon {
                     'url': url,
                     'dataType': 'json',
                     'success': function (data) {
+                        busy(false);
                     }
 
                 }).fail(function (err) {
@@ -178,6 +178,7 @@ class SemanticSearch extends SimSageCommon {
     // overwrite: generic web socket receiver
     receive_ws_data(data) {
         busy(false);
+        console.log(data);
         if (data) {
             if (data.messageType === mt_Error && data.error.length > 0) {
                 error(data.error);  // set an error
@@ -293,10 +294,11 @@ class SemanticSearch extends SimSageCommon {
                     this.knowEmail = data.knowEmail;
                 }
 
-                if (data.hasResult) {
+                const has_chat = (this.assignedOperatorId.length > 0);
+                if (data.hasResult || has_chat) {
                     update_ui(this.page, this.num_pages, this.num_results, this.semantic_search_results,
                               this.semantic_set, this.synset_list, this.chat_list, false,
-                            nlp_reply.length > 0 && !this.chat_closed_for_last_query, this.is_typing);
+                        (nlp_reply.length > 0 || has_chat) && !this.chat_closed_for_last_query, this.is_typing);
 
                 } else {
                     update_ui(0, 0, 0, [], {}, [], [],

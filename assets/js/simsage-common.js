@@ -60,8 +60,6 @@ class SimSageCommon {
                 self.connect();
                 // setup is-typing check
                 window.setInterval(() => self.operator_is_typing(false), 1000);
-                // focus on the search field
-                focus_on_search();
             }
 
         }).fail(function (err) {

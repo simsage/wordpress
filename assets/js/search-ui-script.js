@@ -92,8 +92,6 @@ function update_ui(page, num_pages, num_results, result_list, category_set,
         }
         if (has_chat) {
             show_chat();
-        } else {
-            focus_on_search();
         }
 
         // update the content of the chat window in any case
@@ -103,7 +101,6 @@ function update_ui(page, num_pages, num_results, result_list, category_set,
         jQuery(".not-found-words").html("\"" + render_no_results(text_cache) + "\"");
         jQuery(".search-results").hide();
         jQuery(".no-search-results").show();
-        focus_on_search();
     }
 }
 
@@ -186,9 +183,6 @@ function focus_text(ctrl) {
     c.focus();
     c.val("");
     c.val(text_cache);
-}
-function focus_on_search() {
-    focus_text(".search-text");
 }
 // a user decides to change their kb
 function do_change_kb() {
@@ -320,7 +314,6 @@ function close_chat() {
     if (callback.do_close_query_window) {
         callback.do_close_query_window();
     }
-    focus_on_search();
     return false;
 }
 // for click events, stop propagating
@@ -354,7 +347,6 @@ function click_filter() {
 function close_filter() {
     nop();
     jQuery(".filter-box-view").hide();
-    focus_on_search();
 }
 // show all details for a particular result
 function show_details(id) {
@@ -366,7 +358,6 @@ function show_details(id) {
 // close the details view of a particular result
 function close_details() {
     jQuery(".search-details-view").hide();
-    focus_on_search();
 }
 // add a search term (or remove) to the search text from the semantics / categories box
 function add_search(term) {
