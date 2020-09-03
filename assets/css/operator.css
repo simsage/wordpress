@@ -78,9 +78,9 @@
 .learnings {
     position: absolute;
     display: none;
-    top: 150px;
+    top: 250px;
     background-color: #fff;
-    margin-left: calc(100% - 450px);
+    margin-left: calc(100% - 440px);
     z-index: 999;
     width: 350px;
     padding: 20px;
@@ -112,6 +112,8 @@
 .learn-label {
     float: left;
     font-weight: 900;
+    width: 100px;
+    display: inline-block;
     font-size: 1.3em;
     margin-bottom: 4px;
 }
