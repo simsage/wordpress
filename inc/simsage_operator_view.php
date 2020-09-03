@@ -104,16 +104,16 @@
 
 
             <div id="learningSection" class="learnings">
-                <img id="tick" alt="success" class="learn-tick" src="<?php echo $this->asset_folder . 'images/tick.svg'?>"/>
                 <div>
                     <span class="learn-label">question</span>
                     <span id="txtQuestion" class="question-text"></span>
                 </div>
+                <br clear="both" />
                 <div>
                     <span class="learn-label">answer</span>
                     <span id="txtAnswer" class="answer-text"></span>
                 </div>
-
+                <br clear="both" />
                 <div id="twoSection">
                     <input type="button" class="button learn-button" value="clear" onClick="clearQA()" />
                     <input type="button" class="button learn-button" value="teach SimSage" onClick="teach()" />

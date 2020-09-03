@@ -59,26 +59,6 @@ function ops_update_ui(ops) {
         txtResponse.val(ops.response);
     }
 
-    // learning section
-    if (ops.question.length > 0 || ops.answer.length > 0) {
-        jQuery("#learningSection").show();
-        jQuery("#txtQuestion").text(ops.question);
-        jQuery("#txtAnswer").text(ops.answer);
-        if (ops.question.length > 0 && ops.answer.length > 0) {
-            jQuery("#twoSection").show();
-            jQuery("#oneSection").hide();
-        } else {
-            jQuery("#oneSection").show();
-            jQuery("#twoSection").hide();
-        }
-        if (ops.teachingSuccess) {
-            jQuery("#tick").show();
-        } else {
-            jQuery("#tick").hide();
-        }
-    } else {
-        jQuery("#learningSection").hide();
-    }
     // previous answer section
     if (ops.previousAnswer.length > 0) {
         jQuery("#txtPreviousAnswer").text(ops.previousAnswer);
@@ -88,6 +68,7 @@ function ops_update_ui(ops) {
         jQuery("#previousAnswerSection").hide();
     }
 }
+
 
 function update_buttons() {
 }
@@ -103,6 +84,8 @@ function operator_ready() {
     if (callback.operator_ready) {
         callback.operator_ready();
         ready_to_rcv = true;
+        question = '';
+        answer = '';
         jQuery("#btnReady").attr("disabled", "true");
         jQuery("#btnBreak").removeAttr("disabled");
     }
@@ -173,21 +156,6 @@ function reply_click(_text) {
     }
 }
 
-function clearQA() {
-    question = '';
-    answer = '';
-}
-
-function teach() {
-    if (clientId.length > 0 && question.length > 0 && answer.length > 0) {
-        answer_message.used = true;
-        question_message.used = true;
-        if (callback.teach) {
-            callback.teach(clientId, question, answer);
-        }
-    }
-}
-
 function setup_sign_in() {
 }
 
@@ -219,18 +187,94 @@ function client_is_typing(typing) {
 }
 
 // callback from operator message list to select a message for teaching
-function select_for_learn(message_key) {
-    const message = conversation_list.find(x => x.key == message_key);
+function select_for_learn(message_id) {
+    const message = conversation_list.find(x => x.id == message_id);
     if (message) {
         if (!message.used) {
-            if (message && message.type === "simsage") {
-                answer = message.message;
-                answer_message = message;
+            if (message && message.is_simsage) {
+                // de-select all other user messages
+                for (const m of conversation_list) {
+                    if (m.is_simsage && m.id != message_id) {
+                        m.selected = false;
+                    }
+                }
+                message.selected = !message.selected;
+                if (message.selected) {
+                    answer = message.primary;
+                    answer_message = message;
+                } else {
+                    answer_message = {};
+                    answer = '';
+                }
             } else {
-                question = message.message;
-                question_message = message;
+                // de-select all other non-user messages
+                for (const m of conversation_list) {
+                    if (!m.is_simsage && m.id != message_id) {
+                        m.selected = false;
+                    }
+                }
+                message.selected = !message.selected;
+                if (message.selected) {
+                    question = message.primary;
+                    question_message = message;
+                } else {
+                    question_message = {};
+                    question = '';
+                }
             }
+
+            // re-render the conversation list
+            jQuery("#conversationList").html(render_operator_conversations());
+
+            ops_show_teaching_dialog();
         }
+    }
+}
+
+function clearQA() {
+    question = '';
+    question_message = {};
+    answer = '';
+    answer_message = {};
+    for (const m of conversation_list) {
+        m.selected = false;
+    }
+    ops_show_teaching_dialog();
+    // re-render the conversation list
+    jQuery("#conversationList").html(render_operator_conversations());
+}
+
+function teach() {
+    if (clientId.length > 0 && question.length > 0 && answer.length > 0) {
+        answer_message.used = true;
+        question_message.used = true;
+        if (callback.teach) {
+            callback.teach(clientId, question, answer);
+        }
+        question = '';
+        answer = '';
+        ops_show_teaching_dialog();
+        // re-render the conversation list
+        jQuery("#conversationList").html(render_operator_conversations());
+    }
+}
+
+// show a teaching dialog after the user has made their selection
+function ops_show_teaching_dialog() {
+    // learning section
+    if (question.length > 0 || answer.length > 0) {
+        jQuery("#learningSection").show();
+        jQuery("#txtQuestion").text(question);
+        jQuery("#txtAnswer").text(answer);
+        if (question.length > 0 && answer.length > 0) {
+            jQuery("#twoSection").show();
+            jQuery("#oneSection").hide();
+        } else {
+            jQuery("#oneSection").show();
+            jQuery("#twoSection").hide();
+        }
+    } else {
+        jQuery("#learningSection").hide();
     }
 }
 
@@ -239,23 +283,38 @@ function render_simsage_busy() {
     return  "<div class=\"busy-image-container\"><img class=\"busy-image\" src=\"" + image_base + "images/dots.gif\" alt=\"there is some typing going on\"></div>";
 }
 
+/**
+ * replace < and > in a string to make it html safe
+ * @param str the string to act on
+ * @return the escaped string
+ */
+function esc_html(str) {
+    if (typeof str === 'string' || str instanceof String) {
+        return str
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+    }
+    return str;
+}
+
+
 // render the operator's conversation list
 function render_operator_conversations() {
     const result = [];
     for (const message of conversation_list) {
-        const html_text = message.primary;
-        const text = "'" + message.primary + "'";
+        const html_text = esc_html(message.primary);
+        const id = message.id;
         if (!message.is_simsage) {
-            const style = message.used ? 'chat-user-box-dark' : 'chat-user-box';
-            result.push('<div class="conversation"><div class="' + style + '" onClick="select_for_learn(' + text + ')">\n' +
-                '    <img src="' + image_base + 'images/human.svg" class="chat-user-image" alt="user" onClick="select_for_learn(' + text + ')" />\n' +
-                '    <div class="user-message-text" onClick="select_for_learn(' + text + ')">' + html_text + '</div>\n' +
+            const style = (message.used || message.selected) ? 'chat-user-box-dark' : 'chat-user-box';
+            result.push('<div class="conversation"><div class="' + style + '" onClick="select_for_learn(' + id + ')">\n' +
+                '    <img src="' + image_base + 'images/human.svg" class="chat-user-image" alt="user" />\n' +
+                '    <div class="user-message-text">' + html_text + '</div>\n' +
                 '    </div></div>\n');
         } else {
-            const style = message.used ? 'chat-simsage-box-dark' : 'chat-simsage-box';
-            result.push('<div class="conversation"><div class="' + style + '" onClick="select_for_learn(' + text + ')">\n' +
-                '    <img src="' + image_base + 'images/tinman.svg" class="chat-simsage-image" alt="SimSage" onClick="select_for_learn(' + text + ')" />\n' +
-                '    <div class="simsage-message-text" onClick="select_for_learn(' + text + ')">' + html_text + '</div>\n' +
+            const style = (message.used || message.selected) ? 'chat-simsage-box-dark' : 'chat-simsage-box';
+            result.push('<div class="conversation"><div class="' + style + '" onClick="select_for_learn(' + id + ')">\n' +
+                '    <img src="' + image_base + 'images/tinman.svg" class="chat-simsage-image" alt="SimSage" />\n' +
+                '    <div class="simsage-message-text">' + html_text + '</div>\n' +
                 '    </div></div>\n');
         }
     }
@@ -273,6 +332,10 @@ function connect_to_client(client_id, client_kb_id, prev_conversation_list) {
         clientKbId = '';
         conversation_list = [];
         is_typing = false;
+        question = '';
+        answer = '';
+        question_message = {};
+        answer_message = {};
         // disable the text field and chat button and others
         jQuery("#txtResponse").attr("disabled", "true");
         jQuery("#btnChat").attr("disabled", "true");
@@ -285,7 +348,6 @@ function connect_to_client(client_id, client_kb_id, prev_conversation_list) {
         clientId = client_id;
         clientKbId = client_kb_id;
         is_typing = false;
-        const prev_empty = (conversation_list.length === 0);
         // render any previous conversations if not done so already
         add_previous_conversation_context(prev_conversation_list);
         // render the conversation list
@@ -337,7 +399,7 @@ function add_previous_conversation_context(prev_conversation_list) {
                 let ci = prev_conversation_list[index];
                 const is_simsage = (ci.origin !== "user");
                 conversation_list.push({
-                    id: count, primary: ci.conversationText,
+                    id: count, primary: ci.conversationText, selected: false,
                     secondary: is_simsage ? "You" : "user", used: false, is_simsage: is_simsage
                 });
                 count += 1;
