@@ -178,7 +178,6 @@ class SemanticSearch extends SimSageCommon {
     // overwrite: generic web socket receiver
     receive_ws_data(data) {
         busy(false);
-        console.log(data);
         if (data) {
             if (data.messageType === mt_Error && data.error.length > 0) {
                 error(data.error);  // set an error
@@ -298,7 +297,7 @@ class SemanticSearch extends SimSageCommon {
                 if (data.hasResult || has_chat) {
                     update_ui(this.page, this.num_pages, this.num_results, this.semantic_search_results,
                               this.semantic_set, this.synset_list, this.chat_list, false,
-                        (nlp_reply.length > 0 || has_chat) && !this.chat_closed_for_last_query, this.is_typing);
+                        (nlp_reply.length > 0 || has_chat), this.is_typing);
 
                 } else {
                     update_ui(0, 0, 0, [], {}, [], [],
