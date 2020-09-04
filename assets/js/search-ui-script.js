@@ -401,6 +401,7 @@ function do_search() {
 function clear_search() {
     text_cache = "";
     jQuery(".search-text").val("");
+    jQuery(".chat-text").val("");
 }
 // send a chat message to the system
 function do_chat() {

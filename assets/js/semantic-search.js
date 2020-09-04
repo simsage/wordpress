@@ -47,6 +47,8 @@ class SemanticSearch extends SimSageCommon {
             update_ui(this.page, this.num_pages, this.num_results, this.semantic_search_results,
                 this.semantic_set, this.synset_list, this.chat_list, false,
                 !this.chat_closed_for_last_query, this.is_typing);
+            // clear any text - after the chat
+            clear_search();
         }
     }
 
