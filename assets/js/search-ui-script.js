@@ -233,7 +233,21 @@ function clear_all() {
 }
 // return the values of the advanced filter box
 function get_advanced_filter() {
-    return {
+
+    const parent_data = find_closest_parent(".filter-box-view")
+    if (parent_data.parent) {
+        const parent = parent_data.parent;
+        return {
+            "document_type": parent.find('label.document-type-sel select').val().split(','),
+            "kb": parent.find('label.knowledge-base-sel select').val(),
+            "source_id": parent.find('label.source-sel select').val(),
+            "title": [parent.find('.title-text').val()],
+            "url": [parent.find('.url-text').val()],
+            "author": [parent.find('.author-text').val()],
+            "syn-sets": selected_syn_sets,
+        };
+    } else {
+        return {
             "document_type": jQuery('label.document-type-sel select').val().split(','),
             "kb": jQuery('label.knowledge-base-sel select').val(),
             "source_id": jQuery('label.source-sel select').val(),
@@ -242,6 +256,7 @@ function get_advanced_filter() {
             "author": [jQuery('.author-text').val()],
             "syn-sets": selected_syn_sets,
         };
+    }
 }
 // search results text-view
 function select_text_view() {

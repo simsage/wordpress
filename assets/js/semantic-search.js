@@ -71,6 +71,7 @@ class SemanticSearch extends SimSageCommon {
 
             text = this.cleanup_query_text(text);
             const search_query_str = this.semantic_search_query_str(text, advanced_filter);
+            console.log(search_query_str);
             if (search_query_str !== '()') {
                 this.search_query = text;
                 this.show_advanced_search = false;
