@@ -367,10 +367,13 @@ class SemanticSearch extends SimSageCommon {
 
     // clean text - remove characters we use for special purposes
     cleanup_query_text(text) {
-        // remove any : ( ) characters from text first
+        // remove any : ( ) characters from text first (but not from http: and https:)
         text = text.replace(/\)/g, ' ');
         text = text.replace(/\(/g, ' ');
-        return text.replace(/:/g, ' ');
+        text = text.replace(/:/g, ' ');
+        text = text.replace(/http \/\//g, 'http://');
+        text = text.replace(/https \/\//g, 'https://');
+        return text;
     }
 
     // get a semantic search query string for all the filters etc.
