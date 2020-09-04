@@ -29,7 +29,7 @@ class SemanticSearch extends SimSageCommon {
         this.semantic_search_results = [];
         this.semantic_set = {};
         this.syn_sets_seen = {};
-        // list of ambigous items to pick from
+        // list of ambiguous items to pick from
         this.synset_list = [];
 
         // operator's id if we're chatting with someone
