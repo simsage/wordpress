@@ -181,8 +181,14 @@ function set_active_connections(count) {
 }
 
 function client_is_typing(typing) {
+    ops.is_typing = typing;
     is_typing = typing;
-    render_operator_conversations()
+    jQuery("#conversationList").html(render_operator_conversations());
+}
+
+// we just got a message that the operator's typing status has changed (timer based)
+function update_chat_window(chat_list, is_typing) {
+    client_is_typing(is_typing);
 }
 
 // callback from operator message list to select a message for teaching
@@ -330,6 +336,7 @@ function connect_to_client(client_id, client_kb_id, prev_conversation_list) {
         clientId = '';
         clientKbId = '';
         conversation_list = [];
+        ops.is_typing = false;
         is_typing = false;
         question = '';
         answer = '';
@@ -346,6 +353,7 @@ function connect_to_client(client_id, client_kb_id, prev_conversation_list) {
     } else {
         clientId = client_id;
         clientKbId = client_kb_id;
+        ops.is_typing = false;
         is_typing = false;
         // render any previous conversations if not done so already
         add_previous_conversation_context(prev_conversation_list);

@@ -236,3 +236,10 @@
     max-width: 300px;
     cursor: pointer;
 }
+
+/* is typing */
+
+.busy-image {
+    width: 60px;
+}
+

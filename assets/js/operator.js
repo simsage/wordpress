@@ -138,9 +138,6 @@ class Operator extends SimSageCommon {
     // overwrite: generic web socket receiver
     receive_ws_data(data) {
         this.busy = false;
-        if (data.messageType !== mt_ActiveConnections) {
-            console.log(data);
-        }
         if (data) {
 
             if (data.messageType === mt_Error && data.error.length > 0) {
@@ -164,7 +161,9 @@ class Operator extends SimSageCommon {
             }
 
             else if (data.messageType === mt_Typing) {
-                client_is_typing(data.fromIsTyping);
+                if (data.toId === SimSageCommon.get_client_id()) {
+                    client_is_typing(data.fromIsTyping);
+                }
             }
 
             else if (data.messageType === mt_Message) {
