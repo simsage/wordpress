@@ -234,7 +234,7 @@ function clear_all() {
 // return the values of the advanced filter box
 function get_advanced_filter() {
 
-    const parent_data = find_closest_parent(".filter-box-view")
+    const parent_data = find_most_recent_parent(".search-options-chevron-box")
     if (parent_data.parent) {
         const parent = parent_data.parent;
         return {
@@ -270,6 +270,7 @@ function select_image_view() {
     jQuery(".search-results-td").html(render_search_results(result_list_cache, is_text_view));
     setup_pagination();
 }
+// find the box closest to the mouse - for click and find actions
 function find_closest_parent(parent_class) {
     // find the closest parent to the mouse position
     const boxes = jQuery(parent_class);
@@ -288,8 +289,38 @@ function find_closest_parent(parent_class) {
                 parent = jQuery(this);
             }
         });
+        if (parent.length) {
+            const ts = parent.find(".time-stamp");
+            if (ts) ts.val(SimSageCommon.get_system_time());
+        }
     }
     return {"parent": parent, "index": best_index};
+}
+// find most recent parent
+function find_most_recent_parent(parent_class) {
+    // find the closest parent to the mouse position
+    const boxes = jQuery(parent_class);
+    let best_index = 0;
+    let best_parent = null;
+    if (boxes) {
+        let best_time = -1;
+        boxes.each(function (index) {
+            const parent = jQuery(this);
+            let time = 0;
+            if (parent.length) {
+                const ts = parent.find(".time-stamp");
+                if (ts.length) {
+                    time = parseInt(ts.val());
+                }
+            }
+            if (best_time === -1 || time > best_time) {
+                best_index = index;
+                best_time = time;
+                best_parent = parent;
+            }
+        });
+    }
+    return {"parent": best_parent, "index": best_index};
 }
 function click_chat() {
     nop();
@@ -412,11 +443,13 @@ function do_search() {
         callback.do_search(page_cache, text_cache, af);
     }
 }
-// clear the search text input
+// clear the search text input and filters
 function clear_search() {
     text_cache = "";
     jQuery(".search-text").val("");
     jQuery(".chat-text").val("");
+    // clear filters
+    clear_all();
 }
 // send a chat message to the system
 function do_chat() {

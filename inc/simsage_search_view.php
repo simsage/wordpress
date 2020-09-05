@@ -79,6 +79,7 @@
             <span class="search-options-text">Search Options</span>
         </td>
         <td class="search-options-chevron-box" title="Search options">
+            <input type="hidden" class="time-stamp" value="0" />
             <div class="search-options-chevron-image-box" onclick="click_filter()">
                 <img src="<?php echo $this->asset_folder . 'images/chevron-down.svg'?>" alt="select" class="search-options-chevron">
             </div>
@@ -214,6 +215,7 @@
         </td>
         <!-- chat with us button online -->
         <td class="chat-with-us"  title="Chat with us" onclick="click_chat()">
+            <input type="hidden" class="time-stamp" value="0" />
             <span class="chat-with-us-image-box">
                 <img src="<?php echo $this->asset_folder . 'images/chat.svg'?>" alt="select" class="chat-with-us-image">
             </span>
