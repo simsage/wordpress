@@ -405,6 +405,9 @@ function show_details(id) {
 function close_details() {
     jQuery(".search-details-view").hide();
 }
+function show_kb_dropdown() {
+    jQuery(".knowledge-base-selector").show();
+}
 // add a search term (or remove) to the search text from the semantics / categories box
 function add_search(term) {
     let text = " " + text_cache + " ";

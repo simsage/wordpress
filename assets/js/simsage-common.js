@@ -52,6 +52,7 @@ class SimSageCommon {
                 } else if (self.kb_list.length > 0) {
                     self.kb = self.kb_list[0];
                     self.on_change_kb(self.kb.id);
+                    show_kb_dropdown();
                 }
                 error('');
                 self.connection_retry_count = 1;

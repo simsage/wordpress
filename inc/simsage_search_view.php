@@ -135,7 +135,7 @@
                                     <span class="clear-text" title="Clear Document Type" onclick="reset_selection('document-type-sel')">Clear</span>
                                 </td>
 
-                                <td class="col-1">
+                                <td class="col-1 knowledge-base-selector" style="display: none;">
                                     <span class="category-text">Knowledge Base</span>
                                     <div class="category-item">
                                         <label class="knowledge-base-sel">
@@ -145,7 +145,7 @@
                                         </label>
                                     </div>
                                 </td>
-                                <td class="col-2">
+                                <td class="col-2 knowledge-base-selector" style="display: none;">
                                 </td>
 
                                 <td class="col-1">
