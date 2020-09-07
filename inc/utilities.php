@@ -341,7 +341,7 @@ function check_simsage_json_response( $server, $json ) {
         if ( isset($response["code"]) ) {
             $response_code = $response["code"];
             if ($response_code < 200 || $response_code > 299) {
-                return "SimSage server (" . $server . ") return response code " . $response_code;
+                return "SimSage server (" . $server . ") returned response code " . $response_code;
             }
         }
     }
