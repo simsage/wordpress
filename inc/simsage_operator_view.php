@@ -12,10 +12,6 @@
 
     <style>
         fieldset {margin-bottom: 20px;}
-        .label-success { font-weight: 600; font-size: 1.1em; margin-top: 10px; margin-bottom: 20px; }
-        .wide-text { width: 500px; }
-        .radio_label { margin-right: 4px; font-weight: bold;}
-        .tabbed-display { margin-top: 20px; margin-left: 10px; }
     </style>
 
     <div id="icon-themes" class="icon32"></div>
@@ -32,7 +28,7 @@
     // when we have selected a site, this variable will be set
     $has_sites = (get_kb() != null);
     // and is the operator enabled?
-    $using_bot = isset($options["simsage_use_bot"]) && $options["simsage_use_bot"];
+    $using_bot = !isset($options["simsage_use_bot"]) || $options["simsage_use_bot"] != '0';
     ?>
 
     <script lang="js">
