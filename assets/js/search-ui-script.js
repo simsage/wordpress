@@ -595,4 +595,9 @@ jQuery(document).ready(function () {
     update_ui(0, 0, 0, [], {}, [],
         [], false, false, false);
     search.init_simsage();
+    if (settings && !settings.show_advanced_filter) {
+        jQuery(".search-options-button").hide();
+        jQuery(".search-options-chevron-box").hide();
+        jQuery(".search-grey-divider").hide();
+    }
 });

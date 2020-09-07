@@ -166,27 +166,12 @@
 
                 <fieldset>
                     <label>
-                        <span class="radio_label">no</span><input name="<?php echo PLUGIN_NAME ?>[simsage_ask_email]" type="radio" value="0" <?php echo (!isset($options['simsage_ask_email']) || $options['simsage_ask_email'] != '1') ? 'checked' : ''; ?> />
-                        <span class="radio_label">yes</span><input name="<?php echo PLUGIN_NAME ?>[simsage_ask_email]" type="radio" value="1" <?php echo (isset($options['simsage_ask_email']) && $options['simsage_ask_email'] == '1') ? 'checked' : ''; ?> />
-                        <span class="description">Ask a user for their email address if there is no answer and/or search results.</span>
-                    </label>
-                </fieldset>
-
-                <fieldset>
-                    <label>
                         <span class="radio_label">no</span><input name="<?php echo PLUGIN_NAME ?>[simsage_adv_filter]" type="radio" value="0" <?php echo (isset($options['simsage_adv_filter']) && $options['simsage_adv_filter'] == '0') ? 'checked' : ''; ?> />
                         <span class="radio_label">yes</span><input name="<?php echo PLUGIN_NAME ?>[simsage_adv_filter]" type="radio" value="1" <?php echo (!isset($options['simsage_adv_filter']) || $options['simsage_adv_filter'] != '0') ? 'checked' : ''; ?> />
                         <span class="description">Show the advanced search filter button.</span>
                     </label>
                 </fieldset>
 
-                <fieldset>
-                    <label>
-                        <span class="radio_label">no</span><input name="<?php echo PLUGIN_NAME ?>[use_operator]" type="radio" value="0" <?php echo (isset($options['use_operator']) && $options['use_operator'] == '0') ? 'checked' : ''; ?> />
-                        <span class="radio_label">yes</span><input name="<?php echo PLUGIN_NAME ?>[use_operator]" type="radio" value="1" <?php echo (!isset($options['use_operator']) || $options['use_operator'] != '0') ? 'checked' : ''; ?> />
-                        <span class="description">Operator assistance is provided for users (available only when you are)</span>
-                    </label>
-                </fieldset>
                 <input type="hidden" name="action" value="update-search">
                 </div>
                 <?php submit_button( 'update Search Settings', 'primary','submit', true ); ?>

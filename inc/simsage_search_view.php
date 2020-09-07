@@ -33,12 +33,8 @@
         bot_enabled: <?php echo $this->get_user_boolean_value("simsage_use_bot", true) ?>,
         // bot sensitivity - controls the A.I's replies - we suggest you don't change it!
         bot_threshold: <?php echo $this->get_user_value("bot_threshold", 0.8125) ?>,
-        // email settings
-        ask_email: <?php echo $this->get_user_boolean_value("simsage_ask_email", false) ?>,
         // show the advanced filters?
         show_advanced_filter: <?php echo $this->get_user_boolean_value("simsage_adv_filter", true) ?>,
-        // show the operator connect button?
-        can_contact_ops_direct: <?php echo $this->get_user_boolean_value("use_operator", true) ?>,
         // image types for link name display
         image_types: [".jpg", ".jpeg", ".png", ".gif", ".svg"],
     };

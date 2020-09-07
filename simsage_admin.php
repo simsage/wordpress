@@ -22,9 +22,7 @@ class simsage_admin
         "simsage_fragment_size" => array( "value" => 3, "min" => 1, "max" => 10, "name" => "Fragment Size"),
         "simsage_word_distance" => array( "value" => 20, "min" => 0, "max" => 100, "name" => "Word Distance"),
         "simsage_override_default_search" => array( "value" => 1, "min" => 0, "max" => 1, "name" => "Override default WordPress Search"),
-        "simsage_ask_email" => array( "value" => 0, "min" => 0, "max" => 1, "name" => "Ask User for an Email Address"),
         "simsage_adv_filter" => array( "value" => 1, "min" => 0, "max" => 1, "name" => "Show Advanced Filter"),
-        "use_operator" => array( "value" => 1, "min" => 0, "max" => 1, "name" => "Show the Operator Button"),
         "simsage_use_bot" => array( "value" => 1, "min" => 0, "max" => 1, "name" => "Include responses from the SimSage A.I. Bot"),
         "bot_threshold" => array( "value" => 0.8125, "min" => 0.0, "max" => 1.0, "name" => "SimSage A.I. Bot threshold")
     );
