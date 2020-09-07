@@ -13,7 +13,9 @@
         .tab-cursor { cursor: pointer; }
     </style>
 
-    <h2>SimSage Data</h2>
+    <div class="analytics-area">
+        <h2>SimSage Data</h2>
+    </div>
 
     <?php
     // set when connected to SimSage
@@ -97,7 +99,9 @@
     </div>
 
     <?php } else { ?>
-        <div class="label-success">Please <a href="/wp-admin/options-general.php?page=simsage-search">configure</a> your SimSage plugin first.</div>
+        <div class="analytics-area">
+            <div class="label-success">Please <a href="/wp-admin/options-general.php?page=simsage-search">configure</a> your SimSage plugin first.</div>
+        </div>
     <?php } ?>
 
 </div>

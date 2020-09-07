@@ -19,7 +19,10 @@
     </style>
 
     <div id="icon-themes" class="icon32"></div>
-    <h2>SimSage Operator</h2>
+
+    <div class="operator-area">
+        <h2>SimSage Operator</h2>
+    </div>
 
 	<?php
 	$options = get_option( PLUGIN_NAME );
@@ -61,7 +64,7 @@
 
         </script>
 
-        <div class="operator-area">
+        <div class="operator-area operator-display">
 
             <div id="chatButtons" class="button-list">
                 <span class="menu-button">
@@ -139,10 +142,14 @@
             You can change this setting <a href="/wp-admin/options-general.php?page=simsage-search&tab=bot">here</a> (look for <i>Use the SimSage bot along with search</i>).
         </div>
 
-    <?php } else if ( $has_access ) { ?>
-        <div class="label-success">Please <a href="/wp-admin/options-general.php?page=simsage-search">configure</a> your SimSage plugin first.</div>
+    <?php } else if ( !$has_sites ) { ?>
+        <div class="operator-area">
+            <div class="label-success">Please <a href="/wp-admin/options-general.php?page=simsage-search">configure</a> your SimSage plugin first.</div>
+        </div>
     <?php } else if ( !$has_access ) { ?>
-        <div class="label-success">Your plan does not provide you with Operator Access.  Please <a href="<?php echo SIMSAGE_REGO_SERVER; ?>/#/sign-in?origin=plugin" target="_blank">upgrade your plan</a> if you wish to have Operator Support.</div>
+        <div class="operator-area">
+            <div class="label-success">Your plan does not provide you with Operator Access.  Please <a href="<?php echo SIMSAGE_REGO_SERVER; ?>/#/sign-in?origin=plugin" target="_blank">upgrade your plan</a> if you wish to have Operator Support.</div>
+        </div>
     <?php } ?>
 
 </div>

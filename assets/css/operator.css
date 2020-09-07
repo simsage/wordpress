@@ -1,8 +1,29 @@
 
+.operator-area body {
+    font-family: 'Open Sans', sans-serif;
+}
+
 .operator-area {
+}
+
+.label-success {
+    font-weight: normal;
+    font-size: 13px;
+}
+
+.operator-display {
     margin-left: 20px;
     float: left;
     min-width: 600px;
+}
+
+.operator-area text {
+    font-size: 12px;
+    fill: #fff;
+}
+
+.operator-area h2 {
+    font-size: 1.3em;
 }
 
 .button-list {
