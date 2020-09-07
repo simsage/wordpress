@@ -242,7 +242,7 @@ class simsage_admin
                         // set the account data we just got back (store it)
                         $plugin_options["simsage_account"] = $body;
                         // set our defaults (if not already set) for search and the bot and the site
-                        $this->set_defaults($plugin_options);
+                        $this->set_defaults( $plugin_options );
                         // save settings
                         update_option(PLUGIN_NAME, $plugin_options);
                         // set the current site and upload the current WP content as is as well as any synonyms, and QAs
