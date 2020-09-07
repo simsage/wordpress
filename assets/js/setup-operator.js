@@ -8,7 +8,7 @@ const countDownRate = 1000;
 
 
 // create an instance of the Operator Class
-ops = new Operator(ops_update_ui);
+ops = new Operator();
 
 response = '';
 
@@ -42,30 +42,6 @@ callback = {
     teach: (client_id, question, answer) => ops.teach(client_id, question, answer),
     chat: (client_id, text) => ops.chat(client_id, text),
     notify_user: (text) => ops.notify_user(text),
-}
-
-
-/**
- * callback from the operator for display logic
- * @param ops the ops class Instance
- */
-function ops_update_ui(ops) {
-    // should we display the advanced search menu?
-
-    busy();
-
-    if (ops.response === '') {
-        txtResponse.val(ops.response);
-    }
-
-    // previous answer section
-    if (ops.previousAnswer.length > 0) {
-        jQuery("#txtPreviousAnswer").text(ops.previousAnswer);
-        jQuery("#btnPreviousAnswer").val("use in " + ops.previousAnswerCountdown + " secs");
-        jQuery("#previousAnswerSection").show();
-    } else {
-        jQuery("#previousAnswerSection").hide();
-    }
 }
 
 

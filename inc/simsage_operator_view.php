@@ -35,34 +35,34 @@
     $using_bot = isset($options["simsage_use_bot"]) && $options["simsage_use_bot"];
     ?>
 
+    <script lang="js">
+        // set an image base for all our templates to use (url bases for images)
+        image_base = "<?php echo $this->asset_folder ?>";
+        server = "<?php echo $this->get_account_setting("server") ?>";
+
+        // the settings for this application - no trailing / on the base_url please
+        settings = {
+            // api version of ws_base
+            api_version: 1,
+            // the service layer end-point, set after logging in
+            base_url: server + 'api',
+            // web sockets platform endpoint for comms
+            ws_base: server + 'ws-api',
+            // the organisation's id to search
+            organisationId: "<?php echo $this->get_account_setting("id") ?>",
+            // the knowledge base's Id (selected site) and security id (sid)
+            kbId: "<?php echo $this->get_site_setting("kbId") ?>",
+            // the operator uses the SecurityID to verify themselves, do not expose it to your web users!
+            sid: "<?php echo $this->get_site_setting("sid") ?>",
+            // bot settings
+            bot_enabled: <?php echo $using_bot ? "true" : "false" ?>,
+            // image types for link name display
+            image_types: [".jpg", ".jpeg", ".png", ".gif", ".svg"],
+        };
+
+    </script>
+
     <?php if ( $has_access && $has_sites && $using_bot ) { ?>
-
-        <script lang="js">
-            // set an image base for all our templates to use (url bases for images)
-            image_base = "<?php echo $this->asset_folder ?>";
-            server = "<?php echo $this->get_account_setting("server") ?>";
-
-            // the settings for this application - no trailing / on the base_url please
-            settings = {
-                // api version of ws_base
-                api_version: 1,
-                // the service layer end-point, set after logging in
-                base_url: server + 'api',
-                // web sockets platform endpoint for comms
-                ws_base: server + 'ws-api',
-                // the organisation's id to search
-                organisationId: "<?php echo $this->get_account_setting("id") ?>",
-                // the knowledge base's Id (selected site) and security id (sid)
-                kbId: "<?php echo $this->get_site_setting("kbId") ?>",
-                // the operator uses the SecurityID to verify themselves, do not expose it to your web users!
-                sid: "<?php echo $this->get_site_setting("sid") ?>",
-                // bot settings
-                bot_enabled: <?php echo $using_bot ? "true" : "false" ?>,
-                // image types for link name display
-                image_types: [".jpg", ".jpeg", ".png", ".gif", ".svg"],
-            };
-
-        </script>
 
         <div class="operator-area operator-display">
 

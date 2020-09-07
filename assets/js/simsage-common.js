@@ -10,7 +10,6 @@ class SimSageCommon {
     constructor() {
         this.is_connected = false;    // connected to endpoint?
         this.stompClient = null;      // the connection
-        this.ws_base = settings.ws_base;    // endpoint
 
         this.connection_retry_count = 1;
         // kb information
@@ -146,9 +145,9 @@ class SimSageCommon {
     // connect to SimSage, called from init_simsage()
     connect() {
         const self = this;
-        if (!this.is_connected && this.ws_base) {
+        if (!this.is_connected && settings.ws_base) {
             // this is the socket end-point
-            const socket = new SockJS(this.ws_base);
+            const socket = new SockJS(settings.ws_base);
             this.stompClient = Stomp.over(socket);
             this.stompClient.connect({},
                 function (frame) {
