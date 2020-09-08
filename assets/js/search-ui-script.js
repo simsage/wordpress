@@ -600,4 +600,7 @@ jQuery(document).ready(function () {
         jQuery(".search-options-chevron-box").hide();
         jQuery(".search-grey-divider").hide();
     }
+    if (settings && settings.search_placeholder && settings.search_placeholder.length > 0) {
+        jQuery(".search-text").attr("placeholder", settings.search_placeholder);
+    }
 });

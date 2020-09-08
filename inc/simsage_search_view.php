@@ -37,6 +37,8 @@
         show_advanced_filter: <?php echo $this->get_user_boolean_value("simsage_adv_filter", true) ?>,
         // image types for link name display
         image_types: [".jpg", ".jpeg", ".png", ".gif", ".svg"],
+        // placeholder for search
+        search_placeholder: "ask about SimSage",
     };
 
 </script>
