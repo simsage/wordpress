@@ -245,8 +245,8 @@ function is_valid_bot_qa_pair( $id, $question, $answer, $context ) {
 
 /**
  * helper - check a string is valid synonym:
- *   must not end in . _ -
- *   must contain . - _ a..z A..Z or 0..9
+ *   must not end in . -
+ *   must contain . - a..z A..Z or 0..9
  *
  * @param $str
  * @return string|null return a string with an error, or null if there is none
@@ -262,14 +262,14 @@ function is_valid_synonym_str( $str ) {
         $characters = str_split( trim( $word ) );
         $last_ch = "";
         foreach ( $characters as $ch ) {
-            if ( $ch != '_' && $ch != '-' && $ch != "." && $ch != ' ' && !(
+            if ( $ch != '-' && $ch != "." && $ch != ' ' && !(
                 ( $ch >= 'a' && $ch <= 'z' ) || ( $ch >= 'A' && $ch <= 'Z' ) || ( $ch >= '0' && $ch <= '9' ) )) {
                 return "words must only contain letters, numbers, hyphens (-) and full-stops";
             }
             $last_ch = $ch;
         }
         if ( $last_ch == '_' || $last_ch == '-' || $last_ch == "." ) {
-            return "last character of a word must be a letter or a number, not a full-stop, underscore or hyphen.";
+            return "Last character of a word must be a letter or a number.  Full-stops or hyphens are not allowed.";
         }
     }
     return null;
