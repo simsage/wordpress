@@ -252,7 +252,6 @@ function is_valid_bot_qa_pair( $id, $question, $answer, $context ) {
  * @return string|null return a string with an error, or null if there is none
  */
 function is_valid_synonym_str( $str ) {
-    debug_log( print_r( $str, true) );
     if ( trim($str) == "" ) return "text is empty";
     $words = explode(",", $str);
     if ( count($words) > 2 ) return "no more than two words for a synonym";
