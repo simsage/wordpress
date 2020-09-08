@@ -374,7 +374,7 @@ class simsage_admin
      * The user adds, removes, or saves synoynms
      * @param $post_data
      */
-    private function update_synonyms($post_data) {
+    private function update_synonyms( $post_data ) {
         $cmd = $post_data["submit"];
         $params = array();
         if ( isset($post_data[PLUGIN_NAME]) ) {
@@ -447,6 +447,9 @@ class simsage_admin
             // can we save it?
             $plugin_options["simsage_synonyms"] = $new_params;
             update_option(PLUGIN_NAME, $plugin_options);
+
+            // validate them
+            $this->validate_synonyms();
         }
     }
 

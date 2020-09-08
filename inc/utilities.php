@@ -244,19 +244,32 @@ function is_valid_bot_qa_pair( $id, $question, $answer, $context ) {
 
 
 /**
- * helper - check a string is valid synonym
+ * helper - check a string is valid synonym:
+ *   must not end in . _ -
+ *   must contain . - _ a..z A..Z or 0..9
+ *
  * @param $str
  * @return string|null return a string with an error, or null if there is none
  */
 function is_valid_synonym_str( $str ) {
-    $invalid_chars = array( "(", ")", "|", "[", "]", "{", "}", "-", ",", "_");
+    debug_log( print_r( $str, true) );
     if ( trim($str) == "" ) return "text is empty";
     $words = explode(",", $str);
     if ( count($words) > 2 ) return "no more than two words for a synonym";
     foreach ($words as $word) {
         if ( strlen( trim($word) ) > 20 ) return "word too long (maximum length per word is 20 characters)";
-        foreach ($invalid_chars as $ic) {
-            if (strpos($str, $ic)) return "string must not contain " . $ic . " character(s)";
+        if ( strlen( trim($word) ) < 2 ) return "word too short, synonyms must be at least 2 characters";
+        $characters = str_split( trim( $word ) );
+        $last_ch = "";
+        foreach ( $characters as $ch ) {
+            if ( $ch != '_' && $ch != '-' && $ch != "." && $ch != ' ' && !(
+                ( $ch >= 'a' && $ch <= 'z' ) || ( $ch >= 'A' && $ch <= 'Z' ) || ( $ch >= '0' && $ch <= '9' ) )) {
+                return "words must only contain letters, numbers, hyphens (-) and full-stops";
+            }
+            $last_ch = $ch;
+        }
+        if ( $last_ch == '_' || $last_ch == '-' || $last_ch == "." ) {
+            return "last character of a word must be a letter or a number, not a full-stop, underscore or hyphen.";
         }
     }
     return null;
