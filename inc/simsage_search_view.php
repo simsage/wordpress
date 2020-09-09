@@ -224,7 +224,7 @@
                     <tr class="speech-bubble">
                         <td colspan="2" class="operator-close-width">
                             <div class="div-close" onclick="close_chat()" title="Close chat">
-                                <span class="close-text">Close chat</span>
+                                <span class="close-text">Close</span>
                                 <span><img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" /></span>
                             </div>
                             <table class="chat-table">
