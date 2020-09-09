@@ -38,7 +38,7 @@
         // image types for link name display
         image_types: [".jpg", ".jpeg", ".png", ".gif", ".svg"],
         // placeholder for search
-        search_placeholder: "ask about SimSage",
+        search_placeholder: "",
     };
 
 </script>
