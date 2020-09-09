@@ -284,16 +284,14 @@
             <div class="pagination-box">
             </div>
             <div class="clear"></div>
-            <table class="search-result-table">
-                <tr style="width: 100%;">
-                    <!-- this is where the search results are rendered into -->
-                    <td class="search-results-td">
-                    </td>
-                    <!-- this is where the categories of semantics go -->
-                    <td class="category-items-td">
-                    </td>
-                </tr>
-            </table>
+            <div class="search-results-two-columns">
+                <!-- this is where the search results are rendered into -->
+                <div class="search-results-td">
+                </div>
+                <!-- this is where the categories of semantics go -->
+                <div class="category-items-td">
+                </div>
+            </div>
             <div class="clear"></div>
             <div class="pagination-box">
             </div>
