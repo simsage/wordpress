@@ -348,7 +348,9 @@ function show_chat() {
         if (ct.is(":visible")) {
             ct.html(render_chats(conversation_list_cache, is_typing_cache));
             ct.animate({scrollTop: ct.prop("scrollHeight")}, 10);
-            focus_text(".chat-text")
+            const ctrl = jQuery(".chat-text");
+            ctrl.val("");
+            ctrl.focus();
         }
     }
     return false;
