@@ -260,7 +260,7 @@
     <tr class="search-row search-details-view" style="display: none">
         <td colspan="13">
             <div class="search-details" >
-                <div class="header">
+                <div class="search-details-header">
                     <span class="details-text" title="details">DETAILS</span>
                     <span onclick="close_details()" title="Close" class="close-box">
                         <img src="<?php echo $this->asset_folder . 'images/close.svg'?>" class="close-image" alt="close" />
