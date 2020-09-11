@@ -228,6 +228,7 @@ class simsage_admin
                 $json = get_json(wp_remote_post($url,
                     array('timeout' => JSON_POST_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                         'body' => '{"registrationKey": "' . trim($registration_key) . '"}')));
+                debug_log(print_r($json, true));
                 $error_str = check_simsage_json_response(SIMSAGE_API_SERVER, $json);
                 // no error?
                 if ($error_str == "") {

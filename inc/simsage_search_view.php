@@ -54,7 +54,7 @@
         <!-- search box -->
         <td class="search-text-box">
             <label class="search-text-label" title="ask SimSage">
-                <input type="text" value="" class="search-text" maxlength="100" onkeyup="search_typing(event, this.value)">
+                <input type="text" autocomplete="false" value="" class="search-text" maxlength="100" onkeyup="search_typing(event, this.value)">
             </label>
         </td>
         <!-- search clear (cross) -->
@@ -163,7 +163,7 @@
                                     <span class="category-text">Title</span>
                                     <div class="category-item">
                                         <label>
-                                            <input type="text" maxlength="100" placeholder="Enter Title" class="category-input title-text" title="Enter Title">
+                                            <input type="text" value="" maxlength="100" placeholder="Enter Title" class="category-input title-text" title="Enter Title">
                                         </label>
                                     </div>
                                 </td>
@@ -172,7 +172,7 @@
                                     <span class="category-text">URL</span>
                                     <div class="category-item">
                                         <label>
-                                            <input type="text" maxlength="100" placeholder="Enter URL" class="category-input url-text" title="Enter URL">
+                                            <input type="text" value="" maxlength="100" placeholder="Enter URL" class="category-input url-text" title="Enter URL">
                                         </label>
                                     </div>
                                 </td>
@@ -181,7 +181,7 @@
                                     <span class="category-text">Author</span>
                                     <div class="category-item">
                                         <label>
-                                            <input type="text" maxlength="100" placeholder="Enter Author" class="category-input author-text" title="Enter Author">
+                                            <input type="text" value="" maxlength="100" placeholder="Enter Author" class="category-input author-text" title="Enter Author">
                                         </label>
                                     </div>
                                 </td>
@@ -234,7 +234,7 @@
                     <tr class="chat-bar-bottom">
                         <td class="chat-text-box">
                             <label class="chat-box-text">
-                                <input type="text" placeholder="Type your message" class="chat-text" title="Type your message"
+                                <input type="text" value="" placeholder="Type your message" class="chat-text" title="Type your message"
                                        maxlength="200" onkeyup="chat_typing(event, this.value)">
                             </label>
                         </td>
@@ -358,7 +358,7 @@
             <div>
             <span class="email-text-box">
                 <label class="email-address-text">
-                    <input type="text" placeholder="Enter your email address" title="Enter your email address"
+                    <input type="text" value="" placeholder="Enter your email address" title="Enter your email address"
                            maxlength="100" onkeypress="email_typing(event)" class="email-text">
                 </label>
             </span>
