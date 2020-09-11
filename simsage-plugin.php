@@ -33,6 +33,8 @@ define( 'MAX_STRING_LENGTH', 256 );
 
 // set timeout for json posts (in seconds) must not exceed PHP max_execution_time
 define( 'JSON_POST_TIMEOUT', 10 );
+// the timeout for json data archive uploads
+define( 'JSON_DATA_UPLOAD_TIMEOUT', 15 );
 
 // include the main search functionality class
 include_once( PLUGIN_DIR . 'simsage_search.php' );

@@ -860,7 +860,7 @@ class simsage_admin
         $url = join_urls($server, '/api/crawler/document/upload/archive');
         $bodyStr = '{"organisationId": "' . $organisationId . '", "kbId": "' . $kbId . '", "sid": "' . $sid . '", "sourceId": 1, "data": "' . $data . '"}';
         $json = get_json(wp_remote_post($url,
-            array('timeout' => JSON_POST_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
+            array('timeout' => JSON_DATA_UPLOAD_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                 'body' => $bodyStr)));
         $error_str = check_simsage_json_response( $server, $json );
         if ( strpos( $error_str, "not time yet ") ) {
