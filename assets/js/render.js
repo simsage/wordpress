@@ -140,7 +140,7 @@ function render_url(url) {
  */
 function render_search_text_result(id, url, title, fragment, fragment_index, num_fragments) {
     let str = "<div class=\"search-result\">\n" +
-        "          <div title=\"visit [url]>\" class=\"search-text-width\">\n" +
+        "          <div title=\"visit [url]\" class=\"search-text-width\">\n" +
         "              <a href=\"[url]\" target=\"_blank\"><span class=\"url-text\">[split-url]</span></a>\n" +
         "              <div title=\"view more details\" onclick=\"show_details([id]);\"><span class=\"title-text\">[title]</span></div>\n" +
         "              <div><span class=\"result-text\">[fragment]</span></div>\n" +
