@@ -28,7 +28,7 @@ class simsage_data
         wp_enqueue_style('simsage-analytics-style'); // add our style-sheet (assets/css/operator.css)
         wp_enqueue_style( 'jquery-ui-style' );
         wp_enqueue_script( 'd3-script-1', plugins_url( 'assets/js/d3.min.js', __FILE__ ), array('jquery'), '1.0', true );
-        wp_enqueue_script( 'simsage-analytics-script-1', plugins_url( 'assets/js/simsage-analytics.js', __FILE__ ), array('jquery'), '1.0', true );
+        wp_enqueue_script( 'simsage-analytics-script-1', plugins_url( 'assets/js/simsage-data.js', __FILE__ ), array('jquery'), '1.0', true );
         wp_enqueue_script( 'simsage-analytics-script-2', plugins_url( 'assets/js/setup-data.js', __FILE__ ), array('jquery'), '1.0', true );
         // Load the WP datepicker script
         wp_enqueue_script( 'jquery-ui-datepicker' );

@@ -3,7 +3,7 @@
 //
 
 
-class SimsageAnalytics {
+class SimsageData {
 
     constructor(an_update_ui) {
         this.an_update_ui = an_update_ui;
@@ -161,7 +161,7 @@ class SimsageAnalytics {
                     return response.blob().then((b) => {
                         let a = document.createElement("a");
                         a.href = URL.createObjectURL(b);
-                        const filename = "operator-conversations-" + SimsageAnalytics.getFormattedTime() + ".xlsx";
+                        const filename = "operator-conversations-" + SimsageData.getFormattedTime() + ".xlsx";
                         a.setAttribute("download", filename);
                         a.click();
                     });
@@ -195,7 +195,7 @@ class SimsageAnalytics {
                     return response.blob().then((b) => {
                         let a = document.createElement("a");
                         a.href = URL.createObjectURL(b);
-                        const filename = "query-logs-" + SimsageAnalytics.getFormattedTime() + ".xlsx";
+                        const filename = "query-logs-" + SimsageData.getFormattedTime() + ".xlsx";
                         a.setAttribute("download", filename);
                         a.click();
                     });
@@ -229,7 +229,7 @@ class SimsageAnalytics {
                     return response.blob().then((b) => {
                         let a = document.createElement("a");
                         a.href = URL.createObjectURL(b);
-                        const filename = "language-customizations-" + SimsageAnalytics.getFormattedTime() + ".xlsx";
+                        const filename = "language-customizations-" + SimsageData.getFormattedTime() + ".xlsx";
                         a.setAttribute("download", filename);
                         a.click();
                     });
@@ -262,7 +262,7 @@ class SimsageAnalytics {
                     return response.blob().then((b) => {
                         let a = document.createElement("a");
                         a.href = URL.createObjectURL(b);
-                        const filename = "content-analysis-" + SimsageAnalytics.getFormattedTime() + ".xlsx";
+                        const filename = "content-analysis-" + SimsageData.getFormattedTime() + ".xlsx";
                         a.setAttribute("download", filename);
                         a.click();
                     });
