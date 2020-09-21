@@ -1,7 +1,7 @@
 <?php
 
 
-class simsage_analytics
+class simsage_data
 {
     // location of the images folder
     private $asset_folder = '';
@@ -29,18 +29,18 @@ class simsage_analytics
         wp_enqueue_style( 'jquery-ui-style' );
         wp_enqueue_script( 'd3-script-1', plugins_url( 'assets/js/d3.min.js', __FILE__ ), array('jquery'), '1.0', true );
         wp_enqueue_script( 'simsage-analytics-script-1', plugins_url( 'assets/js/simsage-analytics.js', __FILE__ ), array('jquery'), '1.0', true );
-        wp_enqueue_script( 'simsage-analytics-script-2', plugins_url( 'assets/js/setup-analytics.js', __FILE__ ), array('jquery'), '1.0', true );
+        wp_enqueue_script( 'simsage-analytics-script-2', plugins_url( 'assets/js/setup-data.js', __FILE__ ), array('jquery'), '1.0', true );
         // Load the WP datepicker script
         wp_enqueue_script( 'jquery-ui-datepicker' );
         // this is the html of the admin page, rendered in the context of this class
-        include_once PLUGIN_DIR . 'inc/simsage_analytics_view.php';
+        include_once PLUGIN_DIR . 'inc/simsage_data_view.php';
     }
 
 
     // register all our javascript and css styles for this plugin
     function register_script_and_style() {
         // and the required styles for operator.css
-        wp_register_style( 'simsage-analytics-style', plugins_url( 'assets/css/analytics.css', __FILE__ ) );
+        wp_register_style( 'simsage-analytics-style', plugins_url( 'assets/css/data.css', __FILE__ ) );
         // jQuery date-picker styling
         wp_register_style( 'jquery-ui-style', plugins_url( 'assets/css/jquery-ui.css', __FILE__ ) );
     }

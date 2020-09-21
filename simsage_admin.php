@@ -27,9 +27,9 @@ class simsage_admin
         "bot_threshold" => array( "value" => 0.8125, "min" => 0.0, "max" => 1.0, "name" => "SimSage A.I. Bot threshold")
     );
 
-    // references to the operator and analytics classes for menu setup after registration
+    // references to the operator and data classes for menu setup after registration
     private $operator = null;
-    private $analytics = null;
+    private $data = null;
 
 
     // constructor
@@ -54,14 +54,14 @@ class simsage_admin
 
 
     /**
-     * register operator and analytics classes for menu setup later
+     * register operator and data classes for menu setup later
      *
      * @param $operator simsage_operator the operator class
-     * @param $analytics simsage_analytics the analytics class
+     * @param $data simsage_data the data class
      */
-    public function prepare_admin_menus( $operator, $analytics ) {
+    public function prepare_admin_menus( $operator, $data ) {
         $this->operator = $operator;
-        $this->analytics = $analytics;
+        $this->data = $data;
     }
 
 
@@ -133,7 +133,7 @@ class simsage_admin
             __('SimSage Data', PLUGIN_NAME), // menu title.
             'manage_options', // capability.
             "simsage-data", // menu_slug.
-            array($this->analytics, 'load_settings_page')
+            array($this->data, 'load_settings_page')
         );
     }
 
