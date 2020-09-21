@@ -20,7 +20,9 @@ class simsage_analytics
      */
     public function load_settings_page() {
         // check user capabilities.
-        if ( ! current_user_can( 'manage_options' ) ) {
+        $user = wp_get_current_user();
+        $allowed_roles = array( 'editor', 'administrator', 'author' );
+        if ( empty( $user ) || !array_intersect( $allowed_roles, $user->roles ) ) {
             wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
         }
         wp_enqueue_style('simsage-analytics-style'); // add our style-sheet (assets/css/operator.css)
