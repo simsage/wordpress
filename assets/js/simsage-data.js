@@ -988,6 +988,7 @@ class SimsageData {
         // check the parameters are ok
         const self = this;
         const words = jQuery(".syn-words").val().trim();
+        this.syn_dlg_words = words;
         if (words.length === 0) {
             this.busy = false;
             this.error = "you must at least provide two words to be synonymous";
@@ -1000,7 +1001,7 @@ class SimsageData {
                 kbId: settings.kbId,
                 sid: settings.sid,
                 synonym: {
-                    id: this.syn_dlg_id,
+                    id: this.syn_dlg_id ? this.syn_dlg_id : "",
                     words: words,
                 }
             }
