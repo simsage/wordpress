@@ -120,24 +120,25 @@
                             <td class="action-column">actions</td>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="3">
-                                <span>
-                                    upload
-                                </span>
-                                <span>
-                                    export
-                                </span>
-                                <span>
-                                    new
-                                </span>
-                                <span>
-                                    delete all
-                                </span>
-                            </td>
-                        </tr>
+                    <tbody id="mindItemList">
                     </tbody>
+                    <tr>
+                        <td colspan="3" class="bottom-action-bar">
+                            <span class="upload-control">
+                                <label><input type="file" onchange="data.handleUploadChange(event)" /></label>
+                                <button class="upload-button" disabled title="upload the selected file" onClick="data.uploadMindItems()">upload</button>
+                            </span>
+                            <span>
+                                <button class="export-button" title="export existing SimSage Q&A and Synonym information" onClick="data.dlLanguageCustomizations()">export</button>
+                            </span>
+                            <span class="delete-button" title="delete all mind-items" onClick="data.addMindItem()">
+                                <img src="<?php echo $this->asset_folder . 'images/delete.svg'?>" class="delete-button-image" alt="delete" />
+                            </span>
+                            <span class="add-button" title="add a new mind-item" onClick="data.deleteAllMindItems()">
+                                <img src="<?php echo $this->asset_folder . 'images/add.svg'?>" class="add-button-image" alt="add" />
+                            </span>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>

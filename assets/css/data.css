@@ -199,3 +199,33 @@ text.divergence {
     width: 100px
 }
 
+.qna .upload-control {
+    margin-right: 20px;
+}
+
+.qna .add-button {
+    float: right;
+    margin-right: 4px;
+}
+
+.qna .delete-button {
+    float: right;
+    margin-right: 20px;
+}
+
+.qna .add-button-image {
+    width: 20px;
+    height: 20px;
+    border: 0;
+}
+
+.qna .delete-button-image {
+    width: 20px;
+    height: 20px;
+    border: 0;
+}
+
+.qna .bottom-action-bar {
+    padding: 10px;
+}
+

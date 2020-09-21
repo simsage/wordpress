@@ -9,7 +9,7 @@ class SimsageData {
         this.an_update_ui = an_update_ui;
         this.response = '';
         this.error = '';
-        this.busy = true;
+        this.busy = false;
 
         // date selected by ui
         this.date = new Date();
@@ -24,6 +24,11 @@ class SimsageData {
 
         // mind-items
         this.mind_item_filter = '';
+
+        // file upload control
+        this.filename = '';
+        this.file_type = '';
+        this.file_binary_data = null;
     }
 
     refresh() {
@@ -66,6 +71,7 @@ class SimsageData {
             'url': url,
             'success': function (data) {
                 self.search_frequencies = self.convert_months(data.accessFrequency);
+                self.busy = false;
                 const kw_list = self.convert_dictionary(data.queryWordFrequency);
                 kw_list.sort(function(first, second) {
                     return second.value - first.value;
@@ -75,6 +81,7 @@ class SimsageData {
             }
 
         }).fail(function (err) {
+            self.busy = false;
             console.error(JSON.stringify(err));
             if (err && err["readyState"] === 0 && err["status"] === 0) {
                 self.error = "Server not responding, not connected.";
@@ -157,6 +164,7 @@ class SimsageData {
         };
         fetch(new Request(url), init)
             .then(function(response) {
+                self.busy = false;
                 if (!response.ok) {
                     self.error = `HTTP error! status: ${response.status}`;
                     self.refresh();
@@ -191,6 +199,7 @@ class SimsageData {
         };
         fetch(new Request(url), init)
             .then(function(response) {
+                self.busy = false;
                 if (!response.ok) {
                     self.error = `HTTP error! status: ${response.status}`;
                     self.refresh();
@@ -223,8 +232,10 @@ class SimsageData {
             mode: 'cors',
             cache: 'default'
         };
+        this.refresh();
         fetch(new Request(url), init)
             .then(function(response) {
+                self.busy = false;
                 if (!response.ok) {
                     self.error = `HTTP error! status: ${response.status}`;
                     self.refresh();
@@ -235,6 +246,7 @@ class SimsageData {
                         const filename = "language-customizations-" + SimsageData.getFormattedTime() + ".xlsx";
                         a.setAttribute("download", filename);
                         a.click();
+                        self.refresh();
                     });
                 }
             });
@@ -258,6 +270,7 @@ class SimsageData {
         };
         fetch(new Request(url), init)
             .then(function(response) {
+                self.busy = false;
                 if (!response.ok) {
                     self.error = `HTTP error! status: ${response.status}`;
                     self.refresh();
@@ -472,18 +485,52 @@ class SimsageData {
     /////////////////////////////////////////////////////////////////////////////////
     // mind items
 
+    // filter text-box enter press check
     handleMindItemKey(key) {
         if (key === 13) {
             this.getMindItems();
         }
     }
 
+    // filter text-box change text
     setMindItemFilter(text) {
         this.mind_item_filter = text;
     }
 
+    // do search with filter
     getMindItems() {
         alert(this.mind_item_filter);
     }
 
+    // upload onchange event handling
+    handleUploadChange(e) {
+        e.preventDefault();
+
+        const self = this;
+        const reader = new FileReader();
+        const file = e.target.files[0];
+        const filename = file['name'];
+        const file_type = file['type'];
+
+        reader.onloadend = () => {
+            self.filename = filename;
+            self.file_type =  file_type;
+            self.file_binary_data = reader.result;
+            self.refresh();
+        };
+        reader.readAsDataURL(file)
+    }
+
+    uploadMindItems() {
+    }
+
+    addMindItem() {
+    }
+
+    deleteAllMindItems() {
+    }
+
+
+
 }
+

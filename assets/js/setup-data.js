@@ -53,5 +53,10 @@ function an_update_ui(data) {
         'Keyword Most often Searched for in ' + dateLabel,
         'Keyword', 'Number of Times used', dateLabel,
         data.search_keyword_frequencies);
+
+    // enable mind-item upload button?
+    jQuery(".upload-button").prop('disabled', data.file_binary_data === null || data.busy);
+    jQuery(".export-button").prop('disabled', data.busy);
+
 }
 
