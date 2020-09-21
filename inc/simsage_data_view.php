@@ -81,19 +81,19 @@
 
         <div id='div_logs' style="display: none;">
             <div class="button-row">
-                <button onclick="data.dlOperatorConversations()" class="button button-style">Operator Conversation Spreadsheet</button>
+                <button onclick="data.dlOperatorConversations()" class="button button-style ss-button">Operator Conversation Spreadsheet</button>
                 <span class="button-help-text">Download a Spreadsheet containing all conversations between Operators and Clients for the selected month.</span>
             </div>
             <div class="button-row">
-                <button onclick="data.dlQueryLog()" class="button button-style">Search & Query Log Spreadsheet</button>
+                <button onclick="data.dlQueryLog()" class="button button-style ss-button">Search & Query Log Spreadsheet</button>
                 <span class="button-help-text">Download a log of what people have been searching / asking on this site for the selected month.</span>
             </div>
             <div class="button-row">
-                <button onclick="data.dlLanguageCustomizations()" class="button button-style" title="Download a Spreadsheet of all QA Pairs and Language Customizations">Content Spreadsheet</button>
+                <button onclick="data.dlLanguageCustomizations()" class="button button-style ss-button" title="Download a Spreadsheet of all QA Pairs and Language Customizations">Content Spreadsheet</button>
                 <span class="button-help-text">Download a SimSage QA / language Spreadsheet containing all your customized content (not month specific).</span>
             </div>
             <div class="button-row">
-                <button onclick="data.dlContentAnalysis()" class="button button-style" title="Download a Content Analysis Spreadsheet">Content Analysis Spreadsheet</button>
+                <button onclick="data.dlContentAnalysis()" class="button button-style ss-button" title="Download a Content Analysis Spreadsheet">Content Analysis Spreadsheet</button>
                 <span class="button-help-text">Download a Spreadsheet containing all currently crawled content and a Semantic analysis for each item (not month specific).</span>
             </div>
         </div>
@@ -105,8 +105,8 @@
                     <label><input type="text" value="" spellcheck="false" autoFocus class="find-text-style"
                            onKeyUp="data.handleMindItemKey(event.keyCode)" onChange="data.setMindItemFilter(event.target.value)" /></label>
                 </div>
-                <div class="find-image-box">
-                    <img class="find-image"
+                <div class="find-image-box ss-button">
+                    <img class="find-image ss-button"
                          onClick="data.getMindItems()"
                          src="<?php echo $this->asset_folder . 'images/dark-magnifying-glass.svg'?>" title="search" alt="search"/>
                 </div>
@@ -122,19 +122,24 @@
                     </thead>
                     <tbody id="mindItemList">
                     </tbody>
+                    <tr class="pagination-bar-tr">
+                        <td colspan="3">
+                            <div id="mindItemPagination" class="pagination-bar"></div>
+                        </td>
+                    </tr>
                     <tr>
                         <td colspan="3" class="bottom-action-bar">
                             <span class="upload-control">
-                                <label><input type="file" onchange="data.handleUploadChange(event)" /></label>
-                                <button class="upload-button" disabled title="upload the selected file" onClick="data.uploadMindItems()">upload</button>
+                                <label><input type="file" class="ss-button" onchange="data.handleUploadChange(event)" /></label>
+                                <button class="upload-button" disabled title="upload the selected file ss-button" onClick="data.uploadMindItems()">upload</button>
                             </span>
                             <span>
                                 <button class="export-button" title="export existing SimSage Q&A and Synonym information" onClick="data.dlLanguageCustomizations()">export</button>
                             </span>
-                            <span class="delete-button" title="delete all mind-items" onClick="data.addMindItem()">
+                            <span class="delete-button ss-button" title="delete all mind-items" onClick="data.addMindItem()">
                                 <img src="<?php echo $this->asset_folder . 'images/delete.svg'?>" class="delete-button-image" alt="delete" />
                             </span>
-                            <span class="add-button" title="add a new mind-item" onClick="data.deleteAllMindItems()">
+                            <span class="add-button ss-button" title="add a new mind-item" onClick="data.deleteAllMindItems()">
                                 <img src="<?php echo $this->asset_folder . 'images/add.svg'?>" class="add-button-image" alt="add" />
                             </span>
                         </td>

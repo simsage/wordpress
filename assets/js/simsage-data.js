@@ -24,6 +24,13 @@ class SimsageData {
 
         // mind-items
         this.mind_item_filter = '';
+        this.mind_item_prev_filter = '';
+        this.mind_item_prev_id = '';
+        this.mind_item_page_size = 10;
+        this.mind_item_list = [];
+        this.mind_item_page = 0;
+        this.num_mind_items = 0;
+        this.mind_item_nav = ['null'];
 
         // file upload control
         this.filename = '';
@@ -39,6 +46,9 @@ class SimsageData {
 
     select_tab(tab) {
         this.tab = tab;
+        if (tab === 'qna') {
+            this.getMindItems();
+        }
         this.refresh();
     }
 
@@ -165,9 +175,9 @@ class SimsageData {
         fetch(new Request(url), init)
             .then(function(response) {
                 self.busy = false;
+                self.refresh();
                 if (!response.ok) {
                     self.error = `HTTP error! status: ${response.status}`;
-                    self.refresh();
                 } else {
                     return response.blob().then((b) => {
                         let a = document.createElement("a");
@@ -200,9 +210,9 @@ class SimsageData {
         fetch(new Request(url), init)
             .then(function(response) {
                 self.busy = false;
+                self.refresh();
                 if (!response.ok) {
                     self.error = `HTTP error! status: ${response.status}`;
-                    self.refresh();
                 } else {
                     return response.blob().then((b) => {
                         let a = document.createElement("a");
@@ -236,9 +246,9 @@ class SimsageData {
         fetch(new Request(url), init)
             .then(function(response) {
                 self.busy = false;
+                self.refresh();
                 if (!response.ok) {
                     self.error = `HTTP error! status: ${response.status}`;
-                    self.refresh();
                 } else {
                     return response.blob().then((b) => {
                         let a = document.createElement("a");
@@ -246,7 +256,6 @@ class SimsageData {
                         const filename = "language-customizations-" + SimsageData.getFormattedTime() + ".xlsx";
                         a.setAttribute("download", filename);
                         a.click();
-                        self.refresh();
                     });
                 }
             });
@@ -271,9 +280,9 @@ class SimsageData {
         fetch(new Request(url), init)
             .then(function(response) {
                 self.busy = false;
+                self.refresh();
                 if (!response.ok) {
                     self.error = `HTTP error! status: ${response.status}`;
-                    self.refresh();
                 } else {
                     return response.blob().then((b) => {
                         let a = document.createElement("a");
@@ -499,7 +508,50 @@ class SimsageData {
 
     // do search with filter
     getMindItems() {
-        alert(this.mind_item_filter);
+        if (this.mind_item_prev_filter !== this.mind_item_filter) {
+            this.mind_item_prev_filter = this.mind_item_filter;
+            this.mindItemResetPagination();
+        }
+        this.busy = true;
+        const self = this;
+        this.refresh();
+        const data = {
+            "organisationId": settings.organisationId, "kbId": settings.kbId, "sid": settings.sid,
+            "prevId": this.mind_item_prev_id ? this.mind_item_prev_id : "null",
+            "filter": this.mind_item_filter, "pageSize": this.mind_item_page_size
+        };
+        const url = settings.base_url + '/bot/wp-mind-items';
+        jQuery.ajax({
+            headers: {
+                'Content-Type': 'application/json',
+                'API-Version': settings.api_version,
+            },
+            'data': JSON.stringify(data),
+            'type': 'PUT',
+            'url': url,
+            'success': function (data) {
+                self.busy = false;
+                if (data && data.mindItemList) {
+                    self.mind_item_list = data.mindItemList;
+                    self.num_mind_items = data.numMindItems;
+                } else {
+                    self.num_mind_items = 0;
+                    self.mind_item_list = [];
+                }
+                self.refresh();
+            }
+
+        }).fail(function (err) {
+            self.busy = false;
+            console.error(JSON.stringify(err));
+            if (err && err["readyState"] === 0 && err["status"] === 0) {
+                self.error = "Server not responding, not connected.";
+            } else {
+                self.error = err;
+            }
+            self.busy = false;
+            self.refresh();
+        });
     }
 
     // upload onchange event handling
@@ -528,6 +580,75 @@ class SimsageData {
     }
 
     deleteAllMindItems() {
+    }
+
+    editMindItem(id) {
+    }
+
+    deleteMindItem(id) {
+    }
+
+    mindItemResetPagination() {
+        this.mind_item_prev_id = '';
+        this.mind_item_page = 0;
+        this.mind_item_nav = ['null'];
+    }
+
+    mindItemPrevPage() {
+        if (this.mind_item_page > 0) {
+            this.mind_item_page -= 1;
+            this.mind_item_prev_id = 'null';
+            if (this.mind_item_page < this.mind_item_nav.length) {
+                this.mind_item_prev_id = this.mind_item_nav[this.mind_item_page];
+            }
+            this.getMindItems();
+        }
+    }
+
+    mindItemNextPage() {
+        const num_pages = Math.floor(this.num_mind_items / this.mind_item_page_size) + 1;
+        if (this.mind_item_page < num_pages) {
+            let id = 'null';
+            if (this.mind_item_list.length > 0) {
+                id = this.mind_item_list[this.mind_item_list.length - 1].id;
+                this.mind_item_nav.push(id);
+            }
+            this.mind_item_page += 1;
+            this.mind_item_prev_id = id;
+            this.getMindItems();
+        }
+    }
+
+    renderMindItemTable() {
+        if (this.mind_item_list) {
+            const str_list = [];
+            for (const item of this.mind_item_list) {
+                const id = item.id;
+                const expr = item.expression;
+                str_list.push("<tr>");
+                str_list.push("<td>" + id + "</td>");
+                str_list.push("<td>" + expr + "</td>");
+                str_list.push("<td>");
+                str_list.push("<span title='edit this mind-item' onclick='data.editMindItem(" + id + ")' class='ss-button'>");
+                str_list.push("<img src='" + image_base + "/images/edit.svg' class='edit-button-image ss-button' alt='edit' /></span>");
+                str_list.push("<span title='delete this mind-item' onclick='data.deleteMindItem(" + id + ")' class='ss-button'>");
+                str_list.push("<img src='" + image_base + "/images/delete.svg' class='delete-button-image ss-button' alt='delete' /></span>");
+                str_list.push("</td>");
+                str_list.push("</tr>");
+            }
+            return str_list.join("\n");
+        }
+        return "";
+    }
+
+    renderMindItemPagination() {
+        const num_pages = Math.floor(this.num_mind_items / this.mind_item_page_size) + 1;
+        const page = this.mind_item_page + 1;
+        const str_list = [];
+        str_list.push("<button onclick='data.mindItemPrevPage()' title='go to the previous page'" + ((page>1 && !this.busy) ? "" : "disabled") + ">prev</button>");
+        str_list.push("<span>page " + page + " of " + num_pages + "</span>");
+        str_list.push("<button onclick='data.mindItemNextPage()' title='go to the next page'" + ((page < num_pages && !this.busy) ? "" : "disabled") + ">next</button>");
+        return str_list.join("\n");
     }
 
 

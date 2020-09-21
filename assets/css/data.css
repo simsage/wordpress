@@ -225,7 +225,23 @@ text.divergence {
     border: 0;
 }
 
+.qna .edit-button-image {
+    margin-left: 10px;
+    width: 20px;
+    height: 20px;
+    border: 0;
+}
+
 .qna .bottom-action-bar {
     padding: 10px;
 }
 
+.qna .pagination-bar-tr {
+}
+
+.qna .pagination-bar {
+    float: right;
+    padding: 10px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+}

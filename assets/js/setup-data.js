@@ -56,7 +56,13 @@ function an_update_ui(data) {
 
     // enable mind-item upload button?
     jQuery(".upload-button").prop('disabled', data.file_binary_data === null || data.busy);
-    jQuery(".export-button").prop('disabled', data.busy);
+    jQuery(".ss-button").prop('disabled', data.busy);
+
+    // render the inside of the mind-item table
+    jQuery("#mindItemList").html(data.renderMindItemTable());
+
+    // set mind-item pagination
+    jQuery("#mindItemPagination").html(data.renderMindItemPagination());
 
 }
 
