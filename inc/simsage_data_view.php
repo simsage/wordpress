@@ -41,6 +41,8 @@
             kbId: "<?php echo $this->get_site_setting("kbId") ?>",
             // the operator uses the SecurityID to verify themselves, do not expose it to your web users!
             sid: "<?php echo $this->get_site_setting("sid") ?>",
+            // valid image types
+            image_types: [".jpg", ".jpeg", ".png", ".gif", ".svg"]
         };
 
     </script>
@@ -98,6 +100,22 @@
             </div>
         </div>
 
+        <!-- Q&A editor / adder -->
+        <div id="qna-edit" class="qna-editor" style="display: none;">
+            <div class="qna-title"></div>
+            <div class="qna-control"><label class="qna-label">question <br/><input class="input-text mi-q1" type="text" alt="question" title="question" placeholder="question" /></label></div>
+            <div class="qna-control"><label class="qna-label">alternative <br/><input class="input-text mi-q2" type="text" alt="alternative" title="alternative question (optional)" placeholder="alternative question (optional)" /></label></div>
+            <div class="qna-control"><label class="qna-label">answer text<br/><textarea rows="3" class="mi-answer" cols="60" title="the answer" placeholder="the answer"></textarea></label></div>
+            <div class="qna-control"><label class="qna-label">links<br/><textarea rows="3" cols="60" class="mi-links" title="links" placeholder="links"></textarea></label></div>
+            <div class="qna-buttons-container">
+                <div class="qna-buttons">
+                    <button class="ss-button" onclick="data.mindItemDialogClose()">cancel</button>
+                    <button class="ss-button" onclick="data.mindItemDialogSave()">save</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q&A tab -->
         <div id='div_qna' class="qna" style="display: none;">
             <div class="simsage-find-box">
                 <div class="find-label">find items in the mind</div>
@@ -147,6 +165,7 @@
                 </table>
             </div>
         </div>
+
 
         <div id='div_synonyms' style="display: none;">
         </div>

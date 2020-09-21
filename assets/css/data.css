@@ -245,3 +245,47 @@ text.divergence {
     margin-right: 10px;
     margin-bottom: 5px;
 }
+
+/* add new or edit Q&A item */
+
+.qna-editor {
+    margin-top: 10px;
+    background-color: #ffffff;
+    width: 600px;
+    height: 460px;
+    border-radius: 10px;
+    position: absolute !important;
+    z-index: 99 !important;
+    border: 1px solid black;
+}
+
+.qna-editor .input-text {
+    width: 500px;
+}
+
+.qna-editor .qna-label {
+    padding: 10px;
+    font-weight: 500;
+}
+
+.qna-editor .qna-control {
+    padding: 10px;
+}
+
+.qna-editor .qna-title {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 40px;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.qna-editor .qna-buttons-container {
+    margin-top: 20px;
+}
+
+.qna-editor .qna-buttons {
+    float: right;
+    padding: 10px;
+}
+

@@ -64,5 +64,18 @@ function an_update_ui(data) {
     // set mind-item pagination
     jQuery("#mindItemPagination").html(data.renderMindItemPagination());
 
+    // mind item dialog
+    if (data.mind_item_dlg_show) {
+        jQuery(".qna-title").html(data.mind_item_dlg_action);
+        jQuery("#qna-edit").show();
+        jQuery(".mi-q1").val(data.mi_dlg_q1);
+        jQuery(".mi-q2").val(data.mi_dlg_q2);
+        jQuery(".mi-answer").val(data.mi_dlg_answer);
+        jQuery(".mi-links").val(data.mi_dlg_links);
+    } else {
+        jQuery("#qna-edit").hide();
+    }
+
+
 }
 

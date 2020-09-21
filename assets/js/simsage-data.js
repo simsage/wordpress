@@ -32,6 +32,15 @@ class SimsageData {
         this.num_mind_items = 0;
         this.mind_item_nav = ['null'];
 
+        // mind-item edit dialog
+        this.mind_item_dlg_show = false;
+        this.mind_item_dlg_action = "";
+        this.mi_dlg_id = null;
+        this.mi_dlg_q1 = "";
+        this.mi_dlg_q2 = "";
+        this.mi_dlg_answer = "";
+        this.mi_dlg_links = "";
+
         // file upload control
         this.filename = '';
         this.file_type = '';
@@ -613,9 +622,6 @@ class SimsageData {
         }
     }
 
-    addMindItem() {
-    }
-
     deleteAllMindItems() {
         if (confirm("are you sure you want to remove all mind-items?")) {
             const self = this;
@@ -655,10 +661,174 @@ class SimsageData {
         }
     }
 
+    mindItemDialogClose() {
+        this.mind_item_dlg_show = false;
+        this.refresh();
+    }
+
+    // convert text answers and links back into an actionList
+    toActionList(answer, links) {
+        const action_list = [];
+        action_list.push({"action": "browser.write", "parameters": [answer]})
+        for (const l of links.split("\n")) {
+            if (l.trim().length > 0) {
+                const l_lwr = l.toLowerCase();
+                let is_image = false;
+                for (const extn of settings.image_types) {
+                    if (l_lwr.indexOf(extn) > 0) {
+                        is_image = true;
+                    }
+                }
+                if (is_image) {
+                    action_list.push({"action": "browser.image", parameters: [l]});
+                } else {
+                    action_list.push({"action": "browser.link", parameters: [l]});
+                }
+            }
+        }
+        return action_list;
+    }
+
+    mindItemDialogSave() {
+        // check the parameters are ok
+        const self = this;
+        const q1 = jQuery(".mi-q1").val().trim();
+        const q2 = jQuery(".mi-q2").val().trim();
+        const answer = jQuery(".mi-answer").val().trim();
+        const links = jQuery(".mi-links").val().trim();
+        const expression = q2.length > 0 ? q1 + " || " + q2 : q1;
+        if (q1.length === 0 || answer.length === 0) {
+            this.busy = false;
+            this.refresh();
+            alert("error: you must at least provide one question with one answer");
+        } else {
+            this.busy = true;
+            this.refresh();
+            const payload = {
+                organisationId: settings.organisationId,
+                kbId: settings.kbId,
+                sid: settings.sid,
+                mindItem: {
+                    id: this.mi_dlg_id,
+                    expression: expression,
+                    preContext: '',
+                    postContext: '',
+                    metadata: '',
+                    actionList: this.toActionList(answer, links)
+                }
+            }
+            const url = settings.base_url + '/bot/wp-save';
+            jQuery.ajax({
+                headers: {
+                    'Content-Type': 'application/json',
+                    'API-Version': settings.api_version,
+                },
+                'data': JSON.stringify(payload),
+                'type': 'PUT',
+                'url': url,
+                'success': function (data) {
+                    self.mind_item_dlg_show = false;
+                    self.getMindItems();
+                }
+
+            }).fail(function (err) {
+                console.error(JSON.stringify(err));
+                if (err && err["readyState"] === 0 && err["status"] === 0) {
+                    self.error = "Server not responding, not connected.";
+                } else {
+                    self.error = err;
+                }
+                self.busy = false;
+                self.refresh();
+            });
+        }
+    }
+
+    addMindItem() {
+        this.mind_item_dlg_show = true;
+        this.mind_item_dlg_action = "add mind-item"
+        this.mi_dlg_id = null;
+        this.mi_dlg_q1 = "";
+        this.mi_dlg_q2 = "";
+        this.mi_dlg_answer = "";
+        this.mi_dlg_links = "";
+        this.refresh();
+    }
+
+    // find a mind item in the list
+    getMindItem(id) {
+        for (const item of this.mind_item_list) {
+            if (item.id == id) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    getAnswer(mi) {
+        let answer = "";
+        if (mi && mi.actionList) {
+            for (const action of mi.actionList) {
+                if (action.action === 'browser.write') {
+                    for (const p of action.parameters) {
+                        if (answer.length > 0) {
+                            answer += "\n";
+                        }
+                        answer += p;
+                    }
+                }
+            }
+        }
+        return answer;
+    }
+
+    getLinks(mi) {
+        let urls = "";
+        if (mi && mi.actionList) {
+            for (const action of mi.actionList) {
+                if (action.action === 'browser.url' || action.action === 'browser.image') {
+                    for (const p of action.parameters) {
+                        if (urls.length > 0) {
+                            urls += "\n";
+                        }
+                        urls += p;
+                    }
+                }
+            }
+        }
+        return urls;
+    }
+
     editMindItem(id) {
+        const mi = this.getMindItem(id);
+        if (mi) {
+            this.mind_item_dlg_show = true;
+            this.mi_dlg_id = mi.id;
+            this.mind_item_dlg_action = "edit mind-item"
+            let q1 = mi.expression;
+            let q2 = "";
+            if (q1.indexOf("||") >= 0) {
+                q2 = q1.split("||")[1];
+                q1 = q1.split("||")[0];
+            }
+            this.mi_dlg_q1 = q1;
+            this.mi_dlg_q2 = q2;
+            this.mi_dlg_answer = this.getAnswer(mi);
+            this.mi_dlg_links = this.getLinks(mi);
+            this.refresh();
+        }
     }
 
     deleteMindItem(id) {
+        const mi = this.getMindItem(id);
+        if (mi) {
+            let q1 = mi.expression;
+            if (q1.indexOf("||") >= 0) {
+                q1 = q1.split("||")[0];
+            }
+            if (confirm("are you sure you want to delete mind-item id " + mi.id + ",\n\"" + q1 + "\"?")) {
+            }
+        }
     }
 
     mindItemResetPagination() {
