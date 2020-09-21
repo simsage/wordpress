@@ -136,10 +136,10 @@
                             <span>
                                 <button class="export-button" title="export existing SimSage Q&A and Synonym information" onClick="data.dlLanguageCustomizations()">export</button>
                             </span>
-                            <span class="delete-button ss-button" title="delete all mind-items" onClick="data.addMindItem()">
+                            <span class="delete-button ss-button" title="delete all mind-items" onClick="data.deleteAllMindItems()">
                                 <img src="<?php echo $this->asset_folder . 'images/delete.svg'?>" class="delete-button-image" alt="delete" />
                             </span>
-                            <span class="add-button ss-button" title="add a new mind-item" onClick="data.deleteAllMindItems()">
+                            <span class="add-button ss-button" title="add a new mind-item" onClick="data.addMindItem()">
                                 <img src="<?php echo $this->asset_folder . 'images/add.svg'?>" class="add-button-image" alt="add" />
                             </span>
                         </td>

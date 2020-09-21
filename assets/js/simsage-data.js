@@ -617,6 +617,42 @@ class SimsageData {
     }
 
     deleteAllMindItems() {
+        if (confirm("are you sure you want to remove all mind-items?")) {
+            const self = this;
+            const payload = {
+                organisationId: settings.organisationId,
+                kbId: settings.kbId,
+                sid: settings.sid,
+            };
+            const url = settings.base_url + '/bot/wp-delete-all';
+            jQuery.ajax({
+                headers: {
+                    'Content-Type': 'application/json',
+                    'API-Version': settings.api_version,
+                },
+                'data': JSON.stringify(payload),
+                'type': 'DELETE',
+                'url': url,
+                'success': function (data) {
+                    self.busy = false;
+                    self.num_mind_items = 0;
+                    self.mind_item_list = [];
+                    self.mindItemResetPagination();
+                    self.refresh();
+                    alert("delete all successful");
+                }
+
+            }).fail(function (err) {
+                console.error(JSON.stringify(err));
+                if (err && err["readyState"] === 0 && err["status"] === 0) {
+                    self.error = "Server not responding, not connected.";
+                } else {
+                    self.error = err;
+                }
+                self.busy = false;
+                self.refresh();
+            });
+        }
     }
 
     editMindItem(id) {
