@@ -92,5 +92,22 @@ function an_update_ui(data) {
         jQuery("#synonym-edit").hide();
     }
 
+
+    // render the inside of the semantic table
+    jQuery("#semanticList").html(data.renderSemanticTable());
+
+    // set semantic pagination
+    jQuery("#semanticPagination").html(data.renderSemanticPagination());
+
+    // mind item dialog
+    if (data.semantic_dlg_show) {
+        jQuery("#semantic-edit").show();
+        jQuery(".semantic-title").html(data.semantic_dlg_action);
+        jQuery(".sem-word").val(data.sem_dlg_word);
+        jQuery(".sem-semantic").val(data.sem_dlg_semantic);
+    } else {
+        jQuery("#semantic-edit").hide();
+    }
+
 }
 

@@ -66,6 +66,7 @@
             <span id="tab_logs" onclick="data.select_tab('logs')" class="nav-tab tab-cursor">Download</span>
             <span id="tab_qna" onclick="data.select_tab('qna')" class="nav-tab tab-cursor">Q&A</span>
             <span id="tab_synonyms" onclick="data.select_tab('synonyms')" class="nav-tab tab-cursor">Synonyms</span>
+            <span id="tab_semantics" onclick="data.select_tab('semantics')" class="nav-tab tab-cursor">Semantics</span>
         </h2>
 
         <!-- graphical display items -->
@@ -170,7 +171,7 @@
         </div>
 
 
-        <!-- Q&A editor / adder -->
+        <!-- Synonym editor / adder -->
         <div id="synonym-edit" class="synonym-editor" style="display: none;">
             <div class="synonym-title"></div>
             <div class="synonym-control">
@@ -219,6 +220,69 @@
                     <tr>
                         <td colspan="3" class="bottom-action-bar">
                             <span class="add-button ss-button" title="add a new synonym" onClick="data.addSynonym()">
+                                <img src="<?php echo $this->asset_folder . 'images/add.svg'?>" class="add-button-image" alt="add" />
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        <!-- Semantic editor / adder -->
+        <div id="semantic-edit" class="semantic-editor" style="display: none;">
+            <div class="semantic-title"></div>
+            <div class="semantic-control">
+                <label class="sem-label">word <br/>
+                    <input class="input-text sem-word" type="text" alt="word" title="word" placeholder="word" />
+                </label>
+            </div>
+            <div class="semantic-control">
+                <label class="sem-label">semantic <br/>
+                    <input class="input-text sem-semantic" type="text" alt="semantic" title="semantic" placeholder="semantic" />
+                </label>
+            </div>
+            <div class="semantic-buttons-container">
+                <div class="semantic-buttons">
+                    <button class="ss-button" onclick="data.semanticDialogClose()">cancel</button>
+                    <button class="ss-button" onclick="data.semanticDialogSave()">save</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Semantics tab -->
+        <div id='div_semantics' class="qna" style="display: none;">
+            <div class="simsage-find-box">
+                <div class="find-label">find semantics</div>
+                <div class="find-dialog">
+                    <label><input type="text" value="" spellcheck="false" autoFocus class="find-text-style"
+                                  onKeyUp="data.handleSemanticKey(event.keyCode)" onChange="data.setSemanticFilter(event.target.value)" /></label>
+                </div>
+                <div class="find-image-box ss-button">
+                    <img class="find-image ss-button"
+                         onClick="data.getSemantics()"
+                         src="<?php echo $this->asset_folder . 'images/dark-magnifying-glass.svg'?>" title="search" alt="search"/>
+                </div>
+            </div>
+            <div>
+                <table class="semantics-find-table">
+                    <thead>
+                    <tr class="table-header">
+                        <td class="id-column">word</td>
+                        <td class="question-column">semantic</td>
+                        <td class="action-column">actions</td>
+                    </tr>
+                    </thead>
+                    <tbody id="semanticList">
+                    </tbody>
+                    <tr class="pagination-bar-tr">
+                        <td colspan="3">
+                            <div id="semanticPagination" class="pagination-bar"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="bottom-action-bar">
+                            <span class="add-button ss-button" title="add a new semantic" onClick="data.addSemantic()">
                                 <img src="<?php echo $this->asset_folder . 'images/add.svg'?>" class="add-button-image" alt="add" />
                             </span>
                         </td>

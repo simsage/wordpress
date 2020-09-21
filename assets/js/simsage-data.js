@@ -15,8 +15,8 @@ class SimsageData {
         this.date = new Date();
 
         // active tab
-        this.tab = 'qna';
-        this.tab_list = ['keywords', 'searches', 'logs', 'qna', 'synonyms'];
+        this.tab = 'keywords';
+        this.tab_list = ['keywords', 'searches', 'logs', 'qna', 'synonyms', 'semantics'];
 
         // the stats
         this.search_frequencies = [];
@@ -57,6 +57,23 @@ class SimsageData {
         this.syn_dlg_id = null;
         this.syn_dlg_words = "";
 
+        // semantics
+        this.semantic_filter = '';
+        this.semantic_prev_filter = '';
+        this.semantic_prev_id = '';
+        this.semantic_page_size = 10;
+        this.semantic_list = [];
+        this.semantic_page = 0;
+        this.num_semantics = 0;
+        this.semantic_nav = ['null'];
+
+        // semantic edit dialog
+        this.semantic_dlg_show = false;
+        this.semantic_dlg_action = "";
+        this.sem_dlg_id = null;
+        this.sem_dlg_word = "";
+        this.sem_dlg_semantic = "";
+
         // file upload control
         this.filename = '';
         this.file_type = '';
@@ -75,6 +92,8 @@ class SimsageData {
             this.getMindItems();
         } else if (tab === 'synonyms') {
             this.getSynonyms();
+        } else if (tab === 'semantics') {
+            this.getSemantics();
         }
         this.refresh();
     }
@@ -1132,6 +1151,228 @@ class SimsageData {
         str_list.push("<button onclick='data.synonymPrevPage()' title='go to the previous page'" + ((page>1 && !this.busy) ? "" : "disabled") + ">prev</button>");
         str_list.push("<span>page " + page + " of " + num_pages + "</span>");
         str_list.push("<button onclick='data.synonymNextPage()' title='go to the next page'" + ((page < num_pages && !this.busy) ? "" : "disabled") + ">next</button>");
+        return str_list.join("\n");
+    }
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////
+    // semantics
+
+    // filter text-box enter press check
+    handleSemanticKey(key) {
+        if (key === 13) {
+            this.getSemantics();
+        }
+    }
+
+    // filter text-box change text
+    setSemanticFilter(text) {
+        this.semantic_filter = text;
+    }
+
+    // do search with filter
+    getSemantics() {
+        if (this.semantic_prev_filter !== this.semantic_filter) {
+            this.semantic_prev_filter = this.semantic_filter;
+            this.semanticResetPagination();
+        }
+        this.busy = true;
+        const self = this;
+        this.refresh();
+        const data = {
+            "organisationId": settings.organisationId, "kbId": settings.kbId, "sid": settings.sid,
+            "prevWord": this.semantic_prev_id ? this.semantic_prev_id : "null",
+            "filter": this.semantic_filter, "pageSize": this.semantic_page_size
+        };
+        const url = settings.base_url + '/language/wp-semantics';
+        jQuery.ajax({
+            headers: {
+                'Content-Type': 'application/json',
+                'API-Version': settings.api_version,
+            },
+            'data': JSON.stringify(data),
+            'type': 'PUT',
+            'url': url,
+            'success': function (data) {
+                self.busy = false;
+                if (data && data.synonymList) {
+                    self.semantic_list = data.semanticList;
+                    self.num_semantics = data.numSemantics;
+                } else {
+                    self.num_semantics = 0;
+                    self.semantic_list = [];
+                }
+                self.refresh();
+            }
+
+        }).fail(function (err) {
+            self.busy = false;
+            console.error(JSON.stringify(err));
+            if (err && err["readyState"] === 0 && err["status"] === 0) {
+                self.error = "Server not responding, not connected.";
+            } else {
+                self.error = err;
+            }
+            self.busy = false;
+            self.refresh();
+        });
+    }
+
+    semanticDialogClose() {
+        this.semantic_dlg_show = false;
+        this.refresh();
+    }
+
+    semanticDialogSave() {
+        // check the parameters are ok
+        const self = this;
+        const word = jQuery(".sem-word").val().trim();
+        const semantic = jQuery(".sem-semantic").val().trim();
+        this.sem_dlg_word = word;
+        this.sem_dlg_semantic = semantic;
+        if (word.length === 0 || semantic.length === 0) {
+            this.busy = false;
+            this.error = "you must at least provide a word with its semantic";
+            this.refresh();
+        } else {
+            this.busy = true;
+            this.refresh();
+            const payload = {
+                organisationId: settings.organisationId,
+                kbId: settings.kbId,
+                sid: settings.sid,
+                semantic: {
+                    word: word,
+                    semantic: semantic,
+                }
+            }
+            const url = settings.base_url + '/language/wp-save-semantic';
+            jQuery.ajax({
+                headers: {
+                    'Content-Type': 'application/json',
+                    'API-Version': settings.api_version,
+                },
+                'data': JSON.stringify(payload),
+                'type': 'PUT',
+                'url': url,
+                'success': function (data) {
+                    self.busy = false;
+                    self.semantic_dlg_show = false;
+                    self.refresh();
+                    self.getSynonyms();
+                }
+
+            }).fail(function (err) {
+                console.error(JSON.stringify(err));
+                if (err && err["readyState"] === 0 && err["status"] === 0) {
+                    self.error = "Server not responding, not connected.";
+                } else {
+                    self.error = err;
+                }
+                self.busy = false;
+                self.refresh();
+            });
+        }
+    }
+
+    addSemantic() {
+        this.semantic_dlg_show = true;
+        this.semantic_dlg_action = "add semantic"
+        this.sem_dlg_word = "";
+        this.syn_dlg_semantic = "";
+        this.refresh();
+    }
+
+    // find a semantic in the list
+    getSemantic(word) {
+        for (const item of this.semantic_list) {
+            if (item.word === word) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    editSemantic(word) {
+        const semantic = this.getSemantic(word);
+        if (semantic) {
+            this.semantic_dlg_show = true;
+            this.sem_dlg_word = semantic.word;
+            this.semantic_dlg_action = "edit semantic"
+            this.sem_dlg_semantic = semantic.semantic;
+            this.refresh();
+        }
+    }
+
+    deleteSemantic(word) {
+        const semantic = this.getSemantic(word);
+        if (semantic) {
+            if (confirm("are you sure you want to delete semantic \"" + semantic.word + "\",\n\"" + semantic.semantic + "\"?")) {
+            }
+        }
+    }
+
+    semanticResetPagination() {
+        this.semantic_prev_id = '';
+        this.semantic_page = 0;
+        this.semantic_nav = ['null'];
+    }
+
+    semanticPrevPage() {
+        if (this.semantic_page > 0) {
+            this.semantic_page -= 1;
+            this.semantic_prev_id = 'null';
+            if (this.semantic_page < this.semantic_nav.length) {
+                this.semantic_prev_id = this.semantic_nav[this.semantic_page];
+            }
+            this.getSemantics();
+        }
+    }
+
+    semanticNextPage() {
+        const num_pages = Math.floor(this.num_semantics / this.semantic_page_size) + 1;
+        if (this.semantic_page < num_pages) {
+            let word = 'null';
+            if (this.semantic_list.length > 0) {
+                word = this.semantic_list[this.semantic_list.length - 1].word;
+                this.synonym_nav.push(word);
+            }
+            this.semantic_page += 1;
+            this.semantic_prev_id = word;
+            this.getSemantics();
+        }
+    }
+
+    renderSemanticTable() {
+        if (this.semantic_list) {
+            const str_list = [];
+            for (const item of this.semantic_list) {
+                const id = item.word;
+                const expr = item.semantic;
+                str_list.push("<tr>");
+                str_list.push("<td>" + id + "</td>");
+                str_list.push("<td>" + expr + "</td>");
+                str_list.push("<td>");
+                str_list.push("<span title='edit this semantic' onclick='data.editSemantic(" + id + ")' class='ss-button'>");
+                str_list.push("<img src='" + image_base + "/images/edit.svg' class='edit-button-image ss-button' alt='edit' /></span>");
+                str_list.push("<span title='delete this semantic' onclick='data.deleteSemantic(" + id + ")' class='ss-button'>");
+                str_list.push("<img src='" + image_base + "/images/delete.svg' class='delete-button-image ss-button' alt='delete' /></span>");
+                str_list.push("</td>");
+                str_list.push("</tr>");
+            }
+            return str_list.join("\n");
+        }
+        return "";
+    }
+
+    renderSemanticPagination() {
+        const num_pages = Math.floor(this.num_semantics / this.semantic_page_size) + 1;
+        const page = this.semantic_page + 1;
+        const str_list = [];
+        str_list.push("<button onclick='data.semanticPrevPage()' title='go to the previous page'" + ((page>1 && !this.busy) ? "" : "disabled") + ">prev</button>");
+        str_list.push("<span>page " + page + " of " + num_pages + "</span>");
+        str_list.push("<button onclick='data.semanticNextPage()' title='go to the next page'" + ((page < num_pages && !this.busy) ? "" : "disabled") + ">next</button>");
         return str_list.join("\n");
     }
 
