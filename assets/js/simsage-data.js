@@ -574,6 +574,43 @@ class SimsageData {
     }
 
     uploadMindItems() {
+        const self = this;
+        if (this.file_binary_data) {
+            this.busy = true;
+            this.refresh();
+            const payload = {
+                organisationId: settings.organisationId,
+                kbId: settings.kbId,
+                sid: settings.sid,
+                fileType: this.file_type,
+                base64Text: this.file_binary_data,
+            };
+            const url = settings.base_url + '/knowledgebase/wp-upload';
+            jQuery.ajax({
+                headers: {
+                    'Content-Type': 'application/json',
+                    'API-Version': settings.api_version,
+                },
+                'data': JSON.stringify(payload),
+                'type': 'PUT',
+                'url': url,
+                'success': function (data) {
+                    self.busy = false;
+                    self.refresh();
+                    alert("upload successful");
+                }
+
+            }).fail(function (err) {
+                console.error(JSON.stringify(err));
+                if (err && err["readyState"] === 0 && err["status"] === 0) {
+                    self.error = "Server not responding, not connected.";
+                } else {
+                    self.error = err;
+                }
+                self.busy = false;
+                self.refresh();
+            });
+        }
     }
 
     addMindItem() {
