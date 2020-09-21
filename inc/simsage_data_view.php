@@ -171,9 +171,13 @@
 
 
         <!-- Q&A editor / adder -->
-        <div id="synonym-edit" class="qna-editor" style="display: none;">
+        <div id="synonym-edit" class="synonym-editor" style="display: none;">
             <div class="synonym-title"></div>
-            <div class="synonym-control"><label class="synonym-label">synonyms <br/><textarea rows="3" class="syn-words" cols="60" title="synonyms separated by commas" placeholder="synonyms separated by commas"></textarea></label></div>
+            <div class="synonym-control">
+                <label class="synonym-label">synonyms <br/>
+                    <textarea rows="14" class="syn-words" cols="60" title="synonyms separated by commas" placeholder="synonyms separated by commas"></textarea>
+                </label>
+            </div>
             <div class="synonym-buttons-container">
                 <div class="synonym-buttons">
                     <button class="ss-button" onclick="data.synonymDialogClose()">cancel</button>

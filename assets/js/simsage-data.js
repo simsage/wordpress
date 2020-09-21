@@ -956,7 +956,7 @@ class SimsageData {
             'url': url,
             'success': function (data) {
                 self.busy = false;
-                if (data && data.mindItemList) {
+                if (data && data.synonymList) {
                     self.synonym_list = data.synonymList;
                     self.num_synonyms = data.numSynonyms;
                 } else {
@@ -987,7 +987,7 @@ class SimsageData {
     synonymDialogSave() {
         // check the parameters are ok
         const self = this;
-        const words = jQuery(".synonym-words").val().trim();
+        const words = jQuery(".syn-words").val().trim();
         if (words.length === 0) {
             this.busy = false;
             this.error = "you must at least provide two words to be synonymous";
@@ -1041,7 +1041,7 @@ class SimsageData {
         this.refresh();
     }
 
-    // find a mind item in the list
+    // find a synonym in the list
     getSynonym(id) {
         for (const item of this.synonym_list) {
             if (item.id == id) {
@@ -1056,7 +1056,7 @@ class SimsageData {
         if (synonym) {
             this.synonym_dlg_show = true;
             this.syn_dlg_id = synonym.id;
-            this.mind_item_dlg_action = "edit synonym"
+            this.synonym_dlg_action = "edit synonym"
             this.syn_dlg_words = synonym.words;
             this.refresh();
         }
@@ -1072,9 +1072,9 @@ class SimsageData {
     }
 
     synonymResetPagination() {
-        this.mind_item_prev_id = '';
-        this.mind_item_page = 0;
-        this.mind_item_nav = ['null'];
+        this.synonym_prev_id = '';
+        this.synonym_page = 0;
+        this.synonym_nav = ['null'];
     }
 
     synonymPrevPage() {
