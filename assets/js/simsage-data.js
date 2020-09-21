@@ -699,8 +699,8 @@ class SimsageData {
         const expression = q2.length > 0 ? q1 + " || " + q2 : q1;
         if (q1.length === 0 || answer.length === 0) {
             this.busy = false;
+            this.error = "you must at least provide one question with one answer";
             this.refresh();
-            alert("error: you must at least provide one question with one answer");
         } else {
             this.busy = true;
             this.refresh();
@@ -727,7 +727,9 @@ class SimsageData {
                 'type': 'PUT',
                 'url': url,
                 'success': function (data) {
+                    self.busy = false;
                     self.mind_item_dlg_show = false;
+                    self.refresh();
                     self.getMindItems();
                 }
 
