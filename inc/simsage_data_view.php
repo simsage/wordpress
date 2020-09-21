@@ -59,9 +59,11 @@
         </div>
 
         <h2 class="nav-tab-wrapper">
-            <span id="tab_keywords" onclick="data.select_tab('keywords')" class="nav-tab tab-cursor">Keywords</span>
+            <span id="tab_keywords" onclick="data.select_tab('keywords')" class="nav-tab tab-cursor nav-tab-active">Keywords</span>
             <span id="tab_searches" onclick="data.select_tab('searches')" class="nav-tab tab-cursor">Search Access</span>
-            <span id="tab_logs" onclick="data.select_tab('logs')" class="nav-tab tab-cursor nav-tab-active">Download</span>
+            <span id="tab_logs" onclick="data.select_tab('logs')" class="nav-tab tab-cursor">Download</span>
+            <span id="tab_qna" onclick="data.select_tab('qna')" class="nav-tab tab-cursor">Q&A</span>
+            <span id="tab_synonyms" onclick="data.select_tab('synonyms')" class="nav-tab tab-cursor">Synonyms</span>
         </h2>
 
         <div id='layout'>
@@ -95,6 +97,54 @@
                 <span class="button-help-text">Download a Spreadsheet containing all currently crawled content and a Semantic analysis for each item (not month specific).</span>
             </div>
         </div>
+
+        <div id='div_qna' class="qna" style="display: none;">
+            <div class="simsage-find-box">
+                <div class="find-label">find items in the mind</div>
+                <div class="find-dialog">
+                    <label><input type="text" value="" spellcheck="false" autoFocus class="find-text-style"
+                           onKeyUp="data.handleMindItemKey(event.keyCode)" onChange="data.setMindItemFilter(event.target.value)" /></label>
+                </div>
+                <div class="find-image-box">
+                    <img class="find-image"
+                         onClick="data.getMindItems()"
+                         src="<?php echo $this->asset_folder . 'images/dark-magnifying-glass.svg'?>" title="search" alt="search"/>
+                </div>
+            </div>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>id</td>
+                            <td>question</td>
+                            <td>actions</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                <span>
+                                    upload
+                                </span>
+                                <span>
+                                    export
+                                </span>
+                                <span>
+                                    new
+                                </span>
+                                <span>
+                                    delete all
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id='div_synonyms' style="display: none;">
+        </div>
+
 
     </div>
 

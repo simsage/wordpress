@@ -129,3 +129,45 @@ text.divergence {
 .close-button:hover {
     color: black;
 }
+
+/************** Q&A *****************/
+
+.qna {
+}
+
+.qna .simsage-find-box {
+    float: right;
+    padding: 10px !important;
+}
+
+.qna .simsage-find-box:after {
+    clear: both;
+}
+
+.qna .find-label {
+    float: left;
+    margin-top: 8px;
+    font-size: 1.2em !important;
+    margin-right: 6px !important;
+}
+
+.qna .find-dialog {
+    float: left;
+}
+
+.qna .find-text-style {
+    padding: 4px !important;
+    width: 280px !important;
+}
+
+.qna .find-image-box {
+    float: left;
+}
+
+.qna .find-image {
+    margin-top: 8px !important;
+    margin-left: 15px !important;
+    width: 18px !important;
+    height: 18px !important;
+}
+

@@ -15,12 +15,15 @@ class SimsageData {
         this.date = new Date();
 
         // active tab
-        this.tab = 'keywords';
-        this.tab_list = ['keywords', 'searches', 'logs'];
+        this.tab = 'qna';
+        this.tab_list = ['keywords', 'searches', 'logs', 'qna', 'synonyms'];
 
         // the stats
         this.search_frequencies = [];
         this.search_keyword_frequencies = [];
+
+        // mind-items
+        this.mind_item_filter = '';
     }
 
     refresh() {
@@ -465,5 +468,22 @@ class SimsageData {
         return y + "-" + m + "-" + d + "-" + h + "-" + mi + "-" + s;
     }
 
+
+    /////////////////////////////////////////////////////////////////////////////////
+    // mind items
+
+    handleMindItemKey(key) {
+        if (key === 13) {
+            this.getMindItems();
+        }
+    }
+
+    setMindItemFilter(text) {
+        this.mind_item_filter = text;
+    }
+
+    getMindItems() {
+        alert(this.mind_item_filter);
+    }
 
 }
