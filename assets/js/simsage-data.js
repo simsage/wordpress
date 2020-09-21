@@ -1196,7 +1196,7 @@ class SimsageData {
             'url': url,
             'success': function (data) {
                 self.busy = false;
-                if (data && data.synonymList) {
+                if (data && data.semanticList) {
                     self.semantic_list = data.semanticList;
                     self.num_semantics = data.numSemantics;
                 } else {
@@ -1260,7 +1260,7 @@ class SimsageData {
                     self.busy = false;
                     self.semantic_dlg_show = false;
                     self.refresh();
-                    self.getSynonyms();
+                    self.getSemantics();
                 }
 
             }).fail(function (err) {
@@ -1336,7 +1336,7 @@ class SimsageData {
             let word = 'null';
             if (this.semantic_list.length > 0) {
                 word = this.semantic_list[this.semantic_list.length - 1].word;
-                this.synonym_nav.push(word);
+                this.semantic_nav.push(word);
             }
             this.semantic_page += 1;
             this.semantic_prev_id = word;

@@ -265,7 +265,7 @@
                 </div>
             </div>
             <div>
-                <table class="semantics-find-table">
+                <table class="simsage-find-table">
                     <thead>
                     <tr class="table-header">
                         <td class="id-column">word</td>
