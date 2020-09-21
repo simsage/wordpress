@@ -41,6 +41,22 @@ class SimsageData {
         this.mi_dlg_answer = "";
         this.mi_dlg_links = "";
 
+        // synonyms
+        this.synonym_filter = '';
+        this.synonym_prev_filter = '';
+        this.synonym_prev_id = '';
+        this.synonym_page_size = 10;
+        this.synonym_list = [];
+        this.synonym_page = 0;
+        this.num_synonyms = 0;
+        this.synonym_nav = ['null'];
+
+        // synonym edit dialog
+        this.synonym_dlg_show = false;
+        this.synonym_dlg_action = "";
+        this.syn_dlg_id = null;
+        this.syn_dlg_words = "";
+
         // file upload control
         this.filename = '';
         this.file_type = '';
@@ -57,6 +73,8 @@ class SimsageData {
         this.tab = tab;
         if (tab === 'qna') {
             this.getMindItems();
+        } else if (tab === 'synonyms') {
+            this.getSynonyms();
         }
         this.refresh();
     }
@@ -893,6 +911,226 @@ class SimsageData {
         str_list.push("<button onclick='data.mindItemPrevPage()' title='go to the previous page'" + ((page>1 && !this.busy) ? "" : "disabled") + ">prev</button>");
         str_list.push("<span>page " + page + " of " + num_pages + "</span>");
         str_list.push("<button onclick='data.mindItemNextPage()' title='go to the next page'" + ((page < num_pages && !this.busy) ? "" : "disabled") + ">next</button>");
+        return str_list.join("\n");
+    }
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////
+    // synonyms
+
+    // filter text-box enter press check
+    handleSynonymKey(key) {
+        if (key === 13) {
+            this.getSynonyms();
+        }
+    }
+
+    // filter text-box change text
+    setSynonymFilter(text) {
+        this.synonym_filter = text;
+    }
+
+    // do search with filter
+    getSynonyms() {
+        if (this.synonym_prev_filter !== this.synonym_filter) {
+            this.synonym_prev_filter = this.synonym_filter;
+            this.synonymResetPagination();
+        }
+        this.busy = true;
+        const self = this;
+        this.refresh();
+        const data = {
+            "organisationId": settings.organisationId, "kbId": settings.kbId, "sid": settings.sid,
+            "prevId": this.synonym_prev_id ? this.synonym_prev_id : "null",
+            "filter": this.synonym_filter, "pageSize": this.synonym_page_size
+        };
+        const url = settings.base_url + '/language/wp-synonyms';
+        jQuery.ajax({
+            headers: {
+                'Content-Type': 'application/json',
+                'API-Version': settings.api_version,
+            },
+            'data': JSON.stringify(data),
+            'type': 'PUT',
+            'url': url,
+            'success': function (data) {
+                self.busy = false;
+                if (data && data.mindItemList) {
+                    self.synonym_list = data.synonymList;
+                    self.num_synonyms = data.numSynonyms;
+                } else {
+                    self.num_synonyms = 0;
+                    self.synonym_list = [];
+                }
+                self.refresh();
+            }
+
+        }).fail(function (err) {
+            self.busy = false;
+            console.error(JSON.stringify(err));
+            if (err && err["readyState"] === 0 && err["status"] === 0) {
+                self.error = "Server not responding, not connected.";
+            } else {
+                self.error = err;
+            }
+            self.busy = false;
+            self.refresh();
+        });
+    }
+
+    synonymDialogClose() {
+        this.synonym_dlg_show = false;
+        this.refresh();
+    }
+
+    synonymDialogSave() {
+        // check the parameters are ok
+        const self = this;
+        const words = jQuery(".synonym-words").val().trim();
+        if (words.length === 0) {
+            this.busy = false;
+            this.error = "you must at least provide two words to be synonymous";
+            this.refresh();
+        } else {
+            this.busy = true;
+            this.refresh();
+            const payload = {
+                organisationId: settings.organisationId,
+                kbId: settings.kbId,
+                sid: settings.sid,
+                synonym: {
+                    id: this.syn_dlg_id,
+                    words: words,
+                }
+            }
+            const url = settings.base_url + '/language/wp-save-synonym';
+            jQuery.ajax({
+                headers: {
+                    'Content-Type': 'application/json',
+                    'API-Version': settings.api_version,
+                },
+                'data': JSON.stringify(payload),
+                'type': 'PUT',
+                'url': url,
+                'success': function (data) {
+                    self.busy = false;
+                    self.synonym_dlg_show = false;
+                    self.refresh();
+                    self.getSynonyms();
+                }
+
+            }).fail(function (err) {
+                console.error(JSON.stringify(err));
+                if (err && err["readyState"] === 0 && err["status"] === 0) {
+                    self.error = "Server not responding, not connected.";
+                } else {
+                    self.error = err;
+                }
+                self.busy = false;
+                self.refresh();
+            });
+        }
+    }
+
+    addSynonym() {
+        this.synonym_dlg_show = true;
+        this.synonym_dlg_action = "add synonym"
+        this.syn_dlg_id = null;
+        this.syn_dlg_words = "";
+        this.refresh();
+    }
+
+    // find a mind item in the list
+    getSynonym(id) {
+        for (const item of this.synonym_list) {
+            if (item.id == id) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    editSynonym(id) {
+        const synonym = this.getSynonym(id);
+        if (synonym) {
+            this.synonym_dlg_show = true;
+            this.syn_dlg_id = synonym.id;
+            this.mind_item_dlg_action = "edit synonym"
+            this.syn_dlg_words = synonym.words;
+            this.refresh();
+        }
+    }
+
+    deleteSynonym(id) {
+        const synonym = this.getSynonym(id);
+        if (synonym) {
+            let q1 = synonym.words;
+            if (confirm("are you sure you want to delete synonym id " + synonym.id + ",\n\"" + q1 + "\"?")) {
+            }
+        }
+    }
+
+    synonymResetPagination() {
+        this.mind_item_prev_id = '';
+        this.mind_item_page = 0;
+        this.mind_item_nav = ['null'];
+    }
+
+    synonymPrevPage() {
+        if (this.synonym_page > 0) {
+            this.synonym_page -= 1;
+            this.synonym_prev_id = 'null';
+            if (this.synonym_page < this.synonym_nav.length) {
+                this.synonym_prev_id = this.synonym_nav[this.synonym_page];
+            }
+            this.getSynonyms();
+        }
+    }
+
+    synonymNextPage() {
+        const num_pages = Math.floor(this.num_synonyms / this.synonym_page_size) + 1;
+        if (this.synonym_page < num_pages) {
+            let id = 'null';
+            if (this.synonym_list.length > 0) {
+                id = this.synonym_list[this.synonym_list.length - 1].id;
+                this.synonym_nav.push(id);
+            }
+            this.synonym_page += 1;
+            this.synonym_prev_id = id;
+            this.getSynonyms();
+        }
+    }
+
+    renderSynonymTable() {
+        if (this.synonym_list) {
+            const str_list = [];
+            for (const item of this.synonym_list) {
+                const id = item.id;
+                const expr = item.words;
+                str_list.push("<tr>");
+                str_list.push("<td>" + id + "</td>");
+                str_list.push("<td>" + expr + "</td>");
+                str_list.push("<td>");
+                str_list.push("<span title='edit this synonym' onclick='data.editSynonym(" + id + ")' class='ss-button'>");
+                str_list.push("<img src='" + image_base + "/images/edit.svg' class='edit-button-image ss-button' alt='edit' /></span>");
+                str_list.push("<span title='delete this synonym' onclick='data.deleteSynonym(" + id + ")' class='ss-button'>");
+                str_list.push("<img src='" + image_base + "/images/delete.svg' class='delete-button-image ss-button' alt='delete' /></span>");
+                str_list.push("</td>");
+                str_list.push("</tr>");
+            }
+            return str_list.join("\n");
+        }
+        return "";
+    }
+
+    renderSynonymPagination() {
+        const num_pages = Math.floor(this.num_synonyms / this.synonym_page_size) + 1;
+        const page = this.synonym_page + 1;
+        const str_list = [];
+        str_list.push("<button onclick='data.synonymPrevPage()' title='go to the previous page'" + ((page>1 && !this.busy) ? "" : "disabled") + ">prev</button>");
+        str_list.push("<span>page " + page + " of " + num_pages + "</span>");
+        str_list.push("<button onclick='data.synonymNextPage()' title='go to the next page'" + ((page < num_pages && !this.busy) ? "" : "disabled") + ">next</button>");
         return str_list.join("\n");
     }
 

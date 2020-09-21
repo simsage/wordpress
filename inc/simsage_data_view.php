@@ -68,19 +68,22 @@
             <span id="tab_synonyms" onclick="data.select_tab('synonyms')" class="nav-tab tab-cursor">Synonyms</span>
         </h2>
 
+        <!-- graphical display items -->
         <div id='layout'>
 
+            <!-- keyword analytics tab -->
             <div id='div_keywords' class="container">
                 <svg id="keyword-analytics" />
             </div>
 
-
+            <!-- search analytics tab -->
             <div id='div_searches' class="container" style="display: none;">
                 <svg id="search-analytics" />
             </div>
 
         </div>
 
+        <!-- download tab -->
         <div id='div_logs' style="display: none;">
             <div class="button-row">
                 <button onclick="data.dlOperatorConversations()" class="button button-style ss-button">Operator Conversation Spreadsheet</button>
@@ -167,8 +170,59 @@
         </div>
 
 
-        <div id='div_synonyms' style="display: none;">
+        <!-- Q&A editor / adder -->
+        <div id="synonym-edit" class="qna-editor" style="display: none;">
+            <div class="synonym-title"></div>
+            <div class="synonym-control"><label class="synonym-label">synonyms <br/><textarea rows="3" class="syn-words" cols="60" title="synonyms separated by commas" placeholder="synonyms separated by commas"></textarea></label></div>
+            <div class="synonym-buttons-container">
+                <div class="synonym-buttons">
+                    <button class="ss-button" onclick="data.synonymDialogClose()">cancel</button>
+                    <button class="ss-button" onclick="data.synonymDialogSave()">save</button>
+                </div>
+            </div>
         </div>
+
+        <!-- Synonyms tab -->
+        <div id='div_synonyms' class="qna" style="display: none;">
+            <div class="simsage-find-box">
+                <div class="find-label">find synonyms</div>
+                <div class="find-dialog">
+                    <label><input type="text" value="" spellcheck="false" autoFocus class="find-text-style"
+                                  onKeyUp="data.handleSynonymKey(event.keyCode)" onChange="data.setSynonymFilter(event.target.value)" /></label>
+                </div>
+                <div class="find-image-box ss-button">
+                    <img class="find-image ss-button"
+                         onClick="data.getSynonyms()"
+                         src="<?php echo $this->asset_folder . 'images/dark-magnifying-glass.svg'?>" title="search" alt="search"/>
+                </div>
+            </div>
+            <div>
+                <table class="simsage-find-table">
+                    <thead>
+                    <tr class="table-header">
+                        <td class="id-column">id</td>
+                        <td class="question-column">synoynms</td>
+                        <td class="action-column">actions</td>
+                    </tr>
+                    </thead>
+                    <tbody id="synonymList">
+                    </tbody>
+                    <tr class="pagination-bar-tr">
+                        <td colspan="3">
+                            <div id="synonymPagination" class="pagination-bar"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="bottom-action-bar">
+                            <span class="add-button ss-button" title="add a new synonym" onClick="data.addSynonym()">
+                                <img src="<?php echo $this->asset_folder . 'images/add.svg'?>" class="add-button-image" alt="add" />
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
 
 
     </div>

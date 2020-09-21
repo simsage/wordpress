@@ -289,3 +289,46 @@ text.divergence {
     padding: 10px;
 }
 
+/* add new or edit Synonym */
+
+.synonym-editor {
+    margin-top: 10px;
+    background-color: #ffffff;
+    width: 600px;
+    height: 460px;
+    border-radius: 10px;
+    position: absolute !important;
+    z-index: 99 !important;
+    border: 1px solid black;
+}
+
+.synonym-editor .input-text {
+    width: 500px;
+}
+
+.synonym-editor .synonym-label {
+    padding: 10px;
+    font-weight: 500;
+}
+
+.synonym-editor .synonym-control {
+    padding: 10px;
+}
+
+.synonym-editor .synonym-title {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 40px;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.synonym-editor .synonym-buttons-container {
+    margin-top: 20px;
+}
+
+.synonym-editor .synonym-buttons {
+    float: right;
+    padding: 10px;
+}
+

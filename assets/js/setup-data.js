@@ -77,5 +77,20 @@ function an_update_ui(data) {
     }
 
 
+    // render the inside of the synonym table
+    jQuery("#synonymList").html(data.renderSynonymTable());
+
+    // set synonym pagination
+    jQuery("#synonymPagination").html(data.renderSynonymPagination());
+
+    // mind item dialog
+    if (data.synonym_dlg_show) {
+        jQuery("#synonym-edit").show();
+        jQuery(".synonym-title").html(data.synonym_dlg_action);
+        jQuery(".syn-words").val(data.syn_dlg_words);
+    } else {
+        jQuery("#synonym-edit").hide();
+    }
+
 }
 
