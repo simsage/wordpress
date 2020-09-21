@@ -78,12 +78,6 @@ class simsage_admin
 		    } else if ($action == 'update-search') {
 		    	// do an update to the search posted values
 			    $this->check_form_parameters($_POST[PLUGIN_NAME], true);
-		    } else if ($action == 'update-bot') {
-			    // do an update to the bot posted values
-			    $this->update_bot($_POST);
-		    } else if ($action == 'update-synonyms') {
-                // do an update to the synonym posted values
-                $this->update_synonyms($_POST);
             }
 	    }
     }
@@ -108,7 +102,7 @@ class simsage_admin
     function cron_upload_archive() {
         debug_log("CRON: SimSage uploading archive");
         // just save the pages
-        if ( $this->update_simsage( true, true, true ) ) {
+        if ( $this->update_simsage() ) {
             debug_log("CRON: cron_upload_archive(): success");
         }
     }
@@ -245,7 +239,7 @@ class simsage_admin
                         // save settings
                         update_option(PLUGIN_NAME, $plugin_options);
                         // set the current site and upload the current WP content as is as well as any synonyms, and QAs
-                        $this->update_simsage(true, true, true);
+                        $this->update_simsage();
                         // setup other parts of the plugin according to plan
                         $this->add_admin_menus();
                         // show we've successfully connected
@@ -257,90 +251,6 @@ class simsage_admin
                     add_settings_error('simsage_settings', 'error', $error_str, $type = 'error');
                 }
             }
-        }
-    }
-
-
-    /**
-     * Update the bot tab's items, remove items, add new items,
-     * and check the fields are as we'd like them to be
-     *
-     * @param $post_data array the post parameters
-     */
-    private function update_bot($post_data) {
-        $cmd = $post_data["submit"];
-        $params = $post_data[PLUGIN_NAME];
-        // add a new QA row if there aren't any empty ones
-        if ($cmd == 'add') {
-            $existing_qa = array();
-            if ( isset($params["simsage_qa"]) ) {
-                $existing_qa = $params["simsage_qa"];
-            }
-            $id = 1;
-            $has_empty = false;
-            $new_params = array();
-            foreach ($existing_qa as $qa) {
-                if (trim($qa["question"]) == "" || trim($qa["answer"]) == "") {
-                    $has_empty = true;
-                }
-                // copy the item into a new-set of parameters, re-creating the array
-                $qa["id"] = $id;
-                $qa["link"] = "";
-                $new_params[$id] = $qa;
-                $id += 1;
-            }
-            if (!$has_empty) {
-                // add a new entry
-                $new_params[$id] = array("id" => $id, "question" => "", "answer" => "", "context" => "", "link" => "");
-                // update all entries
-                $plugin_options = get_option( PLUGIN_NAME );
-                $plugin_options["simsage_qa"] = $new_params;
-                update_option(PLUGIN_NAME, $plugin_options);
-            } else {
-                add_settings_error('simsage_settings', 'simsage_bot_qa', 'Please fill-out all existing Questions and Answers before adding new rows.', $type = 'error');
-            }
-
-        } else if ( substr( $cmd, 0, 6) == "remove" ) {
-            // remove an existing row from the cells
-            $id = intval( trim(substr( $cmd, 7) ) );
-            $plugin_options = get_option( PLUGIN_NAME );
-            $existing_qa = $plugin_options["simsage_qa"];
-            unset( $existing_qa[$id] );
-
-            $next_id = 1;
-            $new_params = array();
-            foreach ($existing_qa as $qa) {
-                // copy the item into a new-set of parameters, re-creating the array
-                $qa["id"] = $next_id;
-                $qa["link"] = "";
-                $new_params[$next_id] = $qa;
-                $next_id += 1;
-            }
-            $plugin_options["simsage_qa"] = $new_params;
-            update_option(PLUGIN_NAME, $plugin_options);
-
-        } else {
-            // General save: save all parameters
-            $plugin_options = get_option( PLUGIN_NAME );
-            $existing_qa = array();
-            if ( isset($params["simsage_qa"]) ) {
-                $existing_qa = $params["simsage_qa"];
-            }
-            // check all the questions and answers are to our liking
-            $id = 1;
-            $new_params = array();
-            foreach ($existing_qa as $qa) {
-                // copy the item into a new-set of parameters, re-creating the array
-                $qa["id"] = $id;
-                $qa["link"] = "";
-                $new_params[$id] = $qa;
-                $id += 1;
-            }
-            // can we save it?
-            $plugin_options["simsage_qa"] = $new_params;
-            update_option(PLUGIN_NAME, $plugin_options);
-            // check the form's other bot parameters are valid (the threshold)
-            $this->check_form_parameters($params, false);
         }
     }
 
@@ -368,90 +278,6 @@ class simsage_admin
             }
         }
         return !$has_error;
-    }
-
-
-    /**
-     * The user adds, removes, or saves synoynms
-     * @param $post_data
-     */
-    private function update_synonyms( $post_data ) {
-        $cmd = $post_data["submit"];
-        $params = array();
-        if ( isset($post_data[PLUGIN_NAME]) ) {
-            $params = $post_data[PLUGIN_NAME];
-        }
-        // add a new synonym row if there aren't any empty ones
-        if ($cmd == 'add') {
-            $existing_synonyms = array();
-            if ( isset($params["simsage_synonyms"]) ) {
-                $existing_synonyms = $params["simsage_synonyms"];
-            }
-            $id = 1;
-            $has_empty = false;
-            $new_params = array();
-            foreach ($existing_synonyms as $synonym) {
-                if (trim($synonym["words"]) == "") {
-                    $has_empty = true;
-                }
-                // copy the item into a new-set of parameters, re-creating the array
-                $synonym["id"] = $id;
-                $new_params[$id] = $synonym;
-                $id += 1;
-            }
-            if (!$has_empty) {
-                // add a new entry
-                $new_params[$id] = array("id" => $id, "words" => "");
-                // update all entries
-                $plugin_options = get_option( PLUGIN_NAME );
-                $plugin_options["simsage_synonyms"] = $new_params;
-                update_option(PLUGIN_NAME, $plugin_options);
-
-            } else {
-                add_settings_error('simsage_settings', 'simsage_synonyms', 'Please fill-out all existing Synonyms before adding new rows.', $type = 'error');
-            }
-
-        } else if ( substr( $cmd, 0, 6) == "remove" ) {
-            // remove an existing row from the cells
-            $id = intval( trim(substr( $cmd, 7) ) );
-            $plugin_options = get_option( PLUGIN_NAME );
-            $existing_synonyms = $plugin_options["simsage_synonyms"];
-            unset( $existing_synonyms[$id] );
-
-            $next_id = 1;
-            $new_params = array();
-            foreach ($existing_synonyms as $synonym) {
-                // copy the item into a new-set of parameters, re-creating the array
-                $synonym["id"] = $next_id;
-                $new_params[$next_id] = $synonym;
-                $next_id += 1;
-            }
-            $plugin_options["simsage_synonyms"] = $new_params;
-            update_option(PLUGIN_NAME, $plugin_options);
-
-        } else {
-            // General save: save all parameters
-            $plugin_options = get_option( PLUGIN_NAME );
-            $existing_synonyms = array();
-            if ( isset($params["simsage_synonyms"]) ) {
-                $existing_synonyms = $params["simsage_synonyms"];
-            }
-            // check all the synonyms are to our liking
-            $id = 1;
-            $new_params = array();
-            foreach ($existing_synonyms as $synonym) {
-                // copy the item into a new-set of parameters, re-creating the array
-                $synonym["id"] = $id;
-                $new_params[$id] = $synonym;
-                $id += 1;
-            }
-            // can we save it?
-            $plugin_options["simsage_synonyms"] = $new_params;
-            update_option(PLUGIN_NAME, $plugin_options);
-
-            // validate them
-            $this->validate_synonyms();
-        }
     }
 
 
@@ -484,12 +310,9 @@ class simsage_admin
      * Check all the settings are valid, create a ZIP of the current content and various language changes
      * and send them all to SimSage for processing
      *
-     * @param $include_pages bool include all the pages in the update?
-     * @param $include_bot bool include the bot QA items in the update?
-     * @param $include_synonyms bool include the synonyms in the update?
      * @return bool success, or false if anything went wrong
      */
-    private function update_simsage( $include_pages, $include_bot, $include_synonyms ) {
+    private function update_simsage() {
         $plan = get_plan();
         $kb = get_kb();
         if ( $plan != null && $kb != null ) {
@@ -510,28 +333,8 @@ class simsage_admin
                 return false;
             }
 
-            // make sure both the bot and synonyms validate
-            if ( $include_synonyms ) {
-                if ( !$this->validate_synonyms() ) {
-                    if ( function_exists('add_settings_error') )
-                        add_settings_error('simsage_settings', 'invalid_data', 'Please fix the above errors!', $type = 'error');
-                    else
-                        debug_log('ERROR: simsage-invalid-data: Please fix entries');
-                    return false;
-                }
-            }
-            if ( $include_bot ) {
-                if ( !$this->validate_qas() ) {
-                    if ( function_exists('add_settings_error') )
-                        add_settings_error('simsage_settings', 'invalid_data', 'Please fix the above errors!', $type = 'error');
-                    else
-                        debug_log('ERROR: simsage-invalid-data: Please fix entries');
-                    return false;
-                }
-            }
-
             // and index / re-index the data associated with this site
-            $file_md5 = $this->create_content_archive( $plan, $include_pages, $include_bot, $include_synonyms );
+            $file_md5 = $this->create_content_archive( $plan );
             $filename = $file_md5[0];
             $file_md5 = $file_md5[1];
             if ($filename != null) {
@@ -583,7 +386,7 @@ class simsage_admin
      * @param $check_keys bool check the keys must exist if true
      * @return bool  return true on success, false on failure
      */
-    private function check_form_parameters($form_params, $check_keys) {
+    private function check_form_parameters( $form_params, $check_keys ) {
         foreach ($form_params as $key => $value) {
             if ( !isset($this->plugin_defaults[$key]) ) {
                 if ( $check_keys ) {
@@ -755,11 +558,8 @@ class simsage_admin
      * @param $include_synonyms bool include the synonyms in the archive
      * @return array the filename to the zip-file in its temporary file location and its md5 sum or (null, null)
      */
-	private function create_content_archive($plan, $include_pages, $include_bot, $include_synonyms ) {
+	private function create_content_archive($plan) {
 	    if ( $plan != null ) {
-	        if ( !$include_pages && !$include_bot && !$include_synonyms ) {
-	            return null;
-            }
 	        $registration_key = get_registration_key();
 
             $filename = tempnam(get_temp_dir(), "simsage");
@@ -771,44 +571,7 @@ class simsage_admin
             if ($archive_file) {
                 debug_log("starting " . $filename);
 
-                // add our bot teachings for SimSage?
-                $bot_md5 = "";
-                if ( $include_bot ) {
-                    $qa_list = array();
-                    if ( isset($plugin_options["simsage_qa"]) ) {
-                        $qa_list = $plugin_options["simsage_qa"];
-                    }
-                    if ( count($qa_list) > $num_qas ) {
-                        // warn the user they have exceeded the allocation for QA items on their plan
-                        add_settings_error('simsage_settings', 'simsage_archive_error', "Your Q&A count (" . count($qa_list) .
-                                           ") exceeds the maximum allocated number of QAs for your plan (" . $num_qas . ").  " .
-                                           "Please remove " . (count($qa_list) - $num_qas) . " Q&As or upgrade your plan.  " .
-                                           "I will upload the first " . $num_qas . " Q&As only.", $type = 'error');
-                    }
-                    if ( count($qa_list) > 0 ) {
-                        debug_log("adding bot Q&A items to " . $filename);
-                        $bot_md5 = add_bot_qas_to_archive( $archive_file, $qa_list, $num_qas );
-                    }
-                }
-
-                // add our synonyms for SimSage
-                $synonym_md5 = "";
-                if ( $include_synonyms ) {
-                    $synonyms_list = array();
-                    if (isset($plugin_options["simsage_synonyms"])) {
-                        $synonyms_list = $plugin_options["simsage_synonyms"];
-                    }
-                    if (count($synonyms_list) > 0) {
-                        debug_log("adding synonyms to " . $filename);
-                        $synonym_md5 = add_synonyms_to_archive( $archive_file, $synonyms_list );
-                    }
-                }
-
-                // add WordPress content to our zip file to send to SimSage
-                $content_md5 = "";
-                if ( $include_pages ) {
-                    $content_md5 = add_wp_contents_to_archive( $registration_key, $archive_file, $num_docs );
-                }
+                $content_md5 = add_wp_contents_to_archive( $registration_key, $archive_file, $num_docs );
                 // done writing the archive file
                 fclose( $archive_file );
 
@@ -821,9 +584,8 @@ class simsage_admin
                         debug_log("warning: could not delete file \"" . $filename . "\"");
                     }
 
-                    $file_md5 = md5($bot_md5 . $synonym_md5 . $content_md5);
-                    debug_log("finished writing " . $filename_compressed . ", content md5s: " . $content_md5 . "," . $synonym_md5 . "," . $bot_md5 . "=>" . $file_md5);
-                    return array($filename_compressed, $file_md5);
+                    debug_log("finished writing " . $filename_compressed . ", content md5s: " . $content_md5);
+                    return array($filename_compressed, $content_md5);
 
                 } else {
                     // failed - remove the archive file

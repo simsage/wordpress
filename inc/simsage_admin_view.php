@@ -41,10 +41,6 @@
     $has_kb = $has_account && isset($options['simsage_account']['kbId']);
     // list of bot items (or initial empty array)
     $qa_list = isset($options['simsage_qa']) ? $options['simsage_qa'] : array();
-    // do we have Q&A settings?
-    $bot_enabled = ($plan != null);
-    // do we have language customization?
-    $language_enabled = ($plan != null);
     // list of synonyms
     $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms'] : array();
 	?>
@@ -59,12 +55,6 @@
     <div class="nav-tab-wrapper">
         <a href="?page=simsage-search&tab=account" class="nav-tab <?php echo ($active_tab == 'account' || $active_tab == '') ? 'nav-tab-active' : ''; ?>">Account</a>
         <a href="?page=simsage-search&tab=search" class="nav-tab <?php echo $active_tab == 'search' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_kb ) echo 'tab-disabled' ?>">Search</a>
-        <?php if ( $bot_enabled ) { ?>
-        <a href="?page=simsage-search&tab=bot" class="nav-tab <?php echo $active_tab == 'bot' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_kb ) echo 'tab-disabled' ?>">Bot</a>
-        <?php } ?>
-        <?php if ( $language_enabled ) { ?>
-        <a href="?page=simsage-search&tab=synonyms" class="nav-tab <?php echo $active_tab == 'synonyms' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_kb ) echo 'tab-disabled' ?>">Synonyms</a>
-        <?php } ?>
     </div>
 
     <form method="post" id="adminForm" name="<?php echo PLUGIN_NAME; ?>_search_options">
@@ -177,88 +167,6 @@
                 <?php submit_button( 'update Search Settings', 'primary','submit', true ); ?>
 
             <?php } ?>
-
-
-            <?php if ($active_tab == 'bot') { ?>
-                <div class="tabbed-display">
-                <fieldset>
-                    <label>
-                        <span class="radio_label">no</span><input name="<?php echo PLUGIN_NAME ?>[simsage_use_bot]" type="radio" value="0" <?php echo (isset($options['simsage_use_bot']) && $options['simsage_use_bot'] == '0') ? 'checked' : ''; ?> />
-                        <span class="radio_label">yes</span><input name="<?php echo PLUGIN_NAME ?>[simsage_use_bot]" type="radio" value="1" <?php echo (!isset($options['simsage_use_bot']) || $options['simsage_use_bot'] != '0') ? 'checked' : ''; ?> />
-                        <span class="description">Use the SimSage bot along with search.</span>
-                    </label>
-                </fieldset>
-
-                <fieldset>
-                    <label>
-                        <input name="<?php echo PLUGIN_NAME ?>[bot_threshold]" type="text" class="number-field" id="bot_threshold"
-                               value="<?php echo (isset($options['bot_threshold']) && $options['bot_threshold'] != '') ? $options['bot_threshold'] : '0.8125'; ?>"
-                               placeholder="bot threshold"/>
-                        <span class="description">SimSage bot threshold, a number between <?php echo $this->get_default_field("bot_threshold", "min") ?> and <?php echo $this->get_default_field("bot_threshold", "max") ?> setting the accuracy of the bot (default <?php echo $this->get_default_field("bot_threshold", "value") ?>)</span>
-                    </label>
-                </fieldset>
-
-                <br/>
-                <h2>Question and Answer pairs</h2>
-
-                <?php
-                    foreach ($qa_list as $qa) {
-                ?>
-                        <fieldset>
-                            <label>
-                                <input name="<?php echo PLUGIN_NAME ?>[simsage_qa][<?php echo $qa["id"] ?>][question]" type="text" class="input-field"
-                                       value="<?php echo $this->remove_esc($qa["question"]); ?>"
-                                       maxlength="<?php echo MAX_STRING_LENGTH; ?>"
-                                       placeholder="a single Question"/>
-                            </label>
-                            <label>
-                                <input name="<?php echo PLUGIN_NAME ?>[simsage_qa][<?php echo $qa["id"] ?>][answer]" type="text" class="input-field"
-                                       maxlength="<?php echo MAX_STRING_LENGTH; ?>"
-                                       value="<?php echo $this->remove_esc($qa["answer"]); ?>"
-                                       placeholder="it's Answer"/>
-                            </label>
-                            <label>
-                                <input name="<?php echo PLUGIN_NAME ?>[simsage_qa][<?php echo $qa["id"] ?>][context]" type="text" class="input-field"
-                                       maxlength="<?php echo MAX_STRING_LENGTH; ?>"
-                                       value="<?php echo $this->remove_esc($qa["context"]); ?>"
-                                       placeholder="optional matching-context"/>
-                            </label>
-                            <?php submit_button( 'remove ' . $qa["id"], 'secondary','submit', false); ?>
-                        </fieldset>
-                <?php
-                    }
-                ?>
-                <?php submit_button( 'add', 'secondary','submit', true ); ?>
-                <input type="hidden" name="action" value="update-bot">
-            </div>
-	        <?php submit_button( 'update Bot Settings', 'primary','submit', true ); ?>
-
-        <?php } ?>
-
-
-        <?php if ($active_tab == 'synonyms') { ?>
-            <div class="tabbed-display">
-                <?php
-                    foreach ($synonym_list as $synonym) {
-                ?>
-                    <fieldset>
-                        <label>
-                            <input name="<?php echo PLUGIN_NAME ?>[simsage_synonyms][<?php echo $synonym["id"] ?>][words]" type="text" class="input-field wide-text"
-                                   value="<?php echo $this->remove_esc($synonym["words"]); ?>"
-                                   maxlength="<?php echo MAX_STRING_LENGTH; ?>"
-                                   placeholder="comma separated list of Synonyms"/>
-                        </label>
-                        <?php submit_button( 'remove ' . $synonym["id"], 'secondary','submit', false); ?>
-                    </fieldset>
-                <?php
-                    }
-                ?>
-                <?php submit_button( 'add', 'secondary','submit', true ); ?>
-                <input type="hidden" name="action" value="update-synonyms">
-            </div>
-            <?php submit_button( 'update Synonyms', 'primary','submit', true ); ?>
-
-        <?php } ?>
 
     </form>
 
