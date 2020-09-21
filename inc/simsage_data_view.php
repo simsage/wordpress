@@ -112,12 +112,12 @@
                 </div>
             </div>
             <div>
-                <table>
+                <table class="simsage-find-table">
                     <thead>
-                        <tr>
-                            <td>id</td>
-                            <td>question</td>
-                            <td>actions</td>
+                        <tr class="table-header">
+                            <td class="id-column">id</td>
+                            <td class="question-column">question</td>
+                            <td class="action-column">actions</td>
                         </tr>
                     </thead>
                     <tbody>

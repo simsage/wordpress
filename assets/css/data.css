@@ -138,6 +138,7 @@ text.divergence {
 .qna .simsage-find-box {
     float: right;
     padding: 10px !important;
+    margin-top: -20px;
 }
 
 .qna .simsage-find-box:after {
@@ -169,5 +170,32 @@ text.divergence {
     margin-left: 15px !important;
     width: 18px !important;
     height: 18px !important;
+}
+
+.qna .simsage-find-table {
+    margin-top: 20px;
+    border-spacing: 0;
+}
+
+.qna .table-header {
+    background-color: #9FAAAE;
+    color: #ffffff;
+    font-size: 1.2em;
+    font-weight: 500;
+}
+
+.qna .id-column {
+    padding: 5px;
+    width: 50px
+}
+
+.qna .question-column {
+    padding: 5px;
+    width: 550px
+}
+
+.qna .action-column {
+    padding: 5px;
+    width: 100px
 }
 
