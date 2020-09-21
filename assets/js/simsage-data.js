@@ -866,6 +866,38 @@ class SimsageData {
                 q1 = q1.split("||")[0];
             }
             if (confirm("are you sure you want to delete mind-item id " + mi.id + ",\n\"" + q1 + "\"?")) {
+                const self = this;
+                const payload = {
+                    organisationId: settings.organisationId,
+                    kbId: settings.kbId,
+                    sid: settings.sid,
+                    id: mi.id,
+                }
+                const url = settings.base_url + '/language/wp-delete';
+                jQuery.ajax({
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'API-Version': settings.api_version,
+                    },
+                    'data': JSON.stringify(payload),
+                    'type': 'DELETE',
+                    'url': url,
+                    'success': function (data) {
+                        self.busy = false;
+                        self.refresh();
+                        self.getMindItems();
+                    }
+
+                }).fail(function (err) {
+                    console.error(JSON.stringify(err));
+                    if (err && err["readyState"] === 0 && err["status"] === 0) {
+                        self.error = "Server not responding, not connected.";
+                    } else {
+                        self.error = err;
+                    }
+                    self.busy = false;
+                    self.refresh();
+                });
             }
         }
     }
@@ -1087,6 +1119,38 @@ class SimsageData {
         if (synonym) {
             let q1 = synonym.words;
             if (confirm("are you sure you want to delete synonym id " + synonym.id + ",\n\"" + q1 + "\"?")) {
+                const self = this;
+                const payload = {
+                    organisationId: settings.organisationId,
+                    kbId: settings.kbId,
+                    sid: settings.sid,
+                    id: synonym.id,
+                }
+                const url = settings.base_url + '/language/wp-delete-synonym';
+                jQuery.ajax({
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'API-Version': settings.api_version,
+                    },
+                    'data': JSON.stringify(payload),
+                    'type': 'DELETE',
+                    'url': url,
+                    'success': function (data) {
+                        self.busy = false;
+                        self.refresh();
+                        self.getSynonyms();
+                    }
+
+                }).fail(function (err) {
+                    console.error(JSON.stringify(err));
+                    if (err && err["readyState"] === 0 && err["status"] === 0) {
+                        self.error = "Server not responding, not connected.";
+                    } else {
+                        self.error = err;
+                    }
+                    self.busy = false;
+                    self.refresh();
+                });
             }
         }
     }
@@ -1309,6 +1373,38 @@ class SimsageData {
         const semantic = this.getSemantic(word);
         if (semantic) {
             if (confirm("are you sure you want to delete semantic \"" + semantic.word + "\",\n\"" + semantic.semantic + "\"?")) {
+                const self = this;
+                const payload = {
+                    organisationId: settings.organisationId,
+                    kbId: settings.kbId,
+                    sid: settings.sid,
+                    word: semantic.word,
+                }
+                const url = settings.base_url + '/language/wp-delete-semantic';
+                jQuery.ajax({
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'API-Version': settings.api_version,
+                    },
+                    'data': JSON.stringify(payload),
+                    'type': 'DELETE',
+                    'url': url,
+                    'success': function (data) {
+                        self.busy = false;
+                        self.refresh();
+                        self.getSemantics();
+                    }
+
+                }).fail(function (err) {
+                    console.error(JSON.stringify(err));
+                    if (err && err["readyState"] === 0 && err["status"] === 0) {
+                        self.error = "Server not responding, not connected.";
+                    } else {
+                        self.error = err;
+                    }
+                    self.busy = false;
+                    self.refresh();
+                });
             }
         }
     }
@@ -1354,9 +1450,9 @@ class SimsageData {
                 str_list.push("<td>" + id + "</td>");
                 str_list.push("<td>" + expr + "</td>");
                 str_list.push("<td>");
-                str_list.push("<span title='edit this semantic' onclick='data.editSemantic(" + id + ")' class='ss-button'>");
+                str_list.push("<span title='edit this semantic' onclick='data.editSemantic(\"" + id + "\")' class='ss-button'>");
                 str_list.push("<img src='" + image_base + "/images/edit.svg' class='edit-button-image ss-button' alt='edit' /></span>");
-                str_list.push("<span title='delete this semantic' onclick='data.deleteSemantic(" + id + ")' class='ss-button'>");
+                str_list.push("<span title='delete this semantic' onclick='data.deleteSemantic(\"" + id + "\")' class='ss-button'>");
                 str_list.push("<img src='" + image_base + "/images/delete.svg' class='delete-button-image ss-button' alt='delete' /></span>");
                 str_list.push("</td>");
                 str_list.push("</tr>");
