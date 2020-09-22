@@ -873,7 +873,7 @@ class SimsageData {
                     sid: settings.sid,
                     id: mi.id,
                 }
-                const url = settings.base_url + '/language/wp-delete';
+                const url = settings.base_url + '/bot/wp-delete';
                 jQuery.ajax({
                     headers: {
                         'Content-Type': 'application/json',
