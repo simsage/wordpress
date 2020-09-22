@@ -1293,6 +1293,11 @@ class SimsageData {
         const self = this;
         const word = jQuery(".sem-word").val().trim();
         const semantic = jQuery(".sem-semantic").val().trim();
+        // changed the original word?  (primary key)?
+        let prev_word = '';
+        if (this.sem_dlg_word !== word) {
+            prev_word = this.sem_dlg_word;
+        }
         this.sem_dlg_word = word;
         this.sem_dlg_semantic = semantic;
         if (word.length === 0 || semantic.length === 0) {
@@ -1308,6 +1313,7 @@ class SimsageData {
                 sid: settings.sid,
                 semantic: {
                     word: word,
+                    prevWord: prev_word,
                     semantic: semantic,
                 }
             }
