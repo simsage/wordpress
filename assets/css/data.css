@@ -332,3 +332,48 @@ text.divergence {
     padding: 10px;
 }
 
+
+
+/* add new or edit Semantic */
+
+.semantic-editor {
+    margin-top: 10px;
+    background-color: #ffffff;
+    width: 600px;
+    height: 460px;
+    border-radius: 10px;
+    position: absolute !important;
+    z-index: 99 !important;
+    border: 1px solid black;
+}
+
+.semantic-editor .input-text {
+    width: 500px;
+}
+
+.semantic-editor .semantic-label {
+    padding: 10px;
+    font-weight: 500;
+}
+
+.semantic-editor .semantic-control {
+    padding: 10px;
+}
+
+.semantic-editor .semantic-title {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 40px;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.semantic-editor .semantic-buttons-container {
+    margin-top: 40px;
+}
+
+.semantic-editor .semantic-buttons {
+    float: right;
+    padding: 10px;
+}
+
