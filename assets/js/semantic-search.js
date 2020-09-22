@@ -394,7 +394,7 @@ class SemanticSearch extends SimSageCommon {
                 if (i > 0) {
                     query += " and "
                 }
-                query += "url: " + this.url[i];
+                query += "url: " + af.url[i];
             }
             query += ") "
         }
