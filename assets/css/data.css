@@ -340,7 +340,7 @@ text.divergence {
     margin-top: 10px;
     background-color: #ffffff;
     width: 600px;
-    height: 460px;
+    height: 400px;
     border-radius: 10px;
     position: absolute !important;
     z-index: 99 !important;
@@ -369,7 +369,7 @@ text.divergence {
 }
 
 .semantic-editor .semantic-buttons-container {
-    margin-top: 40px;
+    margin-top: 170px;
 }
 
 .semantic-editor .semantic-buttons {
