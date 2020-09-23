@@ -2,6 +2,7 @@
 // SimSage Analytics class
 //
 
+const max_label_size = 10;
 
 class SimsageData {
 
@@ -108,6 +109,21 @@ class SimsageData {
         this.busy = false;
     }
 
+    /**
+     * helper - change the size of a string to not exceed max-size
+     *
+     * @param str           the string to look at
+     * @param max_size      the max_size before changing the string
+     */
+    adjust_size(str, max_size) {
+        if (str.length > max_size) {
+            const half = Math.floor(max_size / 2);
+            return str.substr(0,half) + "..." + str.substr(str.length - half);
+        }
+        return str;
+    }
+
+
     // fetch the current set of analytics
     getAnalytics() {
         const self = this;
@@ -132,6 +148,12 @@ class SimsageData {
                 kw_list.sort(function(first, second) {
                     return second.value - first.value;
                 });
+                // make sure [{"label":"test","value":1},{... labels aren't too long
+                for (const data of kw_list) {
+                    if (data && data.label && data.label.length > max_label_size) {
+                        data.label = self.adjust_size(data.label, max_label_size);
+                    }
+                }
                 self.search_keyword_frequencies = kw_list;
                 self.refresh();
             }
