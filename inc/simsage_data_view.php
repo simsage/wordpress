@@ -109,8 +109,14 @@
             <div class="qna-title"></div>
             <div class="qna-control"><label class="qna-label">question <br/><input class="input-text mi-q1" type="text" alt="question" title="question" placeholder="question" /></label></div>
             <div class="qna-control"><label class="qna-label">alternative <br/><input class="input-text mi-q2" type="text" alt="alternative" title="alternative question (optional)" placeholder="alternative question (optional)" /></label></div>
-            <div class="qna-control"><label class="qna-label">answer text<br/><textarea rows="3" class="mi-answer" cols="60" title="the answer" placeholder="the answer"></textarea></label></div>
-            <div class="qna-control"><label class="qna-label">links<br/><textarea rows="3" cols="60" class="mi-links" title="links" placeholder="links"></textarea></label></div>
+            <div class="qna-control"><label class="qna-label">answer text<br/>
+                    <textarea rows="3" class="mi-answer" cols="50" title="the answer" placeholder="the answer"></textarea>
+                </label>
+            </div>
+            <div class="qna-control"><label class="qna-label">links<br/>
+                    <textarea rows="3" cols="50" class="mi-links" title="links" placeholder="links"></textarea>
+                </label>
+            </div>
             <div class="qna-buttons-container">
                 <div class="qna-buttons">
                     <button class="ss-button" onclick="data.mindItemDialogClose()">cancel</button>
@@ -176,7 +182,7 @@
             <div class="synonym-title"></div>
             <div class="synonym-control">
                 <label class="synonym-label">synonyms <br/>
-                    <textarea rows="14" class="syn-words" cols="60" title="synonyms separated by commas" placeholder="synonyms separated by commas"></textarea>
+                    <textarea rows="14" class="syn-words" cols="50" title="synonyms separated by commas" placeholder="synonyms separated by commas"></textarea>
                 </label>
             </div>
             <div class="synonym-buttons-container">
