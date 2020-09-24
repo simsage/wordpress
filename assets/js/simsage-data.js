@@ -768,7 +768,7 @@ class SimsageData {
                 kbId: settings.kbId,
                 sid: settings.sid,
                 mindItem: {
-                    id: this.mi_dlg_id,
+                    id: this.mi_dlg_id ? this.mi_dlg_id : '',
                     expression: expression,
                     preContext: '',
                     postContext: '',
