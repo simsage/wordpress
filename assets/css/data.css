@@ -3,6 +3,26 @@
     font-family: 'Open Sans', sans-serif;
 }
 
+.analytics-area .busy {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    background-color: rgba(30, 30, 30, 0.5);
+}
+
+.analytics-area .busy-text {
+    position: absolute;
+    top: 25vw;
+    left: 50vh;
+    align-content: center;
+    vertical-align: center;
+    font-size: 3em;
+    color: #ffffff;
+}
+
 .analytics-area div#layout {
     text-align: center;
 }

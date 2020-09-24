@@ -49,6 +49,10 @@
 
     <div class="analytics-area">
 
+        <div id="busy" class="busy" style="display: none;">
+            <div class="busy-text">processing, please wait</div>
+        </div>
+
         <!-- error message display bar -->
         <div class="error-dialog">
             <span class="close-button" onclick="this.parentElement.style.display='none'; data.close_error();">&times;</span>

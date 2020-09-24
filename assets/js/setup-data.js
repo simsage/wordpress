@@ -109,5 +109,11 @@ function an_update_ui(data) {
         jQuery("#semantic-edit").hide();
     }
 
+    if (data.busy) {
+        jQuery("#busy").show();
+    } else {
+        jQuery("#busy").hide();
+    }
+
 }
 
