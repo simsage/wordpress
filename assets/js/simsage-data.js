@@ -682,7 +682,7 @@ class SimsageData {
     }
 
     deleteAllMindItems() {
-        if (confirm("are you sure you want to remove all mind-items?")) {
+        if (confirm("are you sure you want to remove all Questions and Answers?")) {
             const self = this;
             const payload = {
                 organisationId: settings.organisationId,

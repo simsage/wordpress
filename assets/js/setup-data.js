@@ -42,17 +42,26 @@ function an_update_ui(data) {
 
     // draw bar graphs
     const dateLabel = jQuery("#txtDatePicker").val();
-    jQuery("#search-analytics").html("");
-    data.draw_graph("#search-analytics",
-        'Monthly Searches in ' + dateLabel,
-        'Days', 'Number of Searches', dateLabel,
-        data.search_frequencies);
 
-    jQuery("#keyword-analytics").html("");
-    data.draw_graph("#keyword-analytics",
-        'Keyword Most often Searched for in ' + dateLabel,
-        'Keyword', 'Number of Times used', dateLabel,
-        data.search_keyword_frequencies);
+    if (data.tab === 'searches') {
+        jQuery("#search-analytics").html("");
+        data.draw_graph("#search-analytics",
+            'Monthly Searches in ' + dateLabel,
+            'Days', 'Number of Searches', dateLabel,
+            data.search_frequencies);
+    }
+    if (data.tab === 'keywords') {
+        jQuery("#keyword-analytics").html("");
+        data.draw_graph("#keyword-analytics",
+            'Keyword Most often Searched for in ' + dateLabel,
+            'Keyword', 'Number of Times used', dateLabel,
+            data.search_keyword_frequencies);
+    }
+    if (data.tab === 'logs' || data.tab === 'keywords' || data.tab === 'searches') {
+        jQuery(".date-picker-box").show();
+    } else {
+        jQuery(".date-picker-box").hide();
+    }
 
     // enable mind-item upload button?
     jQuery(".upload-button").prop('disabled', data.file_binary_data === null || data.busy);
@@ -75,7 +84,6 @@ function an_update_ui(data) {
     } else {
         jQuery("#qna-edit").hide();
     }
-
 
     // render the inside of the synonym table
     jQuery("#synonymList").html(data.renderSynonymTable());

@@ -60,7 +60,9 @@
         </div>
 
         <div class="date-picker-box">
-        <label><input type="text" id="txtDatePicker" class="datepicker tab-cursor" name="datepicker" value="" readonly /></label>
+            <label>
+                <input type="text" id="txtDatePicker" class="datepicker tab-cursor" name="datepicker" value="" readonly />
+            </label>
             <button onclick="data.getAnalytics()" class="button" title="Reload/Refresh statistical data">refresh</button>
         </div>
 
