@@ -50,7 +50,7 @@
     <div class="analytics-area">
 
         <div id="busy" class="busy" style="display: none;">
-            <div class="busy-text">processing, please wait</div>
+            <div class="busy-image"><img id="hourglass" src="" alt="hourglass" class="busy-image-size"></div>
         </div>
 
         <!-- error message display bar -->

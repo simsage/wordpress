@@ -13,14 +13,19 @@
     background-color: rgba(30, 30, 30, 0.5);
 }
 
-.analytics-area .busy-text {
+.analytics-area .busy-image {
     position: absolute;
-    top: 25vw;
-    left: 50vh;
+    top: 20vw;
+    left: 65vh;
     align-content: center;
     vertical-align: center;
     font-size: 3em;
     color: #ffffff;
+}
+
+.analytics-area .busy-image-size {
+    width: 200px;
+    height: 200px;
 }
 
 .analytics-area div#layout {

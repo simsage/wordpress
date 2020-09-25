@@ -110,6 +110,7 @@ function an_update_ui(data) {
     }
 
     if (data.busy) {
+        jQuery("#hourglass").attr("src", image_base + '/images/hourglass.svg');
         jQuery("#busy").show();
     } else {
         jQuery("#busy").hide();
