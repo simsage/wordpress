@@ -159,15 +159,7 @@ class SimsageData {
             }
 
         }).fail(function (err) {
-            self.busy = false;
-            console.error(JSON.stringify(err));
-            if (err && err["readyState"] === 0 && err["status"] === 0) {
-                self.error = "Server not responding, not connected.";
-            } else {
-                self.error = err;
-            }
-            self.busy = false;
-            self.refresh();
+            self.checkError(err);
         });
     }
 
@@ -610,15 +602,7 @@ class SimsageData {
             }
 
         }).fail(function (err) {
-            self.busy = false;
-            console.error(JSON.stringify(err));
-            if (err && err["readyState"] === 0 && err["status"] === 0) {
-                self.error = "Server not responding, not connected.";
-            } else {
-                self.error = err;
-            }
-            self.busy = false;
-            self.refresh();
+            self.checkError(err);
         });
     }
 
@@ -639,6 +623,29 @@ class SimsageData {
             self.refresh();
         };
         reader.readAsDataURL(file)
+    }
+
+    // check an error message
+    checkError(err) {
+        this.busy = false;
+        console.error(JSON.stringify(err));
+        if (err && err["readyState"] === 0 && err["status"] === 0) {
+            this.error = "Server not responding, not connected.";
+        } else {
+            if (err.responseJSON && err.responseJSON.error) {
+                this.error = err.responseJSON.error;
+            } else if (err.responseText && err.responseText.indexOf('{') === 0) {
+                const err_json = JSON.parse(err.responseText);
+                if (err_json && err_json.error) {
+                    this.error = err_json.error;
+                } else {
+                    this.error = err.responseText;
+                }
+            } else {
+                this.error = JSON.stringify(err);
+            }
+        }
+        this.refresh();
     }
 
     uploadMindItems() {
@@ -669,14 +676,7 @@ class SimsageData {
                 }
 
             }).fail(function (err) {
-                console.error(JSON.stringify(err));
-                if (err && err["readyState"] === 0 && err["status"] === 0) {
-                    self.error = "Server not responding, not connected.";
-                } else {
-                    self.error = err;
-                }
-                self.busy = false;
-                self.refresh();
+                self.checkError(err);
             });
         }
     }
@@ -708,14 +708,7 @@ class SimsageData {
                 }
 
             }).fail(function (err) {
-                console.error(JSON.stringify(err));
-                if (err && err["readyState"] === 0 && err["status"] === 0) {
-                    self.error = "Server not responding, not connected.";
-                } else {
-                    self.error = err;
-                }
-                self.busy = false;
-                self.refresh();
+                self.checkError(err);
             });
         }
     }
@@ -793,14 +786,7 @@ class SimsageData {
                 }
 
             }).fail(function (err) {
-                console.error(JSON.stringify(err));
-                if (err && err["readyState"] === 0 && err["status"] === 0) {
-                    self.error = "Server not responding, not connected.";
-                } else {
-                    self.error = err;
-                }
-                self.busy = false;
-                self.refresh();
+                self.checkError(err);
             });
         }
     }
@@ -911,14 +897,7 @@ class SimsageData {
                     }
 
                 }).fail(function (err) {
-                    console.error(JSON.stringify(err));
-                    if (err && err["readyState"] === 0 && err["status"] === 0) {
-                        self.error = "Server not responding, not connected.";
-                    } else {
-                        self.error = err;
-                    }
-                    self.busy = false;
-                    self.refresh();
+                    self.checkError(err);
                 });
             }
         }
@@ -1040,15 +1019,7 @@ class SimsageData {
             }
 
         }).fail(function (err) {
-            self.busy = false;
-            console.error(JSON.stringify(err));
-            if (err && err["readyState"] === 0 && err["status"] === 0) {
-                self.error = "Server not responding, not connected.";
-            } else {
-                self.error = err;
-            }
-            self.busy = false;
-            self.refresh();
+            self.checkError(err);
         });
     }
 
@@ -1095,14 +1066,7 @@ class SimsageData {
                 }
 
             }).fail(function (err) {
-                console.error(JSON.stringify(err));
-                if (err && err["readyState"] === 0 && err["status"] === 0) {
-                    self.error = "Server not responding, not connected.";
-                } else {
-                    self.error = err;
-                }
-                self.busy = false;
-                self.refresh();
+                self.checkError(err);
             });
         }
     }
@@ -1164,14 +1128,7 @@ class SimsageData {
                     }
 
                 }).fail(function (err) {
-                    console.error(JSON.stringify(err));
-                    if (err && err["readyState"] === 0 && err["status"] === 0) {
-                        self.error = "Server not responding, not connected.";
-                    } else {
-                        self.error = err;
-                    }
-                    self.busy = false;
-                    self.refresh();
+                    self.checkError(err);
                 });
             }
         }
@@ -1293,15 +1250,7 @@ class SimsageData {
             }
 
         }).fail(function (err) {
-            self.busy = false;
-            console.error(JSON.stringify(err));
-            if (err && err["readyState"] === 0 && err["status"] === 0) {
-                self.error = "Server not responding, not connected.";
-            } else {
-                self.error = err;
-            }
-            self.busy = false;
-            self.refresh();
+            self.checkError(err);
         });
     }
 
@@ -1356,14 +1305,7 @@ class SimsageData {
                 }
 
             }).fail(function (err) {
-                console.error(JSON.stringify(err));
-                if (err && err["readyState"] === 0 && err["status"] === 0) {
-                    self.error = "Server not responding, not connected.";
-                } else {
-                    self.error = err;
-                }
-                self.busy = false;
-                self.refresh();
+                self.checkError(err);
             });
         }
     }
@@ -1424,14 +1366,7 @@ class SimsageData {
                     }
 
                 }).fail(function (err) {
-                    console.error(JSON.stringify(err));
-                    if (err && err["readyState"] === 0 && err["status"] === 0) {
-                        self.error = "Server not responding, not connected.";
-                    } else {
-                        self.error = err;
-                    }
-                    self.busy = false;
-                    self.refresh();
+                    self.checkError(err);
                 });
             }
         }
