@@ -280,8 +280,8 @@
                 <table class="simsage-find-table">
                     <thead>
                     <tr class="table-header">
-                        <td class="id-column">word</td>
-                        <td class="question-column">semantic</td>
+                        <td class="sem-id-column">word</td>
+                        <td class="sem-question-column">semantic</td>
                         <td class="action-column">actions</td>
                     </tr>
                     </thead>

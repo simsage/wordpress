@@ -358,6 +358,17 @@ text.divergence {
 }
 
 
+.qna .sem-id-column {
+    padding: 5px;
+    width: 350px
+}
+
+.qna .sem-question-column {
+    padding: 5px;
+    width: 250px
+}
+
+
 
 /* add new or edit Semantic */
 
