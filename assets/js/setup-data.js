@@ -123,6 +123,14 @@ function an_update_ui(data) {
         jQuery("#semantic-edit").hide();
     }
 
+    if (data.filename && data.filename.length > 0) {
+        jQuery("#upload-files-label").attr("title", "you have selected \"" + data.filename + "\" for upload, please click the \"upload\" button to start this process");
+        jQuery("#upload-button").attr("title", "Click this button to start uploading \"" + data.filename + "\" to SimSage");
+    } else {
+        jQuery("#upload-files-label").attr("title", "Click this button to select an Excel Spreadsheet for uploading to SimSage");
+        jQuery("#upload-button").attr("title", "Click the \"Select Excel Spreadsheet\" button to select a Spreadsheet for uploading first");
+    }
+
     if (data.busy) {
         jQuery("#hourglass").attr("src", image_base + '/images/hourglass.svg');
         jQuery("#busy").show();

@@ -170,12 +170,12 @@
                     <tr>
                         <td colspan="3" class="bottom-action-bar">
                             <span class="upload-control">
-                                <label class="excel-label">Click 'Choose file' to select a SimSage compatible<br/>Excel Spreadsheet to upload<br/>
-                                    <input type="file" accept=".xls,.xlsx" class="ss-button" onchange="data.handleUploadChange(event)" /></label>
-                                <button class="upload-button" disabled title="upload the selected file ss-button" onClick="data.uploadMindItems()">upload</button>
+                                    <label id="upload-files-label" for="upload-files" class="button ss-button">Select Excel Spreadsheet</label>
+                                    <input id="upload-files" type="file" accept=".xls,.xlsx" style="display: none;" onchange="data.handleUploadChange(event)" /></label>
+                                <button id="upload-button" class="button upload-button" disabled onClick="data.uploadMindItems()">upload</button>
                             </span>
                             <span>
-                                <button class="export-button" title="export existing SimSage Q&A and Synonym information" onClick="data.dlLanguageCustomizations()">export</button>
+                                <button class="button export-button" title="export existing SimSage Q&A and Synonym information" onClick="data.dlLanguageCustomizations()">export</button>
                             </span>
                             <span class="delete-button ss-button" title="delete all mind-items" onClick="data.deleteAllMindItems()">
                                 <img src="<?php echo $this->asset_folder . 'images/delete.svg'?>" class="delete-button-image" alt="delete" />
