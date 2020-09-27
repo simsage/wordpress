@@ -3,6 +3,7 @@
 //
 
 const max_label_size = 10;
+const max_excel_spreadsheet_size = 5000000;
 
 class SimsageData {
 
@@ -652,8 +653,14 @@ class SimsageData {
 
     uploadMindItems() {
         const self = this;
+        // check the file size
+        if (this.file_binary_data.length > max_excel_spreadsheet_size) {
+            this.error = "this file is too big for uploading, maximum allowed file-size is 5MB";
+            this.refresh();
+
+        }
         // check it is an xls or xlsx file
-        if (this.filename && this.filename.length) {
+        else if (this.filename && this.filename.length) {
             const filename = self.filename.toLocaleLowerCase();
             if (!(filename.lastIndexOf(".xls") === filename.length - 4 || filename.lastIndexOf(".xlsx") === filename.length - 5)) {
                 this.error = "filename must end in .xls or .xlsx";
