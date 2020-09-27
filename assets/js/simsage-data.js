@@ -702,6 +702,8 @@ class SimsageData {
     deleteAllMindItems() {
         if (confirm("are you sure you want to remove all Questions and Answers?")) {
             const self = this;
+            this.busy = true;
+            this.refresh();
             const payload = {
                 organisationId: settings.organisationId,
                 kbId: settings.kbId,
