@@ -10,6 +10,7 @@ class SimsageData {
         this.an_update_ui = an_update_ui;
         this.response = '';
         this.error = '';
+        this.info = '';
         this.busy = false;
 
         // date selected by ui
@@ -105,6 +106,7 @@ class SimsageData {
 
     // close the error dialog - remove any error settings
     close_error() {
+        this.info = '';
         this.error = '';
         this.busy = false;
     }
@@ -658,6 +660,7 @@ class SimsageData {
                 this.refresh();
 
             } else if (this.file_binary_data) {
+                this.info = 'the upload might take a minute or two, please be patient.'
                 this.busy = true;
                 this.refresh();
                 const payload = {

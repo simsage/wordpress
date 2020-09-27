@@ -59,6 +59,12 @@
             <div class="error-text"></div>
         </div>
 
+        <!-- info message display bar -->
+        <div class="info-dialog">
+            <span class="close-button" onclick="this.parentElement.style.display='none'; data.close_error();">&times;</span>
+            <div class="info-text"></div>
+        </div>
+
         <div class="date-picker-box">
             <label>
                 <input type="text" id="txtDatePicker" class="datepicker tab-cursor" name="datepicker" value="" readonly />
@@ -164,7 +170,8 @@
                     <tr>
                         <td colspan="3" class="bottom-action-bar">
                             <span class="upload-control">
-                                <label><input type="file" accept=".xls,.xlsx" class="ss-button" onchange="data.handleUploadChange(event)" /></label>
+                                <label class="excel-label">select a SimSage compatible Excel Spreadsheet to upload<br/>
+                                    <input type="file" accept=".xls,.xlsx" class="ss-button" onchange="data.handleUploadChange(event)" /></label>
                                 <button class="upload-button" disabled title="upload the selected file ss-button" onClick="data.uploadMindItems()">upload</button>
                             </span>
                             <span>

@@ -29,6 +29,12 @@ function an_update_ui(data) {
     } else {
         jQuery(".error-dialog").hide();
     }
+    if (data.info.length > 0) {
+        jQuery(".info-text").html(data.info);
+        jQuery(".info-dialog").show();
+    } else {
+        jQuery(".info-dialog").hide();
+    }
     // remove any classes for non active items
     for (const tab of data.tab_list) {
         if (tab !== data.tab) {
