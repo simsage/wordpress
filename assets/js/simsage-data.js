@@ -650,34 +650,42 @@ class SimsageData {
 
     uploadMindItems() {
         const self = this;
-        if (this.file_binary_data) {
-            this.busy = true;
-            this.refresh();
-            const payload = {
-                organisationId: settings.organisationId,
-                kbId: settings.kbId,
-                sid: settings.sid,
-                fileType: this.file_type,
-                base64Text: this.file_binary_data,
-            };
-            const url = settings.base_url + '/knowledgebase/wp-upload';
-            jQuery.ajax({
-                headers: {
-                    'Content-Type': 'application/json',
-                    'API-Version': settings.api_version,
-                },
-                'data': JSON.stringify(payload),
-                'type': 'PUT',
-                'url': url,
-                'success': function (data) {
-                    self.busy = false;
-                    self.refresh();
-                    alert("upload successful");
-                }
+        // check it is an xls or xlsx file
+        if (this.filename && this.filename.length) {
+            const filename = self.filename.toLocaleLowerCase();
+            if (!(filename.lastIndexOf(".xls") === filename.length - 4 || filename.lastIndexOf(".xlsx") === filename.length - 5)) {
+                this.error = "filename must end in .xls or .xlsx";
+                this.refresh();
 
-            }).fail(function (err) {
-                self.checkError(err);
-            });
+            } else if (this.file_binary_data) {
+                this.busy = true;
+                this.refresh();
+                const payload = {
+                    organisationId: settings.organisationId,
+                    kbId: settings.kbId,
+                    sid: settings.sid,
+                    fileType: this.file_type,
+                    base64Text: this.file_binary_data,
+                };
+                const url = settings.base_url + '/knowledgebase/wp-upload';
+                jQuery.ajax({
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'API-Version': settings.api_version,
+                    },
+                    'data': JSON.stringify(payload),
+                    'type': 'PUT',
+                    'url': url,
+                    'success': function (data) {
+                        self.busy = false;
+                        self.refresh();
+                        alert("upload successful");
+                    }
+
+                }).fail(function (err) {
+                    self.checkError(err);
+                });
+            }
         }
     }
 

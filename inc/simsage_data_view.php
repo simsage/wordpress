@@ -164,7 +164,7 @@
                     <tr>
                         <td colspan="3" class="bottom-action-bar">
                             <span class="upload-control">
-                                <label><input type="file" class="ss-button" onchange="data.handleUploadChange(event)" /></label>
+                                <label><input type="file" accept=".xls,.xlsx" class="ss-button" onchange="data.handleUploadChange(event)" /></label>
                                 <button class="upload-button" disabled title="upload the selected file ss-button" onClick="data.uploadMindItems()">upload</button>
                             </span>
                             <span>
