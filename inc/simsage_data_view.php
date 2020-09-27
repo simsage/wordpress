@@ -170,7 +170,7 @@
                     <tr>
                         <td colspan="3" class="bottom-action-bar">
                             <span class="upload-control">
-                                <label class="excel-label">select a SimSage compatible Excel Spreadsheet to upload<br/>
+                                <label class="excel-label">Click 'Choose file' to select a SimSage compatible<br/>Excel Spreadsheet to upload<br/>
                                     <input type="file" accept=".xls,.xlsx" class="ss-button" onchange="data.handleUploadChange(event)" /></label>
                                 <button class="upload-button" disabled title="upload the selected file ss-button" onClick="data.uploadMindItems()">upload</button>
                             </span>
