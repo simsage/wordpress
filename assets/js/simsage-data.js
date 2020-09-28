@@ -689,7 +689,7 @@ class SimsageData {
                     'success': function (data) {
                         self.busy = false;
                         self.refresh();
-                        alert("upload successful");
+                        alert("Upload Successful.\n\nPlease note that your Questions & Answers,\nand Synonyms might not show immediately.\n\nThis can take up to 30 minutes.");
                     }
 
                 }).fail(function (err) {
