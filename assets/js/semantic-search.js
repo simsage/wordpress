@@ -49,11 +49,14 @@ class SemanticSearch extends SimSageCommon {
                 !this.chat_closed_for_last_query, this.is_typing);
             // clear any text - after the chat
             clear_search();
+        } else {
+            console.debug("do_chat(), text empty");
         }
     }
 
     // perform the semantic search
     do_semantic_search(page, text, advanced_filter, add_text_to_chat) {
+        console.debug("do_semantic_search(" + page + ",\"" + text + "\"," + this.kb + ")");
         if (this.kb && text && text.trim() !== '') {
             if (add_text_to_chat) {
                 // add the user's text to the chat stream
