@@ -99,6 +99,10 @@
     color: #454545;
 }
 
+.no-search-results .email-text:read-only, .no-search-results .email-text[read-only] {
+    color: #858585;
+}
+
 /* search options button */
 
 .no-search-results .send-button {

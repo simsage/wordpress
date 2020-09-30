@@ -148,8 +148,14 @@ function simsage_connected() {
 function disable_send_email_button(disable) {
     if (disable) {
         jQuery(".send-button").attr("disabled", true);
+        const emailText = jQuery(".email-text");
+        emailText.attr("disabled", true);
+        emailText.attr("readonly", true);
     } else {
         jQuery(".send-button").removeAttr("disabled");
+        const emailText = jQuery(".email-text");
+        emailText.removeAttr("disabled");
+        emailText.removeAttr("readonly");
     }
 }
 
