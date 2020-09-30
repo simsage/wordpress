@@ -320,6 +320,7 @@ class SemanticSearch extends SimSageCommon {
     send_email(emailAddress) {
         if (emailAddress && emailAddress.trim().length > 0 && emailAddress.indexOf("@") > 0) {
             error('');
+            disable_send_email_button(true);
             const self = this;
             const url = settings.base_url + '/ops/email';
             const emailMessage = {
@@ -343,6 +344,7 @@ class SemanticSearch extends SimSageCommon {
                 }
 
             }).fail(function (err) {
+                disable_send_email_button(false);
                 error(err);
             });
         }

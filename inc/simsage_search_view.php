@@ -340,7 +340,7 @@
 
     <!-- ***************** -->
     <!-- NO Search results -->
-    <tr class="no-search-results" style="display: none;">
+    <tr class="no-search-results">
         <td>
             <div class="no-results-found-box">
                 <span class="no-results-found">No Results found for</span>

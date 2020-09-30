@@ -144,6 +144,15 @@ function busy(is_busy) {
 function simsage_connected() {
 }
 
+// send email button enable / disable
+function disable_send_email_button(disable) {
+    if (disable) {
+        jQuery(".send-button").attr("disabled", true);
+    } else {
+        jQuery(".send-button").removeAttr("disabled");
+    }
+}
+
 // tell us there is an error
 function error(err) {
     busy(false);
