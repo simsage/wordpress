@@ -434,6 +434,7 @@ function add_search(term) {
         text = text + " " + term;
     }
     text_cache = text.trim();
+    focus_text('.search-text');
     do_search();
 }
 // fragment browser prev
