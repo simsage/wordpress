@@ -754,7 +754,7 @@ class SimsageData {
                 if (is_image) {
                     action_list.push({"action": "browser.image", parameters: [l]});
                 } else {
-                    action_list.push({"action": "browser.link", parameters: [l]});
+                    action_list.push({"action": "browser.url", parameters: [l]});
                 }
             }
         }
