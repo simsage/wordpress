@@ -397,7 +397,7 @@ function render_details(url_id, result_list) {
         if (key.indexOf('{') === -1 && result.metadata.hasOwnProperty(key)) {
             const value = result.metadata[key];
             if (value.indexOf("<") === -1) { // no tags or anything allowed - don't render
-                str += render_single_detail("entity count: " + key, value);
+                str += render_single_detail(key, value);
             }
         }
     }
