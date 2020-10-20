@@ -246,62 +246,40 @@ class simsage_search
 		}
 	}
 
-	// register all our javascript and css styles for this plugin
-	function register_script_and_style() {
-    	// order the these scripts is important as there are inter-dependencies between them
+    // register all our javascript and css styles for this plugin
+    function register_script_and_style() {
+        // order the these scripts is important as there are inter-dependencies between them
 
-		// we use sockjs and stomp for WebSocket communications with SimSage to provide operator assistance
-		wp_register_script( 'simsage-script-1', plugins_url( 'assets/js/sockjs.js', __FILE__ ), array('jquery'), '1.0', true );
-		wp_register_script( 'simsage-script-2', plugins_url( 'assets/js/stomp.js', __FILE__ ), array('jquery'), '1.0', true );
-
-		// a template rendering system for HTML output of the SimSage interfaces
-		wp_register_script( 'simsage-script-3', plugins_url( 'assets/js/render.js', __FILE__ ), array('jquery'), '1.0', true );
-		// SimSage common super-class with some often repeated functionality used by our other systems
-		wp_register_script( 'simsage-script-4', plugins_url( 'assets/js/simsage-common.js', __FILE__ ), array('jquery'), '1.0', true );
-		// specific implementation
-		wp_register_script( 'simsage-script-5', plugins_url( 'assets/js/semantic-search.js', __FILE__ ), array('jquery'), '1.0', true );
+        // we use sockjs and stomp for WebSocket communications with SimSage to provide operator assistance
+        wp_register_script( 'simsage-search-script-1', plugins_url( 'assets/js/sockjs.js', __FILE__ ), array('jquery'), '1.0', true );
+        wp_register_script( 'simsage-search-script-2', plugins_url( 'assets/js/stomp.js', __FILE__ ), array('jquery'), '1.0', true );
+        // specific implementation
+        wp_register_script( 'simsage-search-script-3', plugins_url( 'assets/js/simsage-search.js', __FILE__ ), array('jquery'), '1.0', true );
         // UI specific script
-        wp_register_script( 'simsage-script-6', plugins_url( 'assets/js/search-ui-script.js', __FILE__ ), array('jquery'), '1.0', true );
+        wp_register_script( 'simsage-search-script-4', plugins_url( 'assets/js/search-ui-script.js', __FILE__ ), array('jquery'), '1.0', true );
+        // and the required styles for search.css
+        wp_register_style( 'simsage-search-style-1', plugins_url( 'assets/css/all-search.css', __FILE__ ) );
+    }
 
-		// and the required styles for search.css
-		wp_register_style( 'simsage-search-style-1', plugins_url( 'assets/css/no-search-results.css', __FILE__ ) );
-        wp_register_style( 'simsage-search-style-2', plugins_url( 'assets/css/operator-chat-box.css', __FILE__ ) );
-        wp_register_style( 'simsage-search-style-3', plugins_url( 'assets/css/search-bar.css', __FILE__ ) );
-        wp_register_style( 'simsage-search-style-4', plugins_url( 'assets/css/search-details.css', __FILE__ ) );
-        wp_register_style( 'simsage-search-style-5', plugins_url( 'assets/css/search-error-dialog.css', __FILE__ ) );
-        wp_register_style( 'simsage-search-style-6', plugins_url( 'assets/css/search-options.css', __FILE__ ) );
-        wp_register_style( 'simsage-search-style-7', plugins_url( 'assets/css/search-results.css', __FILE__ ) );
-        wp_register_style( 'simsage-search-style-8', plugins_url( 'assets/css/search-sign-in.css', __FILE__ ) );
-	}
+    // output our css as an "include" on each page using our plugin
+    function simsage_print_styles() {
+        if ( ! $this->add_script )
+            return;
 
-	// output our css as an "include" on each page using our plugin
-	function simsage_print_styles() {
-		if ( ! $this->add_script )
-			return;
+        wp_print_styles('simsage-style-1');
+    }
 
-		wp_print_styles('simsage-style-1');
-        wp_print_styles('simsage-style-2');
-        wp_print_styles('simsage-style-3');
-        wp_print_styles('simsage-style-4');
-        wp_print_styles('simsage-style-5');
-        wp_print_styles('simsage-style-6');
-        wp_print_styles('simsage-style-7');
-        wp_print_styles('simsage-style-8');
-	}
-
-	// output the scripts as "includes" on each page using our plugin
-	function simsage_print_script() {
-		if ( ! $this->add_script )
-			return;
+    // output the scripts as "includes" on each page using our plugin
+    function simsage_print_script() {
+        if ( ! $this->add_script )
+            return;
 
         wp_enqueue_script( 'jquery' );
 
-		wp_print_scripts('simsage-script-1');
-		wp_print_scripts('simsage-script-2');
-		wp_print_scripts('simsage-script-3');
-		wp_print_scripts('simsage-script-4');
-		wp_print_scripts('simsage-script-5');
-        wp_print_scripts('simsage-script-6');
-	}
+        wp_print_scripts('simsage-search-script-1');
+        wp_print_scripts('simsage-search-script-2');
+        wp_print_scripts('simsage-search-script-3');
+        wp_print_scripts('simsage-search-script-4');
+    }
 
 }

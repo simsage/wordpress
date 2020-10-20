@@ -30,8 +30,8 @@ class SimSageCommon {
     // get the knowledge-base information for this organisation (set in settings.js)
     init_simsage() {
         const self = this;
-        const url = settings.base_url + '/knowledgebase/search/info/' + encodeURIComponent(settings.organisationId);
-
+        const url = settings.base_url + '/knowledgebase/search/info/' + encodeURIComponent(settings.organisationId) +
+                            '/' + encodeURIComponent(settings.kbId);
         busy(true);
 
         jQuery.ajax({

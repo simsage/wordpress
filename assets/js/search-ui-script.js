@@ -1,165 +1,86 @@
-
-
-// call update_ui(0, 0, 0, [], {}, [], false, false, false) to draw the UI
-// call setup_dropdowns([], []) to setup the advanced search kb and sources
-// see: jQuery(document).ready() below for an example
-
-
-// create an instance of our object
-search = new SemanticSearch();
-
-// callbacks fns to set to use this UI
-callback = {
-    do_search: (page, text, filter) => search.do_semantic_search(page, text, filter, true),
-    do_chat: (page, text, filter) => search.do_chat(page, text, filter),
-    do_email: (email) => search.send_email(email),
-    do_sign_in: (source_id, user, password) => search.sign_in(source_id, user, password),
-    do_sign_out: () => search.sign_out(),
-    do_close_query_window: () => search.close_query_window(),
-    change_kb: (kb_id) => search.on_change_kb(kb_id),
-    user_is_typing: () => search.user_is_typing(),
-    view_prev_page: () => search.prev_page(),
-    view_next_page: () => search.next_page(),
-}
-
-//////////////////////////////////////////////////////////////////////////////////////
-// private helpers and cache items
-
-// text or image view?
-is_text_view = true;
-
-// pagination variables (cache)
-page_cache = 0;
-num_pages_cache = 0;
-num_results_cache = 0;
-
-// mouse x and y
+// mouse x and y, used by WordPress for multiple dialogs on screen
 mx = 0;
 my = 0;
 
-// the current query - cached
-text_cache = "";
-
-// data items - cache for the UI
-result_list_cache = [];
-conversation_list_cache = [];
-category_set_cache = {};
-domain_list_cache = [];
-syn_set_list_cache = [];
-selected_syn_sets = {};
-
-// is the operator typing
-is_typing_cache = false;
-
-
-////////////////////////////////////////////////////////////////////////////////////////////
-// JS logic for the item above
-
-/**
- * update the UI, draw it
- *
- * @param page                  the page (starting at zero) we're on
- * @param num_pages             the number of pages in total
- * @param num_results           the total number of results found for this query
- * @param result_list           a list of search results
- * @param category_set          a list of semantic categories to display alongside the search results
- * @param synset_list           a set of synsets to be displayed for selection
- * @param conversation_list     a bot conversation list
- * @param show_not_found        display "no results found"?
- * @param has_chat              do we need to show the chat bot window?
- * @param is_typing             is the connected operator typing?
- */
-function update_ui(page, num_pages, num_results, result_list, category_set,
-                   synset_list, conversation_list, show_not_found, has_chat, is_typing) {
-    // set locally for other update functions
-    result_list_cache = result_list;
-    conversation_list_cache = conversation_list;
-    category_set_cache = category_set;
-    syn_set_list_cache = synset_list;
-    page_cache = page;
-    num_pages_cache = num_pages;
-    num_results_cache = num_results;
-
-    if (!show_not_found) {
-        if (result_list.length > 0) {
-            jQuery(".search-results-td").html(render_search_results(result_list, is_text_view));
-            jQuery(".category-items-td").html(render_category_items(synset_list, selected_syn_sets, category_set));
-            jQuery(".search-results").show();
-            jQuery(".no-search-results").hide();
-            setup_pagination();
-        } else {
-            jQuery(".search-results").hide();
-        }
-        if (has_chat) {
-            show_chat();
-        }
-
-        // update the content of the chat window in any case
-        update_chat_window(conversation_list, is_typing);
-
-    } else {
-        jQuery(".not-found-words").html("\"" + render_no_results(text_cache) + "\"");
-        jQuery(".search-results").hide();
-        jQuery(".no-search-results").show();
-    }
+// callbacks fns to set to use this UI
+let callback = {
+    do_search: function (text, filter) { search.do_search(text, filter) },
+    do_chat: function(text) { search.do_chat(text) },
+    do_email: function(email) { search.do_email(email) },
+    do_sign_in: function(source_id, user, password) { search.do_sign_in(source_id, user, password)},
+    do_sign_out: function() { search.do_sign_out() },
+    on_change_kb: function(kb_id) { search.on_change_kb(kb_id) },
+    clear_all_results: function() { search.clear_all_results() },
+    on_change_source: function(source_id) { search.on_change_source(source_id) },
+    user_is_typing: function() { search.user_is_typing() },
+    view_prev_page: function() { search.prev_page() },
+    view_next_page: function() { search.next_page() },
+    view_page: function(page) { search.view_page(page) },
+    change_domain: function(domain_id) { search.change_domain(domain_id) },
+    change_page_size: function(page_size) { search.change_page_size(page_size) },
+    get_selected_domain: function() { return search.get_selected_domain() },
+    select_syn_set: function(word, index) { search.select_syn_set(word, index) },
+    set_selected_view: function(view_id) { search.set_selected_view(view_id) },
+    get_selected_syn_sets: function() { return search.get_selected_syn_sets() },
+    get_result_by_id: function(id) { return search.get_result_by_id(id) },
+    has_bot_results: function() { return search.has_bot_results() },
+    get_search_query: function() { return search.get_search_query() },
+    know_users_email: function() { return search.know_users_email() },
+    toggle_filters: function() { search.toggle_filters() },
+    ////////////////////////////////////////////////////////////////////////////
+    // render items
+    render_search_results: function() { return search.render_search_results() },
+    render_pagination: function() { return search.render_pagination() },
+    render_details_view: function(url) { return search.render_details_view(url) },
+    render_chats: function() { return search.render_chats() },
+    render_bot: function() { return search.render_bot() },
+    render_kbs: function() { return search.render_kbs() },
+    render_categories: function() { return search.render_categories() },
+    render_sources: function() { return search.render_sources() }
 }
 
-
-/**
- * setup the drop-down boxes for the advanced filter interface
- *
- * @param kb_list           a list of knowledge base items {id, name}
- * @param source_list       a list of source items {id, name}
- */
-function setup_dropdowns(kb_list, source_list) {
-    let str1 = "";
-    for (const kb of kb_list) {
-        str1 += "<option value=\"" + esc_html(kb.id) + "\">" + esc_html(kb.name) + "</option>";
-    }
-    jQuery(".dd-knowledge-base").html(str1);
-
-    let str2 = "<option value=\"\">All Sources</option>";
-    for (const source of source_list) {
-        str2 += "<option value=\"" + esc_html(source.id) + "\">" + esc_html(source.name) + "</option>";
-    }
-    jQuery(".dd-source").html(str2);
+// set text focus on an item and make sure the text cursor is at the end of that field
+function focus_text(ctrl) {
+    const c = jQuery(ctrl);
+    c.focus();
+    const txt = c.val();
+    c.val("");
+    c.val(txt);
 }
 
-// tell the system we are busy (or not)
+// reset "a selection" (selection_class) to default for a drop-down
+function reset_selection(selection_class) {
+    jQuery('label.' + selection_class + ' select').val("");
+}
+
+// replace < and > to make a string html safe
+function esc_html(str) {
+    if (typeof str === 'string' || str instanceof String) {
+        str = str
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+        str = str
+            .replace(/&lt;br \/&gt;/g, "<br />");
+    }
+    return str;
+}
+
+// tell the ui we are busy (or not)
 function busy(is_busy) {
     if (is_busy) {
-        jQuery(".search-table input").attr("disabled", true);
+        jQuery(".search-bar input").attr("disabled", true);
         jQuery(".operator-chat-box input").attr("disabled", true);
         jQuery(".filter-box input").attr("disabled", true);
         jQuery(".search-sign-in input").attr("disabled", true);
     } else {
-        jQuery(".search-table input").removeAttr("disabled");
+        jQuery(".search-bar input").removeAttr("disabled");
         jQuery(".operator-chat-box input").removeAttr("disabled");
         jQuery(".filter-box input").removeAttr("disabled");
         jQuery(".search-sign-in input").removeAttr("disabled");
     }
 }
 
-// we get notified that simsage has connected
-function simsage_connected() {
-}
-
-// send email button enable / disable
-function disable_send_email_button(disable) {
-    if (disable) {
-        jQuery(".send-button").attr("disabled", true);
-        const emailText = jQuery(".email-text");
-        emailText.attr("disabled", true);
-        emailText.attr("readonly", true);
-    } else {
-        jQuery(".send-button").removeAttr("disabled");
-        const emailText = jQuery(".email-text");
-        emailText.removeAttr("disabled");
-        emailText.removeAttr("readonly");
-    }
-}
-
-// tell us there is an error
+// tell the UI there is an error
 function error(err) {
     busy(false);
     if (err && err !== '') {
@@ -176,66 +97,92 @@ function error(err) {
             jQuery(".error-dialog-box").show();
         }
     } else {
-        close_error();
+        close_error(); // empty or invalid error closes the error dialog
     }
 }
+
+// close the error dialog box
 function close_error() {
     jQuery(".error-dialog-box").hide();
 }
 
-function close_no_results() {
-    jQuery(".no-search-results").hide();
+// show the advanced search filter
+function show_filter() {
+    nop();
+    const ctrl = jQuery(".filter-box-view");
+    if (ctrl.is(":visible")) {
+        ctrl.hide();
+    } else {
+        ctrl.show();
+    }
 }
 
-// user selects a syn-set to use
-function select_syn_set(word, index) {
-    selected_syn_sets[word] = index;
+// close the filter dialog box
+function close_filter() {
+    jQuery(".filter-box-view").hide();
 }
 
-// set text focus on an item and make sure the text cursor is at the end of that field
-function focus_text(ctrl) {
-    const c = jQuery(ctrl);
-    c.focus();
-    c.val("");
-    c.val(text_cache);
-}
-// a user decides to change their kb
-function do_change_kb() {
-    if (callback.change_kb) {
-        callback.change_kb(jQuery(".dd-knowledge-base").val());
-    }
-}
-// user wishes to view the previous page
-function prev_page() {
-    if (callback.view_prev_page) {
-        callback.view_prev_page(page_cache, num_pages_cache, num_results_cache);
-    }
-}
-// user wishes to view the next page
-function next_page() {
-    if (callback.view_next_page) {
-        callback.view_next_page(page_cache, num_pages_cache, num_results_cache);
-    }
-}
-// we just got a message that the operator's typing status has changed
-function update_chat_window(chat_list, is_typing) {
-    conversation_list_cache = chat_list;
-    is_typing_cache = is_typing;
-    const ct = jQuery(".chat-table:visible");
-    if (ct.is(":visible")) {
-        ct.html(render_chats(conversation_list_cache, is_typing_cache));
-        ct.animate({scrollTop: ct.prop("scrollHeight")}, 10);
-    }
-}
-// setup render pagination
-function setup_pagination() {
-    jQuery(".pagination-box").html(render_pagination(page_cache, num_results_cache,
-        num_pages_cache, is_text_view));
+// show the kb drop-down inside the filter
+function show_kb_dropdown() {
+    jQuery(".knowledge-base-selector").show();
 }
 
-// reset selection to default for a drop-down
-function reset_selection(selection_class) {
-    jQuery('label.' + selection_class + ' select').val("");
+// show or hide the chat button with the visible flag
+function show_chat_button(has_operator, has_chat_messages) {
+    nop();
+    if (has_operator || has_chat_messages) {
+        jQuery(".chat-button-at-bottom").show();
+        // so we no longer have an operator, but have some history in the chat
+        // just disable the button - change its colour
+        let cc = jQuery(".chat-container");
+        let cwu = jQuery(".chat-with-us-text");
+        let ci = jQuery(".chat-with-us-image");
+        let cwit = jQuery(".chat-with-us-online");
+        if (!has_operator) {
+            cc.removeClass("online");
+            cc.addClass("offline");
+            cwu.removeClass("chat-with-us-text-box-online");
+            cwu.addClass("chat-with-us-text-box-online-disabled");
+            ci.attr("src", image_base + "images/chat-grey.svg");
+            cwit.attr("title", "all Operators offline");
+        } else {
+            cc.addClass("online");
+            cc.removeClass("offline");
+            cwu.addClass("chat-with-us-text-box-online");
+            cwu.removeClass("chat-with-us-text-box-online-disabled");
+            ci.attr("src", image_base + "images/chat-white.svg");
+            cwit.attr("title", "Chat with us");
+        }
+    } else {
+        jQuery(".chat-button-at-bottom").hide();
+        close_chat();
+    }
+}
+
+// click the chat button right bottom corner and show/hide dialog
+function show_chat() {
+    nop();
+    const ctrl = jQuery(".operator-chat-box-view");
+    if (ctrl.is(":visible")) {
+        ctrl.hide();
+    } else {
+        ctrl.show();
+        update_chat_window();
+    }
+}
+
+// SimSage callback, we just got a message that the operator's typing status has changed or new chat text
+function update_chat_window() {
+    const ct = jQuery(".chat-table");
+    ct.html(callback.render_chats());
+    // scroll to bottom of chat window to make the most recent message visible
+    ct.animate({scrollTop: ct.prop("scrollHeight")}, 10);
+}
+
+// close the dialog
+function close_chat() {
+    nop();
+    jQuery(".operator-chat-box-view").hide();
 }
 
 // reset all selections and text in the advanced search filter
@@ -246,282 +193,14 @@ function clear_all() {
     jQuery(".url-text").val("");
     jQuery(".author-text").val("");
 }
-// return the values of the advanced filter box
-function get_advanced_filter() {
 
-    const parent_data = find_most_recent_parent(".search-options-chevron-box")
-    if (parent_data.parent) {
-        const parent = parent_data.parent;
-        return {
-            "document_type": parent.find('label.document-type-sel select').val().split(','),
-            "kb": parent.find('label.knowledge-base-sel select').val(),
-            "source_id": parent.find('label.source-sel select').val(),
-            "title": [parent.find('.title-text').val()],
-            "url": [parent.find('.url-text').val()],
-            "author": [parent.find('.author-text').val()],
-            "syn-sets": selected_syn_sets,
-        };
-    } else {
-        return {
-            "document_type": jQuery('label.document-type-sel select').val().split(','),
-            "kb": jQuery('label.knowledge-base-sel select').val(),
-            "source_id": jQuery('label.source-sel select').val(),
-            "title": [jQuery('.title-text').val()],
-            "url": [jQuery('.url-text').val()],
-            "author": [jQuery('.author-text').val()],
-            "syn-sets": selected_syn_sets,
-        };
-    }
-}
-// search results text-view
-function select_text_view() {
-    is_text_view = true;
-    jQuery(".search-results-td").html(render_search_results(result_list_cache, is_text_view));
-    setup_pagination();
-}
-// search results image-view
-function select_image_view() {
-    is_text_view = false;
-    jQuery(".search-results-td").html(render_search_results(result_list_cache, is_text_view));
-    setup_pagination();
-}
-// find the box closest to the mouse - for click and find actions
-function find_closest_parent(parent_class) {
-    // find the closest parent to the mouse position
-    const boxes = jQuery(parent_class);
-    let best_index = 0;
-    let parent = null;
-    if (boxes) {
-        let best_distance = -1;
-        boxes.each(function (index) {
-            const offset = jQuery(this).offset();
-            const dist_x = (offset.left - mx);
-            const dist_y = (offset.top - my);
-            const dist = dist_x * dist_x + dist_y * dist_y;
-            if (best_distance === -1 || dist < best_distance) {
-                best_distance = dist;
-                best_index = index;
-                parent = jQuery(this);
-            }
-        });
-        if (parent.length) {
-            const ts = parent.find(".time-stamp");
-            if (ts) ts.val(SimSageCommon.get_system_time());
-        }
-    }
-    return {"parent": parent, "index": best_index};
-}
-// find most recent parent
-function find_most_recent_parent(parent_class) {
-    // find the closest parent to the mouse position
-    const boxes = jQuery(parent_class);
-    let best_index = 0;
-    let best_parent = null;
-    if (boxes) {
-        let best_time = -1;
-        boxes.each(function (index) {
-            const parent = jQuery(this);
-            let time = 0;
-            if (parent.length) {
-                const ts = parent.find(".time-stamp");
-                if (ts.length) {
-                    time = parseInt(ts.val());
-                }
-            }
-            if (best_time === -1 || time > best_time) {
-                best_index = index;
-                best_time = time;
-                best_parent = parent;
-            }
-        });
-    }
-    return {"parent": best_parent, "index": best_index};
-}
-function click_chat() {
-    nop();
-    jQuery('.chat-with-us-second:visible').first().click()
-}
-// show the chat dialog and render its text and scroll down
-function show_chat() {
-    nop();
-    // find the closest parent to the mouse position
-    const parent_data = find_closest_parent(".chat-with-us")
-    if (parent_data.parent) {
-        const parent = parent_data.parent;
-        const parent_index = parent_data.index;
-        const offset = parent.offset();
-        const box = parent.find(".operator-chat-box-view");
-        box.css({top: offset.top + 22 + ((parent_index > 0) ? 34 : 0),
-                 left: (offset.left - box.width()) + 150, position:'absolute'});
-        box.show();
-
-        // close other boxes
-        jQuery(".filter-box-view").hide();
-        jQuery(".search-details-view").hide();
-        close_sign_in();
-        const ct = jQuery(".chat-table:visible");
-        if (ct.is(":visible")) {
-            ct.html(render_chats(conversation_list_cache, is_typing_cache));
-            ct.animate({scrollTop: ct.prop("scrollHeight")}, 10);
-            const ctrl = jQuery(".chat-text");
-            ctrl.val("");
-            ctrl.focus();
-        }
-    }
-    return false;
-}
-// close the chat dialog
-function close_chat() {
-    nop();
-    jQuery(".operator-chat-box-view").hide();
-    if (callback.do_close_query_window) {
-        callback.do_close_query_window();
-    }
-    return false;
-}
-// for click events, stop propagating
-function nop() {
-    if (event) event.stopPropagation()
-}
-// show the advanced search filter
-function show_filter() {
-    nop();
-    const parent_data = find_closest_parent(".search-options-chevron-box");
-    if (parent_data && parent_data.parent) {
-        const parent = parent_data.parent;
-        const parent_index = parent_data.index;
-        const offset = parent.offset();
-        const box = parent.find(".filter-box-view");
-        box.css({top: offset.top + 22 + ((parent_index > 0) ? 34 : 0),
-                 left: offset.left - Math.floor(box.width() * 0.75), position:'absolute'});
-        box.show();
-        // hide other controls
-        jQuery(".operator-chat-box-view").hide();
-        jQuery(".search-details-view").hide();
-        close_sign_in();
-        focus_text(".chat-text");
-    }
-}
-function click_filter() {
-    nop();
-    jQuery('.search-options-button:visible').first().click()
-}
-// close the advanced search filter
-function close_filter() {
-    nop();
-    jQuery(".filter-box-view").hide();
-}
-// show all details for a particular result
-function show_details(id) {
-    jQuery(".filter-box-view").hide();
-    jQuery(".operator-chat-box-view").hide();
-    jQuery(".search-details-view").show();
-    jQuery(".detail-table").html(render_details(id, result_list_cache));
-}
-// close the details view of a particular result
-function close_details() {
-    jQuery(".search-details-view").hide();
-}
-function show_kb_dropdown() {
-    jQuery(".knowledge-base-selector").show();
-}
-// add a search term (or remove) to the search text from the semantics / categories box
-function add_search(term) {
-    let text = " " + text_cache + " ";
-    if (text.indexOf(" " + term + " ") >= 0) {
-        text = text.replace(" " + term + " ", " ");
-    } else {
-        text = text + " " + term;
-    }
-    text_cache = text.trim();
-    focus_text('.search-text');
-    do_search();
-}
-// fragment browser prev
-function prev_fragment(id) {
-    const result = get_result_by_id(id, result_list_cache);
-    if (result != null) {
-        if (result.textIndex > 0) {
-            result.textIndex -= 1;
-            jQuery(".search-results-td").html(render_search_results(result_list_cache, is_text_view));
-        }
-    }
-}
-// fragment browser next
-function next_fragment(id) {
-    const result = get_result_by_id(id, result_list_cache);
-    if (result != null) {
-        if (result.textIndex + 1 < result.textList.length) {
-            result.textIndex += 1;
-            jQuery(".search-results-td").html(render_search_results(result_list_cache, is_text_view));
-        }
-    }
-}
-// start a search
-function do_search() {
-    const af = get_advanced_filter(); // get advanced search options
-    if (callback.do_search) {
-        callback.do_search(page_cache, text_cache, af);
-    }
-}
-// clear the search text input and filters
-function clear_search() {
-    text_cache = "";
-    jQuery(".search-text").val("");
-    jQuery(".chat-text").val("");
-    // clear filters
-    clear_all();
-}
-// send a chat message to the system
-function do_chat() {
-    const af = get_advanced_filter(); // get advanced search options
-    jQuery(".search-text").val(text_cache);
-    if (callback.do_chat) {
-        callback.do_chat(page_cache, text_cache, af);
-    }
-}
-// send an "email me" request to the server
-function do_email() {
-    const text = jQuery("label.email-address-text input").val();
-    if (callback.do_email) {
-        callback.do_email(text);
-    }
-}
-// signal system that a client is typing on their keyboard
-function user_is_typing() {
-    if (callback.user_is_typing) {
-        callback.user_is_typing();
-    }
-}
-// test enter and/or typing on the search box
-function search_typing(event, text) {
-    text_cache = text;
-    if (event.keyCode === 13) {
-        do_search();
-    }
-}
-// test enter and/or typing on the search box
-function chat_typing(event, text) {
-    text_cache = text;
-    if (event.keyCode === 13) {
-        do_chat();
-    } else {
-        user_is_typing();
-    }
-}
-// test enter on email box
-function email_typing(event) {
-    if (event.keyCode === 13) {
-        do_email();
-    }
-}
-// simsage notifies the ui we have domains to sign-in to {sourceId, name (of source), domain_type}
+// SimSage notifies the ui we have domains to sign-in to {sourceId, name (of source), domain_type}
 function setup_sign_in(domain_list) {
-    domain_list_cache = domain_list;
     jQuery(".sign-out-text").hide(); // always hidden until signed-in
-    if (domain_list && domain_list.length > 0 && callback.do_sign_in) {
+    if (domain_list && domain_list.length > 0) {
         let str = "";
-        for (const domain of domain_list) {
+        for (let i in domain_list) {
+            let domain = domain_list[i];
             str += "<option value=\"" + esc_html(domain.sourceId) + "\">" + esc_html(domain.name) +
                 " (" + esc_html(domain.domain_type) + ")</option>";
         }
@@ -533,45 +212,46 @@ function setup_sign_in(domain_list) {
         jQuery(".sign-in-text").hide();
     }
 }
-// helper for sign-in
-function get_selected_domain() {
-    let selected_domain = null;
-    const selected_source_id = jQuery('label.sign-in-sel select').val();
-    for (const domain of domain_list_cache) {
-        if (domain.sourceId == selected_source_id) {
-            selected_domain = domain;
-            break;
-        }
-    }
-    return selected_domain;
-}
-// reset selection to default for a drop-down
+
+// show the sign-in dialog
 function show_sign_in() {
-    let selected_domain = get_selected_domain();
-    if (selected_domain) {
-        jQuery(".filter-box-view").hide();
-        jQuery(".sign-in-title").html("sign-in to \"" + esc_html(selected_domain.name) + ", " +
-                esc_html(selected_domain.domain_type) + "\"");
-        jQuery(".search-sign-in").show();
-        focus_text(".user-name");
-    }
+    jQuery(".sign-in-title").html("sign-in to \"" +
+        esc_html(callback.get_selected_domain().domain) + ", " +
+        esc_html(callback.get_selected_domain().domain_type) + "\"");
+    jQuery(".search-sign-in").show();
+    focus_text(".user-name");
 }
-// tell simsage we'd like to sign-out
-function do_sign_out() {
-    if (callback.do_sign_out) {
-        callback.do_sign_out();
-    }
+
+// change the selected domain
+function do_change_domain() {
+    callback.change_domain(jQuery(".dd-sign-in").val());
 }
+
+// change the selected domain
+function do_change_page_size() {
+    callback.change_page_size(jQuery(".dd-page-size").val());
+}
+
+// close the sign-in dialog
 function close_sign_in() {
     jQuery(".search-sign-in").hide();
+    jQuery(".password").val("");
 }
+
+// perform sign-in authentication
 function do_sign_in() {
-    let selected_domain = get_selected_domain();
-    if (selected_domain && callback.do_sign_in) {
+    let selected_domain = callback.get_selected_domain();
+    if (selected_domain) {
         callback.do_sign_in(selected_domain.sourceId, jQuery(".user-name").val(), jQuery(".password").val());
     }
 }
-// update the sign-in status (close), are we signed in or not?
+
+// perform a sign-out
+function do_sign_out() {
+    callback.do_sign_out();
+}
+
+// SimSage updates the sign-in status (close), are we signed in or not?
 function sign_in_status(signed_in) {
     jQuery(".search-sign-in").hide(); // in all cases, close the sign-in dialog
     // change the text on the filter dialog
@@ -583,41 +263,273 @@ function sign_in_status(signed_in) {
         jQuery(".sign-out-text").hide();
     }
 }
+
+// clear the search text input and filters
+function clear_search() {
+    jQuery(".search-text").val("");
+    // clear filters
+    clear_all();
+    callback.clear_all_results();
+    update_ui();
+}
+
+// user selects a syn-set to use
+function select_syn_set(word, index) {
+    callback.select_syn_set(word, index);
+}
+
+// return the values of the advanced filter box
+function get_advanced_filter() {
+    return {
+        "document_type": jQuery('label.document-type-sel select').val().split(','),
+        "kb": jQuery('label.knowledge-base-sel select').val(),
+        "source_id": jQuery('label.source-sel select').val(),
+        "title": [jQuery('.title-text').val()],
+        "url": [jQuery('.url-text').val()],
+        "author": [jQuery('.author-text').val()],
+        "syn-sets": callback.get_selected_syn_sets(),
+    };
+}
+
+// start a SimSage search
+function do_search() {
+    const af = get_advanced_filter(); // get advanced search options
+    callback.do_search(jQuery(".search-text").val().trim(), af);
+}
+
+// test enter and/or typing on the search box
+function search_typing(event) {
+    if (event.keyCode === 13) {
+        do_search();
+    }
+}
+
+// check the chat window text box for a cr
+function chat_typing(event, text) {
+    if (event.keyCode === 13) {
+        do_chat();
+    } else {
+        callback.user_is_typing();
+    }
+}
+
+// test enter on email box
+function email_typing(event) {
+    if (event.keyCode === 13) {
+        do_email();
+    }
+}
+
+// send a user's chat message to SimSage
+function do_chat() {
+    let ct = jQuery(".chat-text");
+    callback.do_chat(ct.val());
+    ct.val("");
+}
+
+// for click events, stop propagating
+function nop() {
+    if (event) event.stopPropagation()
+}
+
+// show details view
+function show_details(url) {
+    close_filter();
+    jQuery(".detail-table").html(callback.render_details_view(url));
+    jQuery(".search-details-view").show();
+}
+
+// open a url in a new window
+function visit_url(url) {
+    window.open(url, '_blank');
+}
+
+// close the details view of a particular result
+function close_details() {
+    jQuery(".search-details-view").hide();
+}
+
+// go to the next page
+function next_page() {
+    callback.view_next_page();
+}
+
+// go to a previous page
+function prev_page() {
+    callback.view_prev_page();
+}
+
+// select an arbitrary page
+function select_page(page) {
+    callback.view_page(page);
+}
+
+// navigate to the previous fragment of text
+function prev_fragment(id) {
+    const result = callback.get_result_by_id(id);
+    if (result != null) {
+        if (result.textIndex > 0) {
+            result.textIndex -= 1;
+            jQuery(".search-results-td").html(callback.render_search_results());
+        }
+    }
+}
+
+// navigate to the next fragment of text of a result
+function next_fragment(id) {
+    const result = callback.get_result_by_id(id);
+    if (result != null) {
+        if (result.textIndex + 1 < result.textList.length) {
+            result.textIndex += 1;
+            jQuery(".search-results-td").html(callback.render_search_results());
+        }
+    }
+}
+
+// display the pagination html
+function setup_pagination() {
+    jQuery(".pagination-box").html(callback.render_pagination());
+}
+
+// change the type of view to 'text'
+function select_text_view() {
+    // manage the icons
+    jQuery(".search-results-text").show();
+    jQuery(".search-results-images").hide();
+    jQuery(".text-view").removeAttr("disabled");
+    jQuery(".image-view").attr("disabled", "true");
+    // and render away
+    callback.set_selected_view("text");
+    jQuery(".search-results-td").html(callback.render_search_results());
+    setup_pagination();
+}
+
+// change the type of view to 'image'
+function select_image_view() {
+    jQuery(".search-results-text").hide();
+    jQuery(".search-results-images").show();
+    jQuery(".image-view").removeAttr("disabled");
+    jQuery(".text-view").attr("disabled", "true");
+    // and render away
+    callback.set_selected_view("image");
+    jQuery(".search-results-td").html(callback.render_search_results());
+    setup_pagination();
+}
+
+// a user decides to change their kb
+function do_change_kb() {
+    callback.on_change_kb(jQuery(".dd-knowledge-base").val());
+}
+
+// user changes selected source
+function do_change_source() {
+    callback.on_change_source(jQuery(".dd-source").val());
+}
+
+// add a search term (or remove) to the search text from the semantics / categories box
+function add_text_to_search(term) {
+    const ctrl = jQuery(".search-text");
+    let text = " " + ctrl.val() + " ";
+    if (text.indexOf(" " + term + " ") >= 0) {
+        text = text.replace(" " + term + " ", " ");
+    } else {
+        text = text + " " + term;
+    }
+    ctrl.val(text.trim());
+    focus_text('.search-text');
+    do_search();
+}
+
+// try and send an email
+function do_email() {
+    const text = jQuery("label.email-address-text input").val();
+    callback.do_email(text);
+}
+
+// hide the ask for email message
+function hide_email() {
+    show_no_results();
+}
+
+// close the no results window
+function close_no_results() {
+    jQuery(".no-search-results").hide();
+}
+
+// show the no results found dialog
+function show_no_results() {
+    jQuery(".not-found-words").html(callback.get_search_query());
+    if (callback.know_users_email()) {
+        jQuery(".ask-email-box").hide();
+        jQuery(".ask-emailed-box").show();
+    } else {
+        jQuery(".ask-email-box").show();
+        jQuery(".ask-emailed-box").hide();
+    }
+    jQuery(".no-search-results").show();
+}
+
+// close the bot window
+function close_bot() {
+    jQuery(".bot-box").hide();
+}
+
+// SimSage wishes to update the entire UI, re-draw it
+function update_ui() {
+    setup_pagination();
+    jQuery(".search-results-td").html(callback.render_search_results());
+    if (callback.has_bot_results()) {
+        const botBox = jQuery(".bot-box");
+        botBox.show();
+        botBox.html(callback.render_bot());
+    } else {
+        close_bot();
+    }
+    jQuery(".category-items-td").html(callback.render_categories());
+}
+
+// SimSage sets up the drop-down boxes for the advanced filter interface
+function setup_dropdowns() {
+    jQuery(".dd-knowledge-base").html(callback.render_kbs());
+    jQuery(".dd-source").html(callback.render_sources());
+}
+
 // monitor the ESC key to close dialog boxes
 jQuery(document).on('keydown', function(event) {
-    if (event.key === "Escape") {
+    if (event.key === "Escape" || event.key === "Esc") {
         const err_ctrl = jQuery(".error-dialog-box");
         if (err_ctrl.is(":visible")) {
             err_ctrl.hide();
         } else {
             close_chat();
-            jQuery(".filter-box-view").hide();
-            jQuery(".search-details-view").hide();
-            jQuery(".search-sign-in").hide();
-            jQuery(".no-search-results").hide();
+            close_filter();
+            close_details();
+            close_sign_in();
+            close_no_results();
         }
     }
 });
 
+function toggle_filters() {
+    callback.toggle_filters();
+    jQuery(".category-items-td").html(callback.render_categories());
+}
+
+// on ready add a mouse coord event listener
 jQuery(document).ready(function () {
-    this.addEventListener('mousemove', (event) => {
+    this.addEventListener('mousemove', function(event) {
         mx = event.pageX;
         my = event.pageY;
     });
-    jQuery(window).resize(() => {
-        // these need to hide while resizing the ui
-        jQuery(".filter-box-view").hide();
-        jQuery(".operator-chat-box-view").hide();
-    });
-    setup_dropdowns([], []);
-    update_ui(0, 0, 0, [], {}, [],
-        [], false, false, false);
+    // init empty
+    setup_dropdowns();
+    // set up the initial ui
+    update_ui();
+
+    // initialize SimSage
     search.init_simsage();
-    if (settings && !settings.show_advanced_filter) {
-        jQuery(".search-options-button").hide();
-        jQuery(".search-options-chevron-box").hide();
-        jQuery(".search-grey-divider").hide();
-    }
+
+    // set a search-text placeholder if set
     if (settings && settings.search_placeholder && settings.search_placeholder.length > 0) {
         jQuery(".search-text").attr("placeholder", settings.search_placeholder);
     }
