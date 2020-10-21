@@ -132,7 +132,7 @@ function show_kb_dropdown() {
 function show_chat_button(has_operator, has_chat_messages) {
     nop();
     if (has_operator || has_chat_messages) {
-        // jQuery(".chat-button-at-bottom").show();
+        jQuery(".chat-button-at-bottom").show();
         // so we no longer have an operator, but have some history in the chat
         // just disable the button - change its colour
         let cc = jQuery(".chat-container");
@@ -155,7 +155,7 @@ function show_chat_button(has_operator, has_chat_messages) {
             cwit.attr("title", "Chat with us");
         }
     } else {
-        // jQuery(".chat-button-at-bottom").hide();
+        jQuery(".chat-button-at-bottom").hide();
         close_chat();
     }
 }
@@ -183,7 +183,7 @@ function update_chat_window() {
 // close the dialog
 function close_chat() {
     nop();
-    // jQuery(".operator-chat-box-view").hide();
+    jQuery(".operator-chat-box-view").hide();
 }
 
 // reset all selections and text in the advanced search filter

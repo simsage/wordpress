@@ -254,7 +254,7 @@
 <!-- ************************************ -->
 <!-- chat dialog opened by the button below -->
 
-<div class="operator-chat-box-view" onclick="nop()">
+<div class="operator-chat-box-view" onclick="nop()" style="display: none;">
     <div class="operator-chat-box">
         <div class="operator-close-width">
             <div class="div-close" onclick="close_chat()" title="Close chat">
@@ -281,7 +281,7 @@
 <!-- ************************************ -->
 <!-- chat with us button at the right-hand-side bottom -->
 
-<div class="chat-button-at-bottom">
+<div class="chat-button-at-bottom" style="display: none;">
     <!-- chat with us button online -->
     <div class="chat-container online" onclick="show_chat()">
             <span class="chat-with-us-online" title="Chat with us">
