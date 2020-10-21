@@ -1592,8 +1592,8 @@ input::-ms-clear {
 
 .operator-chat-box-view {
     position: fixed !important;
-    bottom: 80px !important;
-    left: calc(100vw - 550px);
+    bottom: calc(100vh - 400px);
+    left: calc(100vw - 600px);
     cursor: default;
 }
 
