@@ -1527,8 +1527,9 @@ input::-ms-clear {
 
 .chat-button-at-bottom {
     position: fixed !important;
-    right: 10px !important;;
-    bottom: 10px !important;;
+    right: 10px !important;
+    bottom: 10px !important;
+    z-index: 999;
 }
 
 .chat-button-at-bottom .online {
