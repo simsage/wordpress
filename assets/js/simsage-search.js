@@ -632,7 +632,7 @@ let search = {
             "            <span class=\"pagination-text\" title=\"page size\">per page</span>\n";
 
         if (search.page > 0) {
-            str += "         <span class=\"prev-page-box pagination-left\" title=\"previous page\">\n" +
+            str += "         <span class=\"prev-page-box pagination-left\" title=\"previous page\" onclick=\"prev_page()\">\n" +
                 "                <img src=\"" + image_base + "images/prev-page.svg\" class=\"prev-page-image\" alt=\"previous page\">\n" +
                 "            </span>\n";
         } else {
@@ -1181,7 +1181,7 @@ let search = {
                     let source = search.kb.sourceList[i];
                     if (parseInt(source.sourceId) === parseInt(search.sourceId)) {
                         source.kbId = search.kb.id;
-                        return source;
+                        return { sourceId: source.sourceId, domain: source.name, domain_type: source.domainType };
                     }
                 }
             }
