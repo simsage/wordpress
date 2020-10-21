@@ -13,6 +13,10 @@ input::-ms-clear {
     margin-right: 5px;
 }
 
+.filter-box-view table {
+    border: none;
+}
+
 /* search options button */
 
 .search-bar .search-options-button-inner {
@@ -158,6 +162,7 @@ input::-ms-clear {
     color: #ffffff;
     padding-left: 20px;
     padding-top: 16px;
+    font-size: 14px !important;
 }
 
 
