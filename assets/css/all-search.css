@@ -1707,7 +1707,7 @@ input::-ms-clear {
 .operator-chat-box .chat-send-text {
     float: left;
     margin-left: 18px;
-    margin-top: 16px;
+    margin-top: 6px;
 }
 
 .operator-chat-box .user-box {
