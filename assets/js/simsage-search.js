@@ -302,9 +302,14 @@ let search = {
                         update_chat_window();
                         show_chat_button(true, search.chat_list.length > 0);
                         show_chat();
+
                     } else {
                         show_no_results();
+                        hide_search_results();
                     }
+
+                } else if (is_search && data.hasResult) {
+                    show_search_results();
                 }
 
                 update_ui();

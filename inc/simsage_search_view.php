@@ -230,7 +230,7 @@
 
 <!-- ********************* -->
 <!-- Search result display -->
-<div class="search-results">
+<div class="search-results" style="display: none;">
     <div class="pagination-box">
     </div>
     <div class="clear"></div>

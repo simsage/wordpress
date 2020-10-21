@@ -364,6 +364,14 @@ function select_page(page) {
     callback.view_page(page);
 }
 
+function show_search_results() {
+    jQuery(".search-results").show();
+}
+
+function hide_search_results() {
+    jQuery(".search-results").hide();
+}
+
 // navigate to the previous fragment of text
 function prev_fragment(id) {
     const result = callback.get_result_by_id(id);
