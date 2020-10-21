@@ -166,10 +166,10 @@ input::-ms-clear {
 /* filter box / options advanced search menu */
 
 .search-bar .filter-box-view {
-    position: absolute;
+    position: relative;
     z-index: 999;
     left: 10px;
-    top: 58px;
+    top: 10px;
     width: 400px !important;
     height: 550px !important;
     cursor: default;
@@ -198,7 +198,7 @@ input::-ms-clear {
 .filter-box .speech-bubble:after {
     content: "\0020";
     display:block;
-    position:absolute;
+    position: absolute;
     top: -20px;
     left: 40px;
     z-index: 2;
@@ -934,7 +934,7 @@ input::-ms-clear {
 /* show details / single search result details view */
 
 .search-details-view {
-    position: absolute;
+    position: relative;
     z-index: 100;
     left: 50px !important;
     top: 70px;
@@ -1136,7 +1136,7 @@ input::-ms-clear {
 .bot-box .speech-bubble:after {
     content: "\0020";
     display:block;
-    position:absolute;
+    position: absolute;
     top: -20px;
     left: 48%;
     z-index: 2;
@@ -1195,7 +1195,7 @@ input::-ms-clear {
 
 
 .search-sign-in {
-    position: absolute;
+    position: relative;
     z-index: 999;
     left: 25vw;
     top: 25vh;
@@ -1313,10 +1313,9 @@ input::-ms-clear {
 
 
 .no-search-results {
-    position: absolute;
+    position: relative;
     z-index: 800;
     left: 5vw !important;
-    top: 80px !important;
     border: 1px solid #878787;
     background-color: #ffffff;
     padding: 20px !important;
@@ -1453,14 +1452,14 @@ input::-ms-clear {
 
 
 .error-dialog-box {
-    position: absolute;
+    position: relative;
     z-index: 999;
     left: 15vw;
-    top: 40px;
+    margin-top: -40px !important;
 }
 
 .error-dialog {
-    position: absolute;
+    position: relative;
     z-index: 999;
     width: 600px;
     margin-top: 60px;
