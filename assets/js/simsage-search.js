@@ -497,6 +497,11 @@ let search = {
         return search.bot_data && search.bot_data.when && search.bot_data.what;
     },
 
+    // return true if the system has some search results
+    has_search_results: function() {
+        return search.semantic_search_results && search.semantic_search_results.length > 0;
+    },
+
     // return the query text of the last query
     get_search_query: function() {
         return search.adjust_size(search.search_query);

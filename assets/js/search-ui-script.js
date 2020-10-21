@@ -24,6 +24,7 @@ let callback = {
     get_selected_syn_sets: function() { return search.get_selected_syn_sets() },
     get_result_by_id: function(id) { return search.get_result_by_id(id) },
     has_bot_results: function() { return search.has_bot_results() },
+    has_search_results: function() { return search.has_search_results() },
     get_search_query: function() { return search.get_search_query() },
     know_users_email: function() { return search.know_users_email() },
     toggle_filters: function() { search.toggle_filters() },
@@ -482,6 +483,12 @@ function show_no_results() {
     jQuery(".no-search-results").show();
 }
 
+// show the authoritative bot balloon
+function show_bot() {
+    close_no_results();
+    jQuery(".bot-box").show();
+}
+
 // close the bot authoritative answer window
 function close_bot() {
     jQuery(".bot-box").hide();
@@ -490,12 +497,15 @@ function close_bot() {
 // SimSage wishes to update the entire UI, re-draw it
 function update_ui() {
     setup_pagination();
-    jQuery(".search-results-td").html(callback.render_search_results());
+    if (callback.has_search_results()) {
+        show_search_results();
+        jQuery(".search-results-td").html(callback.render_search_results());
+    } else {
+        hide_search_results();
+    }
     if (callback.has_bot_results()) {
-        close_no_results();
-        const botBox = jQuery(".bot-box");
-        botBox.show();
-        botBox.html(callback.render_bot());
+        show_bot();
+        jQuery(".bot-box").html(callback.render_bot());
     } else {
         close_bot();
     }
