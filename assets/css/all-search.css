@@ -1599,6 +1599,7 @@ input::-ms-clear {
 
 .operator-chat-box {
     position: absolute;
+    display: inline-block;
     z-index: 999;
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
@@ -1619,7 +1620,7 @@ input::-ms-clear {
 
 .operator-chat-box .operator-close-width {
     margin-top: 4px;
-    width: 510px !important;
+    width: 530px !important;
 }
 
 .operator-chat-box .div-close {
