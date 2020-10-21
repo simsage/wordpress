@@ -1665,7 +1665,7 @@ input::-ms-clear {
 .operator-chat-box .chat-text-box {
     border-left: 0 solid;
     background-color: #f4f4f4;
-    width: calc(100% - 102px);
+    width: 430px !important;
     padding: 5px;
     height: 48px;
     border-bottom-left-radius: 10px;
@@ -1680,8 +1680,8 @@ input::-ms-clear {
 
 .operator-chat-box .chat-text {
     margin-left: 8px;
-    margin-top: 2px;
     width: 400px;
+    height: 32px;
     background-color: transparent;
     border: 0 solid;
     font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
