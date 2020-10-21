@@ -271,6 +271,7 @@ function clear_search() {
     clear_all();
     callback.clear_all_results();
     hide_search_results();
+    close_no_results();
     update_ui();
 }
 

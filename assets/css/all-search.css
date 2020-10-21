@@ -1325,8 +1325,6 @@ input::-ms-clear {
 
 
 .no-search-results {
-    position: relative;
-    z-index: 800;
     left: 5vw !important;
     border: 1px solid #878787;
     background-color: #ffffff;
