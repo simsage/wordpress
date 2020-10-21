@@ -235,12 +235,14 @@ input::-ms-clear {
 
 .filter-box .col-1 {
     float: left;
+    border: none;
     width: 80% !important;
     display: inline-block;
 }
 
 .filter-box .col-2 {
     float: left;
+    border: none;
     width: 18%;
     display: inline-block;
 }
