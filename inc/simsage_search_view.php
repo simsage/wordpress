@@ -254,7 +254,7 @@
 <!-- ************************************ -->
 <!-- chat dialog opened by the button below -->
 
-<div class="operator-chat-box-view" onclick="nop()" style="display: none;">
+<div class="operator-chat-box-view" onclick="nop()">
     <div class="operator-chat-box">
         <div class="operator-close-width">
             <div class="div-close" onclick="close_chat()" title="Close chat">
