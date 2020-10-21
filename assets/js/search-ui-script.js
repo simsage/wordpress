@@ -270,6 +270,7 @@ function clear_search() {
     // clear filters
     clear_all();
     callback.clear_all_results();
+    close_bot();
     hide_search_results();
     close_no_results();
     update_ui();
@@ -480,7 +481,7 @@ function show_no_results() {
     jQuery(".no-search-results").show();
 }
 
-// close the bot window
+// close the bot authoritative answer window
 function close_bot() {
     jQuery(".bot-box").hide();
 }
