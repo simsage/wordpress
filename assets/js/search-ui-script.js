@@ -369,6 +369,7 @@ function select_page(page) {
 
 function show_search_results() {
     jQuery(".search-results").show();
+    close_no_results();
 }
 
 function hide_search_results() {
@@ -491,6 +492,7 @@ function update_ui() {
     setup_pagination();
     jQuery(".search-results-td").html(callback.render_search_results());
     if (callback.has_bot_results()) {
+        close_no_results();
         const botBox = jQuery(".bot-box");
         botBox.show();
         botBox.html(callback.render_bot());
