@@ -1527,7 +1527,7 @@ input::-ms-clear {
 
 .chat-button-at-bottom {
     position: fixed !important;
-    left: calc(100vw - 400px);
+    left: calc(100vw - 200px);
     bottom: 10px !important;
     z-index: 999;
 }
