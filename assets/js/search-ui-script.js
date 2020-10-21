@@ -183,7 +183,7 @@ function update_chat_window() {
 // close the dialog
 function close_chat() {
     nop();
-    jQuery(".operator-chat-box-view").hide();
+    // jQuery(".operator-chat-box-view").hide();
 }
 
 // reset all selections and text in the advanced search filter
