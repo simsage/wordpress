@@ -281,7 +281,7 @@
 <!-- ************************************ -->
 <!-- chat with us button at the right-hand-side bottom -->
 
-<div class="chat-button-at-bottom" style="display: none;">
+<div class="chat-button-at-bottom">
     <!-- chat with us button online -->
     <div class="chat-container online" onclick="show_chat()">
             <span class="chat-with-us-online" title="Chat with us">
