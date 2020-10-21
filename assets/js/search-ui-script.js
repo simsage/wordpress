@@ -270,6 +270,7 @@ function clear_search() {
     // clear filters
     clear_all();
     callback.clear_all_results();
+    hide_search_results();
     update_ui();
 }
 
