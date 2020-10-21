@@ -1592,7 +1592,7 @@ input::-ms-clear {
 
 .operator-chat-box-view {
     position: fixed !important;
-    bottom: calc(100vh - 340px);
+    top: calc(100vh - 340px);
     left: calc(100vw - 600px);
     cursor: default;
 }
