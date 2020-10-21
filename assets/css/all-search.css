@@ -1644,7 +1644,7 @@ input::-ms-clear {
 }
 
 .operator-chat-box .close-image-box {
-    margin-top: 8px;
+    margin-top: 8px !important;
 }
 
 .operator-chat-box .close-image {
