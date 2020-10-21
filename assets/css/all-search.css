@@ -169,6 +169,7 @@ input::-ms-clear {
 
 .search-bar .filter-box-view {
     position: relative;
+    display: inline-block;
     left: 10px;
     top: 10px;
     width: 400px !important;
