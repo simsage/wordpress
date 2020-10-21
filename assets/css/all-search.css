@@ -169,7 +169,6 @@ input::-ms-clear {
 
 .search-bar .filter-box-view {
     position: relative;
-    z-index: 999;
     left: 10px;
     top: 10px;
     width: 400px !important;
@@ -179,6 +178,8 @@ input::-ms-clear {
 }
 
 .filter-box {
+    position: absolute;
+    z-index: 999;
 }
 
 .filter-box .speech-bubble {
