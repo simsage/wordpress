@@ -1641,6 +1641,10 @@ input::-ms-clear {
     margin-right: 8px;
 }
 
+.operator-chat-box .close-image-box {
+    margin-top: 4px;
+}
+
 .operator-chat-box .close-image {
     float: left;
     width: 12px !important;
