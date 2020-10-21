@@ -1526,9 +1526,9 @@ input::-ms-clear {
 /* the chat button at the bottom right hand side of the screen */
 
 .chat-button-at-bottom {
-    position: fixed;
-    right: 10px;
-    bottom: 10px;
+    position: fixed !important;
+    right: 10px !important;;
+    bottom: 10px !important;;
 }
 
 .chat-button-at-bottom .online {
