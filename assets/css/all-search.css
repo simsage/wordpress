@@ -952,6 +952,7 @@ input::-ms-clear {
     background-color: #ffffff;
     border-radius: 10px;
     padding: 10px;
+    width: 1024px !important;
     border: 1px solid #878787;
 }
 
