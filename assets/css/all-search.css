@@ -13,10 +13,6 @@ input::-ms-clear {
     margin-right: 5px;
 }
 
-.filter-box-view table {
-    border: none;
-}
-
 /* search options button */
 
 .search-bar .search-options-button-inner {
@@ -182,6 +178,7 @@ input::-ms-clear {
 }
 
 .filter-box {
+    border: none;
 }
 
 .filter-box .speech-bubble {
