@@ -290,6 +290,8 @@ let search = {
 
                 // no results?
                 if (is_search && !data.hasResult) {
+                    // hide
+                    hide_search_results();
                     // did we get assigned an operator?
                     if (search.assignedOperatorId && search.assignedOperatorId.length > 0) {
                         let text = search.operator_name ? "you are chatting with " + search.operator_name :
@@ -305,10 +307,10 @@ let search = {
 
                     } else {
                         show_no_results();
-                        hide_search_results();
                     }
 
-                } else if (is_search && data.hasResult) {
+                } else if (is_search && search.semantic_search_results.length > 0) {
+                    // hide if no actual results
                     show_search_results();
                 }
 

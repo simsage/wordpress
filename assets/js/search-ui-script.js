@@ -468,6 +468,7 @@ function close_no_results() {
 
 // show the no results found dialog
 function show_no_results() {
+    hide_search_results();
     jQuery(".not-found-words").html(callback.get_search_query());
     if (callback.know_users_email()) {
         jQuery(".ask-email-box").hide();
