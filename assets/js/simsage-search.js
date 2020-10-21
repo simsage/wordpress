@@ -717,7 +717,7 @@ let search = {
     render_details_view: function(url_id) {
         let result = search.get_result_by_id(url_id);
         if (result === null) return "";
-        let str = "          <table>\n" +
+        let str = "          <table class=\"details-table\">\n" +
         "                    <tbody><tr class=\"align-top whole-row\">\n" +
         "                        <td class=\"align-top row-1\">\n";
         str += search.render_single_detail_url("url", result.url);

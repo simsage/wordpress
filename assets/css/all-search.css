@@ -219,6 +219,7 @@ input::-ms-clear {
 
 .filter-box .filter-table {
     width: 100%;
+    border: none;
 }
 
 .filter-box .tr-1 {
@@ -938,10 +939,13 @@ input::-ms-clear {
 
 .search-details-view {
     position: relative;
-    z-index: 100;
+    z-index: 999;
     left: 50px !important;
-    top: 70px;
     width: 1024px !important;
+}
+
+.search-details-view .details-table {
+    border: none;
 }
 
 .search-details {
