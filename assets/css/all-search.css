@@ -1680,7 +1680,7 @@ input::-ms-clear {
 
 .operator-chat-box .chat-text {
     margin-left: 8px;
-    margin-top: 14px;
+    margin-top: 2px;
     width: 400px;
     background-color: transparent;
     border: 0 solid;
