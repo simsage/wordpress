@@ -168,10 +168,8 @@ input::-ms-clear {
 /* filter box / options advanced search menu */
 
 .search-bar .filter-box-view {
-    position: relative;
-    display: inline-block;
     left: 10px;
-    top: 10px;
+    margin-top: 20px;
     width: 400px !important;
     height: 550px !important;
     cursor: default;
@@ -180,6 +178,7 @@ input::-ms-clear {
 
 .filter-box {
     position: absolute;
+    width: 400px !important;
     z-index: 999;
 }
 
