@@ -1657,6 +1657,7 @@ input::-ms-clear {
 .operator-chat-box .chat-table {
     margin-top: 14px !important;
     height: 254px !important;
+    width: 520px !important;
     display: inline-block;
     overflow-y: auto;
     cursor: default;
