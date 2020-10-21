@@ -941,12 +941,11 @@ input::-ms-clear {
 /* show details / single search result details view */
 
 .search-details-view {
-    left: 50px !important;
-    width: 1024px !important;
 }
 
 .search-details {
     position: absolute;
+    left: 50px !important;
     z-index: 999;
     border-collapse: collapse;
     background-color: #ffffff;
