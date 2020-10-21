@@ -343,6 +343,7 @@ let search = {
         search.shard_size_list = [];
         search.semantic_search_results = [];
         search.semantic_set = {};
+        search.bot_data = null;
     },
 
     // reset the variables used in determining pagination if the query has changed
