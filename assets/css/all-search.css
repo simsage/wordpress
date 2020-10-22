@@ -1208,10 +1208,13 @@ input::-ms-clear {
 
 .search-sign-in {
     position: relative;
-    z-index: 999;
     left: 25vw;
-    top: 25vh;
     max-width: 1024px;
+}
+
+.search-sign-in-box {
+    position: absolute;
+    z-index: 999;
 }
 
 .search-sign-in-area {
@@ -1226,7 +1229,7 @@ input::-ms-clear {
 }
 
 .search-sign-in .header {
-    width: 365px;
+    width: 385px;
     margin-bottom: 20px;
 }
 
