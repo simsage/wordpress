@@ -3,8 +3,6 @@
 const teachingSuccessfulTickTimeout = 1000;
 // refresh rate in ms
 const operator_wait_timeout_in_ms = 10000;
-const countDownStart = 5;
-const countDownRate = 1000;
 
 
 // create an instance of the Operator Class
