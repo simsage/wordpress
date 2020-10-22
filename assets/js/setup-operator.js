@@ -1,6 +1,4 @@
 
-// number of ms before the tick disappears
-const teachingSuccessfulTickTimeout = 1000;
 // refresh rate in ms
 const operator_wait_timeout_in_ms = 10000;
 
