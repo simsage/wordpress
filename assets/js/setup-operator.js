@@ -2,7 +2,7 @@
 // number of ms before the tick disappears
 const teachingSuccessfulTickTimeout = 1000;
 // refresh rate in ms
-const operatorRefreshRate = 5000;
+const operator_wait_timeout_in_ms = 10000;
 const countDownStart = 5;
 const countDownRate = 1000;
 
@@ -411,7 +411,7 @@ jQuery(function($) {
         // connect to our web-sockets for two way conversations
         ops.init_simsage();
         // setup operator timer ticks
-        window.setInterval(() => operator_present_tick(), operatorRefreshRate);
+        window.setInterval(() => operator_present_tick(), operator_wait_timeout_in_ms);
     })
 });
 
