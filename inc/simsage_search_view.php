@@ -300,34 +300,36 @@
 <!-- ***************** -->
 <!-- Sign-in dialog box -->
 <div class="search-sign-in" style="display: none;">
-    <div class="search-sign-in-area">
-        <div class="header">
-            <span class="title sign-in-title" title="Sign-in">sign-in</span>
-            <span onclick="close_sign_in()" title="Close" class="close-box">
-                <span class="close-text">Close</span>
-                <img src="<?php echo $this->asset_folder . 'images/close.svg' ?>" class="close-image" alt="close" />
+    <div class="search-sign-in-box">
+        <div class="search-sign-in-area">
+            <div class="header">
+                <span class="title sign-in-title" title="Sign-in">sign-in</span>
+                <span onclick="close_sign_in()" title="Close" class="close-box">
+                    <span class="close-text">Close</span>
+                    <img src="<?php echo $this->asset_folder . 'images/close.svg' ?>" class="close-image" alt="close" />
+                </span>
+            </div>
+            <span class="category-text">username</span>
+            <div class="category-item">
+                <label>
+                    <input type="text" maxlength="100" placeholder="your username" class="category-input user-name" title="your username">
+                </label>
+            </div>
+            <span class="category-text">password</span>
+            <div class="category-item">
+                <label>
+                    <input type="password" maxlength="80" placeholder="your password" class="category-input password" title="your password">
+                </label>
+            </div>
+            <div class="spacer"></div>
+        </div>
+        <div class="bar-bottom">
+                <span class="clear-text-box">
+                </span>
+            <span class="sign-in-button" title="sign-in" onclick="do_sign_in()">
+                <span class="sign-in-text">sign-in</span>
             </span>
         </div>
-        <span class="category-text">username</span>
-        <div class="category-item">
-            <label>
-                <input type="text" maxlength="100" placeholder="your username" class="category-input user-name" title="your username">
-            </label>
-        </div>
-        <span class="category-text">password</span>
-        <div class="category-item">
-            <label>
-                <input type="password" maxlength="80" placeholder="your password" class="category-input password" title="your password">
-            </label>
-        </div>
-        <div class="spacer"></div>
-    </div>
-    <div class="bar-bottom">
-            <span class="clear-text-box">
-            </span>
-        <span class="sign-in-button" title="sign-in" onclick="do_sign_in()">
-            <span class="sign-in-text">sign-in</span>
-        </span>
     </div>
 </div>
 
