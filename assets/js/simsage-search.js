@@ -28,7 +28,7 @@ let search = {
     // typing animation timeout in ms
     typing_timeout: 1500,
     // don't send too many is-typing requests to the server
-    typing_repeat_timeout: 500,
+    typing_repeat_timeout: 750,
 
     is_connected: false,    // connected to endpoint?
     stompClient: null,      // the connection
