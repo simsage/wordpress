@@ -355,12 +355,12 @@
                 <span class="email-text-box">
                     <label class="email-address-text">
                         <input type="text" placeholder="Enter your email address" title="Enter your email address"
-                               maxlength="100" onkeypress="email_typing(event)" class="email-text">
+                               maxlength="100" onkeyup="validate_email()" onkeypress="email_typing(event)" class="email-text">
                     </label>
                 </span>
-            <span class="send-button float-left" title="Send" onclick="do_email()">
+            <span class="send-button-disabled float-left email-send-button" title="Send" onclick="do_email()">
                 <span class="send-text">Send</span>
-                </span>
+            </span>
         </div>
     </div>
     <div class="ask-emailed-box" style="display: none;">

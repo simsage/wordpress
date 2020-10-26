@@ -1676,6 +1676,16 @@ let search = {
         return query;
     },
 
+    // valid an email address
+    validate_email: function(email) {
+        let i1 = email.indexOf('@');
+        if (i1 > 0) {
+            let i2 = email.lastIndexOf('.');
+            return (i2 > i1) && i2 + 2 < email.length;
+        }
+        return false;
+    },
+
     ie11_polyfill: function() {
         if (!String.prototype.padStart) {
             String.prototype.padStart = function padStart(targetLength,padString) {

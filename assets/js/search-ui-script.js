@@ -6,6 +6,7 @@ my = 0;
 let callback = {
     do_search: function (text, filter) { search.do_search(text, filter) },
     do_chat: function(text) { search.do_chat(text) },
+    is_valid_email: function(text) { return search.validate_email(text) },
     do_email: function(email) { search.do_email(email) },
     do_sign_in: function(source_id, user, password) { search.do_sign_in(source_id, user, password)},
     do_sign_out: function() { search.do_sign_out() },
@@ -317,6 +318,19 @@ function chat_typing(event, text) {
     }
 }
 
+// validate an email address and change the button accordingly
+function validate_email() {
+    const text = jQuery("label.email-address-text input").val();
+    const button = jQuery(".email-send-button");
+    if (callback.is_valid_email(text)) {
+        button.removeClass("send-button-disabled");
+        button.addClass("send-button");
+    } else {
+        button.removeClass("send-button");
+        button.addClass("send-button-disabled");
+    }
+}
+
 // test enter on email box
 function email_typing(event) {
     if (event.keyCode === 13) {
@@ -456,7 +470,9 @@ function add_text_to_search(term) {
 // try and send an email
 function do_email() {
     const text = jQuery("label.email-address-text input").val();
-    callback.do_email(text);
+    if (callback.is_valid_email(text)) {
+        callback.do_email(text);
+    }
 }
 
 // hide the ask for email message
