@@ -271,7 +271,7 @@
                                maxlength="200" onkeyup="chat_typing(event, this.value)">
                     </label>
                 </span>
-            <span class="chat-button" title="Send" onclick="do_chat()">
+                <span class="chat-button-disabled chat-button-control" title="Send" onclick="do_chat()">
                     <span class="chat-send-text">Send</span>
                 </span>
         </div>

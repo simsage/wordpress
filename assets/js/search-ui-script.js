@@ -311,10 +311,21 @@ function search_typing(event) {
 
 // check the chat window text box for a cr
 function chat_typing(event, text) {
-    if (event.keyCode === 13) {
-        do_chat();
+    let ct = jQuery(".chat-text");
+    let button = jQuery(".chat-button-control");
+    if (ct.val().trim().length === 0) {
+        button.removeClass("chat-button");
+        button.addClass("chat-button-disabled");
     } else {
-        callback.user_is_typing();
+        if (event.keyCode === 13) {
+            button.removeClass("chat-button");
+            button.addClass("chat-button-disabled");
+            do_chat();
+        } else {
+            button.removeClass("chat-button-disabled");
+            button.addClass("chat-button");
+            callback.user_is_typing();
+        }
     }
 }
 
