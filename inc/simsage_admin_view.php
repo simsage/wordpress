@@ -121,15 +121,6 @@
             <div class="tabbed-display">
                 <fieldset>
                     <label>
-                        <input name="<?php echo PLUGIN_NAME ?>[simsage_page_size]" type="number" class="number-field" id="simsage_page_size"
-                               value="<?php echo (isset($options['simsage_page_size']) && $options['simsage_page_size'] != '') ? $options['simsage_page_size'] : '3'; ?>"
-                               placeholder="number of search-results per page"/>
-                        <span class="description">Page size, the number of search-results per page, between <?php echo $this->get_default_field("simsage_page_size", "min") ?> and <?php echo $this->get_default_field("simsage_page_size", "max") ?> (default <?php echo $this->get_default_field("simsage_page_size", "value") ?>)</span>
-                    </label>
-                </fieldset>
-
-                <fieldset>
-                    <label>
                         <input name="<?php echo PLUGIN_NAME ?>[simsage_fragment_size]" type="number" class="number-field" id="simsage_fragment_size"
                                value="<?php echo (isset($options['simsage_fragment_size']) && $options['simsage_fragment_size'] != '') ? $options['simsage_fragment_size'] : '3'; ?>"
                                placeholder="number of fragments per search-result" />

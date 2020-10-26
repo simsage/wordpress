@@ -18,7 +18,6 @@ class simsage_admin
 {
     // plugin defaults - these are the defaults for this plugin's admin values
     private $plugin_defaults = array(
-        "simsage_page_size" => array( "value" => 3, "min" => 1, "max" => 10, "name" => "Page Size"),
         "simsage_fragment_size" => array( "value" => 3, "min" => 1, "max" => 10, "name" => "Fragment Size"),
         "simsage_word_distance" => array( "value" => 20, "min" => 0, "max" => 100, "name" => "Word Distance"),
         "simsage_override_default_search" => array( "value" => 1, "min" => 0, "max" => 1, "name" => "Override default WordPress Search"),
