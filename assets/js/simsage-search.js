@@ -954,7 +954,11 @@ let search = {
         for (let i in search.kb_list) {
             if (search.kb_list.hasOwnProperty(i)) {
                 let kb = search.kb_list[i];
-                str1 += "<option value=\"" + esc_html(kb.id) + "\">" + esc_html(kb.name) + "</option>";
+                if (search.kb && search.kb.id === kb.id) {
+                    str1 += "<option value=\"" + esc_html(kb.id) + "\" selected>" + esc_html(kb.name) + "</option>";
+                } else {
+                    str1 += "<option value=\"" + esc_html(kb.id) + "\">" + esc_html(kb.name) + "</option>";
+                }
             }
         }
         return str1;
