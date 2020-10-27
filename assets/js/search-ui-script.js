@@ -584,4 +584,10 @@ jQuery(document).ready(function () {
     if (settings && settings.search_placeholder && settings.search_placeholder.length > 0) {
         jQuery(".search-text").attr("placeholder", settings.search_placeholder);
     }
+    // show the filter menu?
+    if (settings && settings.show_advanced_filter) {
+        jQuery(".search-options-button").show();
+    } else {
+        jQuery(".search-options-button").hide();
+    }
 });
