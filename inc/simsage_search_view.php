@@ -27,7 +27,7 @@
         use_spelling_suggest: false,
         context_label: "<?php echo $this->context ?>",
         context_match_boost: <?php echo $this->context_boost ?>,
-        // bot sensitivity - controls the A.I's replies - we suggest you don't change it!
+        // QA sensitivity - controls the A.I's replies - we suggest you don't change it!
         bot_threshold: <?php echo $this->get_user_value("bot_threshold", 0.8125) ?>,
         // show the advanced filters?
         show_advanced_filter: <?php echo $this->get_user_boolean_value("simsage_adv_filter", true) ?>,

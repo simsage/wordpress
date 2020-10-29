@@ -135,7 +135,7 @@ function add_wp_contents_to_archive($registration_key, $archive_file, $num_docs 
 
 
 /**
- * Add all bot QA items to an archive file passed in as a string in marked by DOC_BOT_DATA
+ * Add all QA items to an archive file passed in as a string in marked by DOC_BOT_DATA
  *
  * @param $archive_file resource the file to write to
  * @param $qa_list array a list of Question and Answer items

@@ -2,8 +2,8 @@
    /*
    Plugin Name: SimSage Search
    Plugin URI: https://simsage.ai/
-   description: Add SimSage Semantic Search and bots to your WordPress site.
-   Version: 1.0
+   description: Add SimSage Semantic Search and operator support to your WordPress site.
+   Version: 1.2
    Author: Rock de Vocht
    Author URI: https://simsage.ai/
    License: GPL2
@@ -15,20 +15,19 @@ define( 'PLUGIN_NAME', 'simsage-search' );
 
 // SimSage registration-api-server address
 define( 'SIMSAGE_API_SERVER', 'https://api-test.simsage.nz');
-// define( 'SIMSAGE_API_SERVER', 'http://192.168.1.232:8088');
 
 // SimSage registration-ui-server address
 define( 'SIMSAGE_REGO_SERVER', 'https://portal-test.simsage.nz');
 
 // SimSage special content file-names - do not change these
-// these are used to transmit Bot, synonym, and semantic information to SimSage
+// these are used to transmit QA, synonym, and semantic information to SimSage
 // alongside other content from WordPress
 define( 'DOC_WP_DATA', '-simsage-wp.txt');
 define( 'DOC_BOT_DATA', '-simsage-bot.txt');
 define( 'DOC_SYNONYM_DATA', '-simsage-synonyms.txt');
 define( 'DOC_SEMANTIC_DATA', '-simsage-semantics.txt');
 
-// maximum length of a bot question or answer string
+// maximum length of a QA question or answer string
 define( 'MAX_STRING_LENGTH', 256 );
 
 // set timeout for json posts (in seconds) must not exceed PHP max_execution_time
