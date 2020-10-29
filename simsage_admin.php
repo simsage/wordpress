@@ -8,7 +8,7 @@
  * in the WordPress site Settings -> SimSage Settings page
  *
  * @link       https://simsage.ai
- * @since      1.0.0
+ * @since      1.2.0
  *
  * @package    simsage-plugin
  * @subpackage simsage-plugin/inc/simsage_admin_view.php
