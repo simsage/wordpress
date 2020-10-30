@@ -28,11 +28,11 @@
 	if( isset( $_GET[ 'tab' ] ) ) {
 		$active_tab = sanitize_text_field($_GET[ 'tab' ]);
 	} // end if
-	$options = get_option( PLUGIN_NAME );
+	$options = get_option( SIMSAGE_PLUGIN_NAME );
     $plan = get_plan();
 	// add the nonce, option_page, action and referer.
-	settings_fields( PLUGIN_NAME );
-	do_settings_sections( PLUGIN_NAME );
+	settings_fields( SIMSAGE_PLUGIN_NAME );
+	do_settings_sections( SIMSAGE_PLUGIN_NAME );
 
 	// flags for controlling the forms and tabs
     // after signing-in we get an account set and saved locally
@@ -57,14 +57,14 @@
         <a href="?page=simsage-search&tab=search" class="nav-tab <?php echo $active_tab == 'search' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_kb ) echo 'tab-disabled' ?>">Search</a>
     </div>
 
-    <form method="post" id="adminForm" name="<?php echo PLUGIN_NAME; ?>_search_options">
+    <form method="post" id="adminForm" name="<?php echo SIMSAGE_PLUGIN_NAME; ?>_search_options">
 
         <?php if ( $active_tab == 'account' || $active_tab == '' ) { ?>
             <div class="tabbed-display">
             <!-- check if account has been set - in which case we have a valid setup -->
             <fieldset>
                 <label>
-                    <input name="<?php echo PLUGIN_NAME ?>[simsage_registration_key]" type="text"
+                    <input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_registration_key]" type="text"
                            class="input-field" id="simsage_registration_key" maxlength="20"
                            value="<?php echo (isset($options['simsage_registration_key']) && $options['simsage_registration_key'] != '') ? $options['simsage_registration_key'] : ''; ?>"
                            placeholder="your SimSage Registration Key"/>
@@ -106,7 +106,7 @@
                     <b>this action cannot be undone!</b><br/><br/>
                 </span>
                 <label>
-                    <input type="password" name="<?php echo PLUGIN_NAME ?>[simsage_password]"
+                    <input type="password" name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_password]"
                            class="input-field" value="" maxlength="100"
                            placeholder="your SimSage account password"/>
                     <span class="description">Please enter your SimSage Password</span>
@@ -121,7 +121,7 @@
             <div class="tabbed-display">
                 <fieldset>
                     <label>
-                        <input name="<?php echo PLUGIN_NAME ?>[simsage_fragment_size]" type="number" class="number-field" id="simsage_fragment_size"
+                        <input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_fragment_size]" type="number" class="number-field" id="simsage_fragment_size"
                                value="<?php echo (isset($options['simsage_fragment_size']) && $options['simsage_fragment_size'] != '') ? sanitize_text_field($options['simsage_fragment_size']) : '3'; ?>"
                                placeholder="number of fragments per search-result" />
                         <span class="description">Fragment size, the number of matches shown inside each document, between <?php echo $this->get_default_field("simsage_fragment_size", "min") ?> and <?php echo $this->get_default_field("simsage_fragment_size", "max") ?> (default <?php echo $this->get_default_field("simsage_fragment_size", "value") ?>)</span>
@@ -130,7 +130,7 @@
 
                 <fieldset>
                     <label>
-                        <input name="<?php echo PLUGIN_NAME ?>[simsage_word_distance]" type="number" class="number-field" id="simsage_word_distance"
+                        <input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_word_distance]" type="number" class="number-field" id="simsage_word_distance"
                                value="<?php echo (isset($options['simsage_word_distance']) && $options['simsage_word_distance'] != '') ? sanitize_text_field($options['simsage_word_distance']) : '20'; ?>"
                                placeholder="maximum distance between keywords"/>
                         <span class="description">Maximum distance between keywords between <?php echo $this->get_default_field("simsage_word_distance", "min") ?> and <?php echo $this->get_default_field("simsage_word_distance", "max") ?> (use 0 for document level search, default <?php echo $this->get_default_field("simsage_word_distance", "value") ?>)</span>
@@ -139,16 +139,16 @@
 
                 <fieldset>
                     <label>
-                        <span class="radio_label">no</span><input name="<?php echo PLUGIN_NAME ?>[simsage_override_default_search]" type="radio" value="0" <?php echo (!isset($options['simsage_override_default_search']) || $options['simsage_override_default_search'] != '1') ? 'checked' : ''; ?> />
-                        <span class="radio_label">yes</span><input name="<?php echo PLUGIN_NAME ?>[simsage_override_default_search]" type="radio" value="1" <?php echo (isset($options['simsage_override_default_search']) && $options['simsage_override_default_search'] == '1') ? 'checked' : ''; ?> />
+                        <span class="radio_label">no</span><input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_override_default_search]" type="radio" value="0" <?php echo (!isset($options['simsage_override_default_search']) || $options['simsage_override_default_search'] != '1') ? 'checked' : ''; ?> />
+                        <span class="radio_label">yes</span><input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_override_default_search]" type="radio" value="1" <?php echo (isset($options['simsage_override_default_search']) && $options['simsage_override_default_search'] == '1') ? 'checked' : ''; ?> />
                         <span class="description">Override the default WordPress Search.</span>
                     </label>
                 </fieldset>
 
                 <fieldset>
                     <label>
-                        <span class="radio_label">no</span><input name="<?php echo PLUGIN_NAME ?>[simsage_adv_filter]" type="radio" value="0" <?php echo (isset($options['simsage_adv_filter']) && $options['simsage_adv_filter'] == '0') ? 'checked' : ''; ?> />
-                        <span class="radio_label">yes</span><input name="<?php echo PLUGIN_NAME ?>[simsage_adv_filter]" type="radio" value="1" <?php echo (!isset($options['simsage_adv_filter']) || $options['simsage_adv_filter'] != '0') ? 'checked' : ''; ?> />
+                        <span class="radio_label">no</span><input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_adv_filter]" type="radio" value="0" <?php echo (isset($options['simsage_adv_filter']) && $options['simsage_adv_filter'] == '0') ? 'checked' : ''; ?> />
+                        <span class="radio_label">yes</span><input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_adv_filter]" type="radio" value="1" <?php echo (!isset($options['simsage_adv_filter']) || $options['simsage_adv_filter'] != '0') ? 'checked' : ''; ?> />
                         <span class="description">Show the advanced search filter button.</span>
                     </label>
                 </fieldset>

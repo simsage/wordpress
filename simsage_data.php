@@ -33,7 +33,7 @@ class simsage_data
         // Load the WP datepicker script
         wp_enqueue_script( 'jquery-ui-datepicker' );
         // this is the html of the admin page, rendered in the context of this class
-        include_once PLUGIN_DIR . 'inc/simsage_data_view.php';
+        include_once SIMSAGE_PLUGIN_DIR . 'inc/simsage_data_view.php';
     }
 
 
@@ -52,7 +52,7 @@ class simsage_data
      * @return string the setting, or an empty string if not found
      */
     private function get_account_setting( $key ) {
-        $plugin_options = get_option(PLUGIN_NAME);
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
         if ( isset($plugin_options["simsage_account"]) ) {
             $account = $plugin_options["simsage_account"];
             if ( isset($account[$key]) ) {

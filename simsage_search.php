@@ -1,7 +1,7 @@
 <?php
 
 // helpers
-include  PLUGIN_DIR . 'inc/utilities.php';
+include SIMSAGE_PLUGIN_DIR . 'inc/simsage_utilities.php';
 
 
 /**
@@ -37,7 +37,7 @@ class simsage_search
      */
     public function plugin_activate() {
     	// make sure we have the right versions of WP and php, notify the user if not
-        check_versions(); // defined in inc/utilities.php
+        check_versions(); // defined in inc/simsage_utilities.php
         flush_rewrite_rules();
     }
 
@@ -55,12 +55,12 @@ class simsage_search
         global $pagenow;
         // only show this message on the plugins page
         if ( $pagenow == 'plugins.php' ) {
-            $plugin_options = get_option(PLUGIN_NAME); // get our plugin's db data
+            $plugin_options = get_option(SIMSAGE_PLUGIN_NAME); // get our plugin's db data
             // display the "visit the plugin settings" link if this plugin doesn't have any settings yet
             if ( empty($plugin_options) || get_kb() == null ) {
-                $message = __('Please setup the SimSage plugin settings ', PLUGIN_NAME);
-                $plugin_settings_url = '<a href="' . admin_url('options-general.php?page=' . PLUGIN_NAME) . '">' .
-                    __('SimSage plugin settings', PLUGIN_NAME) . '</a>';
+                $message = __('Please setup the SimSage plugin settings ', SIMSAGE_PLUGIN_NAME);
+                $plugin_settings_url = '<a href="' . admin_url('options-general.php?page=' . SIMSAGE_PLUGIN_NAME) . '">' .
+                    __('SimSage plugin settings', SIMSAGE_PLUGIN_NAME) . '</a>';
                 echo '<div class="updated notice-success is-dismissible">
                 <p>' . $message . $plugin_settings_url . '</p>
             </div>';
@@ -78,7 +78,7 @@ class simsage_search
      * @return string the setting, or an empty string if not found
      */
     private function get_account_setting( $key ) {
-        $plugin_options = get_option(PLUGIN_NAME);
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
         if ( isset($plugin_options["simsage_account"]) ) {
             $account = $plugin_options["simsage_account"];
             if ( isset($account[$key]) ) {
@@ -114,7 +114,7 @@ class simsage_search
      * @return float     the value, or $default if not found
      */
     private function get_user_value( $key, $default ) {
-        $plugin_options = get_option(PLUGIN_NAME);
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
         if ( isset($plugin_options[$key]) ) {
             return sanitize_text_field($plugin_options[$key]);
         }
@@ -130,7 +130,7 @@ class simsage_search
      * @return string    the value as a string, or $default if not found
      */
     private function get_user_boolean_value( $key, $default ) {
-        $plugin_options = get_option(PLUGIN_NAME);
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
         if ( isset($plugin_options[$key]) ) {
             return $plugin_options[$key] ? "true" : "false";
         }
@@ -144,7 +144,7 @@ class simsage_search
      * @return string|null the user's id
      */
     private function get_organisationId() {
-        $plugin_options = get_option(PLUGIN_NAME);
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
         if ( isset($plugin_options["simsage_account"]) ) {
             $account = $plugin_options["simsage_account"];
             if ( isset($account["id"]) ) {
@@ -173,7 +173,7 @@ class simsage_search
 
 	// simsage short-code renderer
 	function simsage_handle_shortcode( $attrs ) {
-        $plugin_options = get_option( PLUGIN_NAME );
+        $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
 		$this->add_script = true;
 
 		// get the context and context-boost settings
@@ -198,7 +198,7 @@ class simsage_search
         if ( get_kb() != null ) {
             // render simsage_search_view.php in the context of this class
             ob_start();
-            include PLUGIN_DIR . 'inc/simsage_search_view.php';
+            include SIMSAGE_PLUGIN_DIR . 'inc/simsage_search_view.php';
             return ob_get_clean();
         } else {
             return "<div>SimSage-search plugin not configured.  Please configure your plugin first!</div>";
@@ -207,7 +207,7 @@ class simsage_search
 
 	// SimSage override default search
 	public function get_search_form( $content ) {
-        $plugin_options = get_option( PLUGIN_NAME );
+        $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
         // only replace the search_form if the plugin has been configured and it has been configured to do so by the user
 		if ( isset( $plugin_options["simsage_override_default_search"] ) && $plugin_options["simsage_override_default_search"] && get_kb() != null ) {
             $this->add_script = true;
@@ -223,7 +223,7 @@ class simsage_search
 
 			// render simsage_search_view.php in the context of this class
 			ob_start();
-			include PLUGIN_DIR . 'inc/simsage_search_view.php';
+			include SIMSAGE_PLUGIN_DIR . 'inc/simsage_search_view.php';
 			return ob_get_clean();
 		} else {
 			return $content;

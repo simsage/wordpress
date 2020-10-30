@@ -43,10 +43,10 @@ class simsage_admin
      */
     public function add_plugin_admin_menu() {
         add_options_page(
-            __( 'SimSage Settings', PLUGIN_NAME ), // page title.
-            __( 'SimSage Settings', PLUGIN_NAME ), // menu title.
+            __( 'SimSage Settings', SIMSAGE_PLUGIN_NAME ), // page title.
+            __( 'SimSage Settings', SIMSAGE_PLUGIN_NAME ), // menu title.
             'manage_options', // capability.
-            PLUGIN_NAME, // menu_slug.
+            SIMSAGE_PLUGIN_NAME, // menu_slug.
             array( $this, 'load_settings_page' )
         );
     }
@@ -71,7 +71,7 @@ class simsage_admin
 	    if ( isset($_POST['action']) ) { // get the required (hidden) action field's value
 		    $action = sanitize_text_field($_POST['action']); // get the action
 		    debug_log("action:" . $action );
-		    $plugin_parameters = $_POST[PLUGIN_NAME]; // get settings array
+		    $plugin_parameters = $_POST[SIMSAGE_PLUGIN_NAME]; // get settings array
 		    if ($action == 'sign-in') {
 		    	// perform a sign-in
 		    	$this->do_sign_in($_POST, sanitize_text_field($plugin_parameters['simsage_registration_key']));
@@ -92,7 +92,7 @@ class simsage_admin
             wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
         }
         // this is the html of the admin page, rendered in the context of this class
-        include_once PLUGIN_DIR . 'inc/simsage_admin_view.php';
+        include_once SIMSAGE_PLUGIN_DIR . 'inc/simsage_admin_view.php';
     }
 
 
@@ -122,15 +122,15 @@ class simsage_admin
     public function add_menus() {
         debug_log( 'add_menus' );
         add_menu_page(
-            __('SimSage Operator', PLUGIN_NAME), // page title.
-            __('SimSage Operator', PLUGIN_NAME), // menu title.
+            __('SimSage Operator', SIMSAGE_PLUGIN_NAME), // page title.
+            __('SimSage Operator', SIMSAGE_PLUGIN_NAME), // menu title.
             'manage_options', // capability.
             "simsage-operator", // menu_slug.
             array($this->operator, 'load_settings_page')
         );
         add_menu_page(
-            __('SimSage Data', PLUGIN_NAME), // page title.
-            __('SimSage Data', PLUGIN_NAME), // menu title.
+            __('SimSage Data', SIMSAGE_PLUGIN_NAME), // page title.
+            __('SimSage Data', SIMSAGE_PLUGIN_NAME), // menu title.
             'manage_options', // capability.
             "simsage-data", // menu_slug.
             array($this->data, 'load_settings_page')
@@ -166,7 +166,7 @@ class simsage_admin
         // this is the name of the button
         $cmd = sanitize_text_field($post_data["submit"]);
         if ( $cmd == 'Close my SimSage Account' ) {
-            $params = $post_data[PLUGIN_NAME];
+            $params = $post_data[SIMSAGE_PLUGIN_NAME];
             $password = sanitize_text_field($params['simsage_password']);
             if (strlen(trim($password)) < 8) {
                 add_settings_error('simsage_settings', 'invalid_password', 'Invalid SimSage password (too short)', $type = 'error');
@@ -179,7 +179,7 @@ class simsage_admin
                 // try and delete the account
                 if ( $this->close_simsage_account( $email, $organisationId, $kb["kbId"], $kb["sid"], $password ) ) {
                     // success!  clear the account information locally
-                    $plugin_options = get_option(PLUGIN_NAME);
+                    $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
                     $plugin_options["simsage_username"] = "";
                     $plugin_options["simsage_registration_key"] = "";
                     if (isset($plugin_options["simsage_account"])) {
@@ -191,7 +191,7 @@ class simsage_admin
                     if (isset($plugin_options["simsage_synonyms"])) {
                         unset($plugin_options["simsage_synonyms"]);
                     }
-                    update_option(PLUGIN_NAME, $plugin_options);
+                    update_option(SIMSAGE_PLUGIN_NAME, $plugin_options);
 
                     // show we've successfully removed the user's account
                     add_settings_error('simsage_settings', 'success',
@@ -201,7 +201,7 @@ class simsage_admin
             }
 
         } else if ( $cmd == 'Connect to SimSage' ) {
-            $plugin_options = get_option(PLUGIN_NAME);
+            $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
 
             // save the user-name parameter but not the password for security reasons
             $plugin_options["simsage_registration_key"] = $registration_key;
@@ -209,7 +209,7 @@ class simsage_admin
             if (isset($plugin_options["simsage_account"])) {
                 unset($plugin_options["simsage_account"]);
             }
-            update_option(PLUGIN_NAME, $plugin_options);
+            update_option(SIMSAGE_PLUGIN_NAME, $plugin_options);
 
             // check the registration-key size
             if (strlen(trim($registration_key)) != 19) {
@@ -220,7 +220,7 @@ class simsage_admin
                 $url = join_urls(SIMSAGE_API_SERVER, '/api/auth/sign-in-registration-key');
                 debug_log("sign-in url:" . $url);
                 $json = get_json(wp_remote_post($url,
-                    array('timeout' => JSON_POST_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
+                    array('timeout' => SIMSAGE_JSON_POST_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                         'body' => '{"registrationKey": "' . trim($registration_key) . '"}')));
                 debug_log(print_r($json, true));
                 $error_str = check_simsage_json_response(SIMSAGE_API_SERVER, $json);
@@ -237,7 +237,7 @@ class simsage_admin
                         // set our defaults (if not already set) for search and the bot and the site
                         $this->set_defaults( $plugin_options );
                         // save settings
-                        update_option(PLUGIN_NAME, $plugin_options);
+                        update_option(SIMSAGE_PLUGIN_NAME, $plugin_options);
                         // set the current site and upload the current WP content as is as well as any synonyms, and QAs
                         $this->update_simsage();
                         // setup other parts of the plugin according to plan
@@ -263,7 +263,7 @@ class simsage_admin
      */
     private function validate_qas() {
         // General save: save all parameters
-        $plugin_options = get_option( PLUGIN_NAME );
+        $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
         $existing_qa = array();
         if ( isset($plugin_options["simsage_qa"]) ) {
             $existing_qa = $plugin_options["simsage_qa"];
@@ -288,7 +288,7 @@ class simsage_admin
      */
     private function validate_synonyms() {
         // General save: save all parameters
-        $plugin_options = get_option( PLUGIN_NAME );
+        $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
         $existing_synonyms = array();
         if ( isset($plugin_options["simsage_synonyms"]) ) {
             $existing_synonyms = $plugin_options["simsage_synonyms"];
@@ -412,13 +412,13 @@ class simsage_admin
         } // for each value
 
         // we now have a set of valid values - save them as part of our settings
-        $plugin_options = get_option(PLUGIN_NAME);
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
         foreach ($form_params as $key => $value) {
             if ( isset($this->plugin_defaults[$key]) ) {
                 $plugin_options[$key] = sanitize_text_field($value);
             }
         }
-        update_option(PLUGIN_NAME, $plugin_options);
+        update_option(SIMSAGE_PLUGIN_NAME, $plugin_options);
 
         return true;
     }
@@ -441,7 +441,7 @@ class simsage_admin
      * @return string|null the SimSage server to use
      */
     private function get_server() {
-        $plugin_options = get_option(PLUGIN_NAME);
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
         if ( isset($plugin_options["simsage_account"]) ) {
             $account = $plugin_options["simsage_account"];
             if ( isset($account["server"]) ) {
@@ -458,7 +458,7 @@ class simsage_admin
      * @return string|null the user's id
      */
     private function get_organisationId() {
-        $plugin_options = get_option(PLUGIN_NAME);
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
         if ( isset($plugin_options["simsage_account"]) ) {
             $account = $plugin_options["simsage_account"];
             if ( isset($account["id"]) ) {
@@ -475,7 +475,7 @@ class simsage_admin
      * @return string the last known md5 stored
      */
     private function get_archive_md5() {
-        $plugin_options = get_option(PLUGIN_NAME);
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
         if ( isset($plugin_options["archive_md5"]) ) {
             return sanitize_text_field($plugin_options["archive_md5"]);
         }
@@ -489,9 +489,9 @@ class simsage_admin
      * @param $archive_md5 string the new md5 for the file
      */
     private function update_archive_md5( $archive_md5 ) {
-        $plugin_options = get_option(PLUGIN_NAME);
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
         $plugin_options["archive_md5"] = sanitize_text_field($archive_md5);
-        update_option(PLUGIN_NAME, $plugin_options);
+        update_option(SIMSAGE_PLUGIN_NAME, $plugin_options);
     }
 
 
@@ -501,7 +501,7 @@ class simsage_admin
      * @return string|null the user's email address
      */
     private function get_email() {
-        $plugin_options = get_option(PLUGIN_NAME);
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
         if ( isset($plugin_options["simsage_account"]) ) {
             $account = $plugin_options["simsage_account"];
             if ( isset($account["email"]) ) {
@@ -566,7 +566,7 @@ class simsage_admin
             $filename = tempnam(get_temp_dir(), "simsage");
             $archive_file = fopen($filename, "wb");
 
-            $plugin_options = get_option(PLUGIN_NAME);
+            $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
             $num_docs = $plan["numDocs"];
             $num_qas = $plan["numQA"];
             if ($archive_file) {
@@ -623,7 +623,7 @@ class simsage_admin
         $url = join_urls($server, '/api/crawler/document/upload/archive');
         $bodyStr = '{"organisationId": "' . $organisationId . '", "kbId": "' . $kbId . '", "sid": "' . $sid . '", "sourceId": 1, "data": "' . $data . '"}';
         $json = get_json(wp_remote_post($url,
-            array('timeout' => JSON_DATA_UPLOAD_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
+            array('timeout' => SIMSAGE_JSON_DATA_UPLOAD_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                 'body' => $bodyStr)));
         $error_str = check_simsage_json_response( $server, $json );
         if ( strpos( $error_str, "not time yet ") ) {
@@ -659,7 +659,7 @@ class simsage_admin
         $bodyStr = '{"organisationId": "' . $organisationId . '", "kbId": "' . $kbId . '", "sid": "' . $sid .
                     '", "password": "' . $password . '", "email": "' . $email . '"}';
         $json = get_json(wp_remote_post($url,
-            array('timeout' => JSON_POST_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
+            array('timeout' => SIMSAGE_JSON_POST_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                   'body' => $bodyStr)));
         $error_str = check_simsage_json_response( SIMSAGE_API_SERVER, $json );
         if ($error_str != "") {

@@ -44,7 +44,7 @@ class simsage_operator
         wp_enqueue_script( 'ops-script-1', plugins_url( 'assets/js/operator.js', __FILE__ ), array('jquery'), '1.0', true );
         wp_enqueue_script( 'ops-script-2', plugins_url( 'assets/js/setup-operator.js', __FILE__ ), array('jquery'), '1.0', true );
         // this is the html of the admin page, rendered in the context of this class
-        include_once PLUGIN_DIR . 'inc/simsage_operator_view.php';
+        include_once SIMSAGE_PLUGIN_DIR . 'inc/simsage_operator_view.php';
     }
 
 
@@ -61,7 +61,7 @@ class simsage_operator
      * @return string the setting, or an empty string if not found
      */
     private function get_account_setting( $key ) {
-        $plugin_options = get_option(PLUGIN_NAME);
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
         if ( isset($plugin_options["simsage_account"]) ) {
             $account = $plugin_options["simsage_account"];
             if ( isset($account[$key]) ) {

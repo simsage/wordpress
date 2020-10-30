@@ -21,7 +21,7 @@
     </div>
 
 	<?php
-	$options = get_option( PLUGIN_NAME );
+	$options = get_option( SIMSAGE_PLUGIN_NAME );
 	$plan = get_plan();
     // does this plan have operator access?
     $has_access = ($plan != null && isset( $plan['operatorEnabled'] ) && $plan['operatorEnabled']);

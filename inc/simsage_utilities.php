@@ -90,7 +90,7 @@ function add_wp_contents_to_archive($registration_key, $archive_file, $num_docs 
     $counter = 1;
     $md5_str = md5( $registration_key );
     // write the marker to file
-    fwrite( $archive_file, DOC_WP_DATA . "\n", strlen(DOC_WP_DATA) + 1 );
+    fwrite( $archive_file, SIMSAGE_DOC_WP_DATA . "\n", strlen(SIMSAGE_DOC_WP_DATA) + 1 );
     debug_log("md5 rego-key:" . $md5_str);
     foreach ($results as $row) {
         $obj = $row;
@@ -135,7 +135,7 @@ function add_wp_contents_to_archive($registration_key, $archive_file, $num_docs 
 
 
 /**
- * Add all QA items to an archive file passed in as a string in marked by DOC_BOT_DATA
+ * Add all QA items to an archive file passed in as a string in marked by SIMSAGE_DOC_BOT_DATA
  *
  * @param $archive_file resource the file to write to
  * @param $qa_list array a list of Question and Answer items
@@ -145,7 +145,7 @@ function add_wp_contents_to_archive($registration_key, $archive_file, $num_docs 
 function add_bot_qas_to_archive($archive_file, $qa_list, $num_qas ) {
     $str = "";
     $counter = 0;
-    fwrite( $archive_file, DOC_BOT_DATA . "\n", strlen(DOC_BOT_DATA) + 1 );
+    fwrite( $archive_file, SIMSAGE_DOC_BOT_DATA . "\n", strlen(SIMSAGE_DOC_BOT_DATA) + 1 );
     foreach ($qa_list as $qa) {
         if ( strlen(trim($qa["question"])) > 0 && strlen(trim($qa["answer"])) > 0 ) {
             // format: id | question | answer | context | link \n
@@ -169,7 +169,7 @@ function add_bot_qas_to_archive($archive_file, $qa_list, $num_qas ) {
 
 
 /**
- * Add all Synonyms to an archive file passed in as a string marked DOC_SYNONYM_DATA
+ * Add all Synonyms to an archive file passed in as a string marked SIMSAGE_DOC_SYNONYM_DATA
  *
  * @param $archive_file resource an archive file to write to
  * @param $synonym_list array a list of synonym items
@@ -177,7 +177,7 @@ function add_bot_qas_to_archive($archive_file, $qa_list, $num_qas ) {
  */
 function add_synonyms_to_archive($archive_file, $synonym_list ) {
     $str = "";
-    fwrite( $archive_file, DOC_SYNONYM_DATA . "\n", strlen(DOC_SYNONYM_DATA) + 1 );
+    fwrite( $archive_file, SIMSAGE_DOC_SYNONYM_DATA . "\n", strlen(SIMSAGE_DOC_SYNONYM_DATA) + 1 );
     foreach ($synonym_list as $synonym) {
         if ( strlen(trim($synonym["words"])) > 0 ) {
             // format: url | title | mimeType | created | last-modified | data
@@ -201,7 +201,7 @@ function add_synonyms_to_archive($archive_file, $synonym_list ) {
 function is_valid_bot_str( $str ) {
     $invalid_chars = array( "(", ")", "|", "[", "]", "{", "}");
     if ( trim($str) == "" ) return "text is empty";
-    if ( strlen( trim($str) ) > MAX_STRING_LENGTH ) return "string too long (maximum length allowed is " . MAX_STRING_LENGTH . " characters)";
+    if ( strlen( trim($str) ) > SIMSAGE_MAX_STRING_LENGTH ) return "string too long (maximum length allowed is " . SIMSAGE_MAX_STRING_LENGTH . " characters)";
     foreach ($invalid_chars as $ic) {
         if (strpos($str, $ic)) return "string must not contain " . sanitize_text_field($ic) . " character(s)";
     }
@@ -216,7 +216,7 @@ function is_valid_bot_str( $str ) {
  */
 function is_valid_context_str( $str ) {
     $invalid_chars = array( "(", ")", "|", "[", "]", "{", "}");
-    if ( strlen( trim($str) ) > MAX_STRING_LENGTH ) return "string too long (maximum length allowed is " . MAX_STRING_LENGTH . " characters)";
+    if ( strlen( trim($str) ) > SIMSAGE_MAX_STRING_LENGTH ) return "string too long (maximum length allowed is " . SIMSAGE_MAX_STRING_LENGTH . " characters)";
     foreach ($invalid_chars as $ic) {
         if (strpos($str, $ic)) return "string must not contain " . $ic . " character(s)";
     }
@@ -366,7 +366,7 @@ function check_simsage_json_response( $server, $json ) {
  * @return array|null return the knowledgeBase for this user
  */
 function get_kb() {
-    $plugin_options = get_option(PLUGIN_NAME);
+    $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
     if ( isset($plugin_options["simsage_account"]) ) {
         $account = $plugin_options["simsage_account"];
         if ( isset($account["kbId"]) && isset($account["sid"]) ) {
@@ -383,7 +383,7 @@ function get_kb() {
  * @return array|null return the plan for this user
  */
 function get_plan() {
-    $plugin_options = get_option(PLUGIN_NAME);
+    $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
     if ( isset($plugin_options["simsage_account"]) ) {
         $account = $plugin_options["simsage_account"];
         if ( isset( $account["plan"] ) ) {
@@ -400,7 +400,7 @@ function get_plan() {
  * @return string return this user's subscription / registration key
  */
 function get_registration_key() {
-    $plugin_options = get_option(PLUGIN_NAME);
+    $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
     if ( isset($plugin_options["simsage_registration_key"]) ) {
         return sanitize_text_field($plugin_options["simsage_registration_key"]);
     }

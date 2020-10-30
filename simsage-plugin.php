@@ -10,8 +10,8 @@
    */
 
 // define the location of the plugin directory for all includes
-define( 'PLUGIN_DIR', dirname(__FILE__) . '/' );
-define( 'PLUGIN_NAME', 'simsage-search' );
+define( 'SIMSAGE_PLUGIN_DIR', dirname(__FILE__) . '/' );
+define( 'SIMSAGE_PLUGIN_NAME', 'simsage-search' );
 
 // SimSage registration-api-server address
 define( 'SIMSAGE_API_SERVER', 'https://api-test.simsage.nz');
@@ -22,27 +22,27 @@ define( 'SIMSAGE_REGO_SERVER', 'https://portal-test.simsage.nz');
 // SimSage special content file-names - do not change these
 // these are used to transmit QA, synonym, and semantic information to SimSage
 // alongside other content from WordPress
-define( 'DOC_WP_DATA', '-simsage-wp.txt');
-define( 'DOC_BOT_DATA', '-simsage-bot.txt');
-define( 'DOC_SYNONYM_DATA', '-simsage-synonyms.txt');
-define( 'DOC_SEMANTIC_DATA', '-simsage-semantics.txt');
+define( 'SIMSAGE_DOC_WP_DATA', '-simsage-wp.txt');
+define( 'SIMSAGE_DOC_BOT_DATA', '-simsage-bot.txt');
+define( 'SIMSAGE_DOC_SYNONYM_DATA', '-simsage-synonyms.txt');
+define( 'SIMSAGE_DOC_SEMANTIC_DATA', '-simsage-semantics.txt');
 
 // maximum length of a QA question or answer string
-define( 'MAX_STRING_LENGTH', 256 );
+define( 'SIMSAGE_MAX_STRING_LENGTH', 256 );
 
 // set timeout for json posts (in seconds) must not exceed PHP max_execution_time
-define( 'JSON_POST_TIMEOUT', 10 );
+define( 'SIMSAGE_JSON_POST_TIMEOUT', 10 );
 // the timeout for json data archive uploads
-define( 'JSON_DATA_UPLOAD_TIMEOUT', 15 );
+define( 'SIMSAGE_JSON_DATA_UPLOAD_TIMEOUT', 15 );
 
 // include the main search functionality class
-include_once( PLUGIN_DIR . 'simsage_search.php' );
+include_once( SIMSAGE_PLUGIN_DIR . 'simsage_search.php' );
 // include the admin settings page and menu-setup for WordPress of this plugin
-include_once( PLUGIN_DIR . 'simsage_admin.php' );
+include_once( SIMSAGE_PLUGIN_DIR . 'simsage_admin.php' );
 // include the SimSage operator interface
-include_once( PLUGIN_DIR . 'simsage_operator.php' );
+include_once( SIMSAGE_PLUGIN_DIR . 'simsage_operator.php' );
 // include the SimSage analytics interface
-include_once(PLUGIN_DIR . 'simsage_data.php');
+include_once( SIMSAGE_PLUGIN_DIR . 'simsage_data.php' );
 
 // create the main search class to use throughout
 $search = new simsage_search();
