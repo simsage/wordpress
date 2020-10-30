@@ -412,7 +412,7 @@ function simsage_get_registration_key() {
  * make sure the twice daily job type exists
  */
 function simsage_setup_cron_schedule() {
-    add_filter( 'cron_schedules', 'setup_archive_job_schedule' );
+    add_filter( 'cron_schedules', 'simsage_setup_archive_job_schedule' );
 }
 
 
