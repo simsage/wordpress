@@ -569,8 +569,8 @@ class simsage_admin
             $archive_file = fopen($filename, "wb");
 
             $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
-            $num_docs = $plan["numDocs"];
-            $num_qas = $plan["numQA"];
+            $num_docs = (int)$plan["numDocs"];
+            $num_qas = (int)$plan["numQA"];
             if ($archive_file) {
                 debug_log("starting " . $filename);
 
