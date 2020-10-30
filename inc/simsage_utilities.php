@@ -503,6 +503,7 @@ function simsage_compress_file($in_filename, $out_filename) {
  * @return array the sanitized data
  */
 function simsage_sanitize_plan( $plan ) {
+    // operatorEnabled removed
     return array(
         "id" => isset($plan['id']) ? sanitize_text_field( $plan['id'] ) : "",
         "name" => isset($plan['name']) ? sanitize_text_field( $plan['name'] ) : "",
@@ -510,7 +511,7 @@ function simsage_sanitize_plan( $plan ) {
         "freeMonths" => isset($plan['freeMonths']) ? (int)sanitize_text_field( $plan['freeMonths'] ) : 0,
         "numDocs" => isset($plan['numDocs']) ? (int)sanitize_text_field( $plan['numDocs'] ) : 0,
         "numQA" => isset($plan['numQA']) ? (int)sanitize_text_field( $plan['numQA'] ) : 0,
-        "operatorEnabled" => isset($plan['operatorEnabled']) ? strtolower(sanitize_text_field( $plan['operatorEnabled'] )) == "true" : False,
+        "operatorEnabled" => True, // always enabled
         "maxQueriesPerDay" => isset($plan['maxQueriesPerDay']) ? (int)sanitize_text_field( $plan['maxQueriesPerDay'] ) : 0,
         "analyticsWindowInMonths" => isset($plan['analyticsWindowInMonths']) ? (int)sanitize_text_field( $plan['analyticsWindowInMonths'] ) : 0
     );
