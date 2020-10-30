@@ -1,7 +1,7 @@
 <?php
 
 /**
- * misc utilities for helping the plugin
+ * misc SimSage utilities for helping the plugin
  *
  */
 
