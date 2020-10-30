@@ -443,6 +443,8 @@ function simsage_setup_cron_job($admin ) {
 
 
 /**
+ * Create a ZIP compressed version of in_filename and write it to out_filename
+ *
  * @param $in_filename  string the file to read and compress
  * @param $out_filename string the gzip file to create from in_filename
  * @return bool true if successful in creating the archive
@@ -491,5 +493,50 @@ function simsage_compress_file($in_filename, $out_filename) {
         fclose($in_file);
     }
     return FALSE;
+}
+
+
+/**
+ * Return a sanitized array version of the JSON plan object
+ *
+ * @param $plan array a plan array
+ * @return array the sanitized data
+ */
+function simsage_sanitize_plan( $plan ) {
+    return array(
+        "id" => isset($response['id']) ? sanitize_text_field( $plan['id'] ) : "",
+        "name" => isset($response['name']) ? sanitize_text_field( $plan['name'] ) : "",
+        "price" => isset($response['price']) ? sanitize_text_field( $plan['price'] ) : 0,
+        "freeMonths" => isset($response['freeMonths']) ? sanitize_text_field( $plan['freeMonths'] ) : 0,
+        "numDocs" => isset($response['numDocs']) ? sanitize_text_field( $plan['numDocs'] ) : 0,
+        "numQA" => isset($response['numQA']) ? sanitize_text_field( $plan['numQA'] ) : 0,
+        "operatorEnabled" => isset($response['operatorEnabled']) ? sanitize_text_field( $plan['operatorEnabled'] ) : False,
+        "maxQueriesPerDay" => isset($response['maxQueriesPerDay']) ? sanitize_text_field( $plan['maxQueriesPerDay'] ) : 0,
+        "analyticsWindowInMonths" => isset($response['analyticsWindowInMonths']) ? sanitize_text_field( $plan['analyticsWindowInMonths'] ) : 0
+    );
+}
+
+
+/**
+ * Return a sanitized array version of the JSON registration response
+ *
+ * @param $response array the registration response to sanitize
+ * @return array the sanitized data
+ */
+function simsage_sanitize_registration_response( $response ) {
+    return array(
+        "id" => isset($response['id']) ? sanitize_text_field( $response['id'] ) : "",
+        "organisation" => isset($response['organisation']) ? sanitize_text_field( $response['organisation'] ) : "",
+        "firstname" => isset($response['firstname']) ? sanitize_text_field( $response['firstname'] ) : "",
+        "surname" => isset($response['surname']) ? sanitize_text_field( $response['surname'] ) : "",
+        "phone" => isset($response['phone']) ? sanitize_text_field( $response['phone'] ) : "",
+        "email" => isset($response['email']) ? sanitize_email( $response['email'] ) : "",
+        "server" => isset($response['server']) ? sanitize_text_field( $response['server'] ) : "",
+        "registrationKey" => isset($response['registrationKey']) ? sanitize_text_field( $response['registrationKey'] ) : "",
+        "kbId" => isset($response['kbId']) ? sanitize_text_field( $response['kbId'] ) : "",
+        "sid" => isset($response['sid']) ? sanitize_text_field( $response['sid'] ) : "",
+        "trialEnd" => isset($response['trialEnd']) ? sanitize_text_field( $response['trialEnd'] ) : 0,
+        "plan" => simsage_sanitize_plan( $response['plan'] )
+    );
 }
 

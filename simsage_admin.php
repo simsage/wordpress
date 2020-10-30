@@ -167,12 +167,12 @@ class simsage_admin
         $cmd = sanitize_text_field($post_data["submit"]);
         if ( $cmd == 'Close my SimSage Account' ) {
             $params = $post_data[SIMSAGE_PLUGIN_NAME];
-            $password = sanitize_text_field($params['simsage_password']);
+            $password = $params['simsage_password']; // do not sanitize the password
             if (strlen(trim($password)) < 8) {
                 add_settings_error('simsage_settings', 'invalid_password', 'Invalid SimSage password (too short)', $type = 'error');
 
             } else {
-                // the user wants to close their account - make sure all values are valid
+                // the user wants to close their account - make sure all values are valid, all values are sanitized
                 $organisationId = $this->get_organisationId();
                 $kb = simsage_get_kb();
                 $email = $this->get_email();
@@ -222,18 +222,20 @@ class simsage_admin
                 $json = simsage_get_json(wp_remote_post($url,
                     array('timeout' => SIMSAGE_JSON_POST_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                         'body' => '{"registrationKey": "' . trim($registration_key) . '"}')));
-                debug_log(print_r($json, true));
+                debug_log(sanitize_text_field(print_r($json, true)));
                 $error_str = simsage_check_json_response(SIMSAGE_API_SERVER, $json);
                 // no error?
                 if ($error_str == "") {
                     $body = simsage_get_json($json["body"]); // convert to an object
                     if (!isset($body['kbId']) || !isset($body['sid']) || !isset($body['plan'])  || !isset($body['server']) ||
                         !isset($body['id']) || !isset($body['email'])) {
-                        add_settings_error('simsage_settings', 'invalid_response', 'Invalid SimSage response.  Please upgrade your plugin.', $type = 'error');
+                        add_settings_error('simsage_settings', 'invalid_response',
+                                            'Invalid SimSage response (missing return values in valid response).  Please upgrade your plugin.',
+                                            $type = 'error');
 
                     } else {
                         // set the account data we just got back (store it)
-                        $plugin_options["simsage_account"] = $body;
+                        $plugin_options["simsage_account"] = simsage_sanitize_registration_response( $body );
                         // set our defaults (if not already set) for search and the bot and the site
                         $this->set_defaults( $plugin_options );
                         // save settings
