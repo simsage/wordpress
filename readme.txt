@@ -3,7 +3,7 @@ Contributors: rock3125
 Tags: plugin, commercial, readme
 Author URI: https://github.com/peter3125
 Requires at least 5.0
-Tested up to 5.4.1
+Tested up to: 5.4.1
 Stable Tag: 1.2
 Description: this Plugin adds SimSage Semantic Search and operator help to your web-site.
 License: GPLv3
