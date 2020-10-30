@@ -24,7 +24,7 @@
 	$options = get_option( SIMSAGE_PLUGIN_NAME );
 	$plan = simsage_get_plan();
     // does this plan have operator access?
-    $has_access = ($plan != null && isset( $plan['operatorEnabled'] ) && $plan['operatorEnabled']);
+    $has_access = ($plan != null && isset( $plan['operatorEnabled'] ) && ($plan['operatorEnabled']).lower() == "true");
     // when we have selected a site, this variable will be set
     $has_sites = (simsage_get_kb() != null);
     // and is the operator enabled?
