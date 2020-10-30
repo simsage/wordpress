@@ -561,7 +561,7 @@ class simsage_admin
      * @param $include_synonyms bool include the synonyms in the archive
      * @return array the filename to the zip-file in its temporary file location and its md5 sum or (null, null)
      */
-	private function create_content_archive($plan) {
+	private function create_content_archive( $plan ) {
 	    if ( $plan != null ) {
 	        $registration_key = simsage_get_registration_key();
 
@@ -569,7 +569,7 @@ class simsage_admin
             $archive_file = fopen($filename, "wb");
 
             $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
-            $num_docs = $plan["numDocs"];
+            $num_docs = int($plan["numDocs"]);
             $num_qas = $plan["numQA"];
             if ($archive_file) {
                 debug_log("starting " . $filename);
