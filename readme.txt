@@ -1,5 +1,6 @@
 == SimSage Search Plugin ==
 Contributors: rock3125
+Donate link: https://simsage.ai/
 Tags: plugin, commercial, readme
 Author URI: https://github.com/peter3125
 Requires at least: 5.0
