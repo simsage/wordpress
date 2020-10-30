@@ -387,7 +387,7 @@ function simsage_get_plan() {
     if ( isset($plugin_options["simsage_account"]) ) {
         $account = $plugin_options["simsage_account"];
         if ( isset( $account["plan"] ) ) {
-            return sanitize_text_field($account["plan"]);
+            return $account["plan"];
         }
     }
     return null;
