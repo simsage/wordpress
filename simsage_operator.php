@@ -79,7 +79,7 @@ class simsage_operator
      * @return string the value, or an empty string if not found
      */
     private function get_site_setting( $key ) {
-        $kb = get_kb();
+        $kb = simsage_get_kb();
         if ( $kb != null ) {
             if ( isset($kb[$key]) ) {
                 return sanitize_text_field($kb[$key]);

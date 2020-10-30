@@ -37,7 +37,7 @@ class simsage_search
      */
     public function plugin_activate() {
     	// make sure we have the right versions of WP and php, notify the user if not
-        check_versions(); // defined in inc/simsage_utilities.php
+        simsage_check_versions(); // defined in inc/simsage_utilities.php
         flush_rewrite_rules();
     }
 
@@ -57,7 +57,7 @@ class simsage_search
         if ( $pagenow == 'plugins.php' ) {
             $plugin_options = get_option(SIMSAGE_PLUGIN_NAME); // get our plugin's db data
             // display the "visit the plugin settings" link if this plugin doesn't have any settings yet
-            if ( empty($plugin_options) || get_kb() == null ) {
+            if ( empty($plugin_options) || simsage_get_kb() == null ) {
                 $message = __('Please setup the SimSage plugin settings ', SIMSAGE_PLUGIN_NAME);
                 $plugin_settings_url = '<a href="' . admin_url('options-general.php?page=' . SIMSAGE_PLUGIN_NAME) . '">' .
                     __('SimSage plugin settings', SIMSAGE_PLUGIN_NAME) . '</a>';
@@ -96,7 +96,7 @@ class simsage_search
      * @return string the value, or an empty string if not found
      */
     private function get_site_setting( $key ) {
-        $kb = get_kb();
+        $kb = simsage_get_kb();
         if ( $kb != null ) {
             if ( isset($kb[$key]) ) {
                 return sanitize_text_field($kb[$key]);
@@ -195,7 +195,7 @@ class simsage_search
         wp_enqueue_style('simsage-search-style-7');
         wp_enqueue_style('simsage-search-style-8');
 
-        if ( get_kb() != null ) {
+        if ( simsage_get_kb() != null ) {
             // render simsage_search_view.php in the context of this class
             ob_start();
             include SIMSAGE_PLUGIN_DIR . 'inc/simsage_search_view.php';
@@ -209,7 +209,7 @@ class simsage_search
 	public function get_search_form( $content ) {
         $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
         // only replace the search_form if the plugin has been configured and it has been configured to do so by the user
-		if ( isset( $plugin_options["simsage_override_default_search"] ) && $plugin_options["simsage_override_default_search"] && get_kb() != null ) {
+		if ( isset( $plugin_options["simsage_override_default_search"] ) && $plugin_options["simsage_override_default_search"] && simsage_get_kb() != null ) {
             $this->add_script = true;
 
             wp_enqueue_style('simsage-search-style-1'); // add our style-sheets

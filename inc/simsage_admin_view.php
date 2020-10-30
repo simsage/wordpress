@@ -29,7 +29,7 @@
 		$active_tab = sanitize_text_field($_GET[ 'tab' ]);
 	} // end if
 	$options = get_option( SIMSAGE_PLUGIN_NAME );
-    $plan = get_plan();
+    $plan = simsage_get_plan();
 	// add the nonce, option_page, action and referer.
 	settings_fields( SIMSAGE_PLUGIN_NAME );
 	do_settings_sections( SIMSAGE_PLUGIN_NAME );

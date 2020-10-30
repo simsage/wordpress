@@ -19,7 +19,7 @@
 
     <?php
     // set when connected to SimSage
-    $has_sites = (get_kb() != null);
+    $has_sites = (simsage_get_kb() != null);
     ?>
 
     <?php if ( $has_sites ) { ?>

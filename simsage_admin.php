@@ -174,7 +174,7 @@ class simsage_admin
             } else {
                 // the user wants to close their account - make sure all values are valid
                 $organisationId = $this->get_organisationId();
-                $kb = get_kb();
+                $kb = simsage_get_kb();
                 $email = $this->get_email();
                 // try and delete the account
                 if ( $this->close_simsage_account( $email, $organisationId, $kb["kbId"], $kb["sid"], $password ) ) {
@@ -217,16 +217,16 @@ class simsage_admin
 
             } else {
                 // try and sign-into SimSage given the user's key
-                $url = join_urls(SIMSAGE_API_SERVER, '/api/auth/sign-in-registration-key');
+                $url = simsage_join_urls(SIMSAGE_API_SERVER, '/api/auth/sign-in-registration-key');
                 debug_log("sign-in url:" . $url);
-                $json = get_json(wp_remote_post($url,
+                $json = simsage_get_json(wp_remote_post($url,
                     array('timeout' => SIMSAGE_JSON_POST_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                         'body' => '{"registrationKey": "' . trim($registration_key) . '"}')));
                 debug_log(print_r($json, true));
-                $error_str = check_simsage_json_response(SIMSAGE_API_SERVER, $json);
+                $error_str = simsage_check_json_response(SIMSAGE_API_SERVER, $json);
                 // no error?
                 if ($error_str == "") {
-                    $body = get_json($json["body"]); // convert to an object
+                    $body = simsage_get_json($json["body"]); // convert to an object
                     if (!isset($body['kbId']) || !isset($body['sid']) || !isset($body['plan'])  || !isset($body['server']) ||
                         !isset($body['id']) || !isset($body['email'])) {
                         add_settings_error('simsage_settings', 'invalid_response', 'Invalid SimSage response.  Please upgrade your plugin.', $type = 'error');
@@ -271,7 +271,7 @@ class simsage_admin
         // check all the questions and answers are to our liking
         $has_error = false;
         foreach ($existing_qa as $id => $qa) {
-            $error_str = is_valid_bot_qa_pair($id, $qa["question"], $qa["answer"], $qa["context"]);
+            $error_str = simsage_is_valid_bot_qa_pair($id, $qa["question"], $qa["answer"], $qa["context"]);
             if ( $error_str != null ) {
                 add_settings_error('simsage_settings', 'simsage_bot_qa', $error_str, $type = 'error');
                 $has_error = true;
@@ -296,7 +296,7 @@ class simsage_admin
         // check all the synonyms are correct
         $has_errors = false;
         foreach ($existing_synonyms as $id => $synonym) {
-            $error_str = is_valid_synonym($id, $synonym["words"]);
+            $error_str = simsage_is_valid_synonym($id, $synonym["words"]);
             if ( $error_str != null ) {
                 add_settings_error('simsage_settings', 'simsage_synonyms', $error_str, $type = 'error');
                 $has_errors = true;
@@ -313,8 +313,8 @@ class simsage_admin
      * @return bool success, or false if anything went wrong
      */
     private function update_simsage() {
-        $plan = get_plan();
-        $kb = get_kb();
+        $plan = simsage_get_plan();
+        $kb = simsage_get_kb();
         if ( $plan != null && $kb != null ) {
             $organisationId = $this->get_organisationId();
             if ($organisationId == null) {
@@ -561,7 +561,7 @@ class simsage_admin
      */
 	private function create_content_archive($plan) {
 	    if ( $plan != null ) {
-	        $registration_key = get_registration_key();
+	        $registration_key = simsage_get_registration_key();
 
             $filename = tempnam(get_temp_dir(), "simsage");
             $archive_file = fopen($filename, "wb");
@@ -572,13 +572,13 @@ class simsage_admin
             if ($archive_file) {
                 debug_log("starting " . $filename);
 
-                $content_md5 = add_wp_contents_to_archive( $registration_key, $archive_file, $num_docs );
+                $content_md5 = simsage_add_wp_contents_to_archive( $registration_key, $archive_file, $num_docs );
                 // done writing the archive file
                 fclose( $archive_file );
 
                 // compress it!
                 $filename_compressed = tempnam(get_temp_dir(), "simsage-compressed");
-                if ( compress_file( $filename, $filename_compressed ) ) {
+                if ( simsage_compress_file( $filename, $filename_compressed ) ) {
 
                     // remove the archive file - we're done with it!
                     if (!unlink( $filename )) {
@@ -620,12 +620,12 @@ class simsage_admin
         debug_log("uploading archive " . $filename . ", to: " . $server . ", org: " . $organisationId . ", kb: " . $kbId);
         $fileContent = file_get_contents($filename);
         $data = ";base64," . base64_encode($fileContent);
-        $url = join_urls($server, '/api/crawler/document/upload/archive');
+        $url = simsage_join_urls($server, '/api/crawler/document/upload/archive');
         $bodyStr = '{"organisationId": "' . $organisationId . '", "kbId": "' . $kbId . '", "sid": "' . $sid . '", "sourceId": 1, "data": "' . $data . '"}';
-        $json = get_json(wp_remote_post($url,
+        $json = simsage_get_json(wp_remote_post($url,
             array('timeout' => SIMSAGE_JSON_DATA_UPLOAD_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                 'body' => $bodyStr)));
-        $error_str = check_simsage_json_response( $server, $json );
+        $error_str = simsage_check_json_response( $server, $json );
         if ( strpos( $error_str, "not time yet ") ) {
             add_settings_error('simsage_settings', 'simsage_upload_error', "Content upload scheduled for later", $type = 'info');
             return false;
@@ -655,13 +655,13 @@ class simsage_admin
      */
     private function close_simsage_account( $email, $organisationId, $kbId, $sid, $password ) {
         debug_log("closing account " . $email . ", org: " . $organisationId . ", kb: " . $kbId);
-        $url = join_urls(SIMSAGE_API_SERVER, '/api/auth/wp-close-account');
+        $url = simsage_join_urls(SIMSAGE_API_SERVER, '/api/auth/wp-close-account');
         $bodyStr = '{"organisationId": "' . $organisationId . '", "kbId": "' . $kbId . '", "sid": "' . $sid .
                     '", "password": "' . $password . '", "email": "' . $email . '"}';
-        $json = get_json(wp_remote_post($url,
+        $json = simsage_get_json(wp_remote_post($url,
             array('timeout' => SIMSAGE_JSON_POST_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                   'body' => $bodyStr)));
-        $error_str = check_simsage_json_response( SIMSAGE_API_SERVER, $json );
+        $error_str = simsage_check_json_response( SIMSAGE_API_SERVER, $json );
         if ($error_str != "") {
             if ( function_exists('add_settings_error') )
                 add_settings_error('simsage_settings', 'simsage_close_account', $error_str, $type = 'error');

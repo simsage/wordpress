@@ -11,7 +11,7 @@
  * and leave the user with a message advising them what to do
  *
  */
-function check_versions() {
+function simsage_check_versions() {
     global $wp_version;
 
     // php language version required
@@ -66,7 +66,7 @@ if ( ! function_exists('debug_log')) {
  * @param $data string|object
  * @return mixed
  */
-function get_json( $data ) {
+function simsage_get_json($data ) {
 	if (gettype($data) == "string") {
 		return json_decode($data, true, 512);
 	} else {
@@ -83,7 +83,7 @@ function get_json( $data ) {
  * @param $num_docs int the maximum number of allowed documents for this site as per plan
  * @return string the combined md5s of the content
  */
-function add_wp_contents_to_archive($registration_key, $archive_file, $num_docs ) {
+function simsage_add_wp_contents_to_archive($registration_key, $archive_file, $num_docs ) {
     global $wpdb;
     $query = "SELECT * FROM $wpdb->posts WHERE post_status = 'publish'";
     $results = $wpdb->get_results($query);
@@ -142,7 +142,7 @@ function add_wp_contents_to_archive($registration_key, $archive_file, $num_docs 
  * @param $num_qas int the maximum number of QAs allowed
  * @return string the md5 of the content (or empty string)
  */
-function add_bot_qas_to_archive($archive_file, $qa_list, $num_qas ) {
+function simsage_add_bot_qas_to_archive($archive_file, $qa_list, $num_qas ) {
     $str = "";
     $counter = 0;
     fwrite( $archive_file, SIMSAGE_DOC_BOT_DATA . "\n", strlen(SIMSAGE_DOC_BOT_DATA) + 1 );
@@ -175,7 +175,7 @@ function add_bot_qas_to_archive($archive_file, $qa_list, $num_qas ) {
  * @param $synonym_list array a list of synonym items
  * @return string the md5 of the content or empty string
  */
-function add_synonyms_to_archive($archive_file, $synonym_list ) {
+function simsage_add_synonyms_to_archive($archive_file, $synonym_list ) {
     $str = "";
     fwrite( $archive_file, SIMSAGE_DOC_SYNONYM_DATA . "\n", strlen(SIMSAGE_DOC_SYNONYM_DATA) + 1 );
     foreach ($synonym_list as $synonym) {
@@ -198,7 +198,7 @@ function add_synonyms_to_archive($archive_file, $synonym_list ) {
  * @param $str
  * @return string|null return a string with an error, or null if there is none
  */
-function is_valid_bot_str( $str ) {
+function simsage_is_valid_bot_str($str ) {
     $invalid_chars = array( "(", ")", "|", "[", "]", "{", "}");
     if ( trim($str) == "" ) return "text is empty";
     if ( strlen( trim($str) ) > SIMSAGE_MAX_STRING_LENGTH ) return "string too long (maximum length allowed is " . SIMSAGE_MAX_STRING_LENGTH . " characters)";
@@ -214,7 +214,7 @@ function is_valid_bot_str( $str ) {
  * @param $str
  * @return string|null return a string with an error, or null if there is none
  */
-function is_valid_context_str( $str ) {
+function simsage_is_valid_context_str($str ) {
     $invalid_chars = array( "(", ")", "|", "[", "]", "{", "}");
     if ( strlen( trim($str) ) > SIMSAGE_MAX_STRING_LENGTH ) return "string too long (maximum length allowed is " . SIMSAGE_MAX_STRING_LENGTH . " characters)";
     foreach ($invalid_chars as $ic) {
@@ -232,12 +232,12 @@ function is_valid_context_str( $str ) {
  * @param $answer string the answer's text
  * @return string|null return a string with an error, or null if there is none
  */
-function is_valid_bot_qa_pair( $id, $question, $answer, $context ) {
-    $error1 = is_valid_bot_str($question);
+function simsage_is_valid_bot_qa_pair($id, $question, $answer, $context ) {
+    $error1 = simsage_is_valid_bot_str($question);
     if ( $error1 != null) return "Question " . sanitize_text_field($id) . ": " . $error1;
-    $error2 = is_valid_bot_str($answer);
+    $error2 = simsage_is_valid_bot_str($answer);
     if ( $error2 != null) return "Answer " . sanitize_text_field($id) . ": " . $error2;
-    $error3 = is_valid_context_str($context);
+    $error3 = simsage_is_valid_context_str($context);
     if ( $error3 != null) return "Context " . sanitize_text_field($id) . ": " . $error3;
     return null;
 }
@@ -251,7 +251,7 @@ function is_valid_bot_qa_pair( $id, $question, $answer, $context ) {
  * @param $str
  * @return string|null return a string with an error, or null if there is none
  */
-function is_valid_synonym_str( $str ) {
+function simsage_is_valid_synonym_str($str ) {
     if ( trim($str) == "" ) return "text is empty";
     $words = explode(",", sanitize_text_field($str));
     if ( count($words) > 2 ) return "no more than two words for a synonym";
@@ -283,12 +283,12 @@ function is_valid_synonym_str( $str ) {
  * @param $synonym string the question's text
  * @return string|null return a string with an error, or null if there is none
  */
-function is_valid_synonym( $id, $synonym ) {
+function simsage_is_valid_synonym($id, $synonym ) {
     if ( trim($synonym) == "" ) return "Synonym " . sanitize_text_field($id) . " string is empty";
     $words = explode(",", sanitize_text_field($synonym));
     if ( count($words) == 1 ) return "Synonym " . sanitize_text_field($id) . " must have comma separated words that are synonymous to it";
     foreach ($words as $word) {
-        $error1 = is_valid_synonym_str(sanitize_text_field($word));
+        $error1 = simsage_is_valid_synonym_str(sanitize_text_field($word));
         if ( $error1 != null) return "Synonym " . sanitize_text_field($id) . ": " . $error1;
     }
     return null;
@@ -301,7 +301,7 @@ function is_valid_synonym( $id, $synonym ) {
  * @param $url2 string second part of the url
  * @return string the joined url
  */
-function join_urls( $url1, $url2 ) {
+function simsage_join_urls($url1, $url2 ) {
     if ( substr( $url1, strlen($url1) - 1, 1 ) === "/" && substr( $url1, 0, 1 ) === '/' ) {
         return $url1 . substr($url2, 1);
     } else if ( substr( $url1, strlen($url1) - 1, 1 ) === "/" || substr( $url1, 0, 1 ) === '/' ) {
@@ -316,7 +316,7 @@ function join_urls( $url1, $url2 ) {
  * @param $json array the data returned by SimSage from the server
  * @return string an empty string if no error was found, otherwise a description of the error
  */
-function check_simsage_json_response( $server, $json ) {
+function simsage_check_json_response($server, $json ) {
     if ( isset($json["error"]) ) {
         $error = print_r( sanitize_text_field($json["error"]), true);
         if ( $error != "" ) {
@@ -339,7 +339,7 @@ function check_simsage_json_response( $server, $json ) {
 
     } else if ( isset($json["body"]) ) {
         // simsage itself has a specific internal error?
-        $body = get_json($json["body"]);
+        $body = simsage_get_json($json["body"]);
         if ( isset($body["error"]) ) {
             $error = sanitize_text_field($body["error"]);
             if ($error != "") {
@@ -349,7 +349,7 @@ function check_simsage_json_response( $server, $json ) {
 
     } else if ( isset($json["response"]) ) {
         // finally, check the HTTP response code is within 200..299
-        $response = get_json($json["response"]);
+        $response = simsage_get_json($json["response"]);
         if ( isset($response["code"]) ) {
             $response_code = sanitize_text_field($response["code"]);
             if ($response_code < 200 || $response_code > 299) {
@@ -365,7 +365,7 @@ function check_simsage_json_response( $server, $json ) {
  * Access the knowledge-base for the current user (or null if dne)
  * @return array|null return the knowledgeBase for this user
  */
-function get_kb() {
+function simsage_get_kb() {
     $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
     if ( isset($plugin_options["simsage_account"]) ) {
         $account = $plugin_options["simsage_account"];
@@ -382,7 +382,7 @@ function get_kb() {
  * Access the plan for the current user (or null if dne)
  * @return array|null return the plan for this user
  */
-function get_plan() {
+function simsage_get_plan() {
     $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
     if ( isset($plugin_options["simsage_account"]) ) {
         $account = $plugin_options["simsage_account"];
@@ -399,7 +399,7 @@ function get_plan() {
  * Access the registration key for the current user (or empty string)
  * @return string return this user's subscription / registration key
  */
-function get_registration_key() {
+function simsage_get_registration_key() {
     $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
     if ( isset($plugin_options["simsage_registration_key"]) ) {
         return sanitize_text_field($plugin_options["simsage_registration_key"]);
@@ -411,7 +411,7 @@ function get_registration_key() {
 /**
  * make sure the twice daily job type exists
  */
-function setup_cron_schedule() {
+function simsage_setup_cron_schedule() {
     add_filter( 'cron_schedules', 'setup_archive_job_schedule' );
 }
 
@@ -420,7 +420,7 @@ function setup_cron_schedule() {
  * @param $schedules array the schedules
  * @return mixed array the new schedule
  */
-function setup_archive_job_schedule( $schedules ) {
+function simsage_setup_archive_job_schedule($schedules ) {
     if(!isset($schedules["twicedaily"])){
         $schedules["twicedaily"] = array(
             'interval' => 43200,
@@ -434,7 +434,7 @@ function setup_archive_job_schedule( $schedules ) {
  * setup SimSage to execute itself twice daily
  * @param $admin object the admin class
  */
-function setup_cron_job( $admin ) {
+function simsage_setup_cron_job($admin ) {
     if ( ! wp_next_scheduled('simsage_twicedaily', array($admin) ) ) {
         wp_schedule_event(time(), 'twicedaily', 'simsage_twicedaily', array($admin));
     }
@@ -447,7 +447,7 @@ function setup_cron_job( $admin ) {
  * @param $out_filename string the gzip file to create from in_filename
  * @return bool true if successful in creating the archive
  */
-function compress_file($in_filename, $out_filename) {
+function simsage_compress_file($in_filename, $out_filename) {
     $in_file = fopen($in_filename, "rb");
     if ($in_file !== FALSE) {
         $out_file = fopen($out_filename, "wb");
