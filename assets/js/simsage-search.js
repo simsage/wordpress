@@ -125,7 +125,7 @@ let search = {
     // overwrite: generic web socket receiver
     receive_ws_data: function(data, is_search) {
         busy(false);
-        console.log(data);
+        // console.log(data);
         if (data) {
             if (data.messageType === mt_Error && data.error.length > 0) {
                 error(data.error);  // set an error
