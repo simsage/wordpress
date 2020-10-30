@@ -504,15 +504,15 @@ function simsage_compress_file($in_filename, $out_filename) {
  */
 function simsage_sanitize_plan( $plan ) {
     return array(
-        "id" => isset($response['id']) ? sanitize_text_field( $plan['id'] ) : "",
-        "name" => isset($response['name']) ? sanitize_text_field( $plan['name'] ) : "",
-        "price" => isset($response['price']) ? (int)sanitize_text_field( $plan['price'] ) : 0,
-        "freeMonths" => isset($response['freeMonths']) ? (int)sanitize_text_field( $plan['freeMonths'] ) : 0,
-        "numDocs" => isset($response['numDocs']) ? (int)sanitize_text_field( $plan['numDocs'] ) : 1,
-        "numQA" => isset($response['numQA']) ? (int)sanitize_text_field( $plan['numQA'] ) : 0,
-        "operatorEnabled" => isset($response['operatorEnabled']) ? sanitize_text_field( $plan['operatorEnabled'] ).lower() == "true" : False,
-        "maxQueriesPerDay" => isset($response['maxQueriesPerDay']) ? (int)sanitize_text_field( $plan['maxQueriesPerDay'] ) : 0,
-        "analyticsWindowInMonths" => isset($response['analyticsWindowInMonths']) ? (int)sanitize_text_field( $plan['analyticsWindowInMonths'] ) : 0
+        "id" => isset($plan['id']) ? sanitize_text_field( $plan['id'] ) : "",
+        "name" => isset($plan['name']) ? sanitize_text_field( $plan['name'] ) : "",
+        "price" => isset($plan['price']) ? (int)sanitize_text_field( $plan['price'] ) : 0,
+        "freeMonths" => isset($plan['freeMonths']) ? (int)sanitize_text_field( $plan['freeMonths'] ) : 0,
+        "numDocs" => isset($plan['numDocs']) ? (int)sanitize_text_field( $plan['numDocs'] ) : 0,
+        "numQA" => isset($plan['numQA']) ? (int)sanitize_text_field( $plan['numQA'] ) : 0,
+        "operatorEnabled" => isset($plan['operatorEnabled']) ? sanitize_text_field( $plan['operatorEnabled'] ).lower() == "true" : False,
+        "maxQueriesPerDay" => isset($plan['maxQueriesPerDay']) ? (int)sanitize_text_field( $plan['maxQueriesPerDay'] ) : 0,
+        "analyticsWindowInMonths" => isset($plan['analyticsWindowInMonths']) ? (int)sanitize_text_field( $plan['analyticsWindowInMonths'] ) : 0
     );
 }
 
