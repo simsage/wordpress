@@ -69,14 +69,15 @@ class simsage_admin
      */
     public function update_plugin_options() {
 	    if ( isset($_POST['action']) ) { // get the required (hidden) action field's value
-		    $action = $_POST['action']; // get the action
+		    $action = sanitize_text_field($_POST['action']); // get the action
 		    debug_log("action:" . $action );
+		    $plugin_parameters = $_POST[PLUGIN_NAME]; // get settings array
 		    if ($action == 'sign-in') {
 		    	// perform a sign-in
-		    	$this->do_sign_in($_POST, $_POST[PLUGIN_NAME]['simsage_registration_key']);
+		    	$this->do_sign_in($_POST, sanitize_text_field($plugin_parameters['simsage_registration_key']));
 		    } else if ($action == 'update-search') {
-		    	// do an update to the search posted values
-			    $this->check_form_parameters($_POST[PLUGIN_NAME], true);
+		    	// do an update to the search posted values, items sanitized inside this function
+			    $this->check_form_parameters($plugin_parameters, true);
             }
 	    }
     }
@@ -163,10 +164,10 @@ class simsage_admin
      */
     private function do_sign_in( $post_data, $registration_key ) {
         // this is the name of the button
-        $cmd = $post_data["submit"];
+        $cmd = sanitize_text_field($post_data["submit"]);
         if ( $cmd == 'Close my SimSage Account' ) {
             $params = $post_data[PLUGIN_NAME];
-            $password = $params['simsage_password'];
+            $password = sanitize_text_field($params['simsage_password']);
             if (strlen(trim($password)) < 8) {
                 add_settings_error('simsage_settings', 'invalid_password', 'Invalid SimSage password (too short)', $type = 'error');
 
@@ -397,7 +398,8 @@ class simsage_admin
                 $default = $this->plugin_defaults[$key];
                 // check it is within range if it's default isn't 0 or 1
                 if ( $default["value"] != 0 && $default["value"] != 1 ) {
-                    if ( $value < $default["min"] || $value > $default["max"] ) {
+                    $sanitized_value = sanitize_text_field($value);
+                    if ( $sanitized_value < $default["min"] || $sanitized_value > $default["max"] ) {
                         $err_str = 'The value for ' . $default["name"] . ' must be between ' . $default["min"] . ' and ' . $default["max"];
                         add_settings_error('simsage_settings', 'invalid_value', $err_str, $type = 'error');
                         return false;  // abort
@@ -413,7 +415,7 @@ class simsage_admin
         $plugin_options = get_option(PLUGIN_NAME);
         foreach ($form_params as $key => $value) {
             if ( isset($this->plugin_defaults[$key]) ) {
-                $plugin_options[$key] = $value;
+                $plugin_options[$key] = sanitize_text_field($value);
             }
         }
         update_option(PLUGIN_NAME, $plugin_options);
@@ -443,7 +445,7 @@ class simsage_admin
         if ( isset($plugin_options["simsage_account"]) ) {
             $account = $plugin_options["simsage_account"];
             if ( isset($account["server"]) ) {
-                return $account["server"];
+                return sanitize_text_field($account["server"]);
             }
         }
         return null;
@@ -460,7 +462,7 @@ class simsage_admin
         if ( isset($plugin_options["simsage_account"]) ) {
             $account = $plugin_options["simsage_account"];
             if ( isset($account["id"]) ) {
-                return $account["id"];
+                return sanitize_text_field($account["id"]);
             }
         }
         return null;
@@ -475,7 +477,7 @@ class simsage_admin
     private function get_archive_md5() {
         $plugin_options = get_option(PLUGIN_NAME);
         if ( isset($plugin_options["archive_md5"]) ) {
-            return $plugin_options["archive_md5"];
+            return sanitize_text_field($plugin_options["archive_md5"]);
         }
         return "";
     }
@@ -488,7 +490,7 @@ class simsage_admin
      */
     private function update_archive_md5( $archive_md5 ) {
         $plugin_options = get_option(PLUGIN_NAME);
-        $plugin_options["archive_md5"] = $archive_md5;
+        $plugin_options["archive_md5"] = sanitize_text_field($archive_md5);
         update_option(PLUGIN_NAME, $plugin_options);
     }
 
@@ -503,7 +505,7 @@ class simsage_admin
         if ( isset($plugin_options["simsage_account"]) ) {
             $account = $plugin_options["simsage_account"];
             if ( isset($account["email"]) ) {
-                return $account["email"];
+                return sanitize_email($account["email"]);
             }
         }
         return null;
@@ -535,12 +537,12 @@ class simsage_admin
         if ( isset($this->plugin_defaults[$key]) ) {
             $data = $this->plugin_defaults[$key];
             if ( isset($data[$field]) ) {
-                return $data[$field];
+                return sanitize_text_field($data[$field]);
             } else {
-                debug_log("get_default_field: field not found: " . $key . "[" . $field . "]");
+                debug_log("get_default_field: field not found: " . sanitize_text_field($key) . "[" . sanitize_text_field($field) . "]");
             }
         } else {
-            debug_log("get_default_field: key not found: " . $key);
+            debug_log("get_default_field: key not found: " . sanitize_text_field($key));
         }
         return 0;
     }

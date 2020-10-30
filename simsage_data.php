@@ -56,7 +56,7 @@ class simsage_data
         if ( isset($plugin_options["simsage_account"]) ) {
             $account = $plugin_options["simsage_account"];
             if ( isset($account[$key]) ) {
-                return $account[$key];
+                return sanitize_text_field($account[$key]);
             }
         }
         return "";
@@ -73,7 +73,7 @@ class simsage_data
         $kb = get_kb();
         if ( $kb != null ) {
             if ( isset($kb[$key]) ) {
-                return $kb[$key];
+                return sanitize_text_field($kb[$key]);
             }
         }
         return "";

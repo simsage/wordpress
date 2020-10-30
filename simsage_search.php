@@ -73,7 +73,7 @@ class simsage_search
 
 
     /**
-     * get a SimSage specific value from the accounts section
+     * get a SimSage specific value from the accounts section (eg. server)
      *
      * @return string the setting, or an empty string if not found
      */
@@ -82,7 +82,7 @@ class simsage_search
         if ( isset($plugin_options["simsage_account"]) ) {
             $account = $plugin_options["simsage_account"];
             if ( isset($account[$key]) ) {
-                return $account[$key];
+                return sanitize_text_field($account[$key]);
             }
         }
         return "";
@@ -90,7 +90,7 @@ class simsage_search
 
 
     /**
-     * get a SimSage specific value of the knowledge-base
+     * get a SimSage specific value of the knowledge-base (eg. kbId)
      *
      * @param $key string the key to look for in kb
      * @return string the value, or an empty string if not found
@@ -99,7 +99,7 @@ class simsage_search
         $kb = get_kb();
         if ( $kb != null ) {
             if ( isset($kb[$key]) ) {
-                return $kb[$key];
+                return sanitize_text_field($kb[$key]);
             }
         }
         return "";
@@ -107,7 +107,7 @@ class simsage_search
 
 
     /**
-     * get a SimSage user set value
+     * get a SimSage user set value (eg. simsage_fragment_size)
      *
      * @param $key       string the key to look for
      * @param $default   string the default value to return if not found
@@ -116,9 +116,9 @@ class simsage_search
     private function get_user_value( $key, $default ) {
         $plugin_options = get_option(PLUGIN_NAME);
         if ( isset($plugin_options[$key]) ) {
-            return $plugin_options[$key];
+            return sanitize_text_field($plugin_options[$key]);
         }
-        return $default;
+        return sanitize_text_field($default);
     }
 
 
@@ -139,22 +139,6 @@ class simsage_search
 
 
     /**
-     * get a SimSage boolean value and return $default if it is set, otherwise return an empty string
-     *
-     * @param $key       string the key to look for
-     * @param $value     string the value to return if set
-     * @return string    the value as a string or empty string if not found
-     */
-    private function get_user_boolean_value_conditionally( $key, $value ) {
-        $plugin_options = get_option(PLUGIN_NAME);
-        if ( isset($plugin_options[$key]) ) {
-            return $plugin_options[$key] ? "" : $value;
-        }
-        return "";
-    }
-
-
-    /**
      * get the user's id (organisationId) to use from our settings
      *
      * @return string|null the user's id
@@ -164,7 +148,7 @@ class simsage_search
         if ( isset($plugin_options["simsage_account"]) ) {
             $account = $plugin_options["simsage_account"];
             if ( isset($account["id"]) ) {
-                return $account["id"];
+                return sanitize_text_field($account["id"]);
             }
         }
         return null;
@@ -195,11 +179,11 @@ class simsage_search
 		// get the context and context-boost settings
 		$this->context = "";
 		if ( isset($attrs["context"]) ) {
-		    $this->context = $attrs["context"];
+		    $this->context = sanitize_text_field($attrs["context"]);
         }
         $this->context_boost = "0.2";
         if ( isset($attrs["context-boost"]) ) {
-            $this->context_boost = $attrs["context-boost"];
+            $this->context_boost = sanitize_text_field($attrs["context-boost"]);
         }
 
         wp_enqueue_style('simsage-search-style-1'); // add our style-sheets

@@ -26,7 +26,7 @@
 	<?php
 	$active_tab = '';
 	if( isset( $_GET[ 'tab' ] ) ) {
-		$active_tab = $_GET[ 'tab' ];
+		$active_tab = sanitize_text_field($_GET[ 'tab' ]);
 	} // end if
 	$options = get_option( PLUGIN_NAME );
     $plan = get_plan();
@@ -122,7 +122,7 @@
                 <fieldset>
                     <label>
                         <input name="<?php echo PLUGIN_NAME ?>[simsage_fragment_size]" type="number" class="number-field" id="simsage_fragment_size"
-                               value="<?php echo (isset($options['simsage_fragment_size']) && $options['simsage_fragment_size'] != '') ? $options['simsage_fragment_size'] : '3'; ?>"
+                               value="<?php echo (isset($options['simsage_fragment_size']) && $options['simsage_fragment_size'] != '') ? sanitize_text_field($options['simsage_fragment_size']) : '3'; ?>"
                                placeholder="number of fragments per search-result" />
                         <span class="description">Fragment size, the number of matches shown inside each document, between <?php echo $this->get_default_field("simsage_fragment_size", "min") ?> and <?php echo $this->get_default_field("simsage_fragment_size", "max") ?> (default <?php echo $this->get_default_field("simsage_fragment_size", "value") ?>)</span>
                     </label>
@@ -131,7 +131,7 @@
                 <fieldset>
                     <label>
                         <input name="<?php echo PLUGIN_NAME ?>[simsage_word_distance]" type="number" class="number-field" id="simsage_word_distance"
-                               value="<?php echo (isset($options['simsage_word_distance']) && $options['simsage_word_distance'] != '') ? $options['simsage_word_distance'] : '20'; ?>"
+                               value="<?php echo (isset($options['simsage_word_distance']) && $options['simsage_word_distance'] != '') ? sanitize_text_field($options['simsage_word_distance']) : '20'; ?>"
                                placeholder="maximum distance between keywords"/>
                         <span class="description">Maximum distance between keywords between <?php echo $this->get_default_field("simsage_word_distance", "min") ?> and <?php echo $this->get_default_field("simsage_word_distance", "max") ?> (use 0 for document level search, default <?php echo $this->get_default_field("simsage_word_distance", "value") ?>)</span>
                     </label>

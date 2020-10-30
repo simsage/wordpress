@@ -105,12 +105,12 @@ function add_wp_contents_to_archive($registration_key, $archive_file, $num_docs 
         }
         // make sure author has no nasty characters in it
         $author_name = str_replace( "|", " ", $author_name);
-        $author_name = str_replace( "\n", " ", $author_name);
+        $author_name = sanitize_text_field(str_replace( "\n", " ", $author_name));
 
         // format: url | title | author | mimeType | created | last-modified | data
-        $str = $obj->guid . "|" . $obj->post_title . "|" . $author_name . "|text/html|";
-        $str = $str . strtotime($obj->post_date_gmt) . "000|";
-        $str = $str . strtotime($obj->post_modified_gmt) . "000|" . $counter . ".html;base64,";
+        $str = $obj->guid . "|" . sanitize_title($obj->post_title) . "|" . sanitize_text_field($author_name) . "|text/html|";
+        $str = $str . sanitize_text_field(strtotime($obj->post_date_gmt)) . "000|";
+        $str = $str . sanitize_text_field(strtotime($obj->post_modified_gmt)) . "000|" . $counter . ".html;base64,";
         // construct our "html" base64 string for SimSage
         $base64Str = base64_encode("<html lang='en'>" . $obj->post_content . "</html>");
         // no CRs please
@@ -153,7 +153,7 @@ function add_bot_qas_to_archive($archive_file, $qa_list, $num_qas ) {
             $a = str_replace( "\\", "", $qa["answer"]);
             $c = str_replace( "\\", "", $qa["context"]);
             $l = str_replace( "\\", "", $qa["link"]);
-            $str .= $qa["id"] . "|" . $q . "|" . $a . "|" . $c . "|" . $l . "\n";
+            $str .= sanitize_text_field($qa["id"]) . "|" . sanitize_text_field($q) . "|" . sanitize_text_field($a) . "|" . sanitize_text_field($c) . "|" . sanitize_text_field($l) . "\n";
             $counter += 1;
             if ( $counter > $num_qas ) { // exit when we've reached the maximum
                 break;
@@ -182,7 +182,7 @@ function add_synonyms_to_archive($archive_file, $synonym_list ) {
         if ( strlen(trim($synonym["words"])) > 0 ) {
             // format: url | title | mimeType | created | last-modified | data
             $words = str_replace( "\\", "", $synonym["words"]);
-            $str .= $synonym["id"] . "|" . $words . "\n";
+            $str .= sanitize_text_field($synonym["id"]) . "|" . sanitize_text_field($words) . "\n";
         }
     }
     if ( strlen($str) > 0 ) {
@@ -203,7 +203,7 @@ function is_valid_bot_str( $str ) {
     if ( trim($str) == "" ) return "text is empty";
     if ( strlen( trim($str) ) > MAX_STRING_LENGTH ) return "string too long (maximum length allowed is " . MAX_STRING_LENGTH . " characters)";
     foreach ($invalid_chars as $ic) {
-        if (strpos($str, $ic)) return "string must not contain " . $ic . " character(s)";
+        if (strpos($str, $ic)) return "string must not contain " . sanitize_text_field($ic) . " character(s)";
     }
     return null;
 }
@@ -234,11 +234,11 @@ function is_valid_context_str( $str ) {
  */
 function is_valid_bot_qa_pair( $id, $question, $answer, $context ) {
     $error1 = is_valid_bot_str($question);
-    if ( $error1 != null) return "Question " . $id . ": " . $error1;
+    if ( $error1 != null) return "Question " . sanitize_text_field($id) . ": " . $error1;
     $error2 = is_valid_bot_str($answer);
-    if ( $error2 != null) return "Answer " . $id . ": " . $error2;
+    if ( $error2 != null) return "Answer " . sanitize_text_field($id) . ": " . $error2;
     $error3 = is_valid_context_str($context);
-    if ( $error3 != null) return "Context " . $id . ": " . $error3;
+    if ( $error3 != null) return "Context " . sanitize_text_field($id) . ": " . $error3;
     return null;
 }
 
@@ -253,7 +253,7 @@ function is_valid_bot_qa_pair( $id, $question, $answer, $context ) {
  */
 function is_valid_synonym_str( $str ) {
     if ( trim($str) == "" ) return "text is empty";
-    $words = explode(",", $str);
+    $words = explode(",", sanitize_text_field($str));
     if ( count($words) > 2 ) return "no more than two words for a synonym";
     foreach ($words as $word) {
         if ( strlen( trim($word) ) > 20 ) return "word too long (maximum length per word is 20 characters)";
@@ -284,12 +284,12 @@ function is_valid_synonym_str( $str ) {
  * @return string|null return a string with an error, or null if there is none
  */
 function is_valid_synonym( $id, $synonym ) {
-    if ( trim($synonym) == "" ) return "Synonym " . $id . " string is empty";
-    $words = explode(",", $synonym);
-    if ( count($words) == 1 ) return "Synonym " . $id . " must have comma separated words that are synonymous to it";
+    if ( trim($synonym) == "" ) return "Synonym " . sanitize_text_field($id) . " string is empty";
+    $words = explode(",", sanitize_text_field($synonym));
+    if ( count($words) == 1 ) return "Synonym " . sanitize_text_field($id) . " must have comma separated words that are synonymous to it";
     foreach ($words as $word) {
-        $error1 = is_valid_synonym_str($word);
-        if ( $error1 != null) return "Synonym " . $id . ": " . $error1;
+        $error1 = is_valid_synonym_str(sanitize_text_field($word));
+        if ( $error1 != null) return "Synonym " . sanitize_text_field($id) . ": " . $error1;
     }
     return null;
 }
@@ -318,32 +318,32 @@ function join_urls( $url1, $url2 ) {
  */
 function check_simsage_json_response( $server, $json ) {
     if ( isset($json["error"]) ) {
-        $error = print_r( $json["error"], true);
+        $error = print_r( sanitize_text_field($json["error"]), true);
         if ( $error != "" ) {
             // more friendly error messages
             if ( strpos($error, "cURL error 28:") !== false || strpos($error, "cURL error 7:") !== false) {
-                return "SimSage Remote Upload Server (" . $server . ") not responding";
+                return "SimSage Remote Upload Server (" . sanitize_text_field($server) . ") not responding";
             }
-            return $server . ": " . $error;
+            return sanitize_text_field($server) . ": " . $error;
         }
 
     } else if ( isset($json["errors"]) ) {
-        $error = print_r( $json["errors"], true);
+        $error = print_r( sanitize_text_field($json["errors"]), true);
         if ( $error != "" ) {
             // more friendly error messages
             if ( strpos($error, "cURL error 28:") !== false || strpos($error, "cURL error 7:") !== false) {
-                return "SimSage Remote Upload Server (" . $server . ") not responding";
+                return "SimSage Remote Upload Server (" . sanitize_text_field($server) . ") not responding";
             }
-            return $server . ": " . $error;
+            return sanitize_text_field($server) . ": " . $error;
         }
 
     } else if ( isset($json["body"]) ) {
         // simsage itself has a specific internal error?
         $body = get_json($json["body"]);
         if ( isset($body["error"]) ) {
-            $error = $body["error"];
+            $error = sanitize_text_field($body["error"]);
             if ($error != "") {
-                return $server . ": " . $error;
+                return sanitize_text_field($server) . ": " . $error;
             }
         }
 
@@ -351,9 +351,9 @@ function check_simsage_json_response( $server, $json ) {
         // finally, check the HTTP response code is within 200..299
         $response = get_json($json["response"]);
         if ( isset($response["code"]) ) {
-            $response_code = $response["code"];
+            $response_code = sanitize_text_field($response["code"]);
             if ($response_code < 200 || $response_code > 299) {
-                return "SimSage server (" . $server . ") returned response code " . $response_code;
+                return "SimSage server (" . sanitize_text_field($server) . ") returned response code " . $response_code;
             }
         }
     }
@@ -370,7 +370,8 @@ function get_kb() {
     if ( isset($plugin_options["simsage_account"]) ) {
         $account = $plugin_options["simsage_account"];
         if ( isset($account["kbId"]) && isset($account["sid"]) ) {
-            return array("kbId" => $account["kbId"], "sid" => $account["sid"]);
+            return array("kbId" => sanitize_text_field($account["kbId"]),
+                         "sid" => sanitize_text_field($account["sid"]));
         }
     }
     return null;
@@ -386,7 +387,7 @@ function get_plan() {
     if ( isset($plugin_options["simsage_account"]) ) {
         $account = $plugin_options["simsage_account"];
         if ( isset( $account["plan"] ) ) {
-            return $account["plan"];
+            return sanitize_text_field($account["plan"]);
         }
     }
     return null;
@@ -401,7 +402,7 @@ function get_plan() {
 function get_registration_key() {
     $plugin_options = get_option(PLUGIN_NAME);
     if ( isset($plugin_options["simsage_registration_key"]) ) {
-        return $plugin_options["simsage_registration_key"];
+        return sanitize_text_field($plugin_options["simsage_registration_key"]);
     }
     return "";
 }

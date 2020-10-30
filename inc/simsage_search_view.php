@@ -6,8 +6,8 @@
 
 <script lang="js">
     // set an image base for all our templates to use (url bases for images)
-    image_base = "<?php echo $this->asset_folder ?>";
-    server = "<?php echo $this->get_account_setting("server") ?>";
+    image_base = "<?php echo sanitize_text_field($this->asset_folder) ?>";
+    server = "<?php echo sanitize_text_field($this->get_account_setting("server")) ?>";
 
     // the settings for this application - no trailing / on the base_url please
     // it is imperative that we do not expose the SID here (securityID), as it is what protects your account from malicious use
@@ -16,7 +16,7 @@
         base_url: server,
         // api version of ws_base
         api_version: 1,
-        // the organisation's id to search
+        // the organisation's id to search - all sanitized
         organisationId: "<?php echo $this->get_account_setting("id") ?>",
         // the knowledge base's Id (selected site) and security id (sid)
         kbId: "<?php echo $this->get_site_setting("kbId") ?>",
@@ -25,8 +25,8 @@
         fragment_count: <?php echo $this->get_user_value("simsage_fragment_size", 3) ?>,
         max_word_distance: <?php echo $this->get_user_value("simsage_word_distance", 20) ?>,
         use_spelling_suggest: false,
-        context_label: "<?php echo $this->context ?>",
-        context_match_boost: <?php echo $this->context_boost ?>,
+        context_label: "<?php echo sanitize_text_field($this->context) ?>",
+        context_match_boost: <?php echo sanitize_text_field($this->context_boost) ?>,
         // QA sensitivity - controls the A.I's replies - we suggest you don't change it!
         bot_threshold: <?php echo $this->get_user_value("bot_threshold", 0.8125) ?>,
         // show the advanced filters?
@@ -48,7 +48,7 @@
             <!-- hidden needed by SimSage logic -->
             <input type="hidden" class="time-stamp" value="0" />
             <div class="search-options-chevron-image-box">
-                <img src="<?php echo $this->asset_folder . 'images/chevron-down.svg'?>" alt="select" class="search-options-chevron-image">
+                <img src="<?php echo sanitize_text_field($this->asset_folder) . 'images/chevron-down.svg'?>" alt="select" class="search-options-chevron-image">
             </div>
         </div>
 
@@ -60,7 +60,7 @@
                     <div class="title">
                         <span class="search-by-text" title="Search by:">SEARCH BY:</span>
                         <span onclick="close_filter()" title="Close" class="close-box">
-                                <img src="<?php echo $this->asset_folder . 'images/close.svg' ?>" class="close-image" alt="close" />
+                                <img src="<?php echo sanitize_text_field($this->asset_folder) . 'images/close.svg' ?>" class="close-image" alt="close" />
                                 <span class="close-text">Close</span>
                             </span>
                     </div>
@@ -184,7 +184,7 @@
         <!-- search clear (cross) -->
         <div class="clear-search-button-box" title="clear your query" onclick="clear_search()">
                 <span class="search-button-span-box">
-                    <img src="<?php echo $this->asset_folder . 'images/close-solid.svg' ?>" alt="select" class="clear-button-image">
+                    <img src="<?php echo sanitize_text_field($this->asset_folder) . 'images/close-solid.svg' ?>" alt="select" class="clear-button-image">
                 </span>
         </div>
 
@@ -213,7 +213,7 @@
         <div class="search-details-header">
             <span class="details-text" title="details">DETAILS</span>
             <span onclick="close_details()" title="Close" class="close-box">
-                <img src="<?php echo $this->asset_folder . 'images/close.svg' ?>" class="close-image" alt="close" />
+                <img src="<?php echo sanitize_text_field($this->asset_folder) . 'images/close.svg' ?>" class="close-image" alt="close" />
                 </span>
             <span onclick="close_details()" title="Close" class="close-box">
                     <span class="close-text">Close</span>
@@ -259,7 +259,7 @@
         <div class="operator-close-width">
             <div class="div-close" onclick="close_chat()" title="Close chat">
                 <span class="close-text">Close</span>
-                <span class="close-image-box"><img src="<?php echo $this->asset_folder . 'images/close.svg' ?>" class="close-image" alt="close" /></span>
+                <span class="close-image-box"><img src="<?php echo sanitize_text_field($this->asset_folder) . 'images/close.svg' ?>" class="close-image" alt="close" /></span>
             </div>
             <div class="chat-table">
             </div>
@@ -286,7 +286,7 @@
     <div class="chat-container online" onclick="show_chat()">
             <span class="chat-with-us-online" title="Chat with us">
                 <span class="chat-with-us-image-box">
-                    <img src="<?php echo $this->asset_folder . 'images/chat-white.svg' ?>" alt="select" class="chat-with-us-image">
+                    <img src="<?php echo sanitize_text_field($this->asset_folder) . 'images/chat-white.svg' ?>" alt="select" class="chat-with-us-image">
                 </span>
                 <span class="chat-with-us-text chat-with-us-text-box-online">
                     Chat with us
@@ -306,7 +306,7 @@
                 <span class="title sign-in-title" title="Sign-in">sign-in</span>
                 <span onclick="close_sign_in()" title="Close" class="close-box">
                     <span class="close-text">Close</span>
-                    <img src="<?php echo $this->asset_folder . 'images/close.svg' ?>" class="close-image" alt="close" />
+                    <img src="<?php echo sanitize_text_field($this->asset_folder) . 'images/close.svg' ?>" class="close-image" alt="close" />
                 </span>
             </div>
             <span class="category-text">username</span>
@@ -342,7 +342,7 @@
         <span class="not-found-words">&nbsp;</span>
         <span onclick="close_no_results()" title="Close" class="close-box">
             <span class="close-text">Close</span>
-            <img src="<?php echo $this->asset_folder . 'images/close.svg' ?>" class="close-image" alt="close" />
+            <img src="<?php echo sanitize_text_field($this->asset_folder) . 'images/close.svg' ?>" class="close-image" alt="close" />
         </span>
     </div>
     <div class="ask-email-box">
@@ -383,7 +383,7 @@
             <span class="title" title="an error occurred">ERROR</span>
             <span onclick="close_error()" title="Close" class="close-box">
                 <span class="close-text">Close</span>
-                <img src="<?php echo $this->asset_folder . 'images/close.svg' ?>" class="close-image" alt="close" />
+                <img src="<?php echo sanitize_text_field($this->asset_folder) . 'images/close.svg' ?>" class="close-image" alt="close" />
             </span>
         </div>
         <div class="error-text"></div>

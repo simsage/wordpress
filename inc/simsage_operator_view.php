@@ -45,11 +45,11 @@
             // web sockets platform endpoint for comms
             ws_base: server + 'ws-api',
             // the organisation's id to search
-            organisationId: "<?php echo $this->get_account_setting("id") ?>",
+            organisationId: "<?php echo sanitize_text_field($this->get_account_setting("id")) ?>",
             // the knowledge base's Id (selected site) and security id (sid)
-            kbId: "<?php echo $this->get_site_setting("kbId") ?>",
+            kbId: "<?php echo sanitize_text_field($this->get_site_setting("kbId")) ?>",
             // the operator uses the SecurityID to verify themselves, do not expose it to your web users!
-            sid: "<?php echo $this->get_site_setting("sid") ?>",
+            sid: "<?php echo sanitize_text_field($this->get_site_setting("sid")) ?>",
             // bot settings
             bot_enabled: <?php echo $using_bot ? "true" : "false" ?>,
             // image types for link name display
