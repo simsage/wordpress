@@ -1752,7 +1752,7 @@ input::-ms-clear {
 
 .operator-chat-box .chat-text {
     margin-left: 8px;
-    width: 400px;
+    width: 400px !important;
     height: 32px;
     background-color: transparent;
     border: 0 solid;
@@ -1769,7 +1769,7 @@ input::-ms-clear {
     border-bottom: 1px solid #878787;
     color: #ffffff;
     padding: 4px;
-    width: 112px;
+    width: 112px !important;
     height: 48px;
     font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
@@ -1781,12 +1781,12 @@ input::-ms-clear {
     background-color: #878787;
     border: 0 solid;
     border-bottom-right-radius: 10px;
-    border-right: 1px solid #878787 !important;
-    border-bottom: 1px solid #878787 !important;
+    border-right: 1px solid #878787;
+    border-bottom: 1px solid #878787;
     color: #ffffff;
     padding: 4px;
-    width: 94px;
-    height: 50px;
+    width: 112px !important;
+    height: 48px;
     font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
     cursor: pointer;
@@ -1794,7 +1794,7 @@ input::-ms-clear {
 
 .operator-chat-box .chat-send-text {
     float: left;
-    margin-left: 18px;
+    margin-left: 24px !important;
     margin-top: 6px;
 }
 
@@ -1842,7 +1842,7 @@ input::-ms-clear {
     font-size: 14px;
     padding: 8px;
     border-radius: 10px;
-    width: 80%;
+    width: 80% !important;
     background-color: #ffd1d1;
     margin-top: 4px;
     margin-bottom: 10px;
@@ -1868,7 +1868,7 @@ input::-ms-clear {
     margin-left: 60px;
     padding: 8px;
     border-radius: 10px;
-    width: 70%;
+    width: 70% !important;
     color: #ffffff;
     background-color: #4ea0d5;
     margin-top: 4px;
