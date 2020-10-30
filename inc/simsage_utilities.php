@@ -508,7 +508,7 @@ function simsage_sanitize_plan( $plan ) {
         "name" => isset($response['name']) ? sanitize_text_field( $plan['name'] ) : "",
         "price" => isset($response['price']) ? (int)sanitize_text_field( $plan['price'] ) : 0,
         "freeMonths" => isset($response['freeMonths']) ? (int)sanitize_text_field( $plan['freeMonths'] ) : 0,
-        "numDocs" => isset($response['numDocs']) ? (int)sanitize_text_field( $plan['numDocs'] ) : 0,
+        "numDocs" => isset($response['numDocs']) ? (int)sanitize_text_field( $plan['numDocs'] ) : 1,
         "numQA" => isset($response['numQA']) ? (int)sanitize_text_field( $plan['numQA'] ) : 0,
         "operatorEnabled" => isset($response['operatorEnabled']) ? sanitize_text_field( $plan['operatorEnabled'] ).lower() == "true" : False,
         "maxQueriesPerDay" => isset($response['maxQueriesPerDay']) ? (int)sanitize_text_field( $plan['maxQueriesPerDay'] ) : 0,
