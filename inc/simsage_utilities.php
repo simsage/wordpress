@@ -111,8 +111,8 @@ function simsage_add_wp_contents_to_archive($registration_key, $archive_file, $n
         $str = $obj->guid . "|" . sanitize_title($obj->post_title) . "|" . sanitize_text_field($author_name) . "|text/html|";
         $str = $str . sanitize_text_field(strtotime($obj->post_date_gmt)) . "000|";
         $str = $str . sanitize_text_field(strtotime($obj->post_modified_gmt)) . "000|" . $counter . ".html;base64,";
-        // construct our "html" base64 string for SimSage
-        $base64Str = base64_encode("<html lang='en'>" . $obj->post_content . "</html>");
+        // legacy - we don't write the content anymore - as it is fetched using the URL
+        $base64Str = base64_encode("<html lang='en'></html>");
         // no CRs please
         $base64Str = str_replace("\n", "", $base64Str);
         $str = $str . $base64Str . "\n";
