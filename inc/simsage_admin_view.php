@@ -83,6 +83,12 @@
                 </label>
             </fieldset>
 
+            <div>
+                <div style="float: left; margin-right: 20px">
+                    <?php submit_button( 'update location', 'primary','submit', true ); ?>
+                </div>
+            </div>
+
             <fieldset>
                 <label>
                     <span class="description">don't have a Registration-key?&nbsp;&nbsp;<a href="<?php echo $this->servers["portal"]; ?>/#/create?origin=plugin" target="_blank">Register here</a></span>

@@ -179,7 +179,7 @@ class simsage_admin
                 $kb = simsage_get_kb();
                 $email = $this->get_email();
                 // try and delete the account
-                if ( $this->close_simsage_account( $email, $organisationId, $kb["kbId"], $kb["sid"], $password ) ) {
+                if ($this->close_simsage_account($email, $organisationId, $kb["kbId"], $kb["sid"], $password)) {
                     // success!  clear the account information locally
                     $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
                     $plugin_options["simsage_username"] = "";
@@ -201,6 +201,16 @@ class simsage_admin
                         $type = 'info');
                 }
             }
+
+        } else if ( $cmd == 'update location' ) {
+            $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
+            $server_location = 0;
+            if ( isset($post_data[SIMSAGE_PLUGIN_NAME]["simsage_server_location"]) ) {
+                $server_location = sanitize_text_field( $post_data[SIMSAGE_PLUGIN_NAME]["simsage_server_location"] );
+            }
+            $plugin_options["simsage_server_location"] = $server_location;
+            // save settings
+            update_option(SIMSAGE_PLUGIN_NAME, $plugin_options);
 
         } else if ( $cmd == 'Connect to SimSage' ) {
 
