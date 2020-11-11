@@ -7,6 +7,7 @@ class simsage_operator
     private $asset_folder = '';
     private $analytics = null;
 
+
     // constructor
     public function __construct() {
         // web-based folder locations, relative to this file
@@ -67,6 +68,21 @@ class simsage_operator
             if ( isset($account[$key]) ) {
                 return sanitize_text_field($account[$key]);
             }
+        }
+        return "";
+    }
+
+
+    /**
+     * return the url of the portal server to use for SimSage
+     *
+     * @return string the portal server's URL
+     */
+    private function get_portal_server() {
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
+        $servers = simsage_get_servers( $plugin_options );
+        if ( isset($servers["portal"]) ) {
+            return $servers["portal"];
         }
         return "";
     }

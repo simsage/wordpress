@@ -144,7 +144,7 @@
         </div>
     <?php } else if ( !$has_access ) { ?>
         <div class="operator-area">
-            <div class="label-success">Your plan does not provide you with Operator Access.  Please <a href="<?php echo SIMSAGE_REGO_SERVER; ?>/#/sign-in?origin=plugin" target="_blank">upgrade your plan</a> if you wish to have Operator Support.</div>
+            <div class="label-success">Your plan does not provide you with Operator Access.  Please <a href="<?php echo $this->get_portal_server(); ?>/#/sign-in?origin=plugin" target="_blank">upgrade your plan</a> if you wish to have Operator Support.</div>
         </div>
     <?php } ?>
 

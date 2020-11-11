@@ -30,6 +30,8 @@ class simsage_admin
     private $operator = null;
     private $data = null;
 
+    // the cloud-servers to talk to
+    private $servers = array( "api" => "", "portal" => "" );
 
     // constructor
     public function __construct() {
@@ -203,6 +205,9 @@ class simsage_admin
         } else if ( $cmd == 'Connect to SimSage' ) {
             $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
 
+            // get the correct servers to talk to
+            $this->servers = simsage_get_servers( $plugin_options );
+
             // save the user-name parameter but not the password for security reasons
             $plugin_options["simsage_registration_key"] = $registration_key;
             // remove the account if it was set
@@ -217,13 +222,13 @@ class simsage_admin
 
             } else {
                 // try and sign-into SimSage given the user's key
-                $url = simsage_join_urls(SIMSAGE_API_SERVER, '/api/auth/sign-in-registration-key');
+                $url = simsage_join_urls( $this->servers["api"], '/api/auth/sign-in-registration-key' );
                 debug_log("sign-in url:" . $url);
                 $json = simsage_get_json(wp_remote_post($url,
                     array('timeout' => SIMSAGE_JSON_POST_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                         'body' => '{"registrationKey": "' . trim($registration_key) . '"}')));
                 debug_log(sanitize_text_field(print_r($json, true)));
-                $error_str = simsage_check_json_response(SIMSAGE_API_SERVER, $json);
+                $error_str = simsage_check_json_response($this->servers["api"], $json);
                 // no error?
                 if ($error_str == "") {
                     $body = simsage_get_json($json["body"]); // convert to an object
@@ -657,13 +662,13 @@ class simsage_admin
      */
     private function close_simsage_account( $email, $organisationId, $kbId, $sid, $password ) {
         debug_log("closing account " . $email . ", org: " . $organisationId . ", kb: " . $kbId);
-        $url = simsage_join_urls(SIMSAGE_API_SERVER, '/api/auth/wp-close-account');
+        $url = simsage_join_urls($this->servers["api"], '/api/auth/wp-close-account');
         $bodyStr = '{"organisationId": "' . $organisationId . '", "kbId": "' . $kbId . '", "sid": "' . $sid .
                     '", "password": "' . $password . '", "email": "' . $email . '"}';
         $json = simsage_get_json(wp_remote_post($url,
             array('timeout' => SIMSAGE_JSON_POST_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                   'body' => $bodyStr)));
-        $error_str = simsage_check_json_response( SIMSAGE_API_SERVER, $json );
+        $error_str = simsage_check_json_response( $this->servers["api"], $json );
         if ($error_str != "") {
             if ( function_exists('add_settings_error') )
                 add_settings_error('simsage_settings', 'simsage_close_account', $error_str, $type = 'error');

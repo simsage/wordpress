@@ -541,3 +541,20 @@ function simsage_sanitize_registration_response( $response ) {
     );
 }
 
+
+/**
+ * return the correct server to talk to
+ *
+ * @param $plugin_options array the user's selections for SimSage
+ * @return array the appropriate API and Registration server urls
+ */
+function simsage_get_servers( $plugin_options ) {
+    if ( isset($plugin_options["simsage_server_location"]) ) {
+        $server = $plugin_options["simsage_server_location"];
+        if ( $server == 1 ) {
+            array( "api" => "https://api.simsage.nz", "portal" => "https://portal.simsage.nz");
+        }
+    }
+    return array( "api" => "https://api.simsage.ai", "portal" => "https://portal.simsage.ai");
+}
+
