@@ -84,9 +84,7 @@
             </fieldset>
 
             <div>
-                <div style="float: left; margin-right: 20px">
-                    <?php submit_button( 'update location', 'primary','submit', true ); ?>
-                </div>
+                <?php submit_button( 'update location', 'primary','submit', true ); ?>
             </div>
 
             <fieldset>
