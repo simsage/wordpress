@@ -11,7 +11,7 @@
 
     <style>
         fieldset {margin-bottom: 20px;}
-        .location-label { font-weight: 600; font-size: 1.1em; margin-top: 10px; text-transform: uppercase }
+        .location-label { font-weight: 600; font-size: 1.1em; margin-top: 10px; text-transform: uppercase; margin-bottom: 10px; }
         .label-success { font-weight: 600; font-size: 1.1em; margin-top: 10px; margin-bottom: 20px; line-height: 20px; }
         .wide-text { width: 500px; }
         .radio_label { margin-right: 4px; font-weight: bold;}
@@ -66,6 +66,7 @@
                 <label>
                     <div><input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_server_location]" type="radio" value="0" <?php echo (!isset($options['simsage_server_location']) || $options['simsage_server_location'] != '1') ? 'checked' : ''; ?> /><span class="radio_label">Europe</span></div>
                     <div><input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_server_location]" type="radio" value="1" <?php echo (isset($options['simsage_server_location']) && $options['simsage_server_location'] == '1') ? 'checked' : ''; ?> /><span class="radio_label">Australia / New Zealand</span></div>
+                    <br />
                     <div><span class="radio_label">other locations currently not supported</span></div>
                 </label>
             </fieldset>
