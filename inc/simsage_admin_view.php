@@ -72,7 +72,7 @@
                 </label>
             </fieldset>
 
-            <div style="margin-top: -10px; margin-bottom: 10px;">
+            <div style="margin-top: -10px; margin-bottom: 20px;">
                 <?php submit_button( 'update location', 'primary','submit', true ); ?>
             </div>
 
