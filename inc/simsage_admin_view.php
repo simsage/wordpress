@@ -61,6 +61,7 @@
         <?php if ( $active_tab == 'account' || $active_tab == '' ) { ?>
             <div class="tabbed-display">
 
+            <!-- the user sets their location globally for SimSage to operate against -->
             <fieldset>
                 <div class="location-label">your location</div>
                 <label>
@@ -70,6 +71,10 @@
                     <div><span class="radio_label">other locations currently not supported</span></div>
                 </label>
             </fieldset>
+
+            <div>
+                <?php submit_button( 'update location', 'primary','submit', true ); ?>
+            </div>
 
 
             <!-- check if account has been set - in which case we have a valid setup -->
@@ -82,10 +87,6 @@
                     <span class="description">Please enter your SimSage Registration-key (NB. these are different for different locations, make sure you select your correct location first)</span>
                 </label>
             </fieldset>
-
-            <div>
-                <?php submit_button( 'update location', 'primary','submit', true ); ?>
-            </div>
 
             <fieldset>
                 <label>
