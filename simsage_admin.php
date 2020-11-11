@@ -211,6 +211,8 @@ class simsage_admin
             }
             $plugin_options["simsage_server_location"] = $server_location;
 
+            debug_log( print_r( $plugin_options, true ) );
+
             // get the correct servers to talk to
             $this->servers = simsage_get_servers( $plugin_options );
 
