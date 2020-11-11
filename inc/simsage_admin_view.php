@@ -59,6 +59,17 @@
 
         <?php if ( $active_tab == 'account' || $active_tab == '' ) { ?>
             <div class="tabbed-display">
+
+            <fieldset>
+                <span class="description">your location</span>
+                <label>
+                    <span class="radio_label">Europe</span><input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_server_location]" type="radio" value="0" <?php echo (!isset($options['simsage_server_location']) || $options['simsage_server_location'] != '1') ? 'checked' : ''; ?> />
+                    <span class="radio_label">Australia / New Zealand</span><input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_server_location]" type="radio" value="1" <?php echo (isset($options['simsage_server_location']) && $options['simsage_server_location'] == '1') ? 'checked' : ''; ?> />
+                    <span class="description">SimSage locality</span>
+                </label>
+            </fieldset>
+
+
             <!-- check if account has been set - in which case we have a valid setup -->
             <fieldset>
                 <label>
