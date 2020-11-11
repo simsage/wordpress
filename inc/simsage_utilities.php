@@ -551,7 +551,7 @@ function simsage_sanitize_registration_response( $response ) {
 function simsage_get_servers( $plugin_options ) {
     if ( isset($plugin_options["simsage_server_location"]) ) {
         $server = $plugin_options["simsage_server_location"];
-        if ( $server == 1 ) {
+        if ( $server == "1" ) {
             array( "api" => "https://api.simsage.nz", "portal" => "https://portal.simsage.nz");
         }
     }
