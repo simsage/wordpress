@@ -79,12 +79,13 @@
 
             <!-- check if account has been set - in which case we have a valid setup -->
             <fieldset>
+                <div>NB. Registration-keys are different for different locations, make sure you select your correct location first!</div>
                 <label>
                     <input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_registration_key]" type="text"
                            class="input-field" id="simsage_registration_key" maxlength="20"
                            value="<?php echo (isset($options['simsage_registration_key']) && $options['simsage_registration_key'] != '') ? $options['simsage_registration_key'] : ''; ?>"
                            placeholder="your SimSage Registration Key"/>
-                    <span class="description">Please enter your SimSage Registration-key (NB. these are different for different locations, make sure you select your correct location first)</span>
+                    <span class="description">Please enter your SimSage Registration-key</span>
                 </label>
             </fieldset>
 
