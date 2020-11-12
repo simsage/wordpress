@@ -47,7 +47,7 @@
     <?php if ( !$has_account && ($active_tab == 'account' || $active_tab == '') ) { ?>
         <div class="label-success">
             Please enter your SimSage registration key below.<br />
-            <a href="<?php echo $this->servers["portal"]; ?>/#/create?origin=plugin" target="_blank">Register here</a> if you don't have an account.
+            <a href="<?php echo $this->get_portal_server(); ?>/#/create?origin=plugin" target="_blank">Register here</a> if you don't have an account.
         </div>
 	<?php } ?>
 
@@ -91,7 +91,7 @@
 
             <fieldset>
                 <label>
-                    <span class="description">don't have a Registration-key?&nbsp;&nbsp;<a href="<?php echo $this->servers["portal"]; ?>/#/create?origin=plugin" target="_blank">Register here</a></span>
+                    <span class="description">don't have a Registration-key?&nbsp;&nbsp;<a href="<?php echo $this->get_portal_server(); ?>/#/create?origin=plugin" target="_blank">Register here</a></span>
                 </label>
                 <br /><br />
                 <div>Changed plans?  Click the 'Connect to SimSage' button below to refresh.</div>

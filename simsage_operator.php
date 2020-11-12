@@ -78,7 +78,7 @@ class simsage_operator
      *
      * @return string the portal server's URL
      */
-    private function get_portal_server() {
+    public function get_portal_server() {
         $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
         $servers = simsage_get_servers( $plugin_options );
         if ( isset($servers["portal"]) ) {
