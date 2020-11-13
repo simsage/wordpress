@@ -124,7 +124,6 @@ class simsage_admin
      * add the administration menu for this plugin to wordpress
      */
     public function add_menus() {
-        debug_log( 'add_menus' );
         add_menu_page(
             __('SimSage Operator', SIMSAGE_PLUGIN_NAME), // page title.
             __('SimSage Operator', SIMSAGE_PLUGIN_NAME), // menu title.
