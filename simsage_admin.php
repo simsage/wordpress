@@ -72,7 +72,6 @@ class simsage_admin
     public function update_plugin_options() {
 	    if ( isset($_POST['action']) ) { // get the required (hidden) action field's value
 		    $action = sanitize_text_field($_POST['action']); // get the action
-		    debug_log("action:" . $action );
 		    if ( isset($_POST[SIMSAGE_PLUGIN_NAME]) ) {
                 $plugin_parameters = $_POST[SIMSAGE_PLUGIN_NAME]; // get settings array
                 if ($action == 'sign-in') {
