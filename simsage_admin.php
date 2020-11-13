@@ -73,13 +73,15 @@ class simsage_admin
 	    if ( isset($_POST['action']) ) { // get the required (hidden) action field's value
 		    $action = sanitize_text_field($_POST['action']); // get the action
 		    debug_log("action:" . $action );
-		    $plugin_parameters = $_POST[SIMSAGE_PLUGIN_NAME]; // get settings array
-		    if ($action == 'sign-in') {
-		    	// perform a sign-in
-		    	$this->do_sign_in($_POST, sanitize_text_field($plugin_parameters['simsage_registration_key']));
-		    } else if ($action == 'update-search') {
-		    	// do an update to the search posted values, items sanitized inside this function
-			    $this->check_form_parameters($plugin_parameters, true);
+		    if ( isset($_POST[SIMSAGE_PLUGIN_NAME]) ) {
+                $plugin_parameters = $_POST[SIMSAGE_PLUGIN_NAME]; // get settings array
+                if ($action == 'sign-in') {
+                    // perform a sign-in
+                    $this->do_sign_in($_POST, sanitize_text_field($plugin_parameters['simsage_registration_key']));
+                } else if ($action == 'update-search') {
+                    // do an update to the search posted values, items sanitized inside this function
+                    $this->check_form_parameters($plugin_parameters, true);
+                }
             }
 	    }
     }
