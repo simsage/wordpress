@@ -17,9 +17,9 @@
         // api version of ws_base
         api_version: 1,
         // the organisation's id to search - all sanitized
-        organisationId: "<?php echo $this->get_account_setting("id") ?>",
+        organisationId: "<?php echo sanitize_text_field($this->get_account_setting("id")) ?>",
         // the knowledge base's Id (selected site) and security id (sid)
-        kbId: "<?php echo $this->get_site_setting("kbId") ?>",
+        kbId: "<?php echo sanitize_text_field($this->get_site_setting("kbId")) ?>",
 
         // search settings
         fragment_count: <?php echo $this->get_user_value("simsage_fragment_size", 3) ?>,

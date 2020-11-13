@@ -4,6 +4,30 @@
  */
 ?>
 
+<script lang="js">
+    // set an image base for all our templates to use (url bases for images)
+    image_base = "<?php echo sanitize_text_field($this->asset_folder) ?>";
+    server = "<?php echo sanitize_text_field($this->get_account_setting("server")) ?>";
+
+    // the settings for this application - no trailing / on the base_url please
+
+    settings = {
+        // the service layer end-point, set after logging in
+        base_url: server,
+        // api version of ws_base
+        api_version: 1,
+        // the organisation's id to search
+        organisationId: "<?php echo sanitize_text_field($this->get_account_setting("id")) ?>",
+        // the knowledge base's Id (selected site) and security id (sid)
+        kbId: "<?php echo sanitize_text_field($this->get_site_setting("kbId")) ?>",
+
+        // the operator uses the SecurityID to verify themselves, do not expose it to your web users!
+        sid: "<?php echo sanitize_text_field($this->get_site_setting("sid")) ?>",
+        // valid image types
+        image_types: [".jpg", ".jpeg", ".png", ".gif", ".svg"]
+    };
+
+</script>
 
 
 <!-- Create a header in the default WordPress 'wrap' container -->
@@ -23,29 +47,6 @@
     ?>
 
     <?php if ( $has_sites ) { ?>
-
-    <script lang="js">
-        // set an image base for all our templates to use (url bases for images)
-        image_base = "<?php echo sanitize_text_field($this->asset_folder) ?>";
-        server = "<?php echo $this->get_account_setting("server") ?>";
-
-        // the settings for this application - no trailing / on the base_url please
-        settings = {
-            // api version of ws_base
-            api_version: 1,
-            // the service layer end-point, set after logging in
-            base_url: server + 'api',
-            // the organisation's id to search
-            organisationId: "<?php echo sanitize_text_field($this->get_account_setting("id")) ?>",
-            // the knowledge base's Id (selected site) and security id (sid)
-            kbId: "<?php echo sanitize_text_field($this->get_site_setting("kbId")) ?>",
-            // the operator uses the SecurityID to verify themselves, do not expose it to your web users!
-            sid: "<?php echo sanitize_text_field($this->get_site_setting("sid")) ?>",
-            // valid image types
-            image_types: [".jpg", ".jpeg", ".png", ".gif", ".svg"]
-        };
-
-    </script>
 
     <div class="analytics-area">
 

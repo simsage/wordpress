@@ -135,7 +135,7 @@ class SimsageData {
 
         const year = this.date.getFullYear();
         const month = this.date.getMonth() + 1;
-        const url = settings.base_url + '/stats/wp-stats/' + settings.organisationId + '/' +
+        const url = settings.base_url + '/api/stats/wp-stats/' + settings.organisationId + '/' +
                     settings.kbId + '/' + settings.sid + '/' + year + '/' + month + '/10';
         jQuery.ajax({
             headers: {
@@ -222,7 +222,7 @@ class SimsageData {
         const self = this;
         this.error = '';
         this.busy = true;
-        const url = settings.base_url + '/wp-operator-chats';
+        const url = settings.base_url + '/api/wp-operator-chats';
         const data = {organisationId: settings.organisationId, kbId: settings.kbId, sid: settings.sid,
                       year: this.date.getFullYear(), month: this.date.getMonth() + 1};
         const init = {
@@ -257,7 +257,7 @@ class SimsageData {
         const self = this;
         this.error = '';
         this.busy = true;
-        const url = settings.base_url + '/stats/wp-query-logs';
+        const url = settings.base_url + '/api/stats/wp-query-logs';
         const data = {organisationId: settings.organisationId, kbId: settings.kbId, sid: settings.sid,
                       year: this.date.getFullYear(), month: this.date.getMonth() + 1};
         const init = {
@@ -293,7 +293,7 @@ class SimsageData {
         const self = this;
         this.error = '';
         this.busy = true;
-        const url = settings.base_url + '/backup/wp-mind-dump';
+        const url = settings.base_url + '/api/backup/wp-mind-dump';
         const data = {organisationId: settings.organisationId, kbId: settings.kbId, sid: settings.sid};
         const init = {
             method: 'POST',
@@ -328,7 +328,7 @@ class SimsageData {
         const self = this;
         this.error = '';
         this.busy = true;
-        const url = settings.base_url + '/document/wp-inventorize';
+        const url = settings.base_url + '/api/document/wp-inventorize';
         const data = {organisationId: settings.organisationId, kbId: settings.kbId, sid: settings.sid};
         const init = {
             method: 'POST',
@@ -583,7 +583,7 @@ class SimsageData {
             "prevId": this.mind_item_prev_id ? this.mind_item_prev_id : "null",
             "filter": this.mind_item_filter, "pageSize": this.mind_item_page_size
         };
-        const url = settings.base_url + '/bot/wp-mind-items';
+        const url = settings.base_url + '/api/bot/wp-mind-items';
         jQuery.ajax({
             headers: {
                 'Content-Type': 'application/json',
@@ -677,7 +677,7 @@ class SimsageData {
                     fileType: this.file_type,
                     base64Text: this.file_binary_data,
                 };
-                const url = settings.base_url + '/knowledgebase/wp-upload';
+                const url = settings.base_url + '/api/knowledgebase/wp-upload';
                 jQuery.ajax({
                     headers: {
                         'Content-Type': 'application/json',
@@ -709,7 +709,7 @@ class SimsageData {
                 kbId: settings.kbId,
                 sid: settings.sid,
             };
-            const url = settings.base_url + '/bot/wp-delete-all';
+            const url = settings.base_url + '/api/bot/wp-delete-all';
             jQuery.ajax({
                 headers: {
                     'Content-Type': 'application/json',
@@ -789,7 +789,7 @@ class SimsageData {
                     actionList: this.toActionList(answer, links)
                 }
             }
-            const url = settings.base_url + '/bot/wp-save';
+            const url = settings.base_url + '/api/bot/wp-save';
             jQuery.ajax({
                 headers: {
                     'Content-Type': 'application/json',
@@ -901,7 +901,7 @@ class SimsageData {
                     sid: settings.sid,
                     id: mi.id,
                 }
-                const url = settings.base_url + '/bot/wp-delete';
+                const url = settings.base_url + '/api/bot/wp-delete';
                 jQuery.ajax({
                     headers: {
                         'Content-Type': 'application/json',
@@ -1017,7 +1017,7 @@ class SimsageData {
             "prevId": this.synonym_prev_id ? this.synonym_prev_id : "null",
             "filter": this.synonym_filter, "pageSize": this.synonym_page_size
         };
-        const url = settings.base_url + '/language/wp-synonyms';
+        const url = settings.base_url + '/api/language/wp-synonyms';
         jQuery.ajax({
             headers: {
                 'Content-Type': 'application/json',
@@ -1069,7 +1069,7 @@ class SimsageData {
                     words: words,
                 }
             }
-            const url = settings.base_url + '/language/wp-save-synonym';
+            const url = settings.base_url + '/api/language/wp-save-synonym';
             jQuery.ajax({
                 headers: {
                     'Content-Type': 'application/json',
@@ -1132,7 +1132,7 @@ class SimsageData {
                     sid: settings.sid,
                     id: synonym.id,
                 }
-                const url = settings.base_url + '/language/wp-delete-synonym';
+                const url = settings.base_url + '/api/language/wp-delete-synonym';
                 jQuery.ajax({
                     headers: {
                         'Content-Type': 'application/json',
@@ -1248,7 +1248,7 @@ class SimsageData {
             "prevWord": this.semantic_prev_id ? this.semantic_prev_id : "null",
             "filter": this.semantic_filter, "pageSize": this.semantic_page_size
         };
-        const url = settings.base_url + '/language/wp-semantics';
+        const url = settings.base_url + '/api/language/wp-semantics';
         jQuery.ajax({
             headers: {
                 'Content-Type': 'application/json',
@@ -1308,7 +1308,7 @@ class SimsageData {
                     semantic: semantic,
                 }
             }
-            const url = settings.base_url + '/language/wp-save-semantic';
+            const url = settings.base_url + '/api/language/wp-save-semantic';
             jQuery.ajax({
                 headers: {
                     'Content-Type': 'application/json',
@@ -1370,7 +1370,7 @@ class SimsageData {
                     sid: settings.sid,
                     word: semantic.word,
                 }
-                const url = settings.base_url + '/language/wp-delete-semantic';
+                const url = settings.base_url + '/api/language/wp-delete-semantic';
                 jQuery.ajax({
                     headers: {
                         'Content-Type': 'application/json',
