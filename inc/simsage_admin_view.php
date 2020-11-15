@@ -67,6 +67,9 @@
                 <label>
                     <div><input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_server_location]" type="radio" value="0" <?php echo (!isset($options['simsage_server_location']) || $options['simsage_server_location'] != '1') ? 'checked' : ''; ?> /><span class="radio_label">Europe</span></div>
                     <div><input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_server_location]" type="radio" value="1" <?php echo (isset($options['simsage_server_location']) && $options['simsage_server_location'] == '1') ? 'checked' : ''; ?> /><span class="radio_label">Australia / New Zealand</span></div>
+                    <?php if ( SIMSAGE_USE_TEST ) { ?>
+                        <div><input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_server_location]" type="radio" value="2" <?php echo (isset($options['simsage_server_location']) && $options['simsage_server_location'] == '2') ? 'checked' : ''; ?> /><span class="radio_label">NZ Test</span></div>
+                    <?php } ?>
                     <br />
                     <div><span class="radio_label">other locations currently not supported</span></div>
                 </label>

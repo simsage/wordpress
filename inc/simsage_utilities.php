@@ -553,6 +553,8 @@ function simsage_get_servers( $plugin_options ) {
         $server = $plugin_options["simsage_server_location"];
         if ( $server == "1" ) {
             return array( "api" => "https://api.simsage.nz", "portal" => "https://portal.simsage.nz");
+        } else if ( $server == "2" ) {
+            return array( "api" => "https://api-test.simsage.nz", "portal" => "https://portal-test.simsage.nz");
         }
     }
     return array( "api" => "https://api.simsage.ai", "portal" => "https://portal.simsage.ai");

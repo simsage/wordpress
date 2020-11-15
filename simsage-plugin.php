@@ -20,6 +20,8 @@ define( 'SIMSAGE_DOC_WP_DATA', '-simsage-wp.txt');
 define( 'SIMSAGE_DOC_BOT_DATA', '-simsage-bot.txt');
 define( 'SIMSAGE_DOC_SYNONYM_DATA', '-simsage-synonyms.txt');
 define( 'SIMSAGE_DOC_SEMANTIC_DATA', '-simsage-semantics.txt');
+// enable usage of test environment
+define( 'SIMSAGE_USE_TEST', false );
 
 // maximum length of a QA question or answer string
 define( 'SIMSAGE_MAX_STRING_LENGTH', 256 );
