@@ -54,6 +54,7 @@
     <div class="nav-tab-wrapper">
         <a href="?page=simsage-search&tab=account" class="nav-tab <?php echo ($active_tab == 'account' || $active_tab == '') ? 'nav-tab-active' : ''; ?>">Account</a>
         <a href="?page=simsage-search&tab=search" class="nav-tab <?php echo $active_tab == 'search' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_kb ) echo 'tab-disabled' ?>">Search</a>
+        <a href="?page=simsage-search&tab=filters" class="nav-tab <?php echo $active_tab == 'filters' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_kb ) echo 'tab-disabled' ?>">Content Filters</a>
     </div>
 
     <form method="post" id="adminForm" name="<?php echo SIMSAGE_PLUGIN_NAME; ?>_search_options">
@@ -178,6 +179,16 @@
                 <?php submit_button( 'update Search Settings', 'primary','submit', true ); ?>
 
             <?php } ?>
+
+
+
+        <?php if ($active_tab == 'filters') { ?>
+            <div class="tabbed-display">
+            </div>
+            <?php submit_button( 'update Search Settings', 'primary','submit', true ); ?>
+
+        <?php } ?>
+
 
     </form>
 
