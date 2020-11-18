@@ -22,12 +22,12 @@
         }
     }
 
-    function render_list(list, title) {
+    function render_list(list, title, fn) {
         let str = "<div class=\"title\">" + title + "</div>";
         for (let i in list) {
             if (list.hasOwnProperty(i)) {
                 let item = list[i];
-                str += "<div class=\"url\">" + item + "</div>";
+                str += "<div class=\"url\" onclick=\"" + js + "('" + item + "')\">" + item + "</div>";
             }
         }
         return str;
@@ -48,14 +48,14 @@
         .tabbed-display { margin-top: 20px; margin-left: 10px; }
         .tab-disabled { color: #ccc; cursor: default; pointer-events: none; }
         .two-lists-side-by-side {
-            width: 620px; height: 400px;
+            width: 640px; height: 400px;
             margin: 50px 0 0 50px !important;
             cursor: default;
         }
         .available-list { margin: 0 20px 0 0 !important; width: 280px; height: 390px; float: left; overflow: auto; }
         .ignore-list { margin: 0 0 0 0 !important; width: 280px; height: 390px; float: left;  overflow: auto; }
         .instructions { font-size: 14px; font-weight: 600; margin-bottom: 10px;}
-        .title { font-size: 12px; font-style: italic; margin-bottom: 4px;}
+        .title { font-size: 12px; font-style: italic; margin-bottom: 10px;}
         .url { font-size: 12px; cursor: pointer;}
     </style>
 
@@ -240,8 +240,8 @@
             </div>
 
             <script lang="js">
-                jQuery(".available-list").html(render_list(available_urls, "Pages indexed by SimSage"));
-                jQuery(".ignore-list").html(render_list(ignore_urls, "Pages ignored by SimSage"));
+                jQuery(".available-list").html(render_list(available_urls, "Pages indexed by SimSage", "deselect_item"));
+                jQuery(".ignore-list").html(render_list(ignore_urls, "Pages ignored by SimSage", "select_item"));
             </script>
 
         <?php } ?>
