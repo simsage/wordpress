@@ -225,7 +225,7 @@
                             <br clear="both" />
                             <div class="filter">
                                 <label>
-                                    <input type="text" class="filter-available" placeholder="filter urls" value="" onkeyup="filter_available();" />
+                                    <input type="text" class="filter-available" placeholder="filter urls" value="" onkeyup="render_lists();" />
                                 </label>
                             </div>
                             <br clear="both" />
@@ -237,7 +237,7 @@
                             <br clear="both" />
                             <div class="filter">
                                 <label>
-                                    <input type="text" class="filter-ignored" placeholder="filter urls" value="" onkeyup="filter_ignore();" />
+                                    <input type="text" class="filter-ignored" placeholder="filter urls" value="" onkeyup="render_lists();" />
                                 </label>
                             </div>
                             <br clear="both" />
@@ -250,10 +250,25 @@
             </div>
 
             <script lang="js">
+
+                // filter a list by a text string provided by control_class
+                function filter_list(list, control_class) {
+                    let text = jQuery(control_class).val();
+                    let filtered_list = [];
+                    for (let i in list) {
+                        if (list.hasOwnProperty(i)) {
+                            if (list[i].indexOf(text) >= 0) {
+                                filtered_list.push(list[i]);
+                            }
+                        }
+                    }
+                    return filtered_list;
+                }
+
                 // draw the available and ignore lists
                 function render_lists() {
-                    jQuery(".available-list").html(render_list(available_urls, "Pages indexed by SimSage", "deselect_item"));
-                    jQuery(".ignore-list").html(render_list(ignore_urls, "Pages ignored by SimSage", "select_item"));
+                    jQuery(".available-list").html(render_list(filter_list(available_urls, ".filter-available"), "Pages indexed by SimSage", "deselect_item"));
+                    jQuery(".ignore-list").html(render_list(filter_list(ignore_urls, ".filter-ignored"), "Pages ignored by SimSage", "select_item"));
                 }
 
                 /**
@@ -299,33 +314,8 @@
                     }
                 }
 
-                function filter_available() {
-                    let text = jQuery(".filter-available").val();
-                    let filtered_list = [];
-                    for (let i in available_urls) {
-                        if (available_urls.hasOwnProperty(i)) {
-                            if (available_urls[i].indexOf(text) >= 0) {
-                                filtered_list.push(available_urls[i]);
-                            }
-                        }
-                    }
-                    jQuery(".available-list").html(render_list(filtered_list, "Pages indexed by SimSage", "deselect_item"));
-                }
-
-                function filter_ignore() {
-                    let text = jQuery(".filter-ignored").val();
-                    let filtered_list = [];
-                    for (let i in ignore_urls) {
-                        if (ignore_urls.hasOwnProperty(i)) {
-                            if (ignore_urls[i].indexOf(text) >= 0) {
-                                filtered_list.push(ignore_urls[i]);
-                            }
-                        }
-                    }
-                    jQuery(".ignore-list").html(render_list(filtered_list, "Pages ignored by SimSage", "select_item"));
-                }
-
                 render_lists();
+
             </script>
 
         <?php } ?>
