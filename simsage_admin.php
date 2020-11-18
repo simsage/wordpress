@@ -126,14 +126,14 @@ class simsage_admin
         add_menu_page(
             __('SimSage Operator', SIMSAGE_PLUGIN_NAME), // page title.
             __('SimSage Operator', SIMSAGE_PLUGIN_NAME), // menu title.
-            'manage_options', // capability.
+            'edit_others_posts', // capability.
             "simsage-operator", // menu_slug.
             array($this->operator, 'load_settings_page')
         );
         add_menu_page(
             __('SimSage Data', SIMSAGE_PLUGIN_NAME), // page title.
             __('SimSage Data', SIMSAGE_PLUGIN_NAME), // menu title.
-            'manage_options', // capability.
+            'edit_others_posts', // capability.
             "simsage-data", // menu_slug.
             array($this->data, 'load_settings_page')
         );
