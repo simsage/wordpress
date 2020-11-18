@@ -22,6 +22,20 @@
         }
     }
 
+    function render_list(list, title) {
+        let str = "<div class=\"title\">" + title + "</div>";
+        for (let i in list) {
+            if (list.hasOwnProperty(i)) {
+                let item = list[i];
+                str += "<div class=\"url\">" + item + "</div>";
+            }
+        }
+        return str;
+    }
+
+    jQuery(".available-list").html(render_list(available_urls, "Pages indexed by SimSage"));
+    jQuery(".ignore-list").html(render_list(ignore_urls, "Pages ignored by SimSage"));
+
 </script>
 
 
@@ -219,17 +233,9 @@
                     <div class="instructions">Click on URLs in either list to move them across</div>
 
                     <div class="available-list">
-                        <div class="title">URLs that will be indexed by SimSage</div>
-                        <div class="url">url 1</div>
-                        <div class="url">url 2</div>
-                        <div class="url">url 3</div>
                     </div>
 
                     <div class="ignore-list">
-                        <div class="title">URLs that will be ignored by SimSage</div>
-                        <div class="url">url 1</div>
-                        <div class="url">url 2</div>
-                        <div class="url">url 3</div>
                     </div>
 
                 </div>
