@@ -318,6 +318,8 @@
 
             </script>
 
+            <?php submit_button( 'update Filter Settings', 'primary','submit', true ); ?>
+
         <?php } ?>
 
 
