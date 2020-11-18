@@ -12,6 +12,20 @@
     ignore_urls = [];           // set by our stored items
     available_urls = [];
 
+    /**
+     * replace < and > in a string to make it html safe
+     * @param str the string to act on
+     * @return the escaped string
+     */
+    function esc_html(str) {
+        if (typeof str === 'string' || str instanceof String) {
+            return str
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+        }
+        return str;
+    }
+
     // setup available urls
     for (let i in all_urls) {
         if (all_urls.hasOwnProperty(i)) {
@@ -23,14 +37,32 @@
     }
 
     function render_list(list, title, fn) {
-        let str = "<div class=\"title\">" + title + "</div>";
+        let str = "<div class=\"title\">" + esc_html(title) + "</div>";
         for (let i in list) {
             if (list.hasOwnProperty(i)) {
                 let item = list[i];
-                str += "<div class=\"url\" onclick=\"" + fn + "('" + item + "')\">" + item + "</div>";
+                str += "<div class=\"url\" title=\"move " + item + "\" onclick=\"" + fn + "('" + item + "')\">" + item + "</div>";
             }
         }
         return str;
+    }
+
+    function deselect_item(url) {
+        let index = available_urls.indexOf(url);
+        if (index >= 0) {
+            available_urls.splice(index, 1);
+            ignore_urls.push(url);
+            render_lists();
+        }
+    }
+
+    function select_item(url) {
+        let index = ignore_urls.indexOf(url);
+        if (index >= 0) {
+            ignore_urls.splice(index, 1);
+            available_urls.push(url);
+            render_lists();
+        }
     }
 
 </script>
@@ -240,8 +272,12 @@
             </div>
 
             <script lang="js">
-                jQuery(".available-list").html(render_list(available_urls, "Pages indexed by SimSage", "deselect_item"));
-                jQuery(".ignore-list").html(render_list(ignore_urls, "Pages ignored by SimSage", "select_item"));
+                // draw the available and ignore lists
+                function render_lists() {
+                    jQuery(".available-list").html(render_list(available_urls, "Pages indexed by SimSage", "deselect_item"));
+                    jQuery(".ignore-list").html(render_list(ignore_urls, "Pages ignored by SimSage", "select_item"));
+                }
+                render_lists();
             </script>
 
         <?php } ?>
