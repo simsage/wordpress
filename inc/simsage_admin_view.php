@@ -8,8 +8,7 @@
 
 <script lang="js">
     all_urls = [<?php echo '"'.implode('","', simsage_get_wp_contents()).'"' ?>];
-
-    ignore_urls = [];           // set by our stored items
+    ignore_urls = [<?php echo '"'.implode('","', $this->get_ignore_urls()).'"' ?>];
     available_urls = [];
 
     // setup available urls
@@ -17,18 +16,6 @@
         if (all_urls.hasOwnProperty(i)) {
             let url = all_urls[i];
             if (!ignore_urls.includes(url)) {
-                available_urls.push(url);
-                available_urls.push(url);
-                available_urls.push(url);
-                available_urls.push(url);
-                available_urls.push(url);
-                available_urls.push(url);
-                available_urls.push(url);
-                available_urls.push(url);
-                available_urls.push(url);
-                available_urls.push(url);
-                available_urls.push(url);
-                available_urls.push(url);
                 available_urls.push(url);
             }
         }
@@ -316,6 +303,7 @@
                     if (index >= 0) {
                         available_urls.splice(index, 1);
                         ignore_urls.push(url);
+                        jQuery(".ignore-list-value").val(ignore_urls.join("|"));
                         render_lists();
                     }
                 }
@@ -325,6 +313,7 @@
                     if (index >= 0) {
                         ignore_urls.splice(index, 1);
                         available_urls.push(url);
+                        jQuery(".ignore-list-value").val(ignore_urls.join("|"));
                         render_lists();
                     }
                 }
@@ -333,6 +322,8 @@
 
             </script>
 
+            <input type="hidden" name="action" value="update-filter">
+            <input type="hidden" name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_ignore_url_list]" class="ignore-list-value" value="">
             <div class="spacing-bottom">&nbsp;</div>
 
             <?php submit_button( 'update Filter Settings', 'primary','submit', true ); ?>

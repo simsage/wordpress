@@ -82,6 +82,8 @@ class simsage_admin
                 } else if ($action == 'update-search') {
                     // do an update to the search posted values, items sanitized inside this function
                     $this->check_form_parameters($plugin_parameters, true);
+                } else if ($action == 'update-filter') {
+                    $this->set_ignore_urls( $plugin_parameters );
                 }
             }
 	    }
@@ -156,6 +158,32 @@ class simsage_admin
             return $servers["portal"];
         }
         return "";
+    }
+
+
+    /**
+     * get the list of urls to ignore for indexing by SimSage
+     *
+     * @return array a list of items (or empty) that is the ignore list
+     */
+    public function get_ignore_urls() {
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
+        if ( isset($plugin_options["simsage_ignore_url_list"]) ) {
+            return $plugin_options["simsage_ignore_url_list"];
+        }
+        return array();
+    }
+
+    /**
+     * set the list of urls to ignore for indexing by SimSage
+     *
+     * @param $plugin_parameters array parameters
+     */
+    public function set_ignore_urls( $plugin_parameters ) {
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
+        $ignore_list = explode( "|", $plugin_parameters['simsage_ignore_url_list'] );
+        $plugin_options["simsage_ignore_url_list"] = $ignore_list;
+        update_option(SIMSAGE_PLUGIN_NAME, $plugin_options);
     }
 
 
