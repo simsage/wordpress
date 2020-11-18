@@ -46,7 +46,7 @@
         .filter { margin-bottom: 10px; }
         .available-list { padding: 2px; height: 370px; max-height: 370px; overflow: auto; border: 1px solid #878787; border-radius: 2px; }
         .ignore-list { padding: 2px; height: 370px; max-height: 370px; overflow: auto; border: 1px solid #878787; border-radius: 2px; }
-        .instructions { font-size: 14px; font-weight: 600; margin-bottom: 10px;}
+        .instructions { font-size: 14px; margin-bottom: 10px;}
         .title { font-size: 12px; font-style: italic; margin-bottom: 10px;}
         .url { font-size: 12px; cursor: pointer;}
         .spacing-bottom { height: 120px; }
@@ -218,7 +218,12 @@
         <?php if ($active_tab == 'filters') { ?>
             <div class="tabbed-display">
                 <div class="two-lists-side-by-side">
-                    <div class="instructions">Click on URLs in either list to move them across</div>
+
+                    <div class="instructions">Tell SimSage what not to index.  On the left-hand side you find a list with items that SimSage will look at.
+                        Clicking on an item in this list will move it to the other list.  The right-hand side list contains items that will purposely ignored
+                        by SimSage.  Click the "update Filter Settings" button below when you've made your changes to save this information.
+                    </div>
+
                     <div class="boxes">
 
                         <div class="box-1">
