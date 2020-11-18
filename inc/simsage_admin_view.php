@@ -315,10 +315,10 @@
                 function filter_ignore() {
                     let text = jQuery(".filter-ignored").val();
                     let filtered_list = [];
-                    for (let i in available_urls) {
-                        if (available_urls.hasOwnProperty(i)) {
-                            if (available_urls[i].indexOf(text) >= 0) {
-                                filtered_list.push(available_urls[i]);
+                    for (let i in ignore_urls) {
+                        if (ignore_urls.hasOwnProperty(i)) {
+                            if (ignore_urls[i].indexOf(text) >= 0) {
+                                filtered_list.push(ignore_urls[i]);
                             }
                         }
                     }
