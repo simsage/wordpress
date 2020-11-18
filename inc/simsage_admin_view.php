@@ -84,6 +84,8 @@
             margin: 50px 0 0 50px !important;
             cursor: default;
         }
+        .filter-1 { margin: 0 20px 0 0 !important; width: 280px; float: left; }
+        .filter-2 { margin: 0 0 0 0 !important; width: 280px; float: left; }
         .available-list { margin: 0 20px 0 0 !important; width: 280px; height: 390px; float: left; overflow: auto; }
         .ignore-list { margin: 0 0 0 0 !important; width: 280px; height: 390px; float: left;  overflow: auto; }
         .instructions { font-size: 14px; font-weight: 600; margin-bottom: 10px;}
@@ -261,9 +263,19 @@
 
                     <div class="instructions">Click on URLs in either list to move them across</div>
 
+                    <div class="filter-1">
+                        <label>
+                            <input type="text" class="" placeholder="filter urls" value="" onkeyup="filter_available();" />
+                        </label>
+                    </div>
                     <div class="available-list">
                     </div>
 
+                    <div class="filter-2">
+                        <label>
+                            <input type="text" placeholder="filter urls" value="" onkeyup="filter_ignore();" />
+                        </label>
+                    </div>
                     <div class="ignore-list">
                     </div>
 
@@ -277,6 +289,13 @@
                     jQuery(".available-list").html(render_list(available_urls, "Pages indexed by SimSage", "deselect_item"));
                     jQuery(".ignore-list").html(render_list(ignore_urls, "Pages ignored by SimSage", "select_item"));
                 }
+
+                function filter_available() {
+                }
+
+                function filter_ignore() {
+                }
+
                 render_lists();
             </script>
 
