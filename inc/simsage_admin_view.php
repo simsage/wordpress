@@ -37,11 +37,11 @@
         .tabbed-display { margin-top: 20px; margin-left: 10px; }
         .tab-disabled { color: #ccc; cursor: default; pointer-events: none; }
         .two-lists-side-by-side {
-            width: 620px; height: 400px; background: #c0c0c0;
+            width: 620px; height: 400px;
             margin: 50px 0 0 50px !important;
         }
-        .available-list { margin: 0 20px 0 0 !important; width: 280px; height: 390px; border: 1px solid #000000; float: left; overflow: auto; }
-        .ignore-list { margin: 0 0 0 0 !important; width: 280px; height: 390px; border: 1px solid #000000; float: left;  overflow: auto; }
+        .available-list { margin: 0 20px 0 0 !important; width: 280px; height: 390px; float: left; overflow: auto; }
+        .ignore-list { margin: 0 0 0 0 !important; width: 280px; height: 390px; float: left;  overflow: auto; }
     </style>
 
     <div id="icon-themes" class="icon32"></div>
@@ -212,10 +212,20 @@
 
                 <div class="two-lists-side-by-side">
 
+                    <div>Click on URLs in either list to move them across</div>
+
                     <div class="available-list">
+                        <div>URLs that will be indexed by SimSage</div>
+                        <div>url 1</div>
+                        <div>url 2</div>
+                        <div>url 3</div>
                     </div>
 
                     <div class="ignore-list">
+                        <div>URLs that will be ignored by SimSage</div>
+                        <div>url 1</div>
+                        <div>url 2</div>
+                        <div>url 3</div>
                     </div>
 
                 </div>
