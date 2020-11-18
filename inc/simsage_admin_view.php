@@ -270,6 +270,7 @@
                                     <input type="text" class="" placeholder="filter urls" value="" onkeyup="filter_available();" />
                                 </label>
                             </div>
+                            <br clear="both" />
                             <div class="available-list">
                             </div>
                         </div>
@@ -281,6 +282,7 @@
                                     <input type="text" placeholder="filter urls" value="" onkeyup="filter_ignore();" />
                                 </label>
                             </div>
+                            <br clear="both" />
                             <div class="ignore-list">
                             </div>
                         </div>
