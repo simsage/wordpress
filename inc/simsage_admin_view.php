@@ -219,9 +219,9 @@
             <div class="tabbed-display">
                 <div class="two-lists-side-by-side">
 
-                    <div class="instructions">Tell SimSage what not to index.  On the left-hand side you find a list with items that SimSage will look at.
+                    <div class="instructions">Tell SimSage what <b>not</b> to index.  On the left-hand side you find a list with items that SimSage will look at.
                         Clicking on an item in this list will move it to the other list.  The right-hand side list contains items that will purposely ignored
-                        by SimSage.  Click the "update Filter Settings" button below when you've made your changes to save this information.
+                        by SimSage.  Click the <b>update Filter Settings</b> button below when you've made your changes to save this information.
                     </div>
 
                     <div class="boxes">

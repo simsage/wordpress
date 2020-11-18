@@ -81,55 +81,76 @@ function simsage_get_json($data ) {
  * @param $registration_key string the system's registration key
  * @param $archive_file resource an archive file to write to
  * @param $num_docs int the maximum number of allowed documents for this site as per plan
+ * @param $ignore_urls array an array of URLs that are to be ignored (not indexed)
  * @return string the combined md5s of the content
  */
-function simsage_add_wp_contents_to_archive($registration_key, $archive_file, $num_docs ) {
+function simsage_add_wp_contents_to_archive( $registration_key, $archive_file, $num_docs, $ignore_urls ) {
     global $wpdb;
     $query = "SELECT * FROM $wpdb->posts WHERE post_status = 'publish'";
     $results = $wpdb->get_results($query);
     $counter = 1;
+    $ignore_counter = 0;
     $md5_str = md5( $registration_key );
+
+    // write out ignore fields?  Must come before WP_DATA below
+    if ( count( $ignore_urls ) > 0 ) {
+        fwrite( $archive_file, SIMSAGE_DOC_IGNORE_DATA . "\n", strlen(SIMSAGE_DOC_IGNORE_DATA) + 1 );
+        foreach ($results as $row) {
+            $obj = $row;
+            if ( in_array($obj->guid, $ignore_urls) ) { // write out items that aren't supposed to be there
+                $str = $obj->guid . "\n";
+                fwrite($archive_file, $str, strlen($str));
+                $md5_str = md5($md5_str . $str);
+            }
+        }
+    }
+
     // write the marker to file
     fwrite( $archive_file, SIMSAGE_DOC_WP_DATA . "\n", strlen(SIMSAGE_DOC_WP_DATA) + 1 );
     debug_log("md5 rego-key:" . $md5_str);
     foreach ($results as $row) {
         $obj = $row;
-        // get the author for this item
-        $author = get_user_by('id', $obj->post_author);
-        $author_name = '';
-        if ( $author && $author->data ) {
-            if ($author->data->user_nicename)
-                $author_name = $author->data->user_nicename;
-            else if ($author->data->user_email)
-                $author_name = $author->data->user_email;
-        }
-        // make sure author has no nasty characters in it
-        $author_name = str_replace( "|", " ", $author_name);
-        $author_name = sanitize_text_field(str_replace( "\n", " ", $author_name));
+        if ( !in_array( $obj->guid, $ignore_urls ) ) { // filter out items that aren't supposed to be there
+            // get the author for this item
+            $author = get_user_by('id', $obj->post_author);
+            $author_name = '';
+            if ($author && $author->data) {
+                if ($author->data->user_nicename)
+                    $author_name = $author->data->user_nicename;
+                else if ($author->data->user_email)
+                    $author_name = $author->data->user_email;
+            }
+            // make sure author has no nasty characters in it
+            $author_name = str_replace("|", " ", $author_name);
+            $author_name = sanitize_text_field(str_replace("\n", " ", $author_name));
 
-        // format: url | title | author | mimeType | created | last-modified | data
-        $str = $obj->guid . "|" . sanitize_title($obj->post_title) . "|" . sanitize_text_field($author_name) . "|text/html|";
-        $str = $str . sanitize_text_field(strtotime($obj->post_date_gmt)) . "000|";
-        $str = $str . sanitize_text_field(strtotime($obj->post_modified_gmt)) . "000|" . $counter . ".html;base64,";
-        // legacy - we don't write the content anymore - as it is fetched using the URL
-        $base64Str = base64_encode("<html lang='en'></html>");
-        // no CRs please
-        $base64Str = str_replace("\n", "", $base64Str);
-        $str = $str . $base64Str . "\n";
-        // write the item to file
-        fwrite( $archive_file, $str, strlen($str) );
-        $counter += 1;
-        $md5_str = md5( $md5_str . $str );
+            // format: url | title | author | mimeType | created | last-modified | data
+            $str = $obj->guid . "|" . sanitize_title($obj->post_title) . "|" . sanitize_text_field($author_name) . "|text/html|";
+            $str = $str . sanitize_text_field(strtotime($obj->post_date_gmt)) . "000|";
+            $str = $str . sanitize_text_field(strtotime($obj->post_modified_gmt)) . "000|" . $counter . ".html;base64,";
+            // legacy - we don't write the content anymore - as it is fetched using the URL
+            $base64Str = base64_encode("<html lang='en'></html>");
+            // no CRs please
+            $base64Str = str_replace("\n", "", $base64Str);
+            $str = $str . $base64Str . "\n";
+            // write the item to file
+            fwrite($archive_file, $str, strlen($str));
+            $counter += 1;
+            $md5_str = md5($md5_str . $str);
 
-        if ( $counter > $num_docs ) {  // we've reached the limit
-            // warn the user they have exceeded the allocation for number of pages on their plan
-            add_settings_error('simsage_settings', 'simsage_archive_error', "Your WordPress post count " .
-                "exceeds the maximum allocated number of posts for your plan (" . $num_docs . ").  " .
-                "We will upload the first " . $num_docs . " pages only.", $type = 'error');
-            break;
+            if ($counter > $num_docs) {  // we've reached the limit
+                // warn the user they have exceeded the allocation for number of pages on their plan
+                add_settings_error('simsage_settings', 'simsage_archive_error', "Your WordPress post count " .
+                    "exceeds the maximum allocated number of posts for your plan (" . $num_docs . ").  " .
+                    "We will upload the first " . $num_docs . " pages only.", $type = 'error');
+                break;
+            }
+        } else {
+            $ignore_counter += 1;
         }
     }
-    debug_log("added " . $counter . " pages to zip, md5 " . $md5_str);
+
+    debug_log("added " . $counter . " pages to zip, ignoring " . $ignore_counter . " pages, md5 " . $md5_str);
     return $md5_str;
 }
 

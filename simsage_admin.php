@@ -646,7 +646,7 @@ class simsage_admin
             if ($archive_file) {
                 debug_log("starting " . $filename);
 
-                $content_md5 = simsage_add_wp_contents_to_archive( $registration_key, $archive_file, $num_docs );
+                $content_md5 = simsage_add_wp_contents_to_archive( $registration_key, $archive_file, $num_docs, $this->get_ignore_urls() );
                 // done writing the archive file
                 fclose( $archive_file );
 
