@@ -36,9 +36,9 @@
         .radio_label { margin-right: 4px; font-weight: bold;}
         .tabbed-display { margin-top: 20px; margin-left: 10px; }
         .tab-disabled { color: #ccc; cursor: default; pointer-events: none; }
-        .two-lists-side-by-side { margin-left: 50px; margin-top: 50px; width: 600px; height: 600px; background: #2a2a2a; }
-        .available-list { width: 280px; border: 1px solid #000000; float: left; }
-        .ignore-list { width: 280px; border: 1px solid #000000: float: left; }
+        .two-lists-side-by-side { margin-left: 50px; margin-top: 50px; width: 600px; height: 400px; background: #c0c0c0; }
+        .available-list { width: 280px; height: 390px; border: 1px solid #000000; float: left; overflow: auto; }
+        .ignore-list { width: 280px; height: 390px; border: 1px solid #000000: float: left;  overflow: auto; }
     </style>
 
     <div id="icon-themes" class="icon32"></div>
