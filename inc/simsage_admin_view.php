@@ -62,6 +62,7 @@
         .instructions { font-size: 14px; font-weight: 600; margin-bottom: 10px;}
         .title { font-size: 12px; font-style: italic; margin-bottom: 10px;}
         .url { font-size: 12px; cursor: pointer;}
+        .spacing-bottom { height: 120px; }
     </style>
 
     <div id="icon-themes" class="icon32"></div>
@@ -331,6 +332,8 @@
                 render_lists();
 
             </script>
+
+            <div class="spacing-bottom">&nbsp;</div>
 
             <?php submit_button( 'update Filter Settings', 'primary','submit', true ); ?>
 
