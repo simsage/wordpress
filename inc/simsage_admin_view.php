@@ -44,19 +44,18 @@
         fieldset {margin-bottom: 20px;}
         .location-label { font-weight: 600; font-size: 1.1em; margin-top: 10px; text-transform: uppercase; margin-bottom: 10px; }
         .label-success { font-weight: 600; font-size: 1.1em; margin-top: 10px; margin-bottom: 20px; line-height: 20px; }
-        .wide-text { width: 500px; }
         .radio_label { margin-right: 4px; font-weight: bold;}
         .tabbed-display { margin-top: 20px; margin-left: 10px; }
         .tab-disabled { color: #ccc; cursor: default; pointer-events: none; }
         .two-lists-side-by-side {
             display: block;
-            width: 640px; height: 400px;
+            width: 840px; height: 400px;
             margin: 50px 0 0 50px !important;
             cursor: default;
         }
         .boxes { float: left; }
-        .box-1 { float: left; margin: 0 20px 0 0 !important; width: 280px; height: 390px; }
-        .box-2 { float: left; margin: 0 0 0 0 !important; width: 280px; height: 390px; }
+        .box-1 { float: left; margin: 0 20px 0 0 !important; width: 380px; height: 390px; }
+        .box-2 { float: left; margin: 0 0 0 0 !important; width: 380px; height: 390px; }
         .filter { margin-bottom: 10px; }
         .available-list { padding: 2px; height: 370px; max-height: 370px; overflow: auto; border: 1px solid #878787; border-radius: 2px; }
         .ignore-list { padding: 2px; height: 370px; max-height: 370px; overflow: auto; border: 1px solid #878787; border-radius: 2px; }
