@@ -40,7 +40,7 @@
             width: 620px; height: 400px; background: #c0c0c0;
             margin: 50px 0 0 50px !important;
         }
-        .available-list { margin: 0 0 0 20px !important; width: 280px; height: 390px; border: 1px solid #000000; float: left; overflow: auto; }
+        .available-list { margin: 0 20px 0 0 !important; width: 280px; height: 390px; border: 1px solid #000000; float: left; overflow: auto; }
         .ignore-list { margin: 0 0 0 0 !important; width: 280px; height: 390px; border: 1px solid #000000; float: left;  overflow: auto; }
     </style>
 
