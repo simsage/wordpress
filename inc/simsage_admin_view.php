@@ -85,8 +85,8 @@
             cursor: default;
         }
         .boxes { float: left; }
-        .box-1 { float: none; margin: 0 20px 0 0 !important; width: 280px; height: 390px; }
-        .box-2 { float: none; margin: 0 0 0 0 !important; width: 280px; height: 390px; }
+        .box-1 { float: left; margin: 0 20px 0 0 !important; width: 280px; height: 390px; }
+        .box-2 { float: left; margin: 0 0 0 0 !important; width: 280px; height: 390px; }
         .available-list { overflow: auto; }
         .ignore-list { overflow: auto; }
         .instructions { font-size: 14px; font-weight: 600; margin-bottom: 10px;}
@@ -264,6 +264,7 @@
                     <div class="boxes">
 
                         <div class="box-1">
+                            <br clear="both" />
                             <div class="filter">
                                 <label>
                                     <input type="text" class="" placeholder="filter urls" value="" onkeyup="filter_available();" />
@@ -274,6 +275,7 @@
                         </div>
 
                         <div class="box-2">
+                            <br clear="both" />
                             <div class="filter">
                                 <label>
                                     <input type="text" placeholder="filter urls" value="" onkeyup="filter_ignore();" />
