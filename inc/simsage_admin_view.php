@@ -241,6 +241,7 @@
                                 </label>
                             </div>
                             <br clear="both" />
+                            <div class="title">Pages indexed by SimSage</div>
                             <div class="available-list">
                             </div>
                         </div>
@@ -253,6 +254,7 @@
                                 </label>
                             </div>
                             <br clear="both" />
+                            <div class="title">Pages ignored by SimSage</div>
                             <div class="ignore-list">
                             </div>
                         </div>
@@ -279,8 +281,8 @@
 
                 // draw the available and ignore lists
                 function render_lists() {
-                    jQuery(".available-list").html(render_list(filter_list(available_urls, ".filter-available"), "Pages indexed by SimSage", "deselect_item"));
-                    jQuery(".ignore-list").html(render_list(filter_list(ignore_urls, ".filter-ignored"), "Pages ignored by SimSage", "select_item"));
+                    jQuery(".available-list").html(render_list(filter_list(available_urls, ".filter-available"), "deselect_item"));
+                    jQuery(".ignore-list").html(render_list(filter_list(ignore_urls, ".filter-ignored"), "select_item"));
                 }
 
                 /**
@@ -297,8 +299,8 @@
                     return str;
                 }
 
-                function render_list(list, title, fn) {
-                    let str = "<div class=\"title\">" + esc_html(title) + "</div>";
+                function render_list(list, fn) {
+                    let str = "";
                     for (let i in list) {
                         if (list.hasOwnProperty(i)) {
                             let item = list[i];
