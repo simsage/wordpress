@@ -30,12 +30,8 @@
                 str += "<div class=\"url\">" + item + "</div>";
             }
         }
-        alert(str);
         return str;
     }
-
-    jQuery(".available-list").html(render_list(available_urls, "Pages indexed by SimSage"));
-    jQuery(".ignore-list").html(render_list(ignore_urls, "Pages ignored by SimSage"));
 
 </script>
 
@@ -241,8 +237,13 @@
 
                 </div>
 
-
             </div>
+
+            <script lang="js">
+                jQuery(".available-list").html(render_list(available_urls, "Pages indexed by SimSage"));
+                jQuery(".ignore-list").html(render_list(ignore_urls, "Pages ignored by SimSage"));
+            </script>
+
         <?php } ?>
 
 
