@@ -27,7 +27,7 @@
         for (let i in list) {
             if (list.hasOwnProperty(i)) {
                 let item = list[i];
-                str += "<div class=\"url\" onclick=\"" + js + "('" + item + "')\">" + item + "</div>";
+                str += "<div class=\"url\" onclick=\"" + fn + "('" + item + "')\">" + item + "</div>";
             }
         }
         return str;
