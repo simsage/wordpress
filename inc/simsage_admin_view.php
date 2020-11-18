@@ -84,10 +84,10 @@
             margin: 50px 0 0 50px !important;
             cursor: default;
         }
-        .filter-1 { margin: 0 20px 0 0 !important; width: 280px; float: left; }
-        .filter-2 { margin: 0 0 0 0 !important; width: 280px; float: left; }
-        .available-list { margin: 0 20px 0 0 !important; width: 280px; height: 390px; float: left; overflow: auto; }
-        .ignore-list { margin: 0 0 0 0 !important; width: 280px; height: 390px; float: left;  overflow: auto; }
+        .box-1 { margin: 0 20px 0 0 !important; width: 280px; height: 390px; float: left; }
+        .box-2 { margin: 0 0 0 0 !important; width: 280px; height: 390px; float: left;}
+        .available-list { overflow: auto; }
+        .ignore-list { overflow: auto; }
         .instructions { font-size: 14px; font-weight: 600; margin-bottom: 10px;}
         .title { font-size: 12px; font-style: italic; margin-bottom: 10px;}
         .url { font-size: 12px; cursor: pointer;}
@@ -263,20 +263,24 @@
 
                     <div class="instructions">Click on URLs in either list to move them across</div>
 
-                    <div class="filter-1">
-                        <label>
-                            <input type="text" class="" placeholder="filter urls" value="" onkeyup="filter_available();" />
-                        </label>
-                    </div>
-                    <div class="available-list">
+                    <div class="box-1">
+                        <div class="filter">
+                            <label>
+                                <input type="text" class="" placeholder="filter urls" value="" onkeyup="filter_available();" />
+                            </label>
+                        </div>
+                        <div class="available-list">
+                        </div>
                     </div>
 
-                    <div class="filter-2">
-                        <label>
-                            <input type="text" placeholder="filter urls" value="" onkeyup="filter_ignore();" />
-                        </label>
-                    </div>
-                    <div class="ignore-list">
+                    <div class="box-2">
+                        <div class="filter">
+                            <label>
+                                <input type="text" placeholder="filter urls" value="" onkeyup="filter_ignore();" />
+                            </label>
+                        </div>
+                        <div class="ignore-list">
+                        </div>
                     </div>
 
                 </div>
