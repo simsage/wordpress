@@ -6,6 +6,12 @@
  */
 ?>
 
+<script lang="js">
+    all_urls = [<?php echo simsage_get_wp_contents() ?>];
+    console.log(all_urls);
+</script>
+
+
 <!-- Create a header in the default WordPress 'wrap' container -->
 <div class="wrap">
 
@@ -184,9 +190,10 @@
 
         <?php if ($active_tab == 'filters') { ?>
             <div class="tabbed-display">
-            </div>
-            <?php submit_button( 'update Search Settings', 'primary','submit', true ); ?>
 
+
+
+            </div>
         <?php } ?>
 
 

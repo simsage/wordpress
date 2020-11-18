@@ -135,6 +135,24 @@ function simsage_add_wp_contents_to_archive($registration_key, $archive_file, $n
 
 
 /**
+ * query word-press' content and return a list of all URLs SimSage would look at
+ *
+ * @return array a list of URLs
+ */
+function simsage_get_wp_contents() {
+    global $wpdb;
+    $query = "SELECT * FROM $wpdb->posts WHERE post_status = 'publish'";
+    $results = $wpdb->get_results($query);
+    $result_list = array();
+    foreach ($results as $row) {
+        $obj = $row;
+        array_push( $result_list, $obj->guid );
+    }
+    return $result_list;
+}
+
+
+/**
  * Add all QA items to an archive file passed in as a string in marked by SIMSAGE_DOC_BOT_DATA
  *
  * @param $archive_file resource the file to write to
