@@ -18,6 +18,18 @@
             let url = all_urls[i];
             if (!ignore_urls.includes(url)) {
                 available_urls.push(url);
+                available_urls.push(url);
+                available_urls.push(url);
+                available_urls.push(url);
+                available_urls.push(url);
+                available_urls.push(url);
+                available_urls.push(url);
+                available_urls.push(url);
+                available_urls.push(url);
+                available_urls.push(url);
+                available_urls.push(url);
+                available_urls.push(url);
+                available_urls.push(url);
             }
         }
     }
