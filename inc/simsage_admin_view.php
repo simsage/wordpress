@@ -8,7 +8,20 @@
 
 <script lang="js">
     all_urls = [<?php echo '"'.implode('","', simsage_get_wp_contents()).'"' ?>];
-    console.log(all_urls);
+
+    ignore_urls = [];           // set by our stored items
+    available_urls = [];
+
+    // setup available urls
+    for (let i in all_urls) {
+        if (all_urls.hasOwnProperty(i)) {
+            let url = all_urls[i];
+            if (!ignore_urls.includes(url)) {
+                available_urls.push(url);
+            }
+        }
+    }
+
 </script>
 
 
@@ -23,6 +36,9 @@
         .radio_label { margin-right: 4px; font-weight: bold;}
         .tabbed-display { margin-top: 20px; margin-left: 10px; }
         .tab-disabled { color: #ccc; cursor: default; pointer-events: none; }
+        .two-lists-side-by-side { margin-left: 50px; margin-top: 50px; width: 600px; height: 600px; background: #2a2a2a; }
+        .available-list { width: 280px; border: 1px solid #000000; float: left; }
+        .ignore-list { width: 280px; border: 1px solid #000000: float: left; }
     </style>
 
     <div id="icon-themes" class="icon32"></div>
@@ -191,6 +207,15 @@
         <?php if ($active_tab == 'filters') { ?>
             <div class="tabbed-display">
 
+                <div class="two-lists-side-by-side">
+
+                    <div class="available-list">
+                    </div>
+
+                    <div class="ignore-list">
+                    </div>
+
+                </div>
 
 
             </div>
