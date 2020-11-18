@@ -7,7 +7,7 @@
 ?>
 
 <script lang="js">
-    all_urls = ["<?php echo simsage_get_wp_contents() ?>"];
+    all_urls = ["<?php echo json_encode(simsage_get_wp_contents()) ?>"];
     console.log(all_urls);
 </script>
 
