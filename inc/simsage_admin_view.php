@@ -57,8 +57,8 @@
         .box-1 { float: left; margin: 0 20px 0 0 !important; width: 280px; height: 390px; }
         .box-2 { float: left; margin: 0 0 0 0 !important; width: 280px; height: 390px; }
         .filter { margin-bottom: 10px; }
-        .available-list { overflow: auto; }
-        .ignore-list { overflow: auto; }
+        .available-list { overflow: auto; border: 1px solid #878787; border-radius: 2px; }
+        .ignore-list { overflow: auto; border: 1px solid #878787; border-radius: 2px; }
         .instructions { font-size: 14px; font-weight: 600; margin-bottom: 10px;}
         .title { font-size: 12px; font-style: italic; margin-bottom: 10px;}
         .url { font-size: 12px; cursor: pointer;}
