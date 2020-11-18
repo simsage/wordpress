@@ -85,8 +85,8 @@
             cursor: default;
         }
         .boxes { float: left; }
-        .box-1 { margin: 0 20px 0 0 !important; width: 280px; height: 390px; }
-        .box-2 { margin: 0 0 0 0 !important; width: 280px; height: 390px; }
+        .box-1 { float: none; margin: 0 20px 0 0 !important; width: 280px; height: 390px; }
+        .box-2 { float: none; margin: 0 0 0 0 !important; width: 280px; height: 390px; }
         .available-list { overflow: auto; }
         .ignore-list { overflow: auto; }
         .instructions { font-size: 14px; font-weight: 600; margin-bottom: 10px;}
