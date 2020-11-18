@@ -30,6 +30,7 @@
                 str += "<div class=\"url\">" + item + "</div>";
             }
         }
+        alert(str);
         return str;
     }
 
