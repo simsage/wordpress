@@ -12,20 +12,6 @@
     ignore_urls = [];           // set by our stored items
     available_urls = [];
 
-    /**
-     * replace < and > in a string to make it html safe
-     * @param str the string to act on
-     * @return the escaped string
-     */
-    function esc_html(str) {
-        if (typeof str === 'string' || str instanceof String) {
-            return str
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-        }
-        return str;
-    }
-
     // setup available urls
     for (let i in all_urls) {
         if (all_urls.hasOwnProperty(i)) {
@@ -33,35 +19,6 @@
             if (!ignore_urls.includes(url)) {
                 available_urls.push(url);
             }
-        }
-    }
-
-    function render_list(list, title, fn) {
-        let str = "<div class=\"title\">" + esc_html(title) + "</div>";
-        for (let i in list) {
-            if (list.hasOwnProperty(i)) {
-                let item = list[i];
-                str += "<div class=\"url\" title=\"move " + item + "\" onclick=\"" + fn + "('" + item + "')\">" + item + "</div>";
-            }
-        }
-        return str;
-    }
-
-    function deselect_item(url) {
-        let index = available_urls.indexOf(url);
-        if (index >= 0) {
-            available_urls.splice(index, 1);
-            ignore_urls.push(url);
-            render_lists();
-        }
-    }
-
-    function select_item(url) {
-        let index = ignore_urls.indexOf(url);
-        if (index >= 0) {
-            ignore_urls.splice(index, 1);
-            available_urls.push(url);
-            render_lists();
         }
     }
 
@@ -268,7 +225,7 @@
                             <br clear="both" />
                             <div class="filter">
                                 <label>
-                                    <input type="text" class="" placeholder="filter urls" value="" onkeyup="filter_available();" />
+                                    <input type="text" class="filter-available" placeholder="filter urls" value="" onkeyup="filter_available();" />
                                 </label>
                             </div>
                             <br clear="both" />
@@ -280,7 +237,7 @@
                             <br clear="both" />
                             <div class="filter">
                                 <label>
-                                    <input type="text" placeholder="filter urls" value="" onkeyup="filter_ignore();" />
+                                    <input type="text" class="filter-ignored" placeholder="filter urls" value="" onkeyup="filter_ignore();" />
                                 </label>
                             </div>
                             <br clear="both" />
@@ -299,10 +256,73 @@
                     jQuery(".ignore-list").html(render_list(ignore_urls, "Pages ignored by SimSage", "select_item"));
                 }
 
+                /**
+                 * replace < and > in a string to make it html safe
+                 * @param str the string to act on
+                 * @return the escaped string
+                 */
+                function esc_html(str) {
+                    if (typeof str === 'string' || str instanceof String) {
+                        return str
+                            .replace(/</g, "&lt;")
+                            .replace(/>/g, "&gt;")
+                    }
+                    return str;
+                }
+
+                function render_list(list, title, fn) {
+                    let str = "<div class=\"title\">" + esc_html(title) + "</div>";
+                    for (let i in list) {
+                        if (list.hasOwnProperty(i)) {
+                            let item = list[i];
+                            str += "<div class=\"url\" title=\"move " + item + "\" onclick=\"" + fn + "('" + item + "')\">" + item + "</div>";
+                        }
+                    }
+                    return str;
+                }
+
+                function deselect_item(url) {
+                    let index = available_urls.indexOf(url);
+                    if (index >= 0) {
+                        available_urls.splice(index, 1);
+                        ignore_urls.push(url);
+                        render_lists();
+                    }
+                }
+
+                function select_item(url) {
+                    let index = ignore_urls.indexOf(url);
+                    if (index >= 0) {
+                        ignore_urls.splice(index, 1);
+                        available_urls.push(url);
+                        render_lists();
+                    }
+                }
+
                 function filter_available() {
+                    let text = jQuery(".filter-available").val();
+                    let filtered_list = [];
+                    for (let i in available_urls) {
+                        if (available_urls.hasOwnProperty(i)) {
+                            if (available_urls[i].indexOf(text) >= 0) {
+                                filtered_list.push(available_urls[i]);
+                            }
+                        }
+                    }
+                    jQuery(".available-list").html(render_list(filtered_list, "Pages indexed by SimSage", "deselect_item"));
                 }
 
                 function filter_ignore() {
+                    let text = jQuery(".filter-ignored").val();
+                    let filtered_list = [];
+                    for (let i in available_urls) {
+                        if (available_urls.hasOwnProperty(i)) {
+                            if (available_urls[i].indexOf(text) >= 0) {
+                                filtered_list.push(available_urls[i]);
+                            }
+                        }
+                    }
+                    jQuery(".ignore-list").html(render_list(filtered_list, "Pages ignored by SimSage", "select_item"));
                 }
 
                 render_lists();
