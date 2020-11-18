@@ -5,7 +5,6 @@ class simsage_operator
 {
     // location of the images folder
     private $asset_folder = '';
-    private $analytics = null;
 
 
     // constructor
