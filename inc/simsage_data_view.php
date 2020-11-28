@@ -4,6 +4,11 @@
  */
 ?>
 
+<?php
+$plan = simsage_get_plan();
+$has_access = ($plan != null && isset( $plan['analyticsWindowInMonths'] ) && $plan['analyticsWindowInMonths'] > 0);
+?>
+
 <script lang="js">
     // set an image base for all our templates to use (url bases for images)
     image_base = "<?php echo sanitize_text_field($this->asset_folder) ?>";
@@ -46,7 +51,7 @@
     $has_sites = (simsage_get_kb() != null);
     ?>
 
-    <?php if ( $has_sites ) { ?>
+    <?php if ( $has_sites && $has_access ) { ?>
 
     <div class="analytics-area">
 
@@ -315,6 +320,10 @@
 
     </div>
 
+    <?php } else if ( !$has_access ) { ?>
+    <div class="operator-area">
+        <div class="label-success">Your plan does not provide you with Analytics.  Please <a href="<?php echo $this->get_portal_server(); ?>/#/sign-in?origin=plugin" target="_blank">upgrade your plan</a> if you wish to have access to analytics.</div>
+    </div>
     <?php } else { ?>
         <div class="analytics-area">
             <div class="label-success">Please <a href="/wp-admin/options-general.php?page=simsage-search">configure</a> your SimSage plugin first.</div>
