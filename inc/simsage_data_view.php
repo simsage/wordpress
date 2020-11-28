@@ -320,7 +320,7 @@ $has_access = ($plan != null && isset( $plan['analyticsWindowInMonths'] ) && $pl
 
     </div>
 
-    <?php } else if ( !$has_access ) { ?>
+    <?php } else if ( $has_sites && !$has_access ) { ?>
     <div class="operator-area">
         <div class="label-success">Your plan does not provide you with Analytics.  Please <a href="<?php echo $this->get_portal_server(); ?>/#/sign-in?origin=plugin" target="_blank">upgrade your plan</a> if you wish to have access to analytics.</div>
     </div>
