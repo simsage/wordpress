@@ -595,7 +595,7 @@ function simsage_get_servers( $plugin_options ) {
         } else if ( $server == "2" ) {
             return array( "api" => "https://api-test.simsage.nz", "portal" => "https://portal-test.simsage.nz");
         } else if ( $server == "3" ) {
-            return array( "api" => "http://192.168.1.108:8080", "portal" => "http://192.168.1.108:8088");
+            return array( "api" => "http://192.168.1.108:8088", "portal" => "http://192.168.1.108:4205");
         }
     }
     return array( "api" => "https://api.simsage.ai", "portal" => "https://portal.simsage.ai");
