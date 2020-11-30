@@ -1863,3 +1863,41 @@ input::-ms-clear {
     font-weight: 600;
 }
 
+
+@media only screen and (max-width: 420px) {
+    .operator-chat-box-view {
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        margin-top: calc(100vh - 500px);
+    }
+
+    .operator-chat-box {
+        width: 100% !important;
+    }
+
+    .operator-chat-box .chat-bar-bottom {
+        width: 100% !important;
+    }
+
+    .operator-chat-box .operator-close-width {
+        width: 98% !important;
+    }
+
+    .operator-chat-box .chat-text-box {
+        width: 80% !important;
+    }
+
+    .operator-chat-box .chat-button {
+        width: 20% !important;
+    }
+
+    .operator-chat-box .chat-button-disabled {
+        width: 20% !important;
+    }
+    .operator-chat-box .chat-send-text {
+        margin-left: 12px !important;
+    }
+
+}
+
