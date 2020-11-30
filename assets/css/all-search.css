@@ -50,16 +50,6 @@ input::-ms-clear {
     height: 24px !important;
 }
 
-@media only screen and (max-width: 700px) {
-    .search-bar .search-options-button {
-        margin-bottom: 10px;
-        margin-right: 15px;
-    }
-    .search-bar .search-text-box {
-        width: calc(100% - 160px) !important;
-    }
-}
-
 @media only screen and (max-width: 1060px) {
     .search-bar .search-options-button {
         margin-bottom: 10px;
