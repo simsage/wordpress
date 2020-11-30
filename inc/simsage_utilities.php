@@ -368,10 +368,12 @@ function simsage_check_json_response( $server, $json ) {
 
     } else if ( isset( $json["errors"] ) ) {
         $json_error = $json["errors"];
-        if ( isset( $json_error["http_request_failed"]) ) {
+        if ( isset( $json_error["http_request_failed"] ) ) {
+            $hrf = $json_error["http_request_failed"];
+            if ( isset( $hrf[0] ) ) {
+                return sanitize_text_field($server) . ": " . $hrf[0];
+            }
             $error = print_r( sanitize_text_field($json_error["http_request_failed"]), true);
-            debug_log( "ERROR" );
-            debug_log( $error );
             return sanitize_text_field($server) . ": " . $error;
 
         } else {
