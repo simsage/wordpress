@@ -23,6 +23,7 @@
 	<?php
 	$options = get_option( SIMSAGE_PLUGIN_NAME );
 	$plan = simsage_get_plan();
+	debug_log( print_r($plan, true) );
     // does this plan have operator access?
     $has_access = ($plan != null && isset( $plan['operatorEnabled'] ) && $plan['operatorEnabled']);
     // when we have selected a site, this variable will be set
