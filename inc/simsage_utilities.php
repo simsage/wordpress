@@ -67,8 +67,7 @@ if ( ! function_exists('debug_log')) {
  * @return mixed
  */
 function simsage_get_json( $data ) {
-    debug_log( print_r($data, true) );
-	if (gettype($data) == "string") {
+	if ( gettype($data) == "string" ) {
 		return json_decode($data, true, 512);
 	} else {
 		return json_decode(json_encode($data), true, 512);
@@ -356,7 +355,7 @@ function simsage_join_urls($url1, $url2 ) {
  * @param $json array the data returned by SimSage from the server
  * @return string an empty string if no error was found, otherwise a description of the error
  */
-function simsage_check_json_response($server, $json ) {
+function simsage_check_json_response( $server, $json ) {
     if ( isset($json["error"]) ) {
         $error = print_r( sanitize_text_field($json["error"]), true);
         if ( $error != "" ) {
@@ -367,8 +366,10 @@ function simsage_check_json_response($server, $json ) {
             return sanitize_text_field($server) . ": " . $error;
         }
 
-    } else if ( isset($json["errors"]) ) {
+    } else if ( isset( $json["errors"] ) ) {
         $error = print_r( sanitize_text_field($json["errors"]), true);
+        debug_log( "ERROR" );
+        debug_log( $error );
         if ( $error != "" ) {
             // more friendly error messages
             if ( strpos($error, "cURL error 28:") !== false || strpos($error, "cURL error 7:") !== false) {
