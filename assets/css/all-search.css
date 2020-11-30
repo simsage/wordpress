@@ -56,7 +56,7 @@ input::-ms-clear {
         margin-right: 15px;
     }
     .search-bar .search-text-box {
-        width: calc(100% - 160px) !important;
+        width: calc(100% - 180px) !important;
     }
 }
 
