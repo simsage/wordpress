@@ -66,7 +66,8 @@ if ( ! function_exists('debug_log')) {
  * @param $data string|object
  * @return mixed
  */
-function simsage_get_json($data ) {
+function simsage_get_json( $data ) {
+    debug_log( print_r($data, true) );
 	if (gettype($data) == "string") {
 		return json_decode($data, true, 512);
 	} else {
