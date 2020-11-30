@@ -431,8 +431,10 @@ class simsage_admin
                         debug_log('SUCCESS: simsage archive uploaded.');
 
                 } else {
-                    add_settings_error('simsage_settings', 'simsage_up_to_date', 'Site content already synchronized with SimSage (no changes detected, nothing uploaded)', $type = 'info');
-                    debug_log('not uploading site: content has not changed since last (' . $file_md5 . ')');
+                    if (function_exists('add_settings_error'))
+                        add_settings_error('simsage_settings', 'simsage_up_to_date', 'Site content already synchronized with SimSage (no changes detected, nothing uploaded)', $type = 'info');
+                    else
+                        debug_log('not uploading site: content has not changed since last (' . $file_md5 . ')');
                 }
 
                 // remove the file after use
