@@ -32,7 +32,7 @@
         .location-label { font-weight: 600; font-size: 1.1em; margin-top: 10px; text-transform: uppercase; margin-bottom: 10px; }
         .label-success { font-weight: 600; font-size: 1.1em; margin-top: 10px; margin-bottom: 20px; line-height: 20px; }
         .radio_label { margin-right: 4px; font-weight: bold;}
-        .tabbed-display { margin-top: 10px; margin-left: 10px; }
+        .tabbed-display { margin-top: 20px; margin-left: 10px; }
         .tab-disabled { color: #ccc; cursor: default; pointer-events: none; }
         .two-lists-side-by-side {
             display: inline-block;
