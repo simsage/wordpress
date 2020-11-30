@@ -1505,7 +1505,6 @@ input::-ms-clear {
 .error-dialog-box {
     position: relative;
     z-index: 999;
-    left: 15vw;
     margin-top: -40px !important;
 }
 
@@ -1627,7 +1626,7 @@ input::-ms-clear {
     font-size: 16px;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 768px) {
     .error-dialog-box {
         left: 0;
     }
