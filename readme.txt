@@ -37,6 +37,7 @@ SimSage currently only supports English.  Other languages might be supported in 
 * Added menu icons
 * Made Operator and Data menus available to Editor roles
 * Added URL filters to Plugin Options
+* fixed various layout issues re: REACTIVE design
 
 = 1.2.4 =
 * Added missing test setting for SimSage testers
