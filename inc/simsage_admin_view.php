@@ -37,7 +37,7 @@
         .two-lists-side-by-side {
             display: inline-block;
             width: 840px; height: 400px;
-            margin: 20px 0 0 20px !important;
+            margin: 10px 0 0 20px !important;
             cursor: default;
         }
         .boxes { float: left; }
