@@ -1490,6 +1490,14 @@ input::-ms-clear {
     color: black;
 }
 
+@media only screen and (max-width: 600px) {
+    .no-search-results {
+        left: 0;
+        padding: 10px !important;
+        width: 100% !important;
+    }
+}
+
 /**********************************************************************/
 /*  Error dialog box */
 
