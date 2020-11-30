@@ -367,15 +367,22 @@ function simsage_check_json_response( $server, $json ) {
         }
 
     } else if ( isset( $json["errors"] ) ) {
-        $error = print_r( sanitize_text_field($json["errors"]), true);
-        debug_log( "ERROR" );
-        debug_log( $error );
-        if ( $error != "" ) {
-            // more friendly error messages
-            if ( strpos($error, "cURL error 28:") !== false || strpos($error, "cURL error 7:") !== false) {
-                return "SimSage Remote Upload Server (" . sanitize_text_field($server) . ") not responding";
-            }
+        $json_error = $json["errors"];
+        if ( isset( $json_error["http_request_failed"]) ) {
+            $error = print_r( sanitize_text_field($json_error["http_request_failed"]), true);
+            debug_log( "ERROR" );
+            debug_log( $error );
             return sanitize_text_field($server) . ": " . $error;
+
+        } else {
+            $error = print_r(sanitize_text_field($json["errors"]), true);
+            if ($error != "") {
+                // more friendly error messages
+                if (strpos($error, "cURL error 28:") !== false || strpos($error, "cURL error 7:") !== false) {
+                    return "SimSage Remote Upload Server (" . sanitize_text_field($server) . ") not responding";
+                }
+                return sanitize_text_field($server) . ": " . $error;
+            }
         }
 
     } else if ( isset($json["body"]) ) {
