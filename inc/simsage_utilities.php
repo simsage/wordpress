@@ -561,7 +561,7 @@ function simsage_sanitize_plan( $plan ) {
         "freeMonths" => isset($plan['freeMonths']) ? (int)sanitize_text_field( $plan['freeMonths'] ) : 0,
         "numDocs" => isset($plan['numDocs']) ? (int)sanitize_text_field( $plan['numDocs'] ) : 0,
         "numQA" => isset($plan['numQA']) ? (int)sanitize_text_field( $plan['numQA'] ) : 0,
-        "operatorEnabled" => isset($plan['operatorEnabled']) ? (int)sanitize_text_field( $plan['operatorEnabled'] ) : 0,
+        "operatorEnabled" => isset($plan['operatorEnabled']) ? $plan['operatorEnabled'] : false,
         "maxQueriesPerDay" => isset($plan['maxQueriesPerDay']) ? (int)sanitize_text_field( $plan['maxQueriesPerDay'] ) : 0,
         "analyticsWindowInMonths" => isset($plan['analyticsWindowInMonths']) ? (int)sanitize_text_field( $plan['analyticsWindowInMonths'] ) : 0
     );
