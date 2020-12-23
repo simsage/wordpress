@@ -139,6 +139,28 @@ class simsage_search
 
 
     /**
+     * get a SimSage-plan specific boolean value from the accounts section
+     *
+     * @param $key       string the plan key to look for
+     * @param $default   string the default value to return if not found
+     * @return string    the setting, or an empty string if not found
+     */
+    private function get_plan_boolean_value( $key, $default ) {
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
+        if ( isset($plugin_options["simsage_account"]) ) {
+            $account = $plugin_options["simsage_account"];
+            if ( isset( $account["plan"] ) ) {
+                $plan = $account["plan"];
+                if ( isset($plan[$key]) ) {
+                    return $plan[$key] ? "true" : "false";
+                }
+            }
+        }
+        return $default ? "true" : "false";
+    }
+
+
+    /**
      * get the user's id (organisationId) to use from our settings
      *
      * @return string|null the user's id
@@ -238,9 +260,9 @@ class simsage_search
         wp_register_script( 'simsage-search-script-1', plugins_url( 'assets/js/sockjs.js', __FILE__ ), array('jquery'), '1.0', true );
         wp_register_script( 'simsage-search-script-2', plugins_url( 'assets/js/stomp.js', __FILE__ ), array('jquery'), '1.0', true );
         // specific implementation
-        wp_register_script( 'simsage-search-script-3', plugins_url( 'assets/js/simsage-search.js', __FILE__ ), array('jquery'), '1.0', true );
+        wp_register_script( 'simsage-search-script-3', plugins_url( 'assets/js/simsage-search-control.js', __FILE__ ), array('jquery'), '1.0', true );
         // UI specific script
-        wp_register_script( 'simsage-search-script-4', plugins_url( 'assets/js/search-ui-script.js', __FILE__ ), array('jquery'), '1.0', true );
+        wp_register_script( 'simsage-search-script-4', plugins_url( 'assets/js/simsage-controls.js', __FILE__ ), array('jquery'), '1.0', true );
         // and the required styles for search.css
         wp_register_style( 'simsage-search-style-1', plugins_url( 'assets/css/all-search.css', __FILE__ ) );
     }
@@ -259,6 +281,8 @@ class simsage_search
             return;
 
         wp_enqueue_script( 'jquery' );
+        wp_enqueue_script( 'jquery-ui-widget' );
+        wp_enqueue_script( 'jquery-ui-slider' );
 
         wp_print_scripts('simsage-search-script-1');
         wp_print_scripts('simsage-search-script-2');

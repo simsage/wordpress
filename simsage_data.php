@@ -42,7 +42,7 @@ class simsage_data
         // and the required styles for operator.css
         wp_register_style( 'simsage-analytics-style', plugins_url( 'assets/css/data.css', __FILE__ ) );
         // jQuery date-picker styling
-        wp_register_style( 'jquery-ui-style', plugins_url( 'assets/css/jquery-ui.css', __FILE__ ) );
+        wp_register_style( 'jquery-ui-style', plugins_url( 'assets/css/jquery-ui.min.css', __FILE__ ) );
     }
 
 
