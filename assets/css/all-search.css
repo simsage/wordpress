@@ -10,7 +10,6 @@ input::-ms-clear {
 }
 
 .search-bar {
-    margin-right: 5px;
 }
 
 /* no select class - no text selectable */
@@ -400,10 +399,14 @@ input::-ms-clear {
 .search-results {
     width: 98% !important;
     border: 0 solid;
+    margin-top: 22px;
+}
+
+.search-results-inside {
     padding: 10px;
     border-radius: 10px;
     background-color: #ffffff;
-    margin-top: 22px;
+    float: left;
 }
 
 .search-results .search-results-top-td {

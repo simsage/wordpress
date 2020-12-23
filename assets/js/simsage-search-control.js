@@ -369,7 +369,7 @@ let search_options_control = {
             // wordpress override
             if (settings && settings.kbId && settings.kbId.length > 0) {
                 self.kb = {"name": "wordpress knowledge-base", "id": settings.kbId, "sourceList": []};
-                self.on_change_kb(this.kb.id);
+                self.on_change_kb(self.kb.id);
             } else if (self.kb_list.length > 0) {
                 self.kb = self.kb_list[0];
                 self.on_change_kb(self.kb.id);
@@ -385,6 +385,7 @@ let search_options_control = {
                     self.operator_was_typing(false)
                 }, 1000);
             }
+
         }, function(err) {
             console.log(err);
             if (self.connection_retry_count > 1) {
@@ -522,6 +523,7 @@ let no_results = {
 
     show_no_search_results: function() {
         jQuery(".no-search-results").show();
+        jQuery(".search-results").hide();
         if (this.know_email) {
             jQuery(".ask-email-box").hide();
             jQuery(".ask-emailed-box").show();
@@ -1312,6 +1314,7 @@ let chat_control = {
 let search_results_control = {
 
     show_search_results: function() {
+        jQuery(".search-results").show();
         jQuery(".search-display").show();
         this.close_no_search_results();
     },
@@ -1465,11 +1468,12 @@ let search_results_control = {
             val = val.replace(/{:hl1}/g, "</span>");
             val = val.replace(/{hl2:}/g, "<span class='hl2'>");
             val = val.replace(/{:hl2}/g, "</span>");
-            $(this).html(val);
+            jQuery(this).html(val);
         });
     },
 
     clear_search_results: function() {
+        jQuery(".search-results").hide();
         jQuery(".search-results-td").html("");
     },
 
@@ -1655,3 +1659,10 @@ let domain_control = {
 
 }
 
+// setup search
+let search = search_control.instantiate();
+
+// init when ready
+jQuery(document).ready(function () {
+    search.init();
+});
