@@ -167,9 +167,9 @@ function setup_controls(control_data_list) {
 // set of support functions used by each control - and copied into each control by setup
 let common_functions = {
     // strings that are too big are clipped
-    adjust_size: function(str) {
-        if (str.length > 20) {
-            return str.substr(0,20) + "...";
+    adjust_size: function(str, size) {
+        if (size && str.length > size) {
+            return str.substr(0,size) + "...";
         }
         return str;
     },
