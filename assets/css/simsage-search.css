@@ -1,19 +1,46 @@
 
+.simsage-search {
+    font-family: 'Lucinda Grande', 'Lucinda Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
+}
+
 /* disable chrome outlines */
-textarea:focus, input:focus, select:focus {
+.simsage-search textarea:focus, input:focus, select:focus {
+    outline: none;
+}
+
+.simsage-search div:focus {
+    outline: none;
+}
+
+.simsage-search span:focus {
     outline: none;
 }
 
 /* disable MS x in text-fields */
-input::-ms-clear {
+.simsage-search input::-ms-clear {
     display: none;
 }
 
-.search-bar {
+.simsage-search .search-bar {
+}
+
+/* enable down chevrons for selects */
+.simsage-search .select-wrapper {
+    position: relative;
+}
+
+.simsage-search .select-wrapper:before {
+    content: '\2304';
+    color: black;
+    display: inline-block;
+    position: absolute;
+    top: -4px;
+    right: 28px;
+    pointer-events: none;
 }
 
 /* no select class - no text selectable */
-.no-select {
+.simsage-search .no-select {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -21,7 +48,7 @@ input::-ms-clear {
 }
 
 /* parent of all pop-up dialogs, login, error */
-.dialog-parent {
+.simsage-search .dialog-parent {
     position: relative;
 }
 
@@ -52,7 +79,7 @@ input::-ms-clear {
 .search-bar .search-options-chevron-image-box {
     float: left;
     margin-left: 2px !important;
-    margin-top: 12px !important;
+    margin-top: 6px !important;
     height: 24px !important;
     width: 24px !important;
     cursor: pointer;
@@ -144,8 +171,12 @@ input::-ms-clear {
 
 .search-bar .search-button-span-box {
     float: left;
-    margin-left: 8px !important;
-    margin-top: 8px !important;
+    margin-left: 4px !important;
+    margin-top: 4px !important;
+    background: #e3e3e3;
+    color: #666666;
+    padding: 4px 12px !important;
+    border-radius: 50px;
 }
 
 /* clear search text x image-size */
@@ -232,6 +263,7 @@ input::-ms-clear {
 
 .filter-box .filter-table {
     width: 100%;
+    padding: 10px;
     border: none;
 }
 
@@ -250,6 +282,7 @@ input::-ms-clear {
     float: left;
     border: none;
     width: 80% !important;
+    height: 64px;
     display: inline-block;
 }
 
@@ -257,6 +290,7 @@ input::-ms-clear {
     float: left;
     border: none;
     width: 18%;
+    height: 64px;
     display: inline-block;
 }
 
@@ -285,7 +319,6 @@ input::-ms-clear {
 .filter-box .close-image {
     float: right;
     margin-right: 10px;
-    margin-top: 4px;
     width: 12px !important;
     height: 12px !important;
 }
@@ -330,7 +363,6 @@ input::-ms-clear {
     border: 1px solid #878787;
     border-radius: 0;
     -webkit-border-radius: 0;
-    background: url(../images/chevron-down.svg) no-repeat scroll 98% 0;
 }
 
 .filter-box .category-input {
@@ -346,7 +378,7 @@ input::-ms-clear {
 }
 
 .filter-box .bar-bottom {
-    height: 48px;
+    height: 32px;
     left: calc(50% - 200px);  /* aligns with rhs of contact us */
 }
 
@@ -569,9 +601,24 @@ input::-ms-clear {
     cursor: default;
 }
 
-.search-results .navigate-left-image {
-    width: 24px !important;
-    height: 24px !important;
+.search-results .navigate-image {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 20px;
+    background: #454545;
+    color: white;
+    border-radius: 50px;
+    padding: 1px 8px;
+}
+
+.search-results .navigate-image-disabled {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 20px;
+    background: #ececec;
+    color: #acacac;
+    border-radius: 50px;
+    padding: 1px 8px;
 }
 
 .search-results .navigate-right {
@@ -584,11 +631,6 @@ input::-ms-clear {
     float: left;
     margin-right: 5px;
     cursor: default;
-}
-
-.search-results .navigate-right-image {
-    width: 24px !important;
-    height: 24px !important;
 }
 
 .search-results .navigate-text {
@@ -720,14 +762,14 @@ input::-ms-clear {
     float: left;
     font-size: 22px;
     color: #878787;
-    margin-top: -2px;
+    margin-top: -6px;
 }
 
 .search-results .arrow-enabled {
     float: left;
     font-size: 22px;
     color: #000000;
-    margin-top: -2px;
+    margin-top: -6px;
 }
 
 .search-results .next-page-box {
@@ -762,6 +804,8 @@ input::-ms-clear {
 
 .search-results .page-size-select {
     float: left;
+    margin-top: 4px;
+    font-size: 14px;
     background-color: #ffffff;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -864,47 +908,47 @@ input::-ms-clear {
     margin-top: 4px;
 }
 
-.search-results .view-text-box-disabled {
-    float: left;
-    background-image: url("../images/view-text.svg");
-    background-repeat: no-repeat, no-repeat;
-    background-size: cover;
-    width: 16px;
-    height: 16px;
-    margin-right: 4px;
-    cursor: pointer;
-}
-
 .search-results .view-text-box {
     float: left;
-    background-image: url("../images/view-text-selected.svg");
-    background-repeat: no-repeat, no-repeat;
-    background-size: cover;
-    width: 16px;
-    height: 16px;
+    display: inline-block;
+    color: #cccccc;
+    width: 24px;
+    height: 24px;
     margin-right: 4px;
+    margin-top: -4px;
     cursor: pointer;
 }
 
-.search-results .view-image-box-disabled {
+.search-results .view-text-box-disabled {
     float: left;
-    background-image: url("../images/view-thumbnails.svg");
-    background-repeat: no-repeat, no-repeat;
-    background-size: cover;
-    width: 16px;
-    height: 16px;
+    display: inline-block;
+    color: black;
+    width: 24px;
+    height: 24px;
     margin-right: 4px;
+    margin-top: -4px;
     cursor: pointer;
 }
 
 .search-results .view-image-box {
     float: left;
-    background-image: url("../images/view-thumbnails-selected.svg");
-    background-repeat: no-repeat, no-repeat;
-    background-size: cover;
-    width: 16px;
-    height: 16px;
-    margin-right: 4px;
+    display: inline-block;
+    color: #cccccc;
+    width: 24px;
+    height: 24px;
+    margin-right: 2px;
+    margin-top: -4px;
+    cursor: pointer;
+}
+
+.search-results .view-image-box-disabled {
+    float: left;
+    color: black;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 2px;
+    margin-top: -4px;
     cursor: pointer;
 }
 
@@ -1087,7 +1131,6 @@ input::-ms-clear {
 .search-details .close-box {
     cursor: pointer;
     float: right;
-    margin-right: 5px;
 }
 
 .search-details .close-text {
@@ -1096,12 +1139,12 @@ input::-ms-clear {
     font-size: 0.9em;
     color: #878787;
     margin-top: 4px;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .search-details .close-image {
     float: right;
-    margin-top: 4px;
+    color: black;
     width: 12px !important;
     height: 12px !important;
 }
@@ -1239,6 +1282,7 @@ input::-ms-clear {
     float: right;
     width: 12px !important;
     height: 12px !important;
+    margin-top: -8px;
 }
 
 .bot-box .speech-bubble {
@@ -1280,7 +1324,8 @@ input::-ms-clear {
 
 .bot-box .bot-image-box {
     float: left;
-    margin-right: 4px;
+    color: black;
+    margin-right: 8px;
     margin-top: -2px;
 }
 
@@ -1372,6 +1417,8 @@ input::-ms-clear {
 }
 
 .search-sign-in .close-image {
+    color: black;
+    margin-top: -2px;
     float: left;
     width: 12px;
     height: 12px;
@@ -1476,6 +1523,8 @@ input::-ms-clear {
 }
 
 .no-search-results .close-image {
+    color: black;
+    margin-top: -2px;
     float: left;
     width: 12px;
     height: 12px;
@@ -1631,6 +1680,8 @@ input::-ms-clear {
 
 .error-dialog .close-image {
     float: left;
+    color: black;
+    margin-top: -2px;
     width: 12px;
     height: 12px;
 }
@@ -1694,9 +1745,16 @@ input::-ms-clear {
 }
 
 .chat-button-at-bottom .chat-with-us-image {
-    float: left;
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
+}
+
+.chat-button-at-bottom .chat-with-us-image-white {
+    color: white;
+}
+
+.chat-button-at-bottom .chat-with-us-image-grey {
+    color: #aaa;
 }
 
 .chat-button-at-bottom .chat-with-us-text-box-online {
@@ -1780,6 +1838,8 @@ input::-ms-clear {
 }
 
 .operator-chat-box .close-image {
+    color: black;
+    margin-top: -4px;
     float: left;
     width: 12px !important;
     height: 12px !important;
@@ -1800,7 +1860,7 @@ input::-ms-clear {
     background-color: #f4f4f4;
     width: 430px !important;
     padding: 5px;
-    height: 48px;
+    height: 32px;
     border-bottom-left-radius: 10px;
     border-left: 1px solid #878787;
     border-bottom: 1px solid #878787;
@@ -1832,7 +1892,7 @@ input::-ms-clear {
     color: #ffffff;
     padding: 4px;
     width: 94px !important;
-    height: 50px;
+    height: 34px;
     font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
     cursor: pointer;
@@ -1848,7 +1908,7 @@ input::-ms-clear {
     color: #ffffff;
     padding: 4px;
     width: 94px !important;
-    height: 50px;
+    height: 34px;
     font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
     cursor: pointer;
@@ -1960,11 +2020,6 @@ input::-ms-clear {
     font-size: 12px;
     font-weight: 600;
 }
-
-
-
-
-
 
 
 /*******************************************/
@@ -2290,8 +2345,7 @@ input::-ms-clear {
 
 /** DB record rendering - suggested styles **/
 
-.db-record {
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+.simsage-search .db-record {
     float: left;
     width: 300px;
     height: 200px;
@@ -2350,7 +2404,7 @@ input::-ms-clear {
 
 /** toggle yes / no button style **/
 
-.toggle {
+.simsage-search .toggle {
     width: 24px;
     height: 21px;
     padding-top: -1px;
@@ -2363,14 +2417,14 @@ input::-ms-clear {
     transition: all 250ms ease;
 }
 
-.toggle-label {
+.simsage-search .toggle-label {
     margin-left: 10px;
     display: inline-block;
     width: 100px;
     font-size: 12px;
 }
 
-.toggle.off {
+.simsage-search .toggle.off {
     background: #e8e8e8;
     padding-left: 4px;
     width: 44px;

@@ -259,12 +259,10 @@ class simsage_search
         // we use sockjs and stomp for WebSocket communications with SimSage to provide operator assistance
         wp_register_script( 'simsage-search-script-1', plugins_url( 'assets/js/sockjs.js', __FILE__ ), array('jquery'), '1.0', true );
         wp_register_script( 'simsage-search-script-2', plugins_url( 'assets/js/stomp.js', __FILE__ ), array('jquery'), '1.0', true );
-        // UI specific script
-        wp_register_script( 'simsage-search-script-3', plugins_url( 'assets/js/simsage-controls.js', __FILE__ ), array('jquery'), '1.0', true );
         // specific implementation
-        wp_register_script( 'simsage-search-script-4', plugins_url( 'assets/js/simsage-search-control.js', __FILE__ ), array('jquery'), '1.0', true );
+        wp_register_script( 'simsage-search-script-3', plugins_url( 'assets/js/simsage-search.js', __FILE__ ), array('jquery'), '1.0', true );
         // and the required styles for search.css
-        wp_register_style( 'simsage-search-style-1', plugins_url( 'assets/css/all-search.css', __FILE__ ) );
+        wp_register_style( 'simsage-search-style-1', plugins_url( 'assets/css/simsage-search.css', __FILE__ ) );
     }
 
     // output our css as an "include" on each page using our plugin
@@ -287,7 +285,6 @@ class simsage_search
         wp_print_scripts('simsage-search-script-1');
         wp_print_scripts('simsage-search-script-2');
         wp_print_scripts('simsage-search-script-3');
-        wp_print_scripts('simsage-search-script-4');
     }
 
 }
