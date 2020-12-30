@@ -1496,7 +1496,9 @@ let simsage = {
         let text = jQuery(".search-text").val();
         if (this.kb && (this.is_custom_render || text.trim() !== '')) {
             // do we need to reset the pagination?
-            this.reset_pagination(text);
+            if (this.reset_pagination(text)) {
+                this.close_bot();
+            }
             // create the query and clear the errors
             this.error('');
             text = cleanup_query_text(text);
@@ -2299,7 +2301,7 @@ let pagination_control = {
         jQuery(".pagination-box").show();
     },
 
-    // reset the variables used in determining pagination if the query has changed
+    // reset the variables used in determining pagination if the query has changed, return true if reset
     reset_pagination: function(query_text) {
         if (this.last_query !== query_text) {
             this.last_query = query_text;
@@ -2310,7 +2312,9 @@ let pagination_control = {
             this.semantic_search_results = [];
             this.semantic_search_result_map = {};
             this.semantic_search_result_map_id = {};
+            return true;
         }
+        return false;
     },
 
     // render the pagination on-screen

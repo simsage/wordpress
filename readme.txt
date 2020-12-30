@@ -4,9 +4,9 @@ Donate link: https://simsage.ai/
 Tags: plugin, commercial, readme
 Author URI: https://github.com/peter3125
 Requires at least: 5.0
-Tested up to: 5.5.3
+Tested up to: 5.6
 Requires PHP: 7.0
-Stable Tag: 1.2.6
+Stable Tag: 1.2.7
 Description: this Plugin adds SimSage Semantic Search and operator help to your web-site.
 License: GPLv3
 
@@ -32,6 +32,10 @@ SimSage currently only supports English.  Other languages might be supported in 
 
 
 == Changelog ==
+
+= 1.2.7 =
+* fixed several bugs in Q&A display
+* added new approach for javascript files and consistent naming
 
 = 1.2.6 =
 * cleaned up js code
@@ -60,6 +64,14 @@ SimSage currently only supports English.  Other languages might be supported in 
 
 
 == Upgrade Notice ==
+
+= 1.2.7 =
+* fixed several bugs in Q&A display
+* added new approach for javascript files and consistent naming
+
+= 1.2.6 =
+* cleaned up js code
+* added e-commerce controls, not yet active
 
 = 1.2.5 =
 * Added menu icons
