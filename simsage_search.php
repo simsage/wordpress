@@ -209,13 +209,6 @@ class simsage_search
         }
 
         wp_enqueue_style('simsage-search-style-1'); // add our style-sheets
-        wp_enqueue_style('simsage-search-style-2');
-        wp_enqueue_style('simsage-search-style-3');
-        wp_enqueue_style('simsage-search-style-4');
-        wp_enqueue_style('simsage-search-style-5');
-        wp_enqueue_style('simsage-search-style-6');
-        wp_enqueue_style('simsage-search-style-7');
-        wp_enqueue_style('simsage-search-style-8');
 
         if ( simsage_get_kb() != null ) {
             // render simsage_search_view.php in the context of this class
@@ -235,13 +228,6 @@ class simsage_search
             $this->add_script = true;
 
             wp_enqueue_style('simsage-search-style-1'); // add our style-sheets
-            wp_enqueue_style('simsage-search-style-2');
-            wp_enqueue_style('simsage-search-style-3');
-            wp_enqueue_style('simsage-search-style-4');
-            wp_enqueue_style('simsage-search-style-5');
-            wp_enqueue_style('simsage-search-style-6');
-            wp_enqueue_style('simsage-search-style-7');
-            wp_enqueue_style('simsage-search-style-8');
 
 			// render simsage_search_view.php in the context of this class
 			ob_start();
