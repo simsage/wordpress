@@ -451,6 +451,8 @@
 
 .search-results .search-results-two-columns {
     width: 100% !important;
+    min-width: 100% !important;
+    display: inline-block;
 }
 
 /* two columns */
