@@ -227,7 +227,7 @@
 
 .filter-box .speech-bubble {
     position:relative;
-    padding: 2% !important;
+    padding: 2px !important;
     margin-top: 22px !important;
     background-color: #ffffff;
     border: 0 solid;
@@ -263,7 +263,8 @@
 
 .filter-box .filter-table {
     width: 100%;
-    padding: 10px;
+    padding: 10px !important;
+    margin-bottom: 10px;
     border: none;
 }
 
@@ -379,7 +380,7 @@
 
 .filter-box .bar-bottom {
     height: 32px;
-    left: calc(50% - 200px);  /* aligns with rhs of contact us */
+    left: calc(50% - 198px);
 }
 
 .filter-box .done-button {
@@ -404,7 +405,7 @@
 
 .filter-box .clear-text-box {
     float: left;
-    width: calc(100% - 92px);
+    width: calc(100% - 90px);
     height: 48px;
     display: inline-block;
     border-bottom-left-radius: 10px;

@@ -144,6 +144,11 @@
                                 </td>
 
                             </tr>
+
+                            <tr>
+                                <td class="col-1" colspan="2">&nbsp;</td>
+                            </tr>
+
                         </table>
                     </div>
                     <div class="bar-bottom">
