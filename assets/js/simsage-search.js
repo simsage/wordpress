@@ -2823,11 +2823,17 @@ let search_results_control = {
         }
     },
 
+    open_url: function(url) {
+        if (url) {
+            window.open(url, '_blank');
+        }
+    },
+
     render_single_text_search_result: function(id, url, title, fragment, fragment_index, num_fragments) {
         let str = "<div class=\"search-result\">\n" +
-            "<div title=\"visit [url]\" class=\"search-text-width\">\n" +
-            "<a href=\"[url]\" target=\"_blank\"><span class=\"url-text\">[split-url]</span></a>\n" +
-            "<div title=\"visit [url]\" onclick=\"visit_url('[url]');\" class=\"more-details\"><span class=\"title-text\">[title]</span></div>\n" +
+            "<div class=\"search-text-width\">\n" +
+            "<a href=\"[url]\" title=\"visit [url]\" target=\"_blank\"><span class=\"url-text\">[split-url]</span></a>\n" +
+            "<div title=\"visit [url]\" onclick=\"simsage.open_url('[url]')\" class=\"more-details\"><span class=\"title-text\">[title]</span></div>\n" +
             "<div><span class=\"result-text\">[fragment]</span></div>\n" +
             "<div class=\"navigate-td\">\n";
         if (fragment_index > 0) {
