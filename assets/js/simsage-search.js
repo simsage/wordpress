@@ -327,6 +327,7 @@ let common_functions = {
     },
     // post a message to the operator end-points
     post_message: function(endPoint, data, callback) {
+        const self = this;
         let url = this.base_url + endPoint;
         jQuery.ajax({
             headers: {
@@ -344,11 +345,12 @@ let common_functions = {
             }
         }).fail(function (err) {
             console.error(JSON.stringify(err));
-            this.error(err);
+            self.error(err);
         });
     },
     // get a message
     get_message: function(endPoint, callback_success, callback_fail) {
+        const self = this;
         let url = this.base_url + endPoint;
         jQuery.ajax({
             headers: {
@@ -368,7 +370,7 @@ let common_functions = {
                 callback_fail(err);
             } else {
                 console.error(JSON.stringify(err));
-                this.error(err);
+                self.error(err);
             }
         });
     },
@@ -1593,6 +1595,11 @@ let simsage = {
                 if (parseInt("" + divided) < divided) {
                     this.num_pages += 1;
                 }
+            } else {
+                // cleanup
+                this.num_results = 0;
+                this.num_pages = 0;
+                this.shard_size_list = [];
             }
 
             // did we get an bot reply?
@@ -1606,6 +1613,11 @@ let simsage = {
             if (!this.know_email && data.knowEmail) {
                 this.know_email = data.knowEmail;
             }
+
+            // render whatever needs to be rendered, even if no results
+            this.render_search_results();
+            this.close_no_search_results();
+            this.hide_pagination();
 
             // no results?
             if (!data.hasResult) {
@@ -1631,7 +1643,6 @@ let simsage = {
 
             } else if (this.semantic_search_results && this.semantic_search_results.length > 0) {
                 // hide if no actual results
-                this.render_search_results();
                 this.show_search_results();
             }
         } // if message-type is right
@@ -2299,6 +2310,10 @@ let pagination_control = {
 
     show_pagination: function() {
         jQuery(".pagination-box").show();
+    },
+
+    hide_pagination: function() {
+        jQuery(".pagination-box").hide();
     },
 
     // reset the variables used in determining pagination if the query has changed, return true if reset
