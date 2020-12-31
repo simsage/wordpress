@@ -1105,13 +1105,12 @@ let syn_set_control = {
         this.render();
     },
 
-    // give the controls their value
+    // give the controls their value - called after search
     set_syn_sets(syn_sets) {
         if (syn_sets && syn_sets.length > 0) {
             this.items = syn_sets;
         }
         this.render();
-        if (simsage && simsage.do_search) simsage.do_search();
     },
 
     // return a lookup word -> selected (if selected)
