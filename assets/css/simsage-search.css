@@ -440,6 +440,9 @@
     border-radius: 10px;
     background-color: #ffffff;
     float: left;
+    width: 100% !important;
+    min-width: 100% !important;
+    display: block;
 }
 
 .search-results .search-results-top-td {
@@ -452,7 +455,7 @@
 .search-results .search-results-two-columns {
     width: 100% !important;
     min-width: 100% !important;
-    display: inline;
+    display: block;
 }
 
 /* two columns */
@@ -461,6 +464,7 @@
     float: left;
     vertical-align: top;
     width: 80%;
+    min-width: 80%;
 }
 
 .search-results .category-items-td {
@@ -470,6 +474,7 @@
     vertical-align: top;
     padding: 10px;
     width: 18%;
+    min-width: 18%;
 }
 
 @media only screen and (max-width: 1060px) {

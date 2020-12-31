@@ -1616,7 +1616,10 @@ let simsage = {
             // render whatever needs to be rendered, even if no results
             this.render_search_results();
             this.close_no_search_results();
-            this.hide_pagination();
+            // only hide pagination if normal search
+            if (!this.is_custom_render) {
+                this.hide_pagination();
+            }
 
             // no results?
             if (!data.hasResult) {
