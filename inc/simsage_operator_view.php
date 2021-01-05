@@ -119,12 +119,12 @@
 
             <div id="learningSection" class="learnings" style="display: none;">
                 <div>
-                    <span class="learn-label">question</span>
+                    <span class="learn-label">question: </span>
                     <span id="txtQuestion" class="question-text"></span>
                 </div>
                 <br clear="both" />
                 <div>
-                    <span class="learn-label">answer</span>
+                    <span class="learn-label">answer: </span>
                     <span id="txtAnswer" class="answer-text"></span>
                 </div>
                 <br clear="both" />

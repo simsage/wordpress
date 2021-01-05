@@ -209,9 +209,13 @@
 
 .learnings {
     position: absolute;
-    left: 40vw;
+    left: 10vw;
     top: 10vw;
     z-index: 99;
-    background: #9FAAAE;
+    background: #fff;
+    width: 400px;
+    height: 100px;
+    padding: 40px;
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
 }
-
