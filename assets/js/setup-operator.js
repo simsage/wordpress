@@ -30,7 +30,7 @@ connectionCount = 0;
 
 callback = {
     operator_ready: () => ops.operator_ready(),
-    operator_take_break: () => ops.operator_take_break(),
+    operator_take_break: (clientId) => ops.operator_take_break(clientId),
     signal_operator_is_typing: (clientId) => ops.signal_operator_is_typing(clientId),
     operator_ban_user: () => ops.operator_ban_user(),
     operator_next_user: () => ops.operator_next_user(),
@@ -64,8 +64,8 @@ function operator_ready() {
 
 function operator_take_break() {
     if (ops.is_connected && callback.operator_take_break) {
+        callback.operator_take_break(clientId);
         client_disconnected();
-        callback.operator_take_break();
 
         ready_to_rcv = false; // but not ready to receive
         jQuery("#btnReady").removeAttr("disabled");
@@ -118,12 +118,13 @@ function reply_click(_text) {
         }
         // // add this message to our list of items
         conversation_list.push({
-            id: conversation_list.length + 1, primary: text, secondary: "You", used: false, is_simsage: true
+            id: conversation_list.length + 1, primary: text, used: false, is_simsage: true, created: new Date().getTime()
         });
         response = '';
         jQuery("#txtResponse").val("");
         // re-render the conversation list
         jQuery("#conversationList").html(render_operator_conversations());
+        jQuery("#scrollBottom")[0].scrollIntoView({ behavior: 'smooth' });
     }
 }
 
@@ -149,18 +150,12 @@ function client_disconnected() {
 
 function set_active_connections(count) {
     connectionCount = count;
-    jQuery("#botCount").html("users: " + connectionCount);
+    jQuery("#botCount").html(connectionCount);
 }
 
-function client_is_typing(typing) {
-    ops.is_typing = typing;
-    is_typing = typing;
+function client_is_typing() {
     jQuery("#conversationList").html(render_operator_conversations());
-}
-
-// we just got a message that the operator's typing status has changed (timer based)
-function update_chat_window(chat_list, is_typing) {
-    client_is_typing(is_typing);
+    jQuery("#scrollBottom")[0].scrollIntoView({ behavior: 'smooth' });
 }
 
 // callback from operator message list to select a message for teaching
@@ -202,6 +197,7 @@ function select_for_learn(message_id) {
 
             // re-render the conversation list
             jQuery("#conversationList").html(render_operator_conversations());
+            jQuery("#scrollBottom")[0].scrollIntoView({ behavior: 'smooth' });
 
             ops_show_teaching_dialog();
         }
@@ -219,6 +215,7 @@ function clearQA() {
     ops_show_teaching_dialog();
     // re-render the conversation list
     jQuery("#conversationList").html(render_operator_conversations());
+    jQuery("#scrollBottom")[0].scrollIntoView({ behavior: 'smooth' });
 }
 
 function teach() {
@@ -233,6 +230,7 @@ function teach() {
         ops_show_teaching_dialog();
         // re-render the conversation list
         jQuery("#conversationList").html(render_operator_conversations());
+        jQuery("#scrollBottom")[0].scrollIntoView({ behavior: 'smooth' });
     }
 }
 
@@ -256,8 +254,8 @@ function ops_show_teaching_dialog() {
 }
 
 // render a busy message (animating dots)
-function render_simsage_busy() {
-    return  "<div class=\"busy-image-container\"><img class=\"busy-image\" src=\"" + image_base + "images/dots.gif\" alt=\"there is some typing going on\"></div>";
+function render_client_typing() {
+    return  "<div class='typing-dots-box'><span class='typing-dots-image'>&#x20db;</span></div>";
 }
 
 /**
@@ -274,6 +272,24 @@ function esc_html(str) {
     return str;
 }
 
+function pad2(item) {
+    return ("" + item).padStart(2, '0');
+}
+
+// convert unix timestamp to string if it's for a reasonable time in the future
+function unixTimeConvert(timestamp){
+    if (timestamp > 1000) {
+        const a = new Date(timestamp);
+        const year = a.getFullYear();
+        const month = a.getMonth() + 1;
+        const date = a.getDate();
+        const hour = a.getHours();
+        const min = a.getMinutes();
+        const sec = a.getSeconds();
+        return year + '/' + pad2(month) + '/' + pad2(date) + ' ' + pad2(hour) + ':' + pad2(min) + ':' + pad2(sec);
+    }
+    return "";
+}
 
 // render the operator's conversation list
 function render_operator_conversations() {
@@ -281,24 +297,33 @@ function render_operator_conversations() {
     for (const message of conversation_list) {
         const html_text = esc_html(message.primary);
         const id = message.id;
-        if (!message.is_simsage) {
-            const style = (message.used || message.selected) ? 'chat-user-box-dark' : 'chat-user-box';
-            result.push('<div class="conversation"><div class="' + style + '" onClick="select_for_learn(' + id + ')">\n' +
-                '    <img src="' + image_base + 'images/human.svg" class="chat-user-image" alt="user" />\n' +
-                '    <div class="user-message-text">' + html_text + '</div>\n' +
-                '    </div></div>\n');
+        if (message.is_simsage) {
+            const style = (message.used || message.selected) ? 'operator-text-box-selected' : 'operator-text-box';
+            result.push('<div class="operator-box" onClick="select_for_learn(' + id + ')">\n' +
+                '  <div class="operator-line">' +
+                '    <span class="user-label">You</span>' +
+                '    <span class="hyphen">-</span>' +
+                '    <span class="time">' + unixTimeConvert(message.created) + '</span>' +
+                '  </div>' +
+                '  <div class="' + style + '">' + html_text + '</div>' +
+                '</div>\n');
         } else {
-            const style = (message.used || message.selected) ? 'chat-simsage-box-dark' : 'chat-simsage-box';
-            result.push('<div class="conversation"><div class="' + style + '" onClick="select_for_learn(' + id + ')">\n' +
-                '    <img src="' + image_base + 'images/tinman.svg" class="chat-simsage-image" alt="SimSage" />\n' +
-                '    <div class="simsage-message-text">' + html_text + '</div>\n' +
-                '    </div></div>\n');
+            const style = (message.used || message.selected) ? 'user-text-selected' : 'user-text';
+            result.push('<div class="user-box" onClick="select_for_learn(' + id + ')">\n' +
+                '  <div class="user-line">' +
+                '    <span class="user-label">User</span>' +
+                '    <span class="hyphen">-</span>' +
+                '    <span class="time">' + unixTimeConvert(message.created) + '</span>' +
+                '  </div>' +
+                '  <div class="' + style + '">' + html_text + '</div>' +
+                '</div>\n');
         }
     }
-    if (is_typing) {
-        result.push(render_simsage_busy());
+    if (ops.is_typing) {
+        result.push(render_client_typing());
     }
-    return result.reverse().join('\n');
+    result.push("<div id='scrollBottom' />")
+    return result.join('\n');
 }
 
 // notification of client_id has been set
@@ -315,11 +340,13 @@ function connect_to_client(client_id, client_kb_id, prev_conversation_list) {
         question_message = {};
         answer_message = {};
         // disable the text field and chat button and others
-        jQuery("#txtResponse").attr("disabled", "true");
         jQuery("#btnChat").attr("disabled", "true");
-        jQuery("#btnNextUser").attr("disabled", "true");
+        jQuery("#btnBreak").attr("disabled", "true");
         jQuery("#btnBanUser").attr("disabled", "true");
-        jQuery("#botCount").html("");
+        jQuery("#btnNextUser").attr("disabled", "true");
+
+        jQuery("#txtResponse").attr("disabled", "true");
+        jQuery("#botCount").html("0");
         jQuery("#conversationList").html("");
 
     } else {
@@ -331,14 +358,15 @@ function connect_to_client(client_id, client_kb_id, prev_conversation_list) {
         add_previous_conversation_context(prev_conversation_list);
         // render the conversation list
         jQuery("#conversationList").html(render_operator_conversations());
+        jQuery("#scrollBottom")[0].scrollIntoView({ behavior: 'smooth' });
         // enable chat field and button
         const txtResponse = jQuery("#txtResponse");
         txtResponse.removeAttr("disabled");
         txtResponse.focus();
         jQuery("#btnChat").removeAttr("disabled");
         jQuery("#btnBreak").removeAttr("disabled");
-        jQuery("#btnNextUser").removeAttr("disabled");
         jQuery("#btnBanUser").removeAttr("disabled");
+        jQuery("#btnNextUser").removeAttr("disabled");
     }
 }
 
@@ -347,17 +375,6 @@ function set_previous_answer(previous_answer) {
     previousAnswer = previous_answer;
     previousAnswerCountdown = 1;
     update_buttons();
-}
-
-// notification of the bot adding some text
-function add_bot_response(text) {
-    // otherwise - get the conversation from what just was said by the user
-    conversation_list = JSON.parse(JSON.stringify(conversation_list)); // copy existing list
-    // add new item
-    conversation_list.push({
-        id: conversation_list.length + 1, primary: text,
-        secondary: "user", used: false, is_simsage: false
-    });
 }
 
 // if connected, let the system know we're still here at some interval
@@ -378,8 +395,7 @@ function add_previous_conversation_context(prev_conversation_list) {
                 let ci = prev_conversation_list[index];
                 const is_simsage = (ci.origin !== "user");
                 conversation_list.push({
-                    id: count, primary: ci.conversationText, selected: false,
-                    secondary: is_simsage ? "You" : "user", used: false, is_simsage: is_simsage
+                    id: count, primary: ci.conversationText, created: ci.created, selected: false, used: false, is_simsage: is_simsage
                 });
                 count += 1;
             }
@@ -398,7 +414,15 @@ function error(err_message) {
 }
 
 function simsage_connected() {
+    console.debug('operator connected to SimSage');
     jQuery("#btnReady").removeAttr("disabled");
+    jQuery("#btnChat").attr("disabled", "true");
+    jQuery("#btnBreak").attr("disabled", "true");
+    jQuery("#btnBanUser").attr("disabled", "true");
+    jQuery("#btnNextUser").attr("disabled", "true");
+    jQuery("#txtResponse").attr("disabled", "true");
+    jQuery("#botCount").html("0");
+    jQuery("#conversationList").html("");
 }
 
 // startup - connect our plugin to a SimSage server

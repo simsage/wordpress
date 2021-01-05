@@ -16,10 +16,6 @@
 
     <div id="icon-themes" class="icon32"></div>
 
-    <div class="operator-area">
-        <h2>SimSage Operator</h2>
-    </div>
-
 	<?php
 	$options = get_option( SIMSAGE_PLUGIN_NAME );
 	$plan = simsage_get_plan();
@@ -63,47 +59,65 @@
 
         <div class="operator-area operator-display">
 
-            <div id="chatButtons" class="button-list">
+            <div id="chatButtons" class="operator-buttons-top">
                 <span class="menu-button">
-                    <input id="btnReady" type="button" class="button" disabled
+                    <button id="btnReady" type="button" class="operator-button" disabled
                            title="Signal that you are ready to go and converse with customers."
-                           value="ready for a chat" onClick="operator_ready()" />
+                           onClick="operator_ready()">
+                        <span class="operator-button-icon"><svg class="" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15c1.66 0 2.99-1.34 2.99-3L15 6c0-1.66-1.34-3-3-3S9 4.34 9 6v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 15 6.7 12H5c0 3.42 2.72 6.23 6 6.72V22h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"></path></svg></span>
+                        <span class="operator-button-text">Ready</span>
+                    </button>
                 </span>
                 <span class="menu-button">
-                    <input id="btnBreak" type="button" class="button" disabled
+                    <button id="btnBreak" type="button" class="operator-button" disabled
                            title="take a break, stop participating in conversations while you have a break."
-                           value="take a break" onClick="operator_take_break()" />
+                           onClick="operator_take_break()">
+                        <span class="operator-button-icon"><svg class="MuiSvgIcon-root operator-button-icon" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.9 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"></path></svg></span>
+                        <span class="operator-button-text">Break</span>
+                    </button>
                 </span>
                 <span class="menu-button">
-                    <input id="btnNextUser" type="button" class="button" disabled
-                           title="We have finished the current conversation and are ready for a next one."
-                           value="next user" onClick="operator_next_user()" />
-                </span>
-                <span class="menu-button">
-                    <input id="btnBanUser" type="button" class="button" disabled
+                    <button id="btnBanUser" type="button" class="operator-button operator-button-margin-left" disabled
                            title="The current conversation is abusive or bad spirited, ban this user from the system."
-                           value="ban user" onClick="confirm_ban_user()" />
+                           onClick="confirm_ban_user()">
+                        <span class="operator-button-icon"><svg class="MuiSvgIcon-root operator-button-icon" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><circle cx="15" cy="8" r="4"></circle><path d="M23 20v-2c0-2.3-4.1-3.7-6.9-3.9l6 5.9h.9zm-11.6-5.5C9.2 15.1 7 16.3 7 18v2h9.9l4 4 1.3-1.3-21-20.9L0 3.1l4 4V10H1v2h3v3h2v-3h2.9l2.5 2.5zM6 10v-.9l.9.9H6z"></path></svg></span>
+                        <span class="operator-button-text">Ban User</span>
+                    </button>
                 </span>
-                <span id="botCount"></span>
+                <span class="menu-button">
+                    <button id="btnNextUser" type="button" class="operator-button operator-button-margin-left" disabled
+                            title="We have finished the current conversation and are ready for a next one."
+                            onClick="operator_next_user()">
+                        <span class="operator-button-icon"><svg class="MuiSvgIcon-root operator-button-icon" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.99 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm3.61 6.34c1.07 0 1.93.86 1.93 1.93 0 1.07-.86 1.93-1.93 1.93-1.07 0-1.93-.86-1.93-1.93-.01-1.07.86-1.93 1.93-1.93zm-6-1.58c1.3 0 2.36 1.06 2.36 2.36 0 1.3-1.06 2.36-2.36 2.36s-2.36-1.06-2.36-2.36c0-1.31 1.05-2.36 2.36-2.36zm0 9.13v3.75c-2.4-.75-4.3-2.6-5.14-4.96 1.05-1.12 3.67-1.69 5.14-1.69.53 0 1.2.08 1.9.22-1.64.87-1.9 2.02-1.9 2.68zM11.99 20c-.27 0-.53-.01-.79-.04v-4.07c0-1.42 2.94-2.13 4.4-2.13 1.07 0 2.92.39 3.84 1.15-1.17 2.97-4.06 5.09-7.45 5.09z"></path></svg></span>
+                        <span class="operator-button-text">Next User</span>
+                    </button>
+                </span>
+            </div>
+
+            <div style="float: right; margin-top: -60px; margin-right: 50px;">
+                <span class="operator-button-icon"><svg class="MuiSvgIcon-root operator-button-icon" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.99 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm3.61 6.34c1.07 0 1.93.86 1.93 1.93 0 1.07-.86 1.93-1.93 1.93-1.07 0-1.93-.86-1.93-1.93-.01-1.07.86-1.93 1.93-1.93zm-6-1.58c1.3 0 2.36 1.06 2.36 2.36 0 1.3-1.06 2.36-2.36 2.36s-2.36-1.06-2.36-2.36c0-1.31 1.05-2.36 2.36-2.36zm0 9.13v3.75c-2.4-.75-4.3-2.6-5.14-4.96 1.05-1.12 3.67-1.69 5.14-1.69.53 0 1.2.08 1.9.22-1.64.87-1.9 2.02-1.9 2.68zM11.99 20c-.27 0-.53-.01-.79-.04v-4.07c0-1.42 2.94-2.13 4.4-2.13 1.07 0 2.92.39 3.84 1.15-1.17 2.97-4.06 5.09-7.45 5.09z"></path></svg></span>
+                <span style="float: right; margin-top: 2px; margin-left: 4px;"><span id="botCount">0</span> active users</span>
             </div>
 
             <div id="chat1">
-                <div class="conversation-parent">
-                    <div id="conversationList" class="conversation-container"></div>
+                <div id="conversationList" class="operator-conversation-area">
                 </div>
-                <div>
-                    <span><input id="txtResponse" class="text-response" type="text" disabled maxlength="200"
-                           onkeyup="operator_key_press(event, this.value)" placeholder="your response" aria-label="response" />
+                <div class="operator-reply-area">
+                    <span class="operator-reply-text-box">
+                        <input id="txtResponse" class="operator-reply-text" type="text" disabled maxlength="200"
+                           onkeyup="operator_key_press(event, this.value)" placeholder="your reply" aria-label="response" />
                     </span>
-                    <span>
-                        <input type="button" id="btnChat" class="button" value="chat" disabled
-                               title="your response (available when connected to a user)" onClick="reply_click(null)" />
+                    <span class="operator-reply-button-box">
+                        <button type="button" id="btnChat" class="operator-button" value="chat" disabled
+                               title="your response (available when connected to a user)" onClick="reply_click(null)">
+                            Reply
+                        </button>
                     </span>
                 </div>
             </div>
 
 
-            <div id="learningSection" class="learnings">
+            <div id="learningSection" class="learnings" style="display: none;">
                 <div>
                     <span class="learn-label">question</span>
                     <span id="txtQuestion" class="question-text"></span>
@@ -123,7 +137,7 @@
                 </div>
             </div>
 
-            <div id="previousAnswerSection" class="previous-answer">
+            <div id="previousAnswerSection" class="previous-answer" style="display: none;">
                 <div class="previous-answer-title">a previous answer to this question exists</div>
                 <div id="txtPreviousAnswer" class="previous-answer-answer"></div>
                 <div class="previous-answer-buttons">

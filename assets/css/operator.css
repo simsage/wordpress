@@ -1,261 +1,207 @@
+/***** operator *****/
 
-.operator-area body {
-    font-family: 'Open Sans', sans-serif;
+.operator-buttons-top {
+    background: #ebebeb;
+    padding: 20px;
 }
 
-.operator-area {
-}
-
-.operator-display {
-    margin-left: 20px;
-    float: left;
-    min-width: 600px;
-}
-
-.operator-area text {
-    font-size: 12px;
-    fill: #fff;
-}
-
-.operator-area h2 {
-    font-size: 1.3em;
-}
-
-.button-list {
-    margin-top: 10px;
-}
-
-.menu-button {
-    margin-right: 10px;
-}
-
-.button {
-    background-color: #4CAF50  !important; /* Green */
-    border: none  !important;
-    color: white  !important;
-    text-align: center;
-    text-decoration: none  !important;
-    font-size: 16px  !important;
-    width: 150px  !important;
-    padding: 2px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.button:disabled,
-.button[disabled] {
-    background-color: #4C6F50 !important; /* Green */
-    border: none;
-    color: #808080 !important;
-    text-align: center;
-    text-decoration: none !important;
-    font-size: 16px !important;
-    width: 150px !important;
-    padding: 2px;
-    border-radius: 5px;
-    cursor: default;
-}
-
-.conversation {
-    width: 600px;
-    float: left;
-}
-
-.conversation-parent {
-    min-height: 0;
-    padding: 5px;
-}
-
-.conversation-container {
-    background-color: #fff;
-    width: 650px;
-    height: 400px;
-    display: flex;
-    flex: 1;
-    flex-direction: column-reverse;
+.operator-conversation-area {
     overflow-y: auto;
-}
-
-.text-response {
-    width: 500px !important;;
-    padding: 5px;
-    font-size: 1.2em;
-}
-
-.text-response:disabled,
-.text-response[disabled] {
-    width: 500px !important;
-    padding: 5px;
-    font-size: 1.2em;
-    color: #eee !important;
-}
-
-
-.learnings {
-    position: absolute;
-    display: none;
-    top: 250px;
-    background-color: #fff;
-    margin-left: calc(100% - 440px);
-    z-index: 999;
-    width: 350px;
     padding: 20px;
-    border: 1px solid rgb(220,220,220);
-    border-radius: 5px;
+    height: calc(100vh - 400px);
+    margin-top: -2px;
 }
 
-.previous-answer {
-    position: absolute;
-    display: none;
-    top: 400px;
-    background-color: #fff;
-    margin-left: calc(100% - 450px);
-    z-index: 999;
-    width: 350px;
-    padding: 20px;
-    float: left;
-    border: 1px solid rgb(220,220,220);
-    border-radius: 5px;
-}
-
-.learn-tick {
-    float: right;
-    width: 32px;
-    margin-right: -35px;
-    margin-top: -35px;
-}
-
-.learn-label {
-    float: left;
-    font-weight: 900;
-    width: 100px;
+.operator-tab {
+    margin-right: 4px;
+    font-size: 12px;
     display: inline-block;
-    font-size: 1.3em;
-    margin-bottom: 4px;
+    background: #c1c1c1;
+    color: #707070;
+    padding: 10px;
+    cursor: pointer;
 }
 
-.answer-text {
+.operator-tab-selected {
+    margin-right: 4px;
+    display: inline-block;
+    font-size: 12px;
+    background: #ebebeb;
+    color: #000000;
+    padding: 10px;
+    -webkit-box-shadow: 0 -5px 5px -5px #333;
+    -moz-box-shadow: 0 -5px 5px -5px #333;
+    box-shadow: 0 -5px 5px -5px #333;
+    cursor: pointer;
+}
+
+.operator-button-icon {
     float: left;
-    max-width: 300px;
+    width: 24px;
+    height: 24px;
+    margin-right: 4px;
+}
+
+.operator-button-text {
+    margin-top: 2px;
+    float: left;
+}
+
+.operator-button {
+    font-size: 16px;
+    border: none;
+    display: inline-block;
+    margin-left: 10px;
+    padding: 8px;
+    background: #868686;
+    color: #ffffff;
+    box-shadow: 5px 5px 5px -5px #333;
+}
+
+.operator-button:disabled {
+    background: #c1c1c1;
+    color: #707070;
+    box-shadow: none;
+}
+
+.operator-reply-area {
+    margin-top: 4px;
+    min-width: 800px;
+    width: 75vw;
+}
+
+.operator-reply-text-box {
+    float: left;
+    margin-left: 4px;
+}
+
+.operator-reply-text {
+    width: calc(75vw - 120px);
+    height: 32px !important;
+    padding: 10px !important;
+}
+
+.operator-reply-button-box {
+    float: left;
+    width: 100px;
+}
+
+.operator-close-conversation-button {
+    margin-left: 8px;
+    background: #868686;
+    color: #ffffff;
+    float: right;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+}
+
+.operator-close-conversation-text{
+    float: left;
+    font-size: 12px;
+    margin-top: -1px;
+    margin-left: 2px;
+}
+
+.operator-button-margin-left {
+    margin-left: 80px;
+}
+
+.operator-conversation-area .operator-box {
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    padding: 2px;
+    margin-top: 4px;
+    margin-left: 25%;
+    width: 70%;
+    min-width: 400px;
+}
+
+.operator-conversation-area .operator-label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.operator-conversation-area .operator-line {
+    margin-left: 60px;
+}
+
+.operator-conversation-area .operator-text-box {
+    margin-left: 60px;
+    padding: 8px;
+    border-radius: 10px;
+    width: 70% !important;
+    color: #ffffff;
+    background-color: #4ea0d5;
+    margin-top: 4px;
     margin-bottom: 10px;
 }
 
-.question-text {
-    float: left;
-    max-width: 300px;
-    margin-bottom: 20px;
+.operator-conversation-area .operator-text-box-selected {
+    margin-left: 60px;
+    padding: 8px;
+    border-radius: 10px;
+    width: 70% !important;
+    color: #ffffff;
+    background-color: #0e70a5;
+    margin-top: 4px;
+    margin-bottom: 10px;
 }
 
-.learn-button {
-    margin-top: 10px;
+.operator-conversation-area .user-label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.operator-conversation-area .hyphen {
+    margin-left: 10px;
     margin-right: 10px;
 }
 
-.learn-buttons {
-    float: left;
+.operator-conversation-area .time {
+    font-size: 14px;
 }
 
-.previous-answer-title {
-    text-align: center;
-    font-weight: 700;
-    font-size: 1.1em;
-    margin-bottom: 20px;
+.operator-conversation-area .user-box {
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    padding: 2px;
+    width: 70%;
+    min-width: 400px;
 }
 
-.previous-answer-answer {
-    font-size: 0.9em;
-    margin-bottom: 30px;
-}
-
-.previous-answer-buttons {
-    text-align: center;
-}
-
-.chat-user-box {
-    float: left;
-    padding: 10px;
-    margin-left: 15px;
-    margin-right: 100px;
-    padding-left: 30px;
-    text-align: left;
-    max-width: 350px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    background-color: #eee;
-    cursor: pointer;
-}
-
-.chat-user-box-dark {
-    float: left;
-    padding: 10px;
-    margin-left: 15px;
-    margin-right: 100px;
-    padding-left: 30px;
-    text-align: left;
-    max-width: 350px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    background-color: #888;
-}
-
-.chat-user-image {
-    float: left;
-    width: 48px;
-    margin-left: -30px;
-    cursor: pointer;
-}
-
-.user-message-text {
-    float: left;
+.operator-conversation-area .user-line {
     margin-left: 10px;
-    max-width: 300px;
-    cursor: pointer;
 }
 
-.chat-simsage-box {
-    float: left;
-    padding: 10px;
-    margin-left: 15px;
-    margin-right: 100px;
-    padding-left: 30px;
-    text-align: left;
-    max-width: 350px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    background-color: #dde;
-    cursor: pointer;
-}
-
-.chat-simsage-box-dark {
-    float: left;
-    padding: 10px;
-    margin-left: 15px;
-    margin-right: 100px;
-    padding-left: 30px;
-    text-align: left;
-    max-width: 350px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    background-color: #aac;
-}
-
-.chat-simsage-image {
-    float: left;
-    width: 48px;
-    margin-left: -30px;
-    cursor: pointer;
-}
-
-.simsage-message-text {
-    float: left;
+.operator-conversation-area .user-text {
     margin-left: 10px;
-    max-width: 300px;
-    cursor: pointer;
+    font-size: 14px;
+    padding: 8px;
+    border-radius: 10px;
+    width: 80% !important;
+    background-color: #ffd1d1;
+    margin-top: 4px;
+    margin-bottom: 10px;
 }
 
-/* is typing */
+.operator-conversation-area .user-text-selected {
+    margin-left: 10px;
+    font-size: 14px;
+    padding: 8px;
+    border-radius: 10px;
+    width: 80% !important;
+    background-color: #cf9191;
+    margin-top: 4px;
+    margin-bottom: 10px;
+}
 
-.busy-image {
-    width: 60px;
+.operator-conversation-area .typing-dots-box {
+    margin-left: 10px;
+    width: 100px;
+}
+
+.operator-conversation-area .typing-dots-image {
+    background-color: #ffffff;
+    width: 32px;
 }
 

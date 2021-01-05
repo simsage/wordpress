@@ -59,13 +59,13 @@ class Operator extends SimSageCommon {
     }
 
 
-    operator_take_break() {
+    operator_take_break(clientId) {
         const msg = {
             organisationId: settings.organisationId,
             kbId: settings.kbId,
             sid: settings.sid,
             operatorId: SimSageCommon.get_client_id(),
-            clientId: this.clientId,
+            clientId: clientId,
         };
         this.post_message('/ops/wp-take-break', msg);
     }
@@ -162,7 +162,11 @@ class Operator extends SimSageCommon {
 
             else if (data.messageType === mt_Typing) {
                 if (data.toId === SimSageCommon.get_client_id()) {
-                    client_is_typing(data.fromIsTyping);
+                    if (data.fromIsTyping) {
+                        ops.typing_last_seen = SimSageCommon.get_system_time() + 2000;
+                        ops.is_typing = true;
+                    }
+                    client_is_typing();
                 }
             }
 

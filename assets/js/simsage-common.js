@@ -59,7 +59,7 @@ class SimSageCommon {
                 // connect to the socket system
                 self.connect();
                 // setup is-typing check
-                window.setInterval(() => self.operator_is_typing(false), 1000);
+                window.setInterval(() => ops.operator_is_typing(), 1000);
             }
 
         }).fail(function (err) {
@@ -95,18 +95,12 @@ class SimSageCommon {
     }
 
     // notify of an is-typing (true/false) event state change
-    operator_is_typing(isTyping) {
+    operator_is_typing() {
         const now = SimSageCommon.get_system_time();
-        if (isTyping) {
-            this.typing_last_seen = now + 2000;
-            if (!this.is_typing && isTyping) {
-                this.is_typing = isTyping;
-                update_chat_window(this.chat_list, this.is_typing);
-            }
-        } else if (this.typing_last_seen < now  && this.is_typing) {
-            this.is_typing = false;
-            update_chat_window(this.chat_list, this.is_typing);
+        if (this.typing_last_seen < now) {
+            ops.is_typing = false;
         }
+        client_is_typing();
     }
 
     // the user of this search interface is typing
@@ -149,6 +143,7 @@ class SimSageCommon {
             // this is the socket end-point
             const socket = new SockJS(settings.ws_base);
             this.stompClient = Stomp.over(socket);
+            this.stompClient.debug = function(msg) {};
             this.stompClient.connect({},
                 function (frame) {
                     self.stompClient.subscribe('/chat/' + SimSageCommon.get_client_id(), function (answer) {
@@ -185,7 +180,7 @@ class SimSageCommon {
     }
 
     // post a message to the operator end-points
-    post_message(endPoint, data) {
+    post_message(endPoint, data, success_fn) {
         const url = settings.base_url + endPoint;
         const self = this;
         jQuery.ajax({
@@ -199,6 +194,9 @@ class SimSageCommon {
             'dataType': 'json',
             'success': function (data) {
                 self.receive_ws_data(data);
+                if (success_fn) {
+                    success_fn(data);
+                }
             }
 
         }).fail(function (err) {
