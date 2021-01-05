@@ -237,7 +237,7 @@ function teach() {
 // show a teaching dialog after the user has made their selection
 function ops_show_teaching_dialog() {
     // learning section
-    if (question.length > 0 || answer.length > 0) {
+    if (question.length > 0 && answer.length > 0) {
         jQuery("#learningSection").show();
         jQuery("#txtQuestion").text(question);
         jQuery("#txtAnswer").text(answer);

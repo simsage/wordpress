@@ -205,3 +205,13 @@
     width: 32px;
 }
 
+/*** learning dialog box ***/
+
+.learnings {
+    position: absolute;
+    left: 40vw;
+    top: 10vw;
+    z-index: 99;
+    background: #9FAAAE;
+}
+

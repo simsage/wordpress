@@ -129,8 +129,8 @@
                 </div>
                 <br clear="both" />
                 <div id="twoSection">
-                    <input type="button" class="button learn-button" value="clear" onClick="clearQA()" />
-                    <input type="button" class="button learn-button" value="teach SimSage" onClick="teach()" />
+                    <input type="button" class="button learn-button" value="Cancel" onClick="clearQA()" />
+                    <input type="button" class="button learn-button" value="Teach SimSage" onClick="teach()" />
                 </div>
                 <div id="oneSection" class="learn-buttons">
                     <input type="button" class="button learn-button" value="clear" onClick="clearQA()" />
