@@ -65,11 +65,10 @@ function operator_ready() {
 function operator_take_break() {
     if (ops.is_connected && callback.operator_take_break) {
         callback.operator_take_break(clientId);
-        client_disconnected();
+        client_disconnected(true);
 
         ready_to_rcv = false; // but not ready to receive
         jQuery("#btnReady").removeAttr("disabled");
-        jQuery("#btnBreak").attr("disabled", "true");
     }
 }
 
@@ -78,7 +77,8 @@ function operator_next_user() {
         if (callback.operator_next_user) {
             callback.operator_next_user();
         }
-        client_disconnected();
+        client_disconnected(false);
+        jQuery("#btnBreak").removeAttr("disabled");
     }
 }
 
@@ -92,7 +92,7 @@ function operator_ban_user() {
     if (this.is_connected && callback.operator_ban_user) {
         callback.operator_ban_user();
     }
-    client_disconnected();
+    client_disconnected(false);
 }
 
 function operator_key_press(event, text) {
@@ -143,9 +143,9 @@ function use() {
 }
 
 // a message has come from the operator that she has disconnected us
-function client_disconnected() {
+function client_disconnected(go_offline) {
     // disconnect any client
-    connect_to_client('', '', []);
+    connect_to_client('', '', [], go_offline);
 }
 
 function set_active_connections(count) {
@@ -319,7 +319,7 @@ function render_operator_conversations() {
                 '</div>\n');
         }
     }
-    if (ops.is_typing) {
+    if (ops.is_typing && clientId !== '') {
         result.push(render_client_typing());
     }
     result.push("<div id='scrollBottom' />")
@@ -327,7 +327,7 @@ function render_operator_conversations() {
 }
 
 // notification of client_id has been set
-function connect_to_client(client_id, client_kb_id, prev_conversation_list) {
+function connect_to_client(client_id, client_kb_id, prev_conversation_list, go_offline) {
     if (client_id === '') {
         // disconnected
         clientId = '';
@@ -341,9 +341,16 @@ function connect_to_client(client_id, client_kb_id, prev_conversation_list) {
         answer_message = {};
         // disable the text field and chat button and others
         jQuery("#btnChat").attr("disabled", "true");
-        jQuery("#btnBreak").attr("disabled", "true");
         jQuery("#btnBanUser").attr("disabled", "true");
         jQuery("#btnNextUser").attr("disabled", "true");
+
+        // still connected to the server?
+        console.log('go_offline:' + go_offline);
+        if (go_offline) {
+            jQuery("#btnBreak").attr("disabled", "true");
+        } else {
+            jQuery("#btnBreak").removeAttr("disabled");
+        }
 
         jQuery("#txtResponse").attr("disabled", "true");
         jQuery("#botCount").html("0");

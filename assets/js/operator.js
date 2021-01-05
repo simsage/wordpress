@@ -153,7 +153,7 @@ class Operator extends SimSageCommon {
                 if (data.disconnectedByClient) {
                     error('Client disconnected.');
                 }
-                client_disconnected();
+                // client_disconnected(false);
             }
 
             else if (data.messageType === mt_ActiveConnections) {
@@ -194,9 +194,9 @@ class Operator extends SimSageCommon {
                         set_previous_answer(data.previousAnswer);
                     }
 
-                    // have we been assigned an operator?
+                    // have we been assigned a client?
                     if (data.clientId && data.clientId.length > 5) {
-                        connect_to_client(data.clientId, data.kbId, data.conversationList ? data.conversationList : []);
+                        connect_to_client(data.clientId, data.kbId, data.conversationList ? data.conversationList : [], false);
                     }
 
                 }
