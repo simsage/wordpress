@@ -42,10 +42,6 @@ $has_access = ($plan != null && isset( $plan['analyticsWindowInMonths'] ) && $pl
         .tab-cursor { cursor: pointer; }
     </style>
 
-    <div class="analytics-area">
-        <h2>SimSage Data</h2>
-    </div>
-
     <?php
     // set when connected to SimSage
     $has_sites = (simsage_get_kb() != null);
