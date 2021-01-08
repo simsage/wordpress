@@ -918,7 +918,6 @@ let slider_control = {
     min_value: 0.0,
     max_value: 0.0,
     monetary: false,
-    currency_symbol: this.currency_symbol,
 
     instantiate(cat) {
         let copy = jQuery.extend({}, slider_control);
@@ -958,8 +957,8 @@ let slider_control = {
         let left = parseInt(this.min_value);
         let right = parseInt(this.max_value);
         if (this.monetary) {
-            left = this.currency_symbol + (left * 0.01).toFixed(2);
-            right = this.currency_symbol + (right * 0.01).toFixed(2);
+            left = simsage.currency_symbol + (left * 0.01).toFixed(2);
+            right = simsage.currency_symbol + (right * 0.01).toFixed(2);
         }
         $(".slider-" + this.metadata + "-value").html(left + " - " + right);
     },
@@ -2952,7 +2951,7 @@ let search_results_control = {
                 val = val * 0.01;
             }
             // Replace the numerical value with stars
-            $(this).html(this.currency_symbol + val.toFixed(2));
+            $(this).html(simsage.currency_symbol + val.toFixed(2));
         });
         jQuery("div.db-image").each(function() {
             let val = jQuery(this).html().trim();
