@@ -181,6 +181,7 @@ class simsage_search
 	function init() {
     	// this is the [simsage-search] shortcode render function: simsage_handle_shortcode()
 		add_shortcode( 'simsage-search', array( $this, 'simsage_handle_shortcode' ) );
+        add_shortcode( 'simsage-search-results', array( $this, 'simsage_results_handle_shortcode' ) );
 
 		add_action( 'init', array( $this, 'register_script_and_style' ) );
 		// styles into the head
@@ -220,7 +221,24 @@ class simsage_search
         }
 	}
 
-	// SimSage override default search
+    // simsage-search-results short-code renderer
+    function simsage_results_handle_shortcode( $attrs ) {
+        $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
+        $this->add_script = true;
+
+        wp_enqueue_style('simsage-search-style-1'); // add our style-sheets
+
+        if ( simsage_get_kb() != null ) {
+            // render simsage_search_result_view.php in the context of this class
+            ob_start();
+            include SIMSAGE_PLUGIN_DIR . 'inc/simsage_search_result_view.php';
+            return ob_get_clean();
+        } else {
+            return "<div>SimSage-search plugin not configured.  Please configure your plugin first!</div>";
+        }
+    }
+
+    // SimSage override default search
 	public function get_search_form( $content ) {
         $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
         // only replace the search_form if the plugin has been configured and it has been configured to do so by the user

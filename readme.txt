@@ -6,7 +6,7 @@ Author URI: https://github.com/peter3125
 Requires at least: 5.0
 Tested up to: 5.6
 Requires PHP: 7.0
-Stable Tag: 1.2.7
+Stable Tag: 1.2.8
 Description: this Plugin adds SimSage Semantic Search and operator help to your web-site.
 License: GPLv3
 
@@ -32,6 +32,12 @@ SimSage currently only supports English.  Other languages might be supported in 
 
 
 == Changelog ==
+
+= 1.2.8 =
+* changed <div to <button in js "search"
+* added <form> to js to prevent autocomplete fields
+* split shortcodes into [simsage-search] and [simsage-search-results] for separating search box from its results
+* added admin entry to globally override styles
 
 = 1.2.7 =
 * fixed several bugs in Q&A display

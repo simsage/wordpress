@@ -35,7 +35,11 @@ function clear_controls() {
 
 // is this a key CR or Space-bar event that should activate something?
 function activation(event) {
-    return (event && (event.keyCode === 13 || event.keyCode === 32));
+    if (event && (event.keyCode === 13 || event.keyCode === 32)) {
+        event.stopPropagation();
+        return true;
+    }
+    return false;
 }
 
 // execute "get_metadata" on all the controls if they support it
@@ -3167,6 +3171,10 @@ jQuery('.search-form').on('keydown keyup keypress', function(e) {
         e.preventDefault();
         return false;
     }
+});
+jQuery('.search-button-box').on('click', function(e) {
+    e.preventDefault();
+    return false;
 });
 // init when ready
 jQuery(document).ready(function () {
