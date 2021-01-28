@@ -323,8 +323,19 @@
 
         <?php if ($active_tab == 'styling') { ?>
 
+            <!-- let the user introduce a new css class for styling -->
+            <fieldset>
+                <div style="margin-top: 20px; margin-bottom: 10px;">Introduce an optional series of css classes (separated by spaces) to the top level of the search-controls</div>
+                <label>
+                    <input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_styling]" type="text"
+                           class="input-field" id="simsage_styling" maxlength="100"
+                           value="<?php echo (isset($options['simsage_styling']) && $options['simsage_styling'] != '') ? $options['simsage_styling'] : ''; ?>"
+                           placeholder="css classes"/>
+                    <span class="description">optional css classes to apply</span>
+                </label>
+            </fieldset>
+
             <input type="hidden" name="action" value="styling">
-            <div class="spacing-bottom">&nbsp;</div>
 
             <?php submit_button( 'update Styling', 'primary','submit', true ); ?>
 

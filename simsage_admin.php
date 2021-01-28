@@ -84,6 +84,8 @@ class simsage_admin
                     $this->check_form_parameters($plugin_parameters, true);
                 } else if ($action == 'update-filter') {
                     $this->set_ignore_urls( $plugin_parameters );
+                } else if ($action == 'styling') {
+                    $this->set_css_styling( $plugin_parameters );
                 }
             }
 	    }
@@ -183,6 +185,18 @@ class simsage_admin
         $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
         $ignore_list = explode( "|", $plugin_parameters['simsage_ignore_url_list'] );
         $plugin_options["simsage_ignore_url_list"] = $ignore_list;
+        update_option(SIMSAGE_PLUGIN_NAME, $plugin_options);
+    }
+
+
+    /**
+     * set the css styling classes to apply to top-level layout
+     *
+     * @param $plugin_parameters array parameters
+     */
+    public function set_css_styling( $plugin_parameters ) {
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
+        $plugin_options["simsage_styling"] = sanitize_text_field( $plugin_parameters['simsage_styling'] );
         update_option(SIMSAGE_PLUGIN_NAME, $plugin_options);
     }
 
@@ -594,6 +608,7 @@ class simsage_admin
      * @param $options  array the set of options to check and amend
      */
     private function set_defaults( $options ) {
+        $options["simsage_styling"] = ""; // default value for styling
         foreach ($this->plugin_defaults as $key => $value) {
             if ( !isset( $options[$key]) ) {
                 $options[$key] = $value["value"];

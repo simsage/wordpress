@@ -13,14 +13,12 @@
     settings = {
         // the service layer end-point, change "<server>" to ... (no / at end)
         base_url: server,
-        // todo: the organisation's id to search - all sanitized
-        //organisation_id: "<?php echo sanitize_text_field($this->get_account_setting("id")) ?>",
-        organisation_id: "c276f883-e0c8-43ae-9119-df8b7df9c574",
+        // the organisation's id to search - all sanitized
+        organisation_id: "<?php echo sanitize_text_field($this->get_account_setting("id")) ?>",
         // this is the WordPress plugin
         is_wordpress: true,
-        // todo: the knowledge base's Id (selected site) and security id (sid)
-        // kbId: "<?php echo sanitize_text_field($this->get_site_setting("kbId")) ?>",
-        kbId: "46ff0c75-7938-492c-ab50-442496f5de51",
+        // the knowledge base's Id (selected site) and security id (sid)
+        kbId: "<?php echo sanitize_text_field($this->get_site_setting("kbId")) ?>",
         // do we have an operator by plan?
         operator_enabled: <?php echo $this->get_plan_boolean_value("operatorEnabled", true) ?>,
         context_label: "<?php echo sanitize_text_field($this->context) ?>",
@@ -32,7 +30,7 @@
     };
 </script>
 
-<div class="simsage-search">
+<div class="simsage-search <?php echo $this->get_user_value("simsage_styling", "") ?>">
     <div class="search-bar">
 
         <!-- search options button, menu and chevron -->
