@@ -166,25 +166,27 @@
 
         <!-- search box -->
         <div class="search-box-container">
-            <div class="search-text-box">
-                <label class="search-text-label" title="ask SimSage">
-                    <input type="text" value="" autocomplete="false" class="search-text" maxlength="100" onkeyup="simsage.search_typing(event)">
-                </label>
-            </div>
+            <form class="search-form">
+                <div class="search-text-box">
+                    <label class="search-text-label" title="ask SimSage">
+                        <input type="text" value="" autocomplete="false" class="search-text" maxlength="100" onkeyup="simsage.search_typing(event)">
+                    </label>
+                </div>
 
-            <!-- search clear (cross) -->
-            <div class="clear-search-button-box" tabindex="0" onkeyup="if (activation(event)) this.onclick(null)" title="clear your query" onclick="simsage.clear_search()">
-            <span class="search-button-span-box">
-                <span class="clear-button-image">&times;</span>
-            </span>
-            </div>
+                <!-- search clear (cross) -->
+                <div class="clear-search-button-box" tabindex="0" onkeyup="if (activation(event)) this.onclick(null)" title="clear your query" onclick="simsage.clear_search()">
+                <span class="search-button-span-box">
+                    <span class="clear-button-image">&times;</span>
+                </span>
+                </div>
 
-            <!-- search button -->
-            <div class="search-button-box" title="query SimSage" onclick="simsage.do_search()">
-            <span class="search-button-box-text">
-                SEARCH
-            </span>
-            </div>
+                <!-- search button -->
+                <button class="search-button-box" title="query SimSage" onclick="simsage.do_search()">
+                    <span class="search-button-box-text">
+                        SEARCH
+                    </span>
+                </button>
+            </form>
         </div>
     </div>
 

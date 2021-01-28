@@ -1651,8 +1651,11 @@ let simsage = {
 
     search_typing: function(event) {
         if (event.keyCode === 13) {
+            event.stopPropagation();
             this.do_search();
+            return false;
         }
+        return true;
     },
 
     busy: function(is_busy) {
@@ -3158,6 +3161,13 @@ let domain_control = {
 
 // setup search
 simsage.instantiate();
+jQuery('.search-form').on('keydown keyup keypress', function(e) {
+    let keyCode = e.keyCode || e.which;
+    if (keyCode === 13) {
+        e.preventDefault();
+        return false;
+    }
+});
 // init when ready
 jQuery(document).ready(function () {
     simsage.init("", settings);
