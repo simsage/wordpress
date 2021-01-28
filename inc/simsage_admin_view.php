@@ -88,6 +88,7 @@
         <a href="?page=simsage-search&tab=account" class="nav-tab <?php echo ($active_tab == 'account' || $active_tab == '') ? 'nav-tab-active' : ''; ?>">Account</a>
         <a href="?page=simsage-search&tab=search" class="nav-tab <?php echo $active_tab == 'search' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_kb ) echo 'tab-disabled' ?>">Search</a>
         <a href="?page=simsage-search&tab=filters" class="nav-tab <?php echo $active_tab == 'filters' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_kb ) echo 'tab-disabled' ?>">Content Filters</a>
+        <a href="?page=simsage-search&tab=styling" class="nav-tab <?php echo $active_tab == 'styling' ? 'nav-tab-active' : ''; ?> <?php if ( ! $has_kb ) echo 'tab-disabled' ?>">Styling</a>
     </div>
 
     <form method="post" id="adminForm" name="<?php echo SIMSAGE_PLUGIN_NAME; ?>_search_options">
@@ -316,6 +317,16 @@
             <div class="spacing-bottom">&nbsp;</div>
 
             <?php submit_button( 'update Filter Settings', 'primary','submit', true ); ?>
+
+        <?php } ?>
+
+
+        <?php if ($active_tab == 'styling') { ?>
+
+            <input type="hidden" name="action" value="styling">
+            <div class="spacing-bottom">&nbsp;</div>
+
+            <?php submit_button( 'update Styling', 'primary','submit', true ); ?>
 
         <?php } ?>
 
