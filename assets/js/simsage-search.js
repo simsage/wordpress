@@ -1481,8 +1481,8 @@ let simsage = {
     },
 
     // clear the search text and filters
-    clear_search: function() {
-        jQuery(".search-text").val("");
+    clear_search: function(control_class) {
+        jQuery("." + control_class).val("");
         this.clear_all(); // clear filters
         this.close_bot();
         if (this.is_custom_render) {
@@ -1495,9 +1495,13 @@ let simsage = {
     },
 
     // perform a search
-    do_search: function() {
+    do_search: function(control_class) {
         let self = this;
-        let text = jQuery(".search-text").val();
+        let text = "";
+        if (control_class)
+            text = jQuery("." + control_class).val();
+        else
+            text = jQuery(".search-text").val();
         if (this.kb && (this.is_custom_render || text.trim() !== '')) {
             // do we need to reset the pagination?
             if (this.reset_pagination(text)) {
@@ -1653,10 +1657,10 @@ let simsage = {
         } // if message-type is right
     },
 
-    search_typing: function(event) {
+    search_typing: function(event, control_class) {
         if (event.keyCode === 13) {
             event.stopPropagation();
-            this.do_search();
+            this.do_search(control_class);
             return false;
         }
         return true;

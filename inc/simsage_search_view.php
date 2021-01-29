@@ -169,19 +169,20 @@
             <form class="search-form">
                 <div class="search-text-box">
                     <label class="search-text-label" title="ask SimSage">
-                        <input type="text" value="" autocomplete="false" class="search-text" maxlength="100" onkeyup="simsage.search_typing(event)">
+                        <input type="text" value="" autocomplete="false" class="search-text search-text-<?php echo $this->search_counter ?>" maxlength="100"
+                               onkeyup="simsage.search_typing(event, 'search-text-<?php echo $this->search_counter ?>')">
                     </label>
                 </div>
 
                 <!-- search clear (cross) -->
-                <div class="clear-search-button-box" tabindex="0" onkeyup="if (activation(event)) this.onclick(null)" title="clear your query" onclick="simsage.clear_search()">
+                <div class="clear-search-button-box" tabindex="0" onkeyup="if (activation(event)) this.onclick(null)" title="clear your query" onclick="simsage.clear_search('search-text-<?php echo $this->search_counter ?>')">
                 <span class="search-button-span-box">
                     <span class="clear-button-image">&times;</span>
                 </span>
                 </div>
 
                 <!-- search button -->
-                <button class="search-button-box" title="query SimSage" onclick="simsage.do_search()">
+                <button class="search-button-box" title="query SimSage" onclick="simsage.do_search('search-text-<?php echo $this->search_counter ?>')">
                     <span class="search-button-box-text">
                         SEARCH
                     </span>

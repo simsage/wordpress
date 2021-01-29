@@ -23,6 +23,9 @@ class simsage_search
     private $context = "";
     private $context_boost = 0.2;
 
+    // counter for search boxes
+    private $search_counter = 1;
+
 
 	// constructor
     public function __construct(){
@@ -196,6 +199,7 @@ class simsage_search
 
 	// simsage short-code renderer
 	function simsage_handle_shortcode( $attrs ) {
+        $this->search_counter += 1;
         $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
 		$this->add_script = true;
 
@@ -223,6 +227,7 @@ class simsage_search
 
     // simsage-search-results short-code renderer
     function simsage_results_handle_shortcode( $attrs ) {
+        $this->search_counter += 1;
         $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
         $this->add_script = true;
 
@@ -240,6 +245,7 @@ class simsage_search
 
     // SimSage override default search
 	public function get_search_form( $content ) {
+        $this->search_counter += 1;
         $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
         // only replace the search_form if the plugin has been configured and it has been configured to do so by the user
 		if ( isset( $plugin_options["simsage_override_default_search"] ) && $plugin_options["simsage_override_default_search"] && simsage_get_kb() != null ) {
