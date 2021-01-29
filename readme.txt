@@ -34,10 +34,11 @@ SimSage currently only supports English.  Other languages might be supported in 
 == Changelog ==
 
 = 1.2.8 =
-* changed <div to <button in js "search"
+* changed <div> to <button> in js "search"
 * added <form> to js to prevent autocomplete fields
 * split shortcodes into [simsage-search] and [simsage-search-results] for separating search box from its results
 * added admin entry to globally override styles
+* fixed multiple controls on the same page unique ids
 
 = 1.2.7 =
 * fixed several bugs in Q&A display
