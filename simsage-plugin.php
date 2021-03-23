@@ -3,7 +3,7 @@
    Plugin Name: SimSage Search
    Plugin URI: https://simsage.ai/
    description: Add SimSage Semantic Search and operator support to your WordPress site.
-   Version: 1.2.8
+   Version: 1.2.9
    Author: Rock de Vocht
    Author URI: https://github.com/peter3125
    License: GPL2
