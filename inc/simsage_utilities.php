@@ -167,7 +167,7 @@ function simsage_get_wp_contents() {
     $result_list = array();
     foreach ($results as $row) {
         $obj = $row;
-        array_push( $result_list, $obj->guid );
+        array_push( $result_list, get_permalink( $obj ) ); // translate object to permalink (what the back-end sees)
     }
     return $result_list;
 }
