@@ -97,8 +97,8 @@ function simsage_add_wp_contents_to_archive( $registration_key, $archive_file, $
         fwrite( $archive_file, SIMSAGE_DOC_IGNORE_DATA . "\n", strlen(SIMSAGE_DOC_IGNORE_DATA) + 1 );
         foreach ($results as $row) {
             $obj = $row;
-            if ( in_array($obj->guid, $ignore_urls) ) { // write out items that aren't supposed to be there
-                $str = $obj->guid . "\n";
+            if ( in_array( get_permalink( $obj ), $ignore_urls) ) { // write out items that aren't supposed to be there
+                $str = get_permalink( $obj ) . "\n";
                 fwrite($archive_file, $str, strlen($str));
                 $md5_str = md5($md5_str . $str);
             }
@@ -110,7 +110,7 @@ function simsage_add_wp_contents_to_archive( $registration_key, $archive_file, $
     debug_log("md5 rego-key:" . $md5_str);
     foreach ($results as $row) {
         $obj = $row;
-        if ( !in_array( $obj->guid, $ignore_urls ) ) { // filter out items that aren't supposed to be there
+        if ( !in_array( get_permalink( $obj ), $ignore_urls ) ) { // filter out items that aren't supposed to be there
             // get the author for this item
             $author = get_user_by('id', $obj->post_author);
             $author_name = '';
@@ -125,7 +125,7 @@ function simsage_add_wp_contents_to_archive( $registration_key, $archive_file, $
             $author_name = sanitize_text_field(str_replace("\n", " ", $author_name));
 
             // format: url | title | author | mimeType | created | last-modified | data
-            $str = $obj->guid . "|" . sanitize_title($obj->post_title) . "|" . sanitize_text_field($author_name) . "|text/html|";
+            $str = get_permalink( $obj ) . "|" . sanitize_title($obj->post_title) . "|" . sanitize_text_field($author_name) . "|text/html|";
             $str = $str . sanitize_text_field(strtotime($obj->post_date_gmt)) . "000|";
             $str = $str . sanitize_text_field(strtotime($obj->post_modified_gmt)) . "000|" . $counter . ".html;base64,";
             // legacy - we don't write the content anymore - as it is fetched using the URL
