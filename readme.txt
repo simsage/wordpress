@@ -35,6 +35,8 @@ SimSage currently only supports English.  Other languages might be supported in 
 
 = 1.2.9 =
 * changed WP database-get to return permalinks instead of page-ids
+* fixed exclusion / inclusion list inconsistent behaviour
+* added new SimSage logo
 
 = 1.2.8 =
 * changed <div> to <button> in js "search"
@@ -77,6 +79,8 @@ SimSage currently only supports English.  Other languages might be supported in 
 
 = 1.2.9 =
 * changed WP database-get to return permalinks instead of page-ids
+* fixed exclusion / inclusion list inconsistent behaviour
+* added new SimSage logo
 
 = 1.2.8 =
 * changed <div> to <button> in js "search"
