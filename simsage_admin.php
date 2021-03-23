@@ -171,7 +171,8 @@ class simsage_admin
     public function get_ignore_urls() {
         $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
         if ( isset($plugin_options["simsage_ignore_url_list"]) ) {
-            return $plugin_options["simsage_ignore_url_list"];
+            return array_filter( $plugin_options['simsage_ignore_url_list'],
+                function($value) { return !is_null($value) && $value !== ''; } );
         }
         return array();
     }
@@ -183,7 +184,9 @@ class simsage_admin
      */
     public function set_ignore_urls( $plugin_parameters ) {
         $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
-        $ignore_list = explode( "|", $plugin_parameters['simsage_ignore_url_list'] );
+        debug_log( print_r( $plugin_parameters, true) );
+        $ignore_list = array_filter( explode( "|", $plugin_parameters['simsage_ignore_url_list'] ),
+                                     function($value) { return !is_null($value) && $value !== ''; } );
         $plugin_options["simsage_ignore_url_list"] = $ignore_list;
         update_option(SIMSAGE_PLUGIN_NAME, $plugin_options);
     }
@@ -714,11 +717,16 @@ class simsage_admin
         $url = simsage_join_urls($server, '/api/crawler/document/upload/archive');
         $bodyStr = '{"organisationId": "' . $organisationId . '", "kbId": "' . $kbId . '", "sid": "' . $sid . '", "sourceId": 1, "data": "' . $data . '"}';
         $json = simsage_get_json(wp_remote_post($url,
-            array('timeout' => SIMSAGE_JSON_DATA_UPLOAD_TIMEOUT, 'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
+            array('timeout' => SIMSAGE_JSON_DATA_UPLOAD_TIMEOUT,
+                'headers' => array('accept' => 'application/json', 'API-Version' => '1', 'Content-Type' => 'application/json'),
                 'body' => $bodyStr)));
         $error_str = simsage_check_json_response( $server, $json );
         if ( strpos( $error_str, "not time yet ") ) {
-            add_settings_error('simsage_settings', 'simsage_upload_error', "Content upload scheduled for later", $type = 'info');
+            if (function_exists('add_settings_error')) {
+                add_settings_error('simsage_settings', 'simsage_upload_error', "Content upload scheduled for later", $type = 'info');
+            } else {
+                debug_log('ERROR: simsage-upload-error: Content upload scheduled for later');
+            }
             return false;
 
         } else {

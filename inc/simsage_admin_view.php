@@ -261,6 +261,7 @@
                 function render_lists() {
                     jQuery(".available-list").html(render_list(filter_list(available_urls, ".filter-available"), "deselect_item"));
                     jQuery(".ignore-list").html(render_list(filter_list(ignore_urls, ".filter-ignored"), "select_item"));
+                    jQuery(".ignore-list-value").val(ignore_urls.join("|"));
                 }
 
                 /**
@@ -293,7 +294,6 @@
                     if (index >= 0) {
                         available_urls.splice(index, 1);
                         ignore_urls.push(url);
-                        jQuery(".ignore-list-value").val(ignore_urls.join("|"));
                         render_lists();
                     }
                 }
@@ -303,17 +303,15 @@
                     if (index >= 0) {
                         ignore_urls.splice(index, 1);
                         available_urls.push(url);
-                        jQuery(".ignore-list-value").val(ignore_urls.join("|"));
                         render_lists();
                     }
                 }
 
-                render_lists();
-
             </script>
 
             <input type="hidden" name="action" value="update-filter">
-            <input type="hidden" name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_ignore_url_list]" class="ignore-list-value" value="">
+            <input type="hidden" name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_ignore_url_list]"
+                   class="ignore-list-value" value="">
             <div class="spacing-bottom">&nbsp;</div>
 
             <?php submit_button( 'update Filter Settings', 'primary','submit', true ); ?>
@@ -343,6 +341,14 @@
 
 
     </form>
+
+    <script>
+        // run this on document ready when all elements are available
+        jQuery(document).ready(function() {
+            render_lists();
+        });
+    </script>
+
 
 </div>
 
