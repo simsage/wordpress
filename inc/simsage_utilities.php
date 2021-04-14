@@ -484,9 +484,9 @@ function simsage_setup_archive_job_schedule($schedules ) {
  * setup SimSage to execute itself twice daily
  * @param $admin object the admin class
  */
-function simsage_setup_cron_job($admin ) {
-    if ( ! wp_next_scheduled('simsage_twicedaily', array($admin) ) ) {
-        wp_schedule_event(time(), 'twicedaily', 'simsage_twicedaily', array($admin));
+function simsage_setup_cron_job( $admin ) {
+    if ( ! wp_next_scheduled( 'simsage_twicedaily' ) ) {
+        wp_schedule_event(time(), 'twicedaily', 'simsage_twicedaily');
     }
     add_action('simsage_twicedaily', array($admin, 'cron_upload_archive') );
 }
