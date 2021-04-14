@@ -432,27 +432,18 @@ class simsage_admin
                 // check its md5
                 $md5_sum = $this->get_archive_md5();
                 debug_log("wrote zip to:" . $filename . ", old md5:" . $md5_sum . ", current md5:" . $file_md5);
-                if ( $md5_sum != $file_md5 ) {
-                    debug_log('site content has changed (md5) (' . $file_md5 . ')');
 
-                    if (!$this->upload_archive( $server, $organisationId, $kb["kbId"], $kb["sid"], $filename )) {
-                        return false;
-                    }
-
-                    // update the md5 for the next run
-                    $this->update_archive_md5( $file_md5 );
-
-                    if (function_exists('add_settings_error'))
-                        add_settings_error('simsage_settings', 'uploaded', 'Content Successfully uploaded to SimSage', $type = 'info');
-                    else
-                        debug_log('SUCCESS: simsage archive uploaded.');
-
-                } else {
-                    if (function_exists('add_settings_error'))
-                        add_settings_error('simsage_settings', 'simsage_up_to_date', 'Site content already synchronized with SimSage (no changes detected, nothing uploaded)', $type = 'info');
-                    else
-                        debug_log('not uploading site: content has not changed since last (' . $file_md5 . ')');
+                if (!$this->upload_archive( $server, $organisationId, $kb["kbId"], $kb["sid"], $filename )) {
+                    return false;
                 }
+
+                // update the md5 for the next run
+                $this->update_archive_md5( $file_md5 );
+
+                if (function_exists('add_settings_error'))
+                    add_settings_error('simsage_settings', 'uploaded', 'Content Successfully uploaded to SimSage', $type = 'info');
+                else
+                    debug_log('SUCCESS: simsage archive uploaded.');
 
                 // remove the file after use
                 if (!unlink($filename)) {
