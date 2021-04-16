@@ -732,8 +732,8 @@ class simsage_admin
         }
 
         wp_enqueue_style( 'jquery-ui-style' );
-        wp_enqueue_style('simsage-analytics-style'); // add our style-sheet (assets/css/data.css)
-        wp_enqueue_style('simsage-operator-style'); // add our style-sheet (assets/css/operator.css)
+        wp_enqueue_style( 'simsage-analytics-style' ); // add our style-sheet (assets/css/data.css)
+        wp_enqueue_style( 'simsage-operator-style' ); // add our style-sheet (assets/css/operator.css)
 
         wp_enqueue_script( 'd3-script-1', plugins_url( 'assets/js/d3.min.js', __FILE__ ), array('jquery'), '1.0', true );
         wp_enqueue_script( 'simsage-ops-script-1', plugins_url( 'assets/js/sockjs.js', __FILE__ ), array('jquery'), '1.0', true );
