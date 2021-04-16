@@ -98,7 +98,8 @@ class simsage_admin
             'edit_others_posts', // capability.
             "simsage", // menu_slug.
             array($this, 'load_settings_page'),
-            $this->simsage_leaf_icon // our icon
+            $this->simsage_leaf_icon, // our icon
+            5 // position of the menu item
         );
     }
 
