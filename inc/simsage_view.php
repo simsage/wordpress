@@ -169,7 +169,7 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
                     <label>
                         <input type="text" id="txtDatePicker" class="datepicker tab-cursor" name="datepicker" value="" readonly />
                     </label>
-                    <button onclick="data.getAnalytics()" class="button" title="Reload/Refresh statistical data">refresh</button>
+                    <button type="button" onclick="data.getAnalytics()" class="button" title="Reload/Refresh statistical data">refresh</button>
                 </div>
             </div>
         <?php } ?>
@@ -386,19 +386,19 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
                 <div class='margin-top'></div>
                 <div id='div_logs'>
                     <div class="button-row">
-                        <button onclick="data.dlOperatorConversations()" class="button button-style ss-button">Operator Conversation Spreadsheet</button>
+                        <button type="button" onclick="data.dlOperatorConversations()" class="button button-style ss-button">Operator Conversation Spreadsheet</button>
                         <span class="button-help-text">Download a Spreadsheet containing all conversations between Operators and Clients for the selected month.</span>
                     </div>
                     <div class="button-row">
-                        <button onclick="data.dlQueryLog()" class="button button-style ss-button">Search & Query Log Spreadsheet</button>
+                        <button type="button" onclick="data.dlQueryLog()" class="button button-style ss-button">Search & Query Log Spreadsheet</button>
                         <span class="button-help-text">Download a log of what people have been searching / asking on this site for the selected month.</span>
                     </div>
                     <div class="button-row">
-                        <button onclick="data.dlLanguageCustomizations()" class="button button-style ss-button" title="Download a Spreadsheet of all QA Pairs and Language Customizations">Content Spreadsheet</button>
+                        <button type="button" onclick="data.dlLanguageCustomizations()" class="button button-style ss-button" title="Download a Spreadsheet of all QA Pairs and Language Customizations">Content Spreadsheet</button>
                         <span class="button-help-text">Download a SimSage QA / language Spreadsheet containing all your customized content (not month specific).</span>
                     </div>
                     <div class="button-row">
-                        <button onclick="data.dlContentAnalysis()" class="button button-style ss-button" title="Download a Content Analysis Spreadsheet">Content Analysis Spreadsheet</button>
+                        <button type="button" onclick="data.dlContentAnalysis()" class="button button-style ss-button" title="Download a Content Analysis Spreadsheet">Content Analysis Spreadsheet</button>
                         <span class="button-help-text">Download a Spreadsheet containing all currently crawled content and a Semantic analysis for each item (not month specific).</span>
                     </div>
                 </div>
@@ -421,8 +421,8 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
                 </div>
                 <div class="qna-buttons-container">
                     <div class="qna-buttons">
-                        <button class="ss-button" onclick="data.mindItemDialogClose()">cancel</button>
-                        <button class="ss-button" onclick="data.mindItemDialogSave()">save</button>
+                        <button type="button" class="ss-button" onclick="data.mindItemDialogClose()">cancel</button>
+                        <button type="button" class="ss-button" onclick="data.mindItemDialogSave()">save</button>
                     </div>
                 </div>
             </div>
@@ -462,10 +462,10 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
                             <span class="upload-control">
                                     <label id="upload-files-label" for="upload-files" class="button ss-button">Select Excel Spreadsheet</label>
                                     <input id="upload-files" type="file" accept=".xls,.xlsx" style="display: none;" onchange="data.handleUploadChange(event)" /></label>
-                                <button id="upload-button" class="button upload-button" disabled onClick="data.uploadMindItems()">upload</button>
+                                <button type="button" id="upload-button" class="button upload-button" disabled onClick="data.uploadMindItems()">upload</button>
                             </span>
                                 <span>
-                                <button class="button export-button" title="export existing SimSage Q&A and Synonym information" onClick="data.dlLanguageCustomizations()">export</button>
+                                <button type="button" class="button export-button" title="export existing SimSage Q&A and Synonym information" onClick="data.dlLanguageCustomizations()">export</button>
                             </span>
                                 <span class="delete-button ss-button" title="delete all mind-items" onClick="data.deleteAllMindItems()">
                                 <img src="<?php echo $this->asset_folder . 'images/delete.svg'?>" class="delete-button-image" alt="delete" />
@@ -491,8 +491,8 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
                 </div>
                 <div class="synonym-buttons-container">
                     <div class="synonym-buttons">
-                        <button class="ss-button" onclick="data.synonymDialogClose()">cancel</button>
-                        <button class="ss-button" onclick="data.synonymDialogSave()">save</button>
+                        <button type="button" class="ss-button" onclick="data.synonymDialogClose()">cancel</button>
+                        <button type="button" class="ss-button" onclick="data.synonymDialogSave()">save</button>
                     </div>
                 </div>
             </div>
@@ -555,8 +555,8 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
                 </div>
                 <div class="semantic-buttons-container">
                     <div class="semantic-buttons">
-                        <button class="ss-button" onclick="data.semanticDialogClose()">cancel</button>
-                        <button class="ss-button" onclick="data.semanticDialogSave()">save</button>
+                        <button type="button" class="ss-button" onclick="data.semanticDialogClose()">cancel</button>
+                        <button type="button" class="ss-button" onclick="data.semanticDialogSave()">save</button>
                     </div>
                 </div>
             </div>
@@ -610,7 +610,7 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
 
                 <div id="chatButtons" class="operator-buttons-top">
                 <span class="menu-button">
-                    <button id="btnReady" type="button" class="operator-button" disabled
+                    <button type="button" id="btnReady" type="button" class="operator-button" disabled
                             title="Signal that you are ready to go and converse with customers."
                             onClick="operator_ready()">
                         <span class="operator-button-icon"><svg class="" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15c1.66 0 2.99-1.34 2.99-3L15 6c0-1.66-1.34-3-3-3S9 4.34 9 6v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 15 6.7 12H5c0 3.42 2.72 6.23 6 6.72V22h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"></path></svg></span>
@@ -618,7 +618,7 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
                     </button>
                 </span>
                     <span class="menu-button">
-                    <button id="btnBreak" type="button" class="operator-button" disabled
+                    <button type="button" id="btnBreak" type="button" class="operator-button" disabled
                             title="take a break, stop participating in conversations while you have a break."
                             onClick="operator_take_break()">
                         <span class="operator-button-icon"><svg class="MuiSvgIcon-root operator-button-icon" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.9 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"></path></svg></span>
@@ -626,7 +626,7 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
                     </button>
                 </span>
                     <span class="menu-button">
-                    <button id="btnBanUser" type="button" class="operator-button operator-button-margin-left" disabled
+                    <button type="button" id="btnBanUser" type="button" class="operator-button operator-button-margin-left" disabled
                             title="The current conversation is abusive or bad spirited, ban this user from the system."
                             onClick="confirm_ban_user()">
                         <span class="operator-button-icon"><svg class="MuiSvgIcon-root operator-button-icon" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><circle cx="15" cy="8" r="4"></circle><path d="M23 20v-2c0-2.3-4.1-3.7-6.9-3.9l6 5.9h.9zm-11.6-5.5C9.2 15.1 7 16.3 7 18v2h9.9l4 4 1.3-1.3-21-20.9L0 3.1l4 4V10H1v2h3v3h2v-3h2.9l2.5 2.5zM6 10v-.9l.9.9H6z"></path></svg></span>
@@ -634,7 +634,7 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
                     </button>
                 </span>
                     <span class="menu-button">
-                    <button id="btnNextUser" type="button" class="operator-button operator-button-margin-left" disabled
+                    <button type="button" id="btnNextUser" type="button" class="operator-button operator-button-margin-left" disabled
                             title="We have finished the current conversation and are ready for a next one."
                             onClick="operator_next_user()">
                         <span class="operator-button-icon"><svg class="MuiSvgIcon-root operator-button-icon" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.99 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm3.61 6.34c1.07 0 1.93.86 1.93 1.93 0 1.07-.86 1.93-1.93 1.93-1.07 0-1.93-.86-1.93-1.93-.01-1.07.86-1.93 1.93-1.93zm-6-1.58c1.3 0 2.36 1.06 2.36 2.36 0 1.3-1.06 2.36-2.36 2.36s-2.36-1.06-2.36-2.36c0-1.31 1.05-2.36 2.36-2.36zm0 9.13v3.75c-2.4-.75-4.3-2.6-5.14-4.96 1.05-1.12 3.67-1.69 5.14-1.69.53 0 1.2.08 1.9.22-1.64.87-1.9 2.02-1.9 2.68zM11.99 20c-.27 0-.53-.01-.79-.04v-4.07c0-1.42 2.94-2.13 4.4-2.13 1.07 0 2.92.39 3.84 1.15-1.17 2.97-4.06 5.09-7.45 5.09z"></path></svg></span>
@@ -657,7 +657,7 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
                                onkeyup="operator_key_press(event, this.value)" placeholder="your reply" aria-label="response" />
                     </span>
                         <span class="operator-reply-button-box">
-                        <button type="button" id="btnChat" class="operator-button" value="chat" disabled
+                        <button type="button" type="button" id="btnChat" class="operator-button" value="chat" disabled
                                 title="your response (available when connected to a user)" onClick="reply_click(null)">
                             Reply
                         </button>
