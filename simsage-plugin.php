@@ -36,10 +36,6 @@ define( 'SIMSAGE_JSON_DATA_UPLOAD_TIMEOUT', 15 );
 include_once( SIMSAGE_PLUGIN_DIR . 'simsage_search.php' );
 // include the admin settings page and menu-setup for WordPress of this plugin
 include_once( SIMSAGE_PLUGIN_DIR . 'simsage_admin.php' );
-// include the SimSage operator interface
-include_once( SIMSAGE_PLUGIN_DIR . 'simsage_operator.php' );
-// include the SimSage analytics interface
-include_once( SIMSAGE_PLUGIN_DIR . 'simsage_data.php' );
 
 // create the main search class to use throughout
 $search = new simsage_search();

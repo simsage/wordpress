@@ -110,7 +110,6 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
     </style>
 
     <div id="icon-themes" class="icon32"></div>
-    <h2>SimSage Plugin Options</h2>
 
     <?php if ( !$has_account && ($active_tab == 'account' || $active_tab == '') ) { ?>
         <div class="label-success">

@@ -11,7 +11,7 @@
  * @since      1.2.0
  *
  * @package    simsage-plugin
- * @subpackage simsage-plugin/inc/simsage_admin_view.php
+ * @subpackage simsage-plugin/inc/simsage_view.php
  */
 
 class simsage_admin
