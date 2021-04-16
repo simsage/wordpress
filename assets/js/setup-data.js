@@ -1,26 +1,4 @@
 
-// create an instance of this class
-const data = new SimsageData(an_update_ui);
-
-// startup - connect our plugin to a SimSage server
-jQuery(document).ready(function () {
-    // get our analytics
-    data.getAnalytics();
-    // setup the jQuery date picker
-    jQuery(".datepicker").datepicker({
-        changeMonth: true,
-        changeYear: true,
-        showButtonPanel: true,
-        dateFormat: 'MM yy',
-        onClose: function(dateText, inst) {
-            const date = new Date(inst.selectedYear, inst.selectedMonth, 1);
-            jQuery(this).datepicker('setDate', date);
-            data.set_date(date);
-        }
-    }).datepicker('setDate', new Date());
-});
-
-
 function an_update_ui(data) {
     // do we have an error message to display?
     if (data.error.length > 0) {

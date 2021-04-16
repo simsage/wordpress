@@ -22,7 +22,7 @@ define( 'SIMSAGE_DOC_SYNONYM_DATA', '-simsage-synonyms.txt');
 define( 'SIMSAGE_DOC_SEMANTIC_DATA', '-simsage-semantics.txt');
 define( 'SIMSAGE_DOC_IGNORE_DATA', '-simsage-ignore.txt');
 // enable usage of test environment
-define( 'SIMSAGE_USE_TEST', false );
+define( 'SIMSAGE_USE_TEST', true );
 
 // maximum length of a QA question or answer string
 define( 'SIMSAGE_MAX_STRING_LENGTH', 256 );
@@ -47,14 +47,7 @@ $search = new simsage_search();
 // create the admin panel and its functionality
 $admin = new simsage_admin();
 
-// create the SimSage operator
-$operator = new simsage_operator();
-
-// create SimSage analytics
-$data = new simsage_data();
-
 // add the pages for the SimSage plugin
-$admin->prepare_admin_menus( $operator, $data );
 $admin->add_admin_menus();
 // setup auto-update for content
 simsage_setup_cron_schedule();

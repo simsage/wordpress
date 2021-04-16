@@ -28,9 +28,8 @@ class simsage_admin
 
     private $simsage_leaf_icon = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgY2xhc3M9Ind3IGhoIGJvcmRlci10aHVtYm5haWwiCiAgIHJhZGlhbD0iIgogICB2ZXJzaW9uPSIxLjEiCiAgIGlkPSJzdmc0MDQ5IgogICBzb2RpcG9kaTpkb2NuYW1lPSJzaW1zYWdlLWJudy5zdmciCiAgIGlua3NjYXBlOnZlcnNpb249IjEuMC4xICgzYmMyZTgxM2Y1LCAyMDIwLTA5LTA3KSIKICAgd2lkdGg9IjEwMG1tIgogICBoZWlnaHQ9IjEwMG1tIj4KICA8ZGVmcwogICAgIGlkPSJkZWZzNDA1MyIgLz4KICA8c29kaXBvZGk6bmFtZWR2aWV3CiAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIgogICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2IgogICAgIGJvcmRlcm9wYWNpdHk9IjEiCiAgICAgb2JqZWN0dG9sZXJhbmNlPSIxMCIKICAgICBncmlkdG9sZXJhbmNlPSIxMCIKICAgICBndWlkZXRvbGVyYW5jZT0iMTAiCiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAiCiAgICAgaW5rc2NhcGU6cGFnZXNoYWRvdz0iMiIKICAgICBpbmtzY2FwZTp3aW5kb3ctd2lkdGg9IjEzNDMiCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iOTk4IgogICAgIGlkPSJuYW1lZHZpZXc0MDUxIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBpbmtzY2FwZTp6b29tPSIxIgogICAgIGlua3NjYXBlOmN4PSIyODcuMjA4MTYiCiAgICAgaW5rc2NhcGU6Y3k9IjM3MC40OTIxNSIKICAgICBpbmtzY2FwZTp3aW5kb3cteD0iMjYzOCIKICAgICBpbmtzY2FwZTp3aW5kb3cteT0iMzMiCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMCIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJnNDIiCiAgICAgdW5pdHM9Im1tIgogICAgIHdpZHRoPSIxMDBtbSIKICAgICBpbmtzY2FwZTpzbmFwLXRleHQtYmFzZWxpbmU9ImZhbHNlIgogICAgIGlua3NjYXBlOmRvY3VtZW50LXJvdGF0aW9uPSIwIiAvPgogIDxnCiAgICAgaWQ9ImczOTA0IgogICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsLTYyLjIwNDY5MykiPgogICAgPGRlZnMKICAgICAgIGlkPSJkZWZzMzkwMiI+CiAgICAgIDxyYWRpYWxHcmFkaWVudAogICAgICAgICBpZD0iYmFja2dyb3VuZDY5NSI+CiAgICAgICAgPHN0b3AKICAgICAgICAgICBvZmZzZXQ9IjAuNSIKICAgICAgICAgICBzdG9wLWNvbG9yPSIjZmZmZmZmIgogICAgICAgICAgIHN0b3Atb3BhY2l0eT0iMSIKICAgICAgICAgICBpZD0ic3RvcDM4OTciIC8+CiAgICAgICAgPHN0b3AKICAgICAgICAgICBvZmZzZXQ9IjEiCiAgICAgICAgICAgc3RvcC1jb2xvcj0iI2VhZWJlYyIKICAgICAgICAgICBzdG9wLW9wYWNpdHk9IjEiCiAgICAgICAgICAgaWQ9InN0b3AzODk5IiAvPgogICAgICA8L3JhZGlhbEdyYWRpZW50PgogICAgPC9kZWZzPgogIDwvZz4KICA8ZwogICAgIGlkPSJnNDIiCiAgICAgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwtMS40NDU3ODMxKSI+CiAgICA8cGF0aAogICAgICAgc3R5bGU9ImZpbGw6IzAwMDAwMDtmaWxsLW9wYWNpdHk6MTtzdHJva2Utd2lkdGg6MC4zNjA0NTgiCiAgICAgICBpbmtzY2FwZTpjb25uZWN0b3ItY3VydmF0dXJlPSIwIgogICAgICAgaWQ9InBhdGgzOTgwLTYiCiAgICAgICBkPSJtIDE2Ny4zNjU0MiwxMjUuMTUwMyBjIC0zNS4xNzMxOSwzOC43ODYgLTQ3LjEwNDQ0LDgzLjM4OTM2IC01MC4yODY2Myw5OC40MTU1NCAyLjExNTk1LDEuNzA3MDQgNC4yMzE5NSwzLjQxNDAxIDYuMjQyMjksNS4xMjI2IDQ0LjA5NzM3LC0xLjM1ODM1IDc5LjI5OTA5LC0xMS42NDgwNyAxMDcuMzA4MzgsLTI2LjUyODk5IDI2LjM4MjQ5LC0xNC4wMTg5MiA0Ni40NDc0MSwtMzIuMTAzNzggNjEuNTYxNDIsLTUwLjY0NTAyIDM2LjAzMTE2LC00NC4xNzU4NSA0NC4xMTc2OSwtOTAuODQ5Njg2IDQ0LjExNzY5LC05MC44NDk2ODYgLTQxLjk3MTk2LC0xLjEzMjA2NyAtNzYuMDc3NTEsNi4wNDY1MDYgLTEwMy43Mzg0NiwxNy45NzYxMzEgLTI3LjY4NjMsMTEuOTA1NTIyIC00OC45MDI3MSwyOC41ODYyMjUgLTY1LjIwNDYzLDQ2LjUwOTM1NSB6IiAvPgogICAgPHBhdGgKICAgICAgIHN0eWxlPSJmaWxsOiMwMDAwMDA7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLXdpZHRoOjAuMzYwNDU4IgogICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIKICAgICAgIGlkPSJwYXRoMzk4MC00LTIiCiAgICAgICBkPSJtIDEyMy44NTMwOCwyNzUuMzQ1NTYgYyA0Ni40MzcyMiwyNi42NzEzNyA5NS42ODYyNCwzMS4xMzg5MyAxMTIuMTU1NTQsMzEuODc0NjUgMS41MTAxNywtMi4xOTI5MiAzLjAyMDI4LC00LjM4NTg3IDQuNTQ3NDksLTYuNDgxOTcgLTcuODY5MDYsLTQwLjMyMjQyIC0yMy45NTYyNSwtNzEuMTcwMDcgLTQzLjg4NjUzLC05NC43NDAwOSAtMTguNzc1MTUsLTIyLjIwMDczIC00MC45NjEyNiwtMzguMDA0MjEgLTYyLjkxMjQ5LC00OS4xOTE5MiAtNTIuMzAzNDIsLTI2LjY3NDggLTEwMy4xOTc5ODUsLTI3LjMwNzk5IC0xMDMuMTk3OTg1LC0yNy4zMDc5OSA0LjkwNjczNSwzOC43MzIxMiAxNy41MjAzMTYsNjkuMDI1NjIgMzQuMjU2MTM4LDkyLjcwNTM3IDE2LjcxMzg0LDIzLjcwNjU2IDM3LjU3MTk0Nyw0MC43NzI2MiA1OS4wMzc3NjcsNTMuMTQxOTEgeiIKICAgICAgIGlua3NjYXBlOnRyYW5zZm9ybS1jZW50ZXIteD0iLTIuODkxNTY2MyIKICAgICAgIGlua3NjYXBlOnRyYW5zZm9ybS1jZW50ZXIteT0iMC45NjM4NTU0MiIgLz4KICA8L2c+Cjwvc3ZnPgo=";
 
-    // references to the operator and data classes for menu setup after registration
-    private $operator = null;
-    private $data = null;
+    // location of the images folder
+    private $asset_folder = '';
 
     // the cloud-servers to talk to
     private $api_server = "";
@@ -39,32 +38,8 @@ class simsage_admin
     public function __construct() {
         // initialize this control - add the required actions
         $this->init();
-    }
-
-
-    /**
-     * add the administration menu for this plugin to wordpress
-     */
-    public function add_plugin_admin_menu() {
-        add_options_page(
-            __( 'SimSage Settings', SIMSAGE_PLUGIN_NAME ), // page title.
-            __( 'SimSage Settings', SIMSAGE_PLUGIN_NAME ), // menu title.
-            'manage_options', // capability.
-            SIMSAGE_PLUGIN_NAME, // menu_slug.
-            array( $this, 'load_settings_page' )
-        );
-    }
-
-
-    /**
-     * register operator and data classes for menu setup later
-     *
-     * @param $operator simsage_operator the operator class
-     * @param $data simsage_data the data class
-     */
-    public function prepare_admin_menus( $operator, $data ) {
-        $this->operator = $operator;
-        $this->data = $data;
+        // web-based folder locations, relative to this file
+        $this->asset_folder = plugin_dir_url(__FILE__) . 'assets/';
     }
 
 
@@ -93,19 +68,6 @@ class simsage_admin
 
 
     /**
-     * load the admin menu page
-     */
-    public function load_settings_page() {
-        // check user capabilities.
-        if ( ! current_user_can( 'manage_options' ) ) {
-            wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
-        }
-        // this is the html of the admin page, rendered in the context of this class
-        include_once SIMSAGE_PLUGIN_DIR . 'inc/simsage_admin_view.php';
-    }
-
-
-    /**
      * run the archive upload job
      */
     function cron_upload_archive() {
@@ -130,19 +92,11 @@ class simsage_admin
      */
     public function add_menus() {
         add_menu_page(
-            __('SimSage Operator', SIMSAGE_PLUGIN_NAME), // page title.
-            __('SimSage Operator', SIMSAGE_PLUGIN_NAME), // menu title.
+            __('SimSage', SIMSAGE_PLUGIN_NAME), // page title.
+            __('SimSage', SIMSAGE_PLUGIN_NAME), // menu title.
             'edit_others_posts', // capability.
-            "simsage-operator", // menu_slug.
-            array($this->operator, 'load_settings_page'),
-            $this->simsage_leaf_icon // our icon
-        );
-        add_menu_page(
-            __('SimSage Data', SIMSAGE_PLUGIN_NAME), // page title.
-            __('SimSage Data', SIMSAGE_PLUGIN_NAME), // menu title.
-            'edit_others_posts', // capability.
-            "simsage-data", // menu_slug.
-            array($this->data, 'load_settings_page'),
+            "simsage", // menu_slug.
+            array($this, 'load_settings_page'),
             $this->simsage_leaf_icon // our icon
         );
     }
@@ -514,8 +468,10 @@ class simsage_admin
 	private function init() {
 		// Save/Update plugin options.
 		add_action( 'admin_init', array( $this, 'update_plugin_options' ) );
-		// Admin menu for the plugin.
-		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
+        // and the required styles for operator.css
+        wp_register_style( 'simsage-analytics-style', plugins_url( 'assets/css/data.css', __FILE__ ) );
+        // jQuery date-picker styling
+        wp_register_style( 'jquery-ui-style', plugins_url( 'assets/css/jquery-ui.min.css', __FILE__ ) );
 	}
 
 
@@ -762,5 +718,84 @@ class simsage_admin
         return true;
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * callback - return the html, styles, and js to render and work the SimSage operator
+     */
+    public function load_settings_page() {
+        // check user capabilities.
+        $user = wp_get_current_user();
+        $allowed_roles = array( 'editor', 'administrator', 'author' );
+        if ( empty( $user ) || !array_intersect( $allowed_roles, $user->roles ) ) {
+            wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
+        }
+
+        wp_enqueue_style( 'jquery-ui-style' );
+        wp_enqueue_style('simsage-analytics-style'); // add our style-sheet (assets/css/data.css)
+        wp_enqueue_style('simsage-operator-style'); // add our style-sheet (assets/css/operator.css)
+
+        wp_enqueue_script( 'd3-script-1', plugins_url( 'assets/js/d3.min.js', __FILE__ ), array('jquery'), '1.0', true );
+        wp_enqueue_script( 'simsage-ops-script-1', plugins_url( 'assets/js/sockjs.js', __FILE__ ), array('jquery'), '1.0', true );
+        wp_enqueue_script( 'simsage-ops-script-2', plugins_url( 'assets/js/stomp.js', __FILE__ ), array('jquery'), '1.0', true );
+        // Load the WP datepicker script
+        wp_enqueue_script( 'jquery-ui-datepicker' );
+
+        wp_enqueue_script( 'simsage-ops-script-4', plugins_url( 'assets/js/simsage-common.js', __FILE__ ), array('jquery'), '1.0', true );
+
+        wp_enqueue_script( 'simsage-analytics-script-2', plugins_url( 'assets/js/setup-data.js', __FILE__ ), array('jquery'), '1.0', true );
+        wp_enqueue_script( 'simsage-analytics-script-1', plugins_url( 'assets/js/simsage-data.js', __FILE__ ), array('jquery'), '1.0', true );
+
+        wp_enqueue_script( 'ops-script-1', plugins_url( 'assets/js/operator.js', __FILE__ ), array('jquery'), '1.0', true );
+        wp_enqueue_script( 'ops-script-2', plugins_url( 'assets/js/setup-operator.js', __FILE__ ), array('jquery'), '1.0', true );
+
+        // this is the html of the admin page, rendered in the context of this class
+        include_once SIMSAGE_PLUGIN_DIR . 'inc/simsage_view.php';
+    }
+
+
+    // register all our javascript and css styles for this plugin
+    function register_script_and_style() {
+        // jQuery date-picker styling
+        wp_register_style( 'jquery-ui-style', plugins_url( 'assets/css/jquery-ui.min.css', __FILE__ ) );
+        // and the required styles for data.css
+        wp_register_style( 'simsage-analytics-style', plugins_url( 'assets/css/data.css', __FILE__ ) );
+        // and the required styles for operator.css
+        wp_register_style( 'simsage-operator-style', plugins_url( 'assets/css/operator.css', __FILE__ ) );
+    }
+
+
+    /**
+     * get a SimSage specific value from the accounts section
+     *
+     * @return string the setting, or an empty string if not found
+     */
+    private function get_account_setting( $key ) {
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
+        if ( isset($plugin_options["simsage_account"]) ) {
+            $account = $plugin_options["simsage_account"];
+            if ( isset($account[$key]) ) {
+                return sanitize_text_field($account[$key]);
+            }
+        }
+        return "";
+    }
+
+
+    /**
+     * get a SimSage specific knowledge-base value
+     *
+     * @param $key string the key to look for
+     * @return string the value, or an empty string if not found
+     */
+    private function get_site_setting( $key ) {
+        $kb = simsage_get_kb();
+        if ( $kb != null ) {
+            if ( isset($kb[$key]) ) {
+                return sanitize_text_field($kb[$key]);
+            }
+        }
+        return "";
+    }
 
 }

@@ -2,10 +2,6 @@
 // refresh rate in ms
 const operator_wait_timeout_in_ms = 10000;
 
-
-// create an instance of the Operator Class
-ops = new Operator();
-
 response = '';
 
 ready_to_rcv = false;           // operator ready to do some work?
@@ -431,15 +427,3 @@ function simsage_connected() {
     jQuery("#botCount").html("0");
     jQuery("#conversationList").html("");
 }
-
-// startup - connect our plugin to a SimSage server
-jQuery(function($) {
-    jQuery(document).ready(function () {
-        // connect to our web-sockets for two way conversations
-        ops.init_simsage();
-        // setup operator timer ticks
-        window.setInterval(() => operator_present_tick(), operator_wait_timeout_in_ms);
-    })
-});
-
-
