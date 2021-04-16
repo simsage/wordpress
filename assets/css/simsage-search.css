@@ -1,6 +1,6 @@
 
 .simsage-search {
-    font-family: 'Lucinda Grande', 'Lucinda Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
+    font-family: 'Roboto',sans-serif;
 }
 
 /* disable chrome outlines */
@@ -22,6 +22,7 @@
 }
 
 .simsage-search .search-bar {
+    font-family: 'Roboto',sans-serif;
 }
 
 /* enable down chevrons for selects */
@@ -70,7 +71,6 @@
 }
 
 .search-bar .search-options-text {
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     margin-top: 16px;
     color: #454545;
     font-size: 14px;
@@ -109,16 +109,35 @@
 }
 
 .search-bar .search-text-box {
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-    background-color: #ffffff;
-    margin-left: 10px;
-    padding-left: 10px;
     float: left;
-    border-left: 2px solid #707070;
-    border-top: 2px solid #707070;
-    border-bottom: 2px solid #707070;
     height: 52px !important;
     width: 40% !important;
+}
+
+.search-bar .search-text {
+    background: rgba(0, 0, 0, 0);
+    border: none;
+    overflow: hidden;
+    max-width: 0 !important;
+    width: 0 !important;
+    -webkit-transition: .2s linear;
+    transition: .2s linear;
+}
+
+.search-bar:hover .search-text {
+    background: rgba(255, 255, 255, 128);
+    border: 1px solid #5a5a5a;
+    overflow: hidden;
+    max-width: 98% !important;
+    width: 98% !important;
+}
+
+.search-bar .search-text:focus {
+    background: rgba(255, 255, 255, 128);
+    border: 1px solid #5a5a5a;
+    overflow: hidden;
+    max-width: 98% !important;
+    width: 98% !important;
 }
 
 @media only screen and (max-width: 700px) {
@@ -144,13 +163,10 @@
 }
 
 .search-bar .search-text {
-    background-color: #ffffff;
-    font-size: 16px !important;
-    border: 0 solid;
-    height: 46px !important;
+    padding: 5px !important;
+    height: 48px !important;
     width: 98% !important;
-    padding: 0 !important;
-    color: #454545;
+    color: #2a2a2a;
 }
 
 .search-bar .search-text:disabled {
@@ -161,19 +177,16 @@
 
 .search-bar .clear-search-button-box {
     float: left;
-    border-top: 2px solid #707070;
-    border-bottom: 2px solid #707070;
-    background-color: #ffffff;
     cursor: pointer;
     width: 48px !important;
-    height: 52px !important;
+    height: 48px !important;
+    padding: 4px !important;
 }
 
 .search-bar .search-button-span-box {
     float: left;
     margin-left: 4px !important;
     margin-top: 4px !important;
-    background: #e3e3e3;
     color: #666666;
     padding: 4px 12px !important;
     border-radius: 50px;
@@ -187,17 +200,19 @@
 
 .search-bar .search-button-box {
     float: left;
-    background-color: #454545;
-    border-right: 2px solid #707070;
-    border-top: 2px solid #707070;
-    border-bottom: 2px solid #707070;
     cursor: pointer;
-    width: 110px !important;
+    width: 52px !important;
     height: 52px !important;
+    padding-top: 8px !important;
+    padding-left: 4px !important;
+}
+
+.search-bar .search-image-size {
+    width: 27px;
+    height: 27px;
 }
 
 .search-bar .search-button-box-text {
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     float: left;
     color: #ffffff;
     padding-left: 2px;
@@ -219,6 +234,7 @@
 }
 
 .filter-box {
+    font-family: 'Roboto',sans-serif;
     position: absolute;
     width: 400px !important;
     z-index: 999;
@@ -273,7 +289,6 @@
     margin-top: 10px;
     width: 100%;
     color: #454545;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
     cursor: default;
 }
@@ -298,7 +313,6 @@
     float: left;
     margin-left: 10px;
     margin-top: 4px;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     color: #878787;
     font-size: 14px;
 }
@@ -309,7 +323,6 @@
 
 .filter-box .close-text {
     float: right;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     color: #878787;
     font-size: 0.8em;
     margin-top: 4px;
@@ -336,7 +349,6 @@
 
 .filter-box .category-text {
     color: #454545;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 14px;
 }
 
@@ -358,7 +370,6 @@
     padding-bottom: 3px;
     margin-bottom: 5px;
     color: #454545;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 14px;
     border: 1px solid #878787;
     border-radius: 0;
@@ -367,7 +378,6 @@
 
 .filter-box .category-input {
     color: #454545;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 14px;
     border: 1px solid #878787;
     padding-top: 8px;
@@ -398,7 +408,6 @@
     color: #ffffff;
     margin-left: 26px;
     margin-top: 14px;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
 }
 
@@ -418,7 +427,6 @@
     width: 68px;
     margin-top: 20px;
     margin-left: 20px;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
     cursor: pointer;
     color: #1e74ff;
@@ -429,6 +437,7 @@
 /* search results details display                   */
 
 .search-results {
+    font-family: 'Roboto',sans-serif;
     width: 98% !important;
     border: 0 solid;
     margin-top: 22px;
@@ -518,7 +527,6 @@
 
 .search-results .url-text {
     color: #454545;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 14px;
     margin-bottom: 4px;
 }
@@ -533,7 +541,6 @@
 
 .search-results .title-text {
     color: #0062ff;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
     margin-bottom: 4px;
     cursor: pointer;
@@ -541,7 +548,6 @@
 
 .search-results .result-text {
     color: black;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
     margin-bottom: 4px;
 }
@@ -646,7 +652,6 @@
     float: left;
     color: #2a2a2a;
     font-style: italic;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 14px;
     cursor: default;
 }
@@ -654,7 +659,6 @@
 /** category items at the RHS of the search results **/
 .search-results .category-items-dropdown-header {
     cursor: pointer;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
 }
 
@@ -668,7 +672,6 @@
 
 .search-results .category-title {
     color: black;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 14px;
     font-weight: 600;
     width: 100%;
@@ -678,7 +681,6 @@
 
 .search-results .category-text {
     color: black;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 12px;
     width: 100%;
     cursor: pointer;
@@ -797,7 +799,6 @@
     margin-top: 4px;
     margin-right: 10px;
     color: #2d2d2d;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 14px;
     cursor: default;
 }
@@ -840,7 +841,6 @@
 
 .search-results .view-results-as-text-disabled {
     float: left;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 12px;
     color: #2d2d2d;
     font-weight: 600;
@@ -901,7 +901,6 @@
 
 .search-results .view-results-as-text {
     float: left;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 12px;
     color: #ffffff;
     cursor: default;
@@ -1000,7 +999,6 @@
 .search-results .image-text {
     color: #000000;
     margin-top: 4px;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 0.8em;
     cursor: default;
     width: 200px;
@@ -1033,7 +1031,6 @@
 }
 
 .search-results .synset-title {
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 1.0em;
     font-weight: 600;
     width: 80%;
@@ -1049,6 +1046,7 @@
 /* show details / single search result details view */
 
 .search-details-view {
+    font-family: 'Roboto',sans-serif;
     position: absolute;
     left: 50px !important;
     z-index: 999;
@@ -1129,7 +1127,6 @@
     margin-left: 1%;
     margin-top: 4px;
     color: #454545;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-weight: 600;
     font-size: 18px;
     cursor: default;
@@ -1142,7 +1139,6 @@
 
 .search-details .close-text {
     float: right;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 0.9em;
     color: #878787;
     margin-top: 4px;
@@ -1204,7 +1200,6 @@
     vertical-align: top;
     display: inline-block;
     width: 48%;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     color: #454545;
     font-size: 12px;
     cursor: default;
@@ -1215,7 +1210,6 @@
     margin-bottom: 4px;
     display: inline-block;
     width: 48%;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     color: #454545;
     font-size: 12px;
     cursor: default;
@@ -1226,7 +1220,6 @@
     margin-bottom: 4px;
     display: inline-block;
     width: 48%;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     color: #1e74ff;
     font-size: 12px;
     cursor: pointer;
@@ -1256,6 +1249,7 @@
 /* Bot reply speech bubble */
 
 .bot-box-view {
+    font-family: 'Roboto',sans-serif;
     left: 40px;
     margin-top: 20px;
     width: calc(77% - 40px) !important;
@@ -1277,7 +1271,7 @@
 }
 
 .bot-box {
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    font-family: 'Roboto',sans-serif;
     color: #2a2a2a;
 }
 
@@ -1379,6 +1373,7 @@
 
 
 .search-sign-in {
+    font-family: 'Roboto',sans-serif;
     position: absolute;
     z-index: 999;
     left: 25vw;
@@ -1403,21 +1398,18 @@
 
 .search-sign-in .title {
     color: #878787;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     cursor: default;
 }
 
 .search-sign-in .close-box {
     float: right;
     color: #878787;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 0.9em;
     cursor: pointer;
 }
 
 .search-sign-in .close-text {
     float: left;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     color: #878787;
     font-size: 0.8em;
     margin-right: 8px;
@@ -1433,7 +1425,6 @@
 
 .search-sign-in .category-text {
     color: #454545;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 14px;
 }
 
@@ -1444,7 +1435,6 @@
 
 .search-sign-in .category-input {
     color: #454545;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
     border: 1px solid #878787;
     padding-top: 8px !important;
@@ -1489,7 +1479,6 @@
     color: #ffffff;
     margin-left: 26px;
     margin-top: 14px;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
 }
 
@@ -1498,6 +1487,7 @@
 
 
 .no-search-results {
+    font-family: 'Roboto',sans-serif;
     left: 10vw !important;
     position: absolute;
     z-index: 998;
@@ -1516,13 +1506,11 @@
 .no-search-results .close-box {
     float: right;
     color: #878787;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 0.9em;
     cursor: pointer;
 }
 
 .no-search-results .close-text {
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     color: #878787;
     font-size: 0.8em;
     float: left;
@@ -1545,7 +1533,6 @@
 
 .no-search-results .no-results-found {
     float: left;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 20px;
     margin-right: 10px;
     cursor: default;
@@ -1553,7 +1540,6 @@
 
 .no-search-results .not-found-words {
     float: left;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 20px;
     font-weight: 600;
     cursor: default;
@@ -1561,7 +1547,6 @@
 
 .no-search-results .no-results-text {
     clear: both;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
     cursor: default;
     margin-bottom: 10px;
@@ -1590,7 +1575,6 @@
 
 .no-search-results .email-text {
     background-color: #e3e3e3;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
     margin-left: 10px;
     border: 0 solid;
@@ -1628,7 +1612,6 @@
     margin-left: 12px;
     margin-top: 16px;
     color: #ffffff;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
 }
 
@@ -1648,6 +1631,7 @@
 /*  Error dialog box */
 
 .error-dialog-box {
+    font-family: 'Roboto',sans-serif;
     position: absolute;
     z-index: 999;
     left: 10vw;
@@ -1671,14 +1655,12 @@
 
 .error-dialog .title {
     color: #878787;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     cursor: default;
 }
 
 .error-dialog .close-box {
     float: right;
     color: #878787;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 0.9em;
     cursor: pointer;
 }
@@ -1693,7 +1675,6 @@
 
 .error-dialog .close-text {
     float: left;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     color: #878787;
     font-size: 0.9em;
     margin-right: 8px;
@@ -1701,7 +1682,6 @@
 
 .error-dialog .error-text {
     color: #000000;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     cursor: default;
 }
 
@@ -1724,6 +1704,7 @@
 /* the chat button at the bottom right hand side of the screen */
 
 .chat-button-at-bottom {
+    font-family: 'Roboto',sans-serif;
     position: fixed !important;
     left: calc(100vw - 200px);
     bottom: 10px !important;
@@ -1778,7 +1759,6 @@
     margin-left: 6px;
     margin-top: 16px;
     color: #ffffff;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
 }
 
@@ -1787,7 +1767,6 @@
     margin-left: 6px;
     margin-top: 16px;
     color: #aaa;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
 }
 
@@ -1803,6 +1782,7 @@
 }
 
 .operator-chat-box {
+    font-family: 'Roboto',sans-serif;
     position: absolute;
     display: inline-block;
     z-index: 999;
@@ -1835,14 +1815,12 @@
     float: right;
     width: 70px;
     color: #878787;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
     cursor: pointer;
 }
 
 .operator-chat-box .close-text {
     float: left;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     color: #878787;
     font-size: 0.9em;
     margin-top: -2px !important;
@@ -1894,7 +1872,6 @@
     margin-right: 0;
     background-color: transparent;
     border: 0 solid;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
 }
 
@@ -1909,7 +1886,6 @@
     padding: 4px;
     width: 94px !important;
     height: 34px;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
     cursor: pointer;
 }
@@ -1925,7 +1901,6 @@
     padding: 4px;
     width: 94px !important;
     height: 34px;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     font-size: 16px;
     cursor: pointer;
 }
@@ -1937,7 +1912,6 @@
 }
 
 .operator-chat-box .user-box {
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     padding: 2px;
 }
 
@@ -1988,7 +1962,6 @@
 
 
 .operator-chat-box .operator-box {
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     padding: 2px;
     margin-top: 4px;
 }
@@ -2023,7 +1996,6 @@
 }
 
 .operator-chat-box .disconnected-box {
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     padding: 2px;
     margin-bottom: 20px;
 }
@@ -2065,7 +2037,7 @@
 }
 
 .spelling-box {
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    font-family: 'Roboto',sans-serif;
     color: #2a2a2a;
     margin-bottom: 10px;
 }
@@ -2120,7 +2092,6 @@
 
 .spelling-box .yes-button {
     margin-right: 2px;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     background-color: #454545;
     border: none;
     color: white;
@@ -2133,7 +2104,6 @@
 }
 
 .spelling-box .no-button {
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     background-color: #454545;
     border: none;
     color: white;
@@ -2146,6 +2116,10 @@
 }
 
 /* search / db categories */
+
+.category-items-td {
+    font-family: 'Roboto',sans-serif;
+}
 
 .category-items-td .title-box {
     margin-top: 10px;
