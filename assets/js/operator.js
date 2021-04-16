@@ -29,7 +29,7 @@ class Operator extends SimSageCommon {
             clientId: client_id,
             text: text,
         };
-        this.post_message('/ops/wp-chat', msg);
+        this.post_message('/api/ops/wp-chat', msg);
     }
 
     // the operator is typing - send a message to the client if there is one
@@ -42,7 +42,7 @@ class Operator extends SimSageCommon {
             toId: clientId,
             isTyping: true,
         };
-        this.post_message('/ops/wp-typing', msg);
+        this.post_message('/api/ops/wp-typing', msg);
     }
 
 
@@ -54,7 +54,7 @@ class Operator extends SimSageCommon {
                 sid: settings.sid,
                 operatorId: SimSageCommon.get_client_id(),
             };
-            this.post_message('/ops/wp-ready', data);
+            this.post_message('/api/ops/wp-ready', data);
         }
     }
 
@@ -67,7 +67,7 @@ class Operator extends SimSageCommon {
             operatorId: SimSageCommon.get_client_id(),
             clientId: clientId,
         };
-        this.post_message('/ops/wp-take-break', msg);
+        this.post_message('/api/ops/wp-take-break', msg);
     }
 
 
@@ -79,7 +79,7 @@ class Operator extends SimSageCommon {
             operatorId: SimSageCommon.get_client_id(),
             clientId: this.clientId,
         };
-        this.post_message('/ops/wp-next-user', msg);
+        this.post_message('/api/ops/wp-next-user', msg);
     }
 
 
@@ -91,7 +91,7 @@ class Operator extends SimSageCommon {
             operatorId: SimSageCommon.get_client_id(),
             clientId: this.clientId,
         };
-        this.post_message('/ops/wp-ban-user', msg);
+        this.post_message('/api/ops/wp-ban-user', msg);
     }
 
 
@@ -103,7 +103,7 @@ class Operator extends SimSageCommon {
             sid: settings.sid,
             operatorList: [{operatorId: SimSageCommon.get_client_id(), isTyping: this.is_typing, clientId: this.clientId}],
         };
-        this.post_message('/ops/wp-refresh', msg);
+        this.post_message('/api/ops/wp-refresh', msg);
     }
 
 
@@ -131,7 +131,7 @@ class Operator extends SimSageCommon {
             text: question,
             answer: answer,
         };
-        this.post_message('/ops/wp-teach', msg);
+        this.post_message('/api/ops/wp-teach', msg);
     }
 
 

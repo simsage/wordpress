@@ -145,7 +145,7 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
 
     </div>
 
-    <form method="post" id="adminForm" name="<?php echo SIMSAGE_PLUGIN_NAME; ?>_search_options">
+    <form method="post" id="adminForm" onkeydown="return event.key != 'Enter';" name="<?php echo SIMSAGE_PLUGIN_NAME; ?>_search_options">
 
         <div id="busy" class="busy" style="display: none;">
             <div class="busy-image"><img id="hourglass" src="" alt="hourglass" class="busy-image-size"></div>
@@ -777,6 +777,14 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
         jQuery(document).ready(function() {
             if (active_tab === 'filters') {
                 render_lists();
+
+            // prevent form post on CR in form fields
+            jQuery(window).keydown(function(event){
+                if(event.keyCode === 13) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
 
             } else if (active_tab === 'keywords' || active_tab === 'searches' ||
                 active_tab === 'logs' || active_tab === 'qna' || active_tab === 'synonyms' ||

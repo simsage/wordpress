@@ -472,6 +472,8 @@ class simsage_admin
         wp_register_style( 'simsage-analytics-style', plugins_url( 'assets/css/data.css', __FILE__ ) );
         // jQuery date-picker styling
         wp_register_style( 'jquery-ui-style', plugins_url( 'assets/css/jquery-ui.min.css', __FILE__ ) );
+        // and the required styles for operator.css
+        wp_register_style( 'simsage-operator-style', plugins_url( 'assets/css/operator.css', __FILE__ ) );
 	}
 
 
@@ -751,17 +753,6 @@ class simsage_admin
 
         // this is the html of the admin page, rendered in the context of this class
         include_once SIMSAGE_PLUGIN_DIR . 'inc/simsage_view.php';
-    }
-
-
-    // register all our javascript and css styles for this plugin
-    function register_script_and_style() {
-        // jQuery date-picker styling
-        wp_register_style( 'jquery-ui-style', plugins_url( 'assets/css/jquery-ui.min.css', __FILE__ ) );
-        // and the required styles for data.css
-        wp_register_style( 'simsage-analytics-style', plugins_url( 'assets/css/data.css', __FILE__ ) );
-        // and the required styles for operator.css
-        wp_register_style( 'simsage-operator-style', plugins_url( 'assets/css/operator.css', __FILE__ ) );
     }
 
 

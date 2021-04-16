@@ -30,7 +30,7 @@ class SimSageCommon {
     // get the knowledge-base information for this organisation (set in settings.js)
     init_simsage() {
         const self = this;
-        const url = settings.base_url + '/knowledgebase/search/info/' + encodeURIComponent(settings.organisationId) +
+        const url = settings.base_url + '/api/knowledgebase/search/info/' + encodeURIComponent(settings.organisationId) +
                             '/' + encodeURIComponent(settings.kbId);
         busy(true);
 
@@ -106,7 +106,7 @@ class SimSageCommon {
     // the user of this search interface is typing
     user_is_typing() {
         if (this.assignedOperatorId && this.assignedOperatorId.length > 0) {
-            const url = settings.base_url + '/ops/typing';
+            const url = settings.base_url + '/api/ops/typing';
             const data = {
                 fromId: SimSageCommon.get_client_id(),
                 toId: this.assignedOperatorId,
@@ -320,7 +320,7 @@ class SimSageCommon {
         busy(true);
 
         if (this.assignedOperatorId.length === 0) { // call?
-            const url = settings.base_url + '/ops/contact/operator';
+            const url = settings.base_url + '/api/ops/contact/operator';
             jQuery.ajax({
                 headers: {
                     'Content-Type': 'application/json',
@@ -347,7 +347,7 @@ class SimSageCommon {
             });
         } else {
             // or disconnect?
-            const url = settings.base_url + '/ops/disconnect/operator';
+            const url = settings.base_url + '/api/ops/disconnect/operator';
             jQuery.ajax({
                 headers: {
                     'Content-Type': 'application/json',
@@ -399,7 +399,7 @@ class SimSageCommon {
             busy(true);
             error('');
             const self = this;
-            const url = settings.base_url + '/ops/ad/sign-in';
+            const url = settings.base_url + '/api/ops/ad/sign-in';
             const adSignInData = {
                 'organisationId': settings.organisationId,
                 'kbList': [this.kb.id],
@@ -433,7 +433,7 @@ class SimSageCommon {
         const self = this;
         busy(true);
         this.remove_office365_user();
-        const url = settings.base_url + '/ops/ad/sign-out';
+        const url = settings.base_url + '/api/ops/ad/sign-out';
         const signOutData = {
             'organisationId': settings.organisationId,
             'kbList': [this.kb.id],
