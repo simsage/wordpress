@@ -347,6 +347,16 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
                 </label>
             </fieldset>
 
+            <fieldset>
+                <label>
+                    <input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_search_width]" type="text"
+                           class="input-field" id="simsage_search_width" maxlength="4"
+                           value="<?php echo (isset($options['simsage_search_width']) && $options['simsage_search_width'] != '') ? $options['simsage_search_width'] : '40'; ?>"
+                           placeholder="the width (in percent) of the search text-field"/>
+                    <span class="description">the width (in percent) of the search text-field</span>
+                </label>
+            </fieldset>
+
             <input type="hidden" name="action" value="styling">
 
             <?php submit_button( 'update Styling', 'primary','submit', true ); ?>

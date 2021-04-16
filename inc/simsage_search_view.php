@@ -31,6 +31,15 @@
 </script>
 
 <div class="simsage-search <?php echo $this->get_user_value("simsage_styling", "") ?>">
+
+    <style>
+        .search-bar .search-text-box {
+            float: left;
+            height: 52px !important;
+            width: <?php echo $this->get_user_value("simsage_search_width", 40) ?>% !important;
+        }
+    </style>
+
     <div class="search-bar">
 
         <!-- search options button, menu and chevron -->
