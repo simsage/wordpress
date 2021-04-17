@@ -33,10 +33,18 @@
 <div class="simsage-search <?php echo $this->get_user_value("simsage_styling", "") ?>">
 
     <style>
-        .search-bar .search-text-box {
-            float: left;
-            height: 52px !important;
-            width: <?php echo $this->get_user_value("simsage_search_width", 40) ?>% !important;
+        .search-form input[type=search]:hover {
+            width: <?php echo $this->get_user_value("simsage_search_width", 250) ?>px !important;
+            background-color: #fff;
+            outline: none;
+        }
+        .search-form input[type=search]:focus {
+            width: <?php echo $this->get_user_value("simsage_search_width", 250) ?>px !important;
+            padding-left: 40px;
+            color: #000;
+            background-color: #fff;
+            cursor: auto;
+            outline: none;
         }
     </style>
 
@@ -175,17 +183,12 @@
 
         <!-- search box -->
         <div class="search-box-container">
-            <form class="search-form">
-                <div class="search-text-box">
-                    <input type="text" value="" autocomplete="off" tabindex="-1" class="search-text search-text-<?php echo $this->search_counter ?>" maxlength="100"
-                           onkeyup="simsage.search_typing(event, 'search-text-<?php echo $this->search_counter ?>')">
-                </div>
-                <!-- search button -->
-                <div class="search-button-box" title="query SimSage" onclick="simsage.do_search('search-text-<?php echo $this->search_counter ?>')">
-                    <img src="<?php echo sanitize_text_field($this->asset_folder) ?>/images/dark-magnifying-glass.svg" alt="search" class="search-image-size"/>
-                </div>
+            <form class="search-form" onkeydown="return event.key != 'Enter';">
+                <input type="search" value="" autocomplete="off" class="search-text search-text-<?php echo $this->search_counter ?>" maxlength="100"
+                       placeholder="Search ..." onkeyup="simsage.search_typing(event, 'search-text-<?php echo $this->search_counter ?>')">
             </form>
         </div>
+
     </div>
 
     <!-- remove float left -->
