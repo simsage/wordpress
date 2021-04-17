@@ -238,6 +238,8 @@ class simsage_admin
 
         } else if ( $cmd == 'Connect to SimSage' ) {
 
+            debug_log("Connect to SimSage");
+
             $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
             $server_location = 0;
             if ( isset($post_data[SIMSAGE_PLUGIN_NAME]["simsage_server_location"]) ) {
@@ -361,6 +363,7 @@ class simsage_admin
      * @return bool success, or false if anything went wrong
      */
     private function update_simsage() {
+        debug_log("update SimSage content");
         $plan = simsage_get_plan();
         $kb = simsage_get_kb();
         if ( $plan != null && $kb != null ) {
@@ -471,12 +474,6 @@ class simsage_admin
 	private function init() {
 		// Save/Update plugin options.
 		add_action( 'admin_init', array( $this, 'update_plugin_options' ) );
-        // and the required styles for operator.css
-        wp_register_style( 'simsage-analytics-style', plugins_url( 'assets/css/data.css', __FILE__ ) );
-        // jQuery date-picker styling
-        wp_register_style( 'jquery-ui-style', plugins_url( 'assets/css/jquery-ui.min.css', __FILE__ ) );
-        // and the required styles for operator.css
-        wp_register_style( 'simsage-operator-style', plugins_url( 'assets/css/operator.css', __FILE__ ) );
 	}
 
 
@@ -735,6 +732,13 @@ class simsage_admin
         if ( empty( $user ) || !array_intersect( $allowed_roles, $user->roles ) ) {
             wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
         }
+
+        // and the required styles for operator.css
+        wp_register_style( 'simsage-analytics-style', plugins_url( 'assets/css/data.css', __FILE__ ) );
+        // jQuery date-picker styling
+        wp_register_style( 'jquery-ui-style', plugins_url( 'assets/css/jquery-ui.min.css', __FILE__ ) );
+        // and the required styles for operator.css
+        wp_register_style( 'simsage-operator-style', plugins_url( 'assets/css/operator.css', __FILE__ ) );
 
         wp_enqueue_style( 'jquery-ui-style' );
         wp_enqueue_style( 'simsage-analytics-style' ); // add our style-sheet (assets/css/data.css)
