@@ -183,7 +183,7 @@
 
         <!-- search box -->
         <div class="search-box-container">
-            <form class="search-form" onkeydown="return event.key != 'Enter';">
+            <form class="search-form" onkeydown="return event.key != 'Enter';" title="Search">
                 <input type="search" value="" autocomplete="off" class="search-text search-text-<?php echo $this->search_counter ?>" maxlength="100"
                        placeholder="Search ..." onkeyup="simsage.search_typing(event, 'search-text-<?php echo $this->search_counter ?>')">
             </form>
