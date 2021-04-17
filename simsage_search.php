@@ -255,7 +255,7 @@ class simsage_search
 
 			// render simsage_search_view.php in the context of this class
 			ob_start();
-			include SIMSAGE_PLUGIN_DIR . 'inc/simsage_search_view.php';
+			include SIMSAGE_PLUGIN_DIR . 'inc/simsage_default_search_override_view.php';
 			return ob_get_clean();
 		} else {
 			return $content;

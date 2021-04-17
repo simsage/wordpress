@@ -180,6 +180,16 @@ input[type=search]:focus {
     color: #ccc;
 }
 
+/* default search styling */
+
+.default-search-bar {
+    width: 100% !important;
+}
+
+.default-search-text {
+    padding: 5px;
+}
+
 /* the clear search image x and box */
 
 .search-bar .clear-search-button-box {
