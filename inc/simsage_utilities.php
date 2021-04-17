@@ -53,9 +53,9 @@ function simsage_check_versions() {
 if ( ! function_exists('debug_log')) {
 	function debug_log( $log ) {
 		if ( is_array( $log ) || is_object( $log ) ) {
-			error_log( print_r( $log, true ) );
+			error_log( "SIMSAGE:" . print_r( $log, true ) );
         } else {
-			error_log( $log );
+			error_log( "SIMSAGE:" . $log );
 		}
 	}
 }
