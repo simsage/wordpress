@@ -796,7 +796,15 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
                 data.tab = active_tab;
 
                 // get our analytics
-                data.getAnalytics();
+                if (active_tab === 'keywords' || active_tab === 'searches') {
+                    data.getAnalytics();
+                } else if (active_tab === 'qna') {
+                    data.getMindItems();
+                } else if (active_tab === 'synonyms') {
+                    data.getSynonyms();
+                } else if (active_tab === 'semantics') {
+                    data.getSemantics();
+                }
 
                 // setup the jQuery date picker
                 jQuery(".datepicker").datepicker({

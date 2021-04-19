@@ -11,7 +11,7 @@
  * @since      1.2.0
  *
  * @package    simsage-plugin
- * @subpackage simsage-plugin/inc/simsage_view.php
+ * @subpackage simsage-plugin/inc/simsage_admin_view.php
  */
 
 class simsage_admin
@@ -758,7 +758,7 @@ class simsage_admin
         wp_enqueue_script( 'ops-script-2', plugins_url( 'assets/js/setup-operator.js', __FILE__ ), array('jquery'), '1.0', true );
 
         // this is the html of the admin page, rendered in the context of this class
-        include_once SIMSAGE_PLUGIN_DIR . 'inc/simsage_view.php';
+        include_once SIMSAGE_PLUGIN_DIR . 'inc/simsage_admin_view.php';
     }
 
 
