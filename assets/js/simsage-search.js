@@ -623,7 +623,7 @@ let search_options_control = {
         let url = '/api/knowledgebase/search/info/' + encodeURIComponent(this.organisationId) + '/' + encodeURIComponent(this.get_client_id());
         this.get_message(url, function(data) {
             self.kb_list = data.kbList;
-            if (self.kb_list.length > 0) {
+            if (self.kb_list && self.kb_list.length > 0) {
                 self.kb = self.kb_list[0];
                 self.kbId = self.kb_list[0].id;
             }
