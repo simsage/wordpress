@@ -26,7 +26,7 @@ SimSage currently only supports English.  Other languages might be supported in 
 
 == Screenshots ==
 
-1. The plugin's short-code `[simsage-search]` in action.
+1. The plugin's short-code `[simsage-search]` and `[simsage-search-results]` in action.
 2. SimSage data view, viewing keyword search/ask frequencies.
 3. An operator interacting with a user.
 
@@ -49,8 +49,8 @@ SimSage currently only supports English.  Other languages might be supported in 
 * added new SimSage logo
 
 = 1.2.8 =
-* changed <div> to <button> in js "search"
-* added <form> to js to prevent autocomplete fields
+* changed &lt;div&gt; to &lt;button&gt; in js "search"
+* added &lt;form&gt; to js to prevent autocomplete fields
 * split shortcodes into [simsage-search] and [simsage-search-results] for separating search box from its results
 * added admin entry to globally override styles
 * fixed multiple controls on the same page unique ids
@@ -103,8 +103,8 @@ SimSage currently only supports English.  Other languages might be supported in 
 * added new SimSage logo
 
 = 1.2.8 =
-* changed <div> to <button> in js "search"
-* added <form> to js to prevent autocomplete fields
+* changed &lt;div&gt; to &lt;button&gt; in js "search"
+* added &lt;form&gt; to js to prevent autocomplete fields
 * split shortcodes into [simsage-search] and [simsage-search-results] for separating search box from its results
 * added admin entry to globally override styles
 * fixed multiple controls on the same page unique ids
