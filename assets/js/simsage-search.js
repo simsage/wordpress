@@ -94,7 +94,6 @@ let simsage = {
             text = jQuery("." + control_class).val();
         else
             text = jQuery(".search-text").val();
-        alert(this.kb);
         if (this.kb && (this.is_custom_render || text.trim() !== '')) {
             // do we need to reset the pagination?
             if (this.reset_pagination(text)) {
