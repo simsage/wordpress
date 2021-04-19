@@ -112,27 +112,6 @@
 /* ************************************************ */
 /*  search text box */
 
-input[type=search] {
-    background: #ededed url(../images/dark-magnifying-glass.svg) no-repeat 9px center;
-    padding: 9px 10px 9px 32px;
-    width: 55px !important;
-
-    -webkit-border-radius: 10em;
-    -moz-border-radius: 10em;
-    border-radius: 10em;
-
-    -webkit-transition: all .2s;
-    -moz-transition: all .2s;
-    transition: all .2s;
-}
-
-input[type=search]:focus {
-    width: 130px !important;
-    background-color: #fff;
-    border-color: #a0a0a0;
-}
-
-
 /* search input box with magnifying glass */
 .search-form input[type=search] {
     width: 15px;
