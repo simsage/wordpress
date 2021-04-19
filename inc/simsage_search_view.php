@@ -33,24 +33,20 @@
 <div class="simsage-search <?php echo $this->get_user_value("simsage_styling", "") ?>">
 
     <style>
-        input[type=search] {
+        .search-form input[type=search] {
             background: #fff url(<?php echo $this->asset_folder ?>/images/dark-magnifying-glass.svg) no-repeat 9px center;
-            padding: 9px 10px 9px 32px;
+            padding-left: 40px !important;
             width: <?php echo $this->get_user_value("simsage_search_width", 500) ?>px !important;
             border-color: #a0a0a0;
-
+            color: #000;
             -webkit-border-radius: 10em;
             -moz-border-radius: 10em;
             border-radius: 10em;
         }
         .search-form input[type=search]:hover {
-            background-color: #fff;
             outline: none;
         }
         .search-form input[type=search]:focus {
-            padding-left: 40px;
-            color: #000;
-            background-color: #fff;
             cursor: auto;
             outline: none;
         }

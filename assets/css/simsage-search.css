@@ -116,16 +116,13 @@
 .search-form input[type=search] {
     width: 15px;
     padding-left: 10px;
-    color: transparent;
     cursor: pointer;
     outline: none;
 }
 .search-form input:-moz-placeholder {
-    color: transparent;
     outline: none;
 }
 .search-form input::-webkit-input-placeholder {
-    color: transparent;
     outline: none;
 }
 
