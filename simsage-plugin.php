@@ -22,7 +22,7 @@ define( 'SIMSAGE_DOC_SYNONYM_DATA', '-simsage-synonyms.txt');
 define( 'SIMSAGE_DOC_SEMANTIC_DATA', '-simsage-semantics.txt');
 define( 'SIMSAGE_DOC_IGNORE_DATA', '-simsage-ignore.txt');
 // enable usage of test environment
-define( 'SIMSAGE_USE_TEST', true );
+define( 'SIMSAGE_USE_TEST', false );
 
 // maximum length of a QA question or answer string
 define( 'SIMSAGE_MAX_STRING_LENGTH', 256 );
