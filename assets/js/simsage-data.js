@@ -560,6 +560,7 @@ class SimsageData {
     // filter text-box enter press check
     handleMindItemKey(key) {
         if (key === 13) {
+            this.setMindItemFilter(jQuery('.mind-item-find-text').val());
             this.getMindItems();
         }
     }
@@ -994,6 +995,7 @@ class SimsageData {
     // filter text-box enter press check
     handleSynonymKey(key) {
         if (key === 13) {
+            this.setSynonymFilter(jQuery('.synonym-find-text').val());
             this.getSynonyms();
         }
     }
@@ -1225,6 +1227,7 @@ class SimsageData {
     // filter text-box enter press check
     handleSemanticKey(key) {
         if (key === 13) {
+            this.setSemanticFilter(jQuery('.semantic-find-text').val());
             this.getSemantics();
         }
     }

@@ -434,7 +434,7 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
                 <div class="simsage-find-box">
                     <div class="find-label">find items in the mind</div>
                     <div class="find-dialog">
-                        <label><input type="text" value="" spellcheck="false" autoFocus class="find-text-style"
+                        <label><input type="text" value="" spellcheck="false" autoFocus class="find-text-style mind-item-find-text"
                                       onKeyUp="data.handleMindItemKey(event.keyCode)" onChange="data.setMindItemFilter(event.target.value)" /></label>
                     </div>
                     <div class="find-image-box ss-button">
@@ -504,7 +504,7 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
                 <div class="simsage-find-box">
                     <div class="find-label">find synonyms</div>
                     <div class="find-dialog">
-                        <label><input type="text" value="" spellcheck="false" autoFocus class="find-text-style"
+                        <label><input type="text" value="" spellcheck="false" autoFocus class="find-text-style synonym-find-text"
                                       onKeyUp="data.handleSynonymKey(event.keyCode)" onChange="data.setSynonymFilter(event.target.value)" /></label>
                     </div>
                     <div class="find-image-box ss-button">
@@ -568,7 +568,7 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
                 <div class="simsage-find-box">
                     <div class="find-label">find semantics</div>
                     <div class="find-dialog">
-                        <label><input type="text" value="" spellcheck="false" autoFocus class="find-text-style"
+                        <label><input type="text" value="" spellcheck="false" autoFocus class="find-text-style semantic-find-text"
                                       onKeyUp="data.handleSemanticKey(event.keyCode)" onChange="data.setSemanticFilter(event.target.value)" /></label>
                     </div>
                     <div class="find-image-box ss-button">
