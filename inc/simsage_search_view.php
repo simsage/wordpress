@@ -25,8 +25,6 @@
         context_match_boost: <?php echo sanitize_text_field($this->context_boost) ?>,
         // QA sensitivity - controls the A.I's replies - we suggest you don't change it!
         bot_threshold: <?php echo $this->get_user_value("bot_threshold", 0.8125) ?>,
-        // show the advanced filters?
-        show_advanced_filter: <?php echo $this->get_user_boolean_value("simsage_adv_filter", false) ?>,
     };
 </script>
 

@@ -266,14 +266,6 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
                     </label>
                 </fieldset>
 
-                <fieldset>
-                    <label>
-                        <span class="radio_label">no</span><input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_adv_filter]" type="radio" value="0" <?php echo (!isset($options['simsage_adv_filter']) || $options['simsage_adv_filter'] != '1') ? 'checked' : ''; ?> />
-                        <span class="radio_label">yes</span><input name="<?php echo SIMSAGE_PLUGIN_NAME ?>[simsage_adv_filter]" type="radio" value="1" <?php echo (isset($options['simsage_adv_filter']) && $options['simsage_adv_filter'] == '1') ? 'checked' : ''; ?> />
-                        <span class="description">Show the advanced search filter button.</span>
-                    </label>
-                </fieldset>
-
                 <input type="hidden" name="action" value="update-search">
             </div>
             <?php submit_button( 'update Search Settings', 'primary','submit', true ); ?>

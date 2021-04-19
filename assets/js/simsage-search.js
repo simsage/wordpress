@@ -38,8 +38,6 @@ let simsage = {
     context_match_boost: 0.02,
     // bot sensitivity - controls the A.I's replies - we suggest you don't change it!
     bot_threshold: 0.8125,
-    // show the advanced filters?
-    show_advanced_filter: true,
     // image types for link name display
     image_types: [".jpg", ".jpeg", ".png", ".gif", ".svg"],
     // placeholder for search
@@ -587,8 +585,6 @@ let search_options_control = {
         if (typeof settings.context_match_boost === "number") this.context_match_boost = settings.context_match_boost;
         // bot sensitivity - controls the A.I's replies - we suggest you don't change it!
         if (typeof settings.bot_threshold === "number") this.bot_threshold = settings.bot_threshold;
-        // show the advanced filters?
-        if (typeof settings.show_advanced_filter === "boolean") this.show_advanced_filter = settings.show_advanced_filter;
         // placeholder for search text-control
         if (typeof settings.search_placeholder === "string") this.search_placeholder = settings.search_placeholder;
 
