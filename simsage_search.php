@@ -164,23 +164,6 @@ class simsage_search
     }
 
 
-    /**
-     * get the user's id (organisationId) to use from our settings
-     *
-     * @return string|null the user's id
-     */
-    private function get_organisationId() {
-        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
-        if ( isset($plugin_options["simsage_account"]) ) {
-            $account = $plugin_options["simsage_account"];
-            if ( isset($account["id"]) ) {
-                return sanitize_text_field($account["id"]);
-            }
-        }
-        return null;
-    }
-
-
     // init our shortcode, style loaders and js loaders using actions
 	function init() {
     	// this is the [simsage-search] shortcode render function: simsage_handle_shortcode()
