@@ -34,7 +34,7 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
 <script lang="js">
 
     all_urls = [<?php echo '"'.implode('","', simsage_get_wp_contents()).'"' ?>];
-    ignore_urls = [<?php echo '"'.implode('","', $this->get_ignore_urls()).'"' ?>];
+    ignore_urls = [<?php echo '"'.implode('","', get_ignore_urls()).'"' ?>];
     available_urls = [];
 
     // setup available urls

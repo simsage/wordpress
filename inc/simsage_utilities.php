@@ -76,6 +76,21 @@ function simsage_get_json( $data ) {
 
 
 /**
+ * get the list of urls to ignore for indexing by SimSage
+ *
+ * @return array a list of items (or empty) that is the ignore list
+ */
+function get_ignore_urls() {
+    $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
+    if ( isset($plugin_options["simsage_ignore_url_list"]) ) {
+        return array_filter( $plugin_options['simsage_ignore_url_list'],
+            function($value) { return !is_null($value) && $value !== ''; } );
+    }
+    return array();
+}
+
+
+/**
  * query word-press' content and add all published items to an archive
  *
  * @param $registration_key string the system's registration key
@@ -446,6 +461,83 @@ function simsage_get_plan() {
 
 
 /**
+ * get the user's id (organisationId) to use from our settings
+ *
+ * @return string|null the user's id
+ */
+function get_organisationId() {
+    $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
+    if ( isset($plugin_options["simsage_account"]) ) {
+        $account = $plugin_options["simsage_account"];
+        if ( isset($account["id"]) ) {
+            return sanitize_text_field($account["id"]);
+        }
+    }
+    return null;
+}
+
+
+/**
+ * get the archive's last known md5 checksum for change detection
+ *
+ * @return string the last known md5 stored
+ */
+function get_archive_md5() {
+    $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
+    if ( isset($plugin_options["archive_md5"]) ) {
+        return sanitize_text_field($plugin_options["archive_md5"]);
+    }
+    return "";
+}
+
+
+/**
+ * get the SimSage server to use from our settings
+ *
+ * @return string|null the SimSage server to use
+ */
+function get_server() {
+    $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
+    if ( isset($plugin_options["simsage_account"]) ) {
+        $account = $plugin_options["simsage_account"];
+        if ( isset($account["server"]) ) {
+            return sanitize_text_field($account["server"]);
+        }
+    }
+    return null;
+}
+
+
+/**
+ * Update the md5 last seen for the content of this site
+ *
+ * @param $archive_md5 string the new md5 for the file
+ */
+function update_archive_md5( $archive_md5 ) {
+    $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
+    $plugin_options["archive_md5"] = sanitize_text_field($archive_md5);
+    update_option(SIMSAGE_PLUGIN_NAME, $plugin_options);
+}
+
+
+/**
+ * get the user's email to use from our settings
+ *
+ * @return string|null the user's email address
+ */
+function get_email() {
+    $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
+    if ( isset($plugin_options["simsage_account"]) ) {
+        $account = $plugin_options["simsage_account"];
+        if ( isset($account["email"]) ) {
+            return sanitize_email($account["email"]);
+        }
+    }
+    return null;
+}
+
+
+/**
  * Access the registration key for the current user (or empty string)
  * @return string return this user's subscription / registration key
  */
@@ -488,8 +580,9 @@ function simsage_setup_cron_job( $admin ) {
     if ( ! wp_next_scheduled( 'simsage_twicedaily' ) ) {
         wp_schedule_event(time(), 'twicedaily', 'simsage_twicedaily');
     }
-    add_action('simsage_twicedaily', array($admin, 'cron_upload_archive') );
+    add_action('simsage_twicedaily', 'simsage_cron_upload_archive' );
 }
+
 
 
 /**
