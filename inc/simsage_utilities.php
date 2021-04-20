@@ -19,6 +19,8 @@ function simsage_check_versions() {
     // wordpress system version required
     $wp  = '5.0';
 
+
+
     // check PhP
     if ( version_compare( PHP_VERSION, $php, '<' ) ) {
         deactivate_plugins( basename( __FILE__ ) );

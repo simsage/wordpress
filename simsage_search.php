@@ -179,16 +179,7 @@ class simsage_search
 		add_action('get_search_form', array( $this, 'get_search_form') );
 		// Admin notices for the plugin.
 		add_action( 'admin_notices', array( $this, 'activation_admin_notice' ) );
-
-		// after themes we can override their search boxes
-        add_action( 'after_setup_theme', array($this, 'simsage_search_override' ) );
 	}
-
-	function simsage_search_override() {
-        debug_log("simsage_search_override");
-        remove_shortcode( 'ast-search' );
-        add_shortcode( 'ast-search', array($this, 'simsage_astra_search_shortcode_function' ) );
-    }
 
 	// simsage short-code renderer
 	function simsage_handle_shortcode( $attrs ) {
@@ -217,28 +208,6 @@ class simsage_search
             return "<div>SimSage-search plugin not configured.  Please configure your plugin first!</div>";
         }
 	}
-
-
-	function simsage_astra_search_shortcode_function( $attrs ) {
-        debug_log("simsage_astra_search_shortcode_function");
-        $attrs = shortcode_atts( array(
-                                        'img'  => '',
-                                        'cat'  => '',
-                                        'capt' => '',
-                                        'link' => ''
-                                    ), $attrs );
-
-        wp_enqueue_style('simsage-search-style-1'); // add our style-sheets
-
-        if ( simsage_get_kb() != null ) {
-            // render simsage_search_result_view.php in the context of this class
-            ob_start();
-            include SIMSAGE_PLUGIN_DIR . 'inc/simsage_search_result_view.php';
-            return ob_get_clean();
-        } else {
-            return "<div>SimSage-search plugin not configured.  Please configure your plugin first!</div>";
-        }
-    }
 
 
     // simsage-search-results short-code renderer
