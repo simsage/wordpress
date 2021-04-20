@@ -204,9 +204,6 @@
 
             </div>
 
-            <!-- this is where the categories of semantics go -->
-            <div class="category-items-td">
-            </div>
         </div>
     </div>
 
