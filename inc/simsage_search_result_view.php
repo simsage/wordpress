@@ -28,7 +28,7 @@
     };
 </script>
 
-<div class="simsage-search <?php echo $this->get_user_value("simsage_styling", "") ?>">
+<div class="simsage-search-results <?php echo $this->get_user_value("simsage_styling", "") ?>">
 
     <!-- ************************** -->
     <!-- bot reply speech bubble -->
