@@ -433,16 +433,15 @@
     font-family: 'Roboto',sans-serif;
     border: 0 solid;
     margin-top: 22px;
-    box-sizing: unset;
+    display: inline-block;
+    width: auto;
 }
 
 .search-results-inside {
     padding: 10px;
     border-radius: 10px;
     background-color: #ffffff;
-    float: left;
-    width: 98%;
-    display: block;
+    width: auto;
 }
 
 .search-results .search-results-top-td {
@@ -1443,8 +1442,6 @@
 .no-search-results {
     font-family: 'Roboto',sans-serif;
     left: 10vw !important;
-    position: absolute;
-    z-index: 998;
     border: 1px solid #878787;
     background-color: #ffffff;
     padding: 20px !important;
@@ -1563,8 +1560,8 @@
 
 .no-search-results .send-text {
     float: left;
-    margin-left: 12px;
-    margin-top: 16px;
+    margin-left: 8px;
+    margin-top: 10px;
     color: #ffffff;
     font-size: 16px;
 }
@@ -1586,9 +1583,6 @@
 
 .error-dialog-box {
     font-family: 'Roboto',sans-serif;
-    position: absolute;
-    z-index: 999;
-    left: 10vw;
 }
 
 .error-dialog {
