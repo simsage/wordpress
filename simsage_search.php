@@ -272,7 +272,17 @@ class simsage_search
         // specific implementation
         wp_register_script( 'simsage-search-script-3', plugins_url( 'assets/js/simsage-search.js', __FILE__ ), array('jquery'), '1.0', true );
         // and the required styles for search.css
-        wp_register_style( 'simsage-search-style-1', plugins_url( 'assets/css/simsage-search.css', __FILE__ ) );
+
+        $simsage_style = array(
+            'path' => plugins_url( 'assets/css/simsage-search.css', __FILE__ ),
+        );
+
+        /**
+         * Filter hook to allow stylesheet to be modified
+         */
+        $style_file = apply_filters( 'simsage_styles', $simsage_style );
+
+        wp_register_style( 'simsage-search-style-1', $style_file['path'], $style_file['ver'], $style_file['media'] );
     }
 
     // output our css as an "include" on each page using our plugin
