@@ -713,7 +713,7 @@ let no_results = {
         this.close_bot();
         jQuery(".no-search-results").show();
         jQuery(".not-found-words").html(this.adjust_size(simsage.search_query, 25));
-        jQuery(".search-results").hide();
+        jQuery(".simsage-search-results-list").hide();
         if (this.know_email) {
             jQuery(".ask-email-box").hide();
             jQuery(".ask-emailed-box").show();
@@ -1491,7 +1491,7 @@ let chat_control = {
 let search_results_control = {
 
     show_search_results: function() {
-        jQuery(".search-results").show();
+        jQuery(".simsage-search-results-list").show();
         jQuery(".search-display").show();
         this.close_no_search_results();
     },
@@ -1656,7 +1656,7 @@ let search_results_control = {
     },
 
     clear_search_results: function() {
-        jQuery(".search-results").hide();
+        jQuery(".simsage-search-results-list").hide();
         jQuery(".search-results-td").html("");
     },
 
@@ -1866,10 +1866,13 @@ function super_search_query_str(text) {
 // setup search
 simsage.instantiate();
 jQuery('.search-form').on('keydown keyup keypress', function(e) {
-    let keyCode = e.keyCode || e.which;
-    if (keyCode === 13) {
-        e.preventDefault();
-        return false;
+    const $ = jQuery;
+    if (!$(this).hasClass("search-form-static")) {
+        let keyCode = e.keyCode || e.which;
+        if (keyCode === 13) {
+            e.preventDefault();
+            return false;
+        }
     }
 });
 jQuery('.search-button-box').on('click', function(e) {
@@ -1878,5 +1881,9 @@ jQuery('.search-button-box').on('click', function(e) {
 });
 // init when ready
 jQuery(document).ready(function () {
-    simsage.init("", settings);
+    simsage.init("", settings, function(isSuccess) {
+        if (isSuccess && document.querySelector('.simsage-static-query')) {
+            simsage.do_search('simsage-static-query');
+        }
+    });
 });

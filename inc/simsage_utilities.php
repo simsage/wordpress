@@ -713,27 +713,27 @@ function simsage_get_servers( $plugin_options ) {
  * @param $slug
  * @param array $args
  */
-function simsage_load_overrideable_template($slug, array $args = array() ) {
+function simsage_load_overrideable_template( $slug, array $args = array() ) {
     $plugin_dir = SIMSAGE_PLUGIN_DIR;
     $theme_file = "simsage/$slug.php";
 
     if ( $overridden_template = locate_template( $theme_file ) ) {
-		/*
-		 * locate_template() returns path to file.
-		 * if either the child theme or the parent theme have overridden the template.
-		 */
+        /*
+         * locate_template() returns path to file.
+         * if either the child theme or the parent theme have overridden the template.
+         */
         load_template( $overridden_template, false, $args );
     } else {
         /*
          * If neither the child nor parent theme have overridden the template,
          * load from the <plugin_root>/inc directory
          */
-		$template_path = "{$plugin_dir}inc/$slug.php";
-		// include $template_path;
-		// echo $template_path;
+        $template_path = "{$plugin_dir}inc/$slug.php";
+        // include $template_path;
+        // echo $template_path;
 
-		include "{$plugin_dir}inc/$slug.php";
-		// include SIMSAGE_PLUGIN_DIR . 'inc/simsage_search_view.php';
+        include "{$plugin_dir}inc/$slug.php";
+        // include SIMSAGE_PLUGIN_DIR . 'inc/simsage_search_view.php';
     }
 }
 

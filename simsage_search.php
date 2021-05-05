@@ -75,20 +75,20 @@ class simsage_search
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private function get_view_context() {
-        return array(
-            'account_server' => sanitize_text_field($this->get_account_setting("server")),
-            'account_id' => sanitize_text_field($this->get_account_setting("id")),
-            'site_kbId' => sanitize_text_field($this->get_site_setting("kbId")),
-            'operator_enabled' => $this->get_plan_boolean_value("operatorEnabled", true),
-            'context_label' => sanitize_text_field($this->context),
-            'context_match_boost' => sanitize_text_field($this->context_boost),
-            'bot_threshold' => $this->get_user_value("bot_threshold", 0.8125),
-            'simsage_classes' => $this->get_user_value("simsage_styling", ""),
+    private function get_view_context( $additional_params = array() ) {
+        return array_merge( $additional_params, array(
+            'account_server' => sanitize_text_field( $this->get_account_setting( "server" ) ),
+            'account_id' => sanitize_text_field( $this->get_account_setting( "id" ) ),
+            'site_kbId' => sanitize_text_field( $this->get_site_setting( "kbId" ) ),
+            'operator_enabled' => $this->get_plan_boolean_value( "operatorEnabled", true ),
+            'context_label' => sanitize_text_field( $this->context ),
+            'context_match_boost' => sanitize_text_field( $this->context_boost ),
+            'bot_threshold' => $this->get_user_value( "bot_threshold", 0.8125 ),
+            'simsage_classes' => $this->get_user_value( "simsage_styling", "" ),
             'assset_folder' => $this->asset_folder,
-            'simsage_search_width' => $this->get_user_value("simsage_search_width", 500),
+            'simsage_search_width' => $this->get_user_value( "simsage_search_width", 500 ),
             'search_counter' => $this->search_counter,
-        );
+        ) );
     }
 
     /**
@@ -272,7 +272,7 @@ class simsage_search
             // render simsage_search_result_view.php in the context of this class
             ob_start();
             $view_context = $this->get_view_context();
-            simsage_load_overrideable_template( 'simsage_search_result_view', $view_context );
+            simsage_load_overrideable_template( 'simsage_search_result_static_view', $view_context );
             return ob_get_clean();
         } else {
             return "<div>SimSage-search plugin not configured.  Please configure your plugin first!</div>";
@@ -299,24 +299,24 @@ class simsage_search
     }
 
     // SimSage override default search
-	public function get_search_form( $content ) {
+    public function get_search_form( $content ) {
         $this->search_counter += 1;
         $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
         // only replace the search_form if the plugin has been configured and it has been configured to do so by the user
-		if ( isset( $plugin_options["simsage_override_default_search"] ) && $plugin_options["simsage_override_default_search"] && simsage_get_kb() != null ) {
+        if ( isset( $plugin_options["simsage_override_default_search"] ) && $plugin_options["simsage_override_default_search"] && simsage_get_kb() != null ) {
             $this->add_script = true;
 
-            wp_enqueue_style('simsage-search-style-1'); // add our style-sheets
+            wp_enqueue_style( 'simsage-search-style-1' ); // add our style-sheets
 
-			// render simsage_search_view.php in the context of this class
-			ob_start();
-			$view_context = $this->get_view_context();
-			simsage_load_overrideable_template('simsage_search_view', $view_context );
-			return ob_get_clean();
-		} else {
-			return $content;
-		}
-	}
+            // render simsage_search_view.php in the context of this class
+            ob_start();
+            $view_context = $this->get_view_context( array( 'main_search' => true ) );
+            simsage_load_overrideable_template( 'simsage_search_static_view', $view_context );
+            return ob_get_clean();
+        } else {
+            return $content;
+        }
+    }
 
     // register all our javascript and css styles for this plugin
     function register_script_and_style() {
