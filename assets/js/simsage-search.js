@@ -558,7 +558,7 @@ let search_options_control = {
     open: false,  // is the menu open or closed?
 
     // perform the initial startup setup
-    init: function(control_id, settings) {
+    init: function(control_id, settings, cb) {
         let self = this;
         if (!settings || !settings.organisation_id || !settings.base_url) {
             console.error("SimSage init() failed, settings must be set with an 'organisation_id' and a 'base_url'")
@@ -651,14 +651,18 @@ let search_options_control = {
                 }, 1000);
             }
 
+            if (cb) {
+                cb(true);
+            }
         }, function(err) {
             console.log(err);
             if (self.connection_retry_count > 1) {
                 self.error('not connected, trying to re-connect, please wait (try ' + self.connection_retry_count + ')');
             } else {
                 self.error(err);
+                cb(false);
             }
-            setTimeout(function() { self.init() }, 5000); // try and re-connect as a one-off in 5 seconds
+            setTimeout(function() { self.init(null, null, cb) }, 5000); // try and re-connect as a one-off in 5 seconds
             self.connection_retry_count += 1;
         });
     },
