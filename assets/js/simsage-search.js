@@ -712,7 +712,7 @@ let no_results = {
     show_no_search_results: function() {
         this.close_bot();
         jQuery(".no-search-results").show();
-        jQuery(".not-found-words").html(this.adjust_size(jQuery(".search-text").val(), 25));
+        jQuery(".not-found-words").html(this.adjust_size(simsage.search_query, 25));
         jQuery(".search-results").hide();
         if (this.know_email) {
             jQuery(".ask-email-box").hide();
@@ -908,7 +908,7 @@ let spelling_control = {
     },
 
     use_spelling_suggestion: function() {
-        if (this.text && this.text.length > 0) {
+        if (this.text && this.text.length > 0 && jQuery(".search-text")) {
             jQuery(".search-text").val(this.text);
         }
     },
