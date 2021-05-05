@@ -32,21 +32,8 @@
 
     <style>
         .search-form input[type=search] {
-            background: #fff url(<?php echo $this->asset_folder ?>/images/dark-magnifying-glass.svg) no-repeat 9px center;
-            padding-left: 40px !important;
-            width: <?php echo $this->get_user_value("simsage_search_width", 500) ?>px !important;
-            border-color: #a0a0a0;
-            color: #000;
-            -webkit-border-radius: 10em;
-            -moz-border-radius: 10em;
-            border-radius: 10em;
-        }
-        .search-form input[type=search]:hover {
-            outline: none;
-        }
-        .search-form input[type=search]:focus {
-            cursor: auto;
-            outline: none;
+            background: #fff url(<?php echo $args['asset_folder'] ?>/images/dark-magnifying-glass.svg) no-repeat 9px center;
+            width: <?php echo $args['simsage_search_width'] ?>px !important;
         }
     </style>
 
