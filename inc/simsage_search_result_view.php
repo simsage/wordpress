@@ -2,33 +2,39 @@
 /**
  * SimSage Search Result Rendering
  */
+
+// $static_query = get_query_var(/** blah */);
+$static_query = "test";
 ?>
 
 <script lang="js">
-    // set an image base for all our templates to use (url bases for images)
-    server = "<?php echo sanitize_text_field($this->get_account_setting("server")) ?>";
+	// set an image base for all our templates to use (url bases for images)
+	server = "<?php echo $args['account_server']; ?>";
 
-    // the settings for this application - no trailing / on the base_url please
-    // it is imperative that we do not expose the SID here (securityID), as it is what protects your account from malicious use
-    settings = {
-        // the service layer end-point, change "<server>" to ... (no / at end)
-        base_url: server,
-        // the organisation's id to search - all sanitized
-        organisation_id: "<?php echo sanitize_text_field($this->get_account_setting("id")) ?>",
-        // this is the WordPress plugin
-        is_wordpress: true,
-        // the knowledge base's Id (selected site) and security id (sid)
-        kbId: "<?php echo sanitize_text_field($this->get_site_setting("kbId")) ?>",
-        // do we have an operator by plan?
-        operator_enabled: <?php echo $this->get_plan_boolean_value("operatorEnabled", true) ?>,
-        context_label: "<?php echo sanitize_text_field($this->context) ?>",
-        context_match_boost: <?php echo sanitize_text_field($this->context_boost) ?>,
-        // QA sensitivity - controls the A.I's replies - we suggest you don't change it!
-        bot_threshold: <?php echo $this->get_user_value("bot_threshold", 0.8125) ?>,
-    };
+	// the settings for this application - no trailing / on the base_url please
+	// it is imperative that we do not expose the SID here (securityID), as it is what protects your account from malicious use
+	settings = {
+		// the service layer end-point, change "<server>" to ... (no / at end)
+		base_url: server,
+		// the organisation's id to search - all sanitized
+		organisation_id: "<?php echo $args['account_id']; ?>",
+		// this is the WordPress plugin
+		is_wordpress: true,
+		// the knowledge base's Id (selected site) and security id (sid)
+		kbId: "<?php echo $args['site_kbId']; ?>",
+		// do we have an operator by plan?
+		operator_enabled: <?php echo $args['operator_enabled']; ?>,
+		context_label: "<?php echo $args['context_enabled']; ?>",
+		context_match_boost: <?php echo $args['context_match_boost']; ?>,
+		// QA sensitivity - controls the A.I's replies - we suggest you don't change it!
+		bot_threshold: <?php echo $args['bot_threshold']; ?>,
+	};
 </script>
 
-<div class="simsage-search-results <?php echo $this->get_user_value("simsage_styling", "") ?>">
+<div class="simsage-search-results <?php echo $args['simsage_classes'] ?>">
+	<?php if ($static_query) : ?>
+		<input class="simsage-static-query" type="hidden" value="<?php echo $static_query; ?>">
+	<?php endif; ?>
 
     <!-- ************************** -->
     <!-- bot reply speech bubble -->
