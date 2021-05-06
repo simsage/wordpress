@@ -33,7 +33,7 @@ define( 'SIMSAGE_JSON_POST_TIMEOUT', 10 );
 define( 'SIMSAGE_JSON_DATA_UPLOAD_TIMEOUT', 15 );
 
 // default page slug
-define( 'SIMSAGE_DEFAULT_SEARCH_SLUG', "simsage-search");
+define( 'SIMSAGE_DEFAULT_SEARCH_PAGE_SLUG', "simsage-search");
 
 function simsage_query_vars( $vars ) {
     $vars[] = 'simsage_search';
@@ -66,7 +66,7 @@ register_deactivation_hook(__FILE__, array($search, 'plugin_deactivate'));
 // Called when plugin is activated
 function simsage_add_search_page() {
     global $wpdb;
-    $page_slug = apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_SLUG );
+    $page_slug = apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_PAGE_SLUG );
 
     if ( null === $wpdb->get_row( "SELECT post_name FROM {$wpdb->prefix}posts WHERE post_name = $page_slug", 'ARRAY_A' ) ) {
         $current_user = wp_get_current_user();
@@ -84,7 +84,7 @@ function simsage_add_search_page() {
 }
 
 function simsage_inject_search_results( $content ) {
-    $page_slug = apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_SLUG );
+    $page_slug = apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_PAGE_SLUG );
 
     if ( get_post()->post_name === $page_slug ) {
         return do_shortcode('[simsage-static-results]');

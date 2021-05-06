@@ -224,7 +224,7 @@ class simsage_search
             wp_enqueue_style('simsage-search-style-1'); // add our style-sheets
         }
 
-        $search_slug = apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_SLUG );
+        $search_slug = apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_PAGE_SLUG );
 
         if (simsage_get_kb() != null) {
             // render simsage_search_view.php in the context of this class
