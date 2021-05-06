@@ -2,8 +2,15 @@
 /**
  * SimSage Search Rendering
  */
-?>
 
+$is_main_search = $args['main_search'];
+$has_action = !!$args['action'];
+
+$action_url = $args['action'];
+
+$action_attr = !$is_main_search && $has_action ? "action='$action_url'" : '';
+
+?>
     <script lang="js">
         // set an image base for all our templates to use (url bases for images)
         server = "<?php echo $args['account_server']; ?>";
@@ -30,18 +37,20 @@
 
     <div class="simsage-search <?php echo $args['simsage_classes']; ?>">
 
-        <style>
-            .search-form input[type=search] {
-                background: #fff url(<?php echo $args['asset_folder'] ?>/images/dark-magnifying-glass.svg) no-repeat 9px center;
-                width: <?php echo $args['simsage_search_width'] ?>px !important;
-            }
-        </style>
+        <?php if ( !$args['remove-styles'] ) : ?>
+            <style>
+                .search-form input[type=search] {
+                    background: #fff url(<?php echo $args['asset_folder'] ?>/images/dark-magnifying-glass.svg) no-repeat 9px center;
+                    width: <?php echo $args['simsage_search_width'] ?>px !important;
+                }
+            </style>
+        <?php endif; ?>
 
         <div class="search-bar">
 
             <!-- search box -->
             <div class="search-box-container">
-                <form class="search-form search-form-static" title="Search">
+                <form class="search-form search-form-static" title="Search" <?php echo $action_attr ?>>
                     <?php if ($args['main_search']) : ?>
                         <input type="search" value="" name="s" autocomplete="off" class="search-text search-text-static search-text-<?php echo $args['search_counter']; ?>" maxlength="100"
                                placeholder="Search ..." >

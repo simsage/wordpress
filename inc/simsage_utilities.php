@@ -708,12 +708,13 @@ function simsage_get_servers( $plugin_options ) {
 }
 
 /**
- * Get template that can be overridden by placing the same slug within the `<theme_dir>/simsage` directory.
+ * Get the overrideable template location. This will look for the file firstly at `<theme_dir>/simsage/<slug>.php`.
+ * Failing that it will find the file in the local plugin directory
  *
- * @param $slug
- * @param array $args
+ * @param $slug string of the template
+ * @return string template location
  */
-function simsage_load_overrideable_template( $slug, array $args = array() ) {
+function simsage_get_overrideable_template( string $slug  ): string {
     $plugin_dir = SIMSAGE_PLUGIN_DIR;
     $theme_file = "simsage/$slug.php";
 
@@ -722,18 +723,24 @@ function simsage_load_overrideable_template( $slug, array $args = array() ) {
          * locate_template() returns path to file.
          * if either the child theme or the parent theme have overridden the template.
          */
-        load_template( $overridden_template, false, $args );
+        return $overridden_template;
     } else {
         /*
          * If neither the child nor parent theme have overridden the template,
          * load from the <plugin_root>/inc directory
          */
-        $template_path = "{$plugin_dir}inc/$slug.php";
-        // include $template_path;
-        // echo $template_path;
-
-        include "{$plugin_dir}inc/$slug.php";
-        // include SIMSAGE_PLUGIN_DIR . 'inc/simsage_search_view.php';
+        return "{$plugin_dir}inc/$slug.php";
     }
+}
+
+/**
+ * Load template that can be overridden by placing the same slug within the `<theme_dir>/simsage` directory.
+ *
+ * @param $slug
+ * @param array $args
+ */
+function simsage_load_overrideable_template( $slug, array $args = array() ) {
+    $template = simsage_get_overrideable_template( $slug );
+    load_template( $template, false, $args );
 }
 

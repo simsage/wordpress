@@ -32,6 +32,16 @@ define( 'SIMSAGE_JSON_POST_TIMEOUT', 10 );
 // the timeout for json data archive uploads
 define( 'SIMSAGE_JSON_DATA_UPLOAD_TIMEOUT', 15 );
 
+// default page slug
+define( 'SIMSAGE_DEFAULT_SEARCH_SLUG', "simsage-search");
+
+function simsage_query_vars( $vars ) {
+    $vars[] = 'simsage_search';
+    return $vars;
+}
+
+add_filter( 'query_vars', 'simsage_query_vars' );
+
 // include the main search functionality class
 include_once( SIMSAGE_PLUGIN_DIR . 'simsage_search.php' );
 // include the admin settings page and menu-setup for WordPress of this plugin
@@ -52,3 +62,35 @@ simsage_setup_cron_job( $admin );
 // setup hooks into the main class for plugin activation / de-activation
 register_activation_hook(__FILE__, array($search, 'plugin_activate'));
 register_deactivation_hook(__FILE__, array($search, 'plugin_deactivate'));
+
+// Called when plugin is activated
+function simsage_add_search_page() {
+    global $wpdb;
+    $page_slug = apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_SLUG );
+
+    if ( null === $wpdb->get_row( "SELECT post_name FROM {$wpdb->prefix}posts WHERE post_name = $page_slug", 'ARRAY_A' ) ) {
+        $current_user = wp_get_current_user();
+        // create post object
+        $page = array(
+            'post_title'  => __( 'Simsage Search' ),
+            'post_status' => 'publish',
+            'post_author' => $current_user->ID,
+            'post_type'   => 'page',
+        );
+
+        // insert the post into the database
+        wp_insert_post( $page );
+    }
+}
+
+function simsage_inject_search_results( $content ) {
+    $page_slug = apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_SLUG );
+
+    if ( get_post()->post_name === $page_slug ) {
+        return do_shortcode('[simsage-static-results]');
+    }
+
+    return $content;
+}
+
+add_filter('the_content', 'simsage_inject_search_results');

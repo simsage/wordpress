@@ -8,10 +8,16 @@ $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
 // only replace the search_form if the plugin has been configured and it has been configured to do so by the user
 $static_query = null;
 
-if ( isset( $plugin_options["simsage_override_default_search"] ) && $plugin_options["simsage_override_default_search"] && simsage_get_kb() != null ) {
+if ( get_query_var( 'simsage_search' ) ) {
+    $static_query = get_query_var( 'simsage_search' );
+}
+
+if ( isset( $plugin_options["simsage_override_default_search"] ) && $plugin_options["simsage_override_default_search"] && is_search() ) {
     $static_query = get_search_query();
 }
+
 ?>
+
 
 <script lang="js">
     // set an image base for all our templates to use (url bases for images)
