@@ -85,8 +85,9 @@ function simsage_add_search_page() {
 
 function simsage_inject_search_results( $content ) {
     $page_slug = apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_PAGE_SLUG );
+    $override = apply_filters( 'simsage_search_page_override', true );
 
-    if ( get_post()->post_name === $page_slug ) {
+    if ( $override && $page_slug === get_post()->post_name ) {
         return do_shortcode('[simsage-static-results]');
     }
 
