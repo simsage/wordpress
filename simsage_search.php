@@ -224,14 +224,17 @@ class simsage_search
             wp_enqueue_style('simsage-search-style-1'); // add our style-sheets
         }
 
-        $search_slug = apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_PAGE_SLUG );
+        $search_slug = $attrs['main-search']
+            ? '/'
+            : apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_PAGE_SLUG );
 
         if (simsage_get_kb() != null) {
             // render simsage_search_view.php in the context of this class
             ob_start();
             $view_context = $this->get_view_context( array(
                 'action' => $search_slug,
-                'remove_styles' => $remove_default_styles
+                'remove_styles' => $remove_default_styles,
+                'main_search' => $attrs['main-search'],
             ) );
             simsage_load_overrideable_template('simsage_search_static_view', $view_context);
             return ob_get_clean();
