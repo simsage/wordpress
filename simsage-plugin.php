@@ -46,6 +46,8 @@ add_filter( 'query_vars', 'simsage_query_vars' );
 include_once( SIMSAGE_PLUGIN_DIR . 'simsage_search.php' );
 // include the admin settings page and menu-setup for WordPress of this plugin
 include_once( SIMSAGE_PLUGIN_DIR . 'simsage_admin.php' );
+// include gutenberg block code
+require_once( SIMSAGE_PLUGIN_DIR . 'src/init.php' );
 
 // create the main search class to use throughout
 $search = new simsage_search();
