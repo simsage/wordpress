@@ -343,6 +343,8 @@ class simsage_search
 
         $simsage_style = array(
             'path' => plugins_url( 'assets/css/simsage-search.css', __FILE__ ),
+            'ver' => NULL,
+            'media' => NULL,
         );
 
         /**
