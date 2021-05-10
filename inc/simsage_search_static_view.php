@@ -37,7 +37,7 @@ $action_attr = !$is_main_search && $has_action ? "action='$action_url'" : '';
 
     <div class="simsage-search <?php echo $args['simsage_classes']; ?>">
 
-        <?php if ( !$args['remove-styles'] ) : ?>
+        <?php if ( !$args['remove_styles'] ) : ?>
             <style>
                 .search-form input[type=search] {
                     background: #fff url(<?php echo $args['asset_folder'] ?>/images/dark-magnifying-glass.svg) no-repeat 9px center;

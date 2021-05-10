@@ -82,11 +82,11 @@ class simsage_search
             'account_id' => sanitize_text_field( $this->get_account_setting( "id" ) ),
             'site_kbId' => sanitize_text_field( $this->get_site_setting( "kbId" ) ),
             'operator_enabled' => $this->get_plan_boolean_value( "operatorEnabled", true ),
-            'context_label' => sanitize_text_field( $this->context ),
+            'context_enabled' => sanitize_text_field( $this->context ),
             'context_match_boost' => sanitize_text_field( $this->context_boost ),
             'bot_threshold' => $this->get_user_value( "bot_threshold", 0.8125 ),
             'simsage_classes' => $this->get_user_value( "simsage_styling", "" ),
-            'assset_folder' => $this->asset_folder,
+            'asset_folder' => $this->asset_folder,
             'simsage_search_width' => $this->get_user_value( "simsage_search_width", 500 ),
             'search_counter' => $this->search_counter,
         ) );
@@ -210,21 +210,23 @@ class simsage_search
 
         // get the context and context-boost settings
         $this->context = "";
-        if (isset($attrs["context"])) {
+        if (array_key_exists( 'context', $attrs )) {
             $this->context = sanitize_text_field($attrs["context"]);
         }
         $this->context_boost = "0.2";
-        if (isset($attrs["context-boost"])) {
+        if (array_key_exists( 'context_boost', $attrs )) {
             $this->context_boost = sanitize_text_field($attrs["context-boost"]);
         }
 
-        $remove_default_styles = $attrs['remove-styles'];
+        $style_file_is_overridden = apply_filters( 'simsage_styles', false );
+        $remove_styles = wp_style_is('simsage-search-style-1', 'registered')
+            || $style_file_is_overridden;
 
-        if (!$remove_default_styles && wp_style_is('simsage-search-style-1', 'registered')) {
+        if (!$remove_styles) {
             wp_enqueue_style('simsage-search-style-1'); // add our style-sheets
         }
 
-        $search_slug = $attrs['main-search']
+        $search_slug = array_key_exists( 'main-search', $attrs ) && $attrs['main-search']
             ? '/'
             : apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_PAGE_SLUG );
 
@@ -233,7 +235,7 @@ class simsage_search
             ob_start();
             $view_context = $this->get_view_context( array(
                 'action' => $search_slug,
-                'remove_styles' => $remove_default_styles,
+                'remove_styles' => $remove_styles,
                 'main_search' => $attrs['main-search'],
             ) );
             simsage_load_overrideable_template('simsage_search_static_view', $view_context);
@@ -348,11 +350,13 @@ class simsage_search
         );
 
         /**
-         * Filter hook to allow stylesheet to be modified
+         * Filter hook to allow stylesheet to be modified, can return NULL or false if none is to be added
          */
         $style_file = apply_filters( 'simsage_styles', $simsage_style );
 
-        wp_register_style( 'simsage-search-style-1', $style_file['path'], $style_file['ver'], $style_file['media'] );
+        if ($style_file) {
+            wp_register_style( 'simsage-search-style-1', $style_file['path'], $style_file['ver'], $style_file['media'] );
+        }
     }
 
     // output our css as an "include" on each page using our plugin
