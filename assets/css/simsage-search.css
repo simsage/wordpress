@@ -113,19 +113,33 @@
 /*  search text box */
 
 /* search input box with magnifying glass */
+
 .search-form input[type=search] {
-    width: 15px;
-    padding-left: 10px;
     cursor: pointer;
     outline: none;
+    padding-left: 40px !important;
+    border-color: #a0a0a0;
+    color: #000;
+    -webkit-border-radius: 10em;
+    -moz-border-radius: 10em;
+    border-radius: 10em;
 }
+
+.search-form input[type=search]:hover {
+    outline: none;
+}
+
+.search-form input[type=search]:focus {
+    cursor: auto;
+    outline: none;
+}
+
 .search-form input:-moz-placeholder {
     outline: none;
 }
 .search-form input::-webkit-input-placeholder {
     outline: none;
 }
-
 
 @media only screen and (max-width: 700px) {
     .search-bar .search-box-container .search-text-box {
@@ -426,7 +440,7 @@
 /****************************************************/
 /* search results details display                   */
 
-.search-results {
+.simsage-search-results-list {
     font-family: 'Roboto',sans-serif;
     border: 1px solid #2b2b2b;
     border-radius: 5px;
@@ -449,20 +463,20 @@
     -webkit-box-sizing: border-box !important;
 }
 
-.search-results .search-results-top-td {
+.simsage-search-results-list .search-results-top-td {
     width: 100% !important;
     display: inline-block;
 }
 
 /* main display */
 
-.search-results .search-results-two-columns {
+.simsage-search-results-list .search-results-two-columns {
     width: 100% !important;
     min-width: 100% !important;
 }
 
 /* two columns */
-.search-results .search-results-td {
+.simsage-search-results-list .search-results-td {
     width: 100%;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -475,7 +489,7 @@
 }
 
 @media only screen and (max-width: 1060px) {
-    .search-results {
+    .simsage-search-results-list {
         width: initial !important;
         margin-right: 20px;
     }
@@ -484,7 +498,7 @@
         float: initial;
         margin-right: 20px;
     }
-    .search-results .search-results-td {
+    .simsage-search-results-list .search-results-td {
         position: relative;
         float: initial;
         vertical-align: top;
@@ -492,12 +506,12 @@
         margin-left: 0;
     }
 
-    .search-results .category-item {
+    .simsage-search-results-list .category-item {
         margin-right: 6px;
     }
 }
 
-.search-results .search-result {
+.simsage-search-results-list .search-result {
     border: 1px solid #afafaf;
     display: inline-block;
     background-color: #ffffff;
@@ -507,28 +521,28 @@
     margin-bottom: 10px;
 }
 
-.search-results .url-text {
+.simsage-search-results-list .url-text {
     color: #454545;
     font-size: 14px;
     margin-bottom: 4px;
 }
 
-.search-results a:link {
+.simsage-search-results-list a:link {
     text-decoration: none;
 }
 
-.search-results .more-details {
+.simsage-search-results-list .more-details {
     margin-top: 5px;
 }
 
-.search-results .title-text {
+.simsage-search-results-list .title-text {
     color: #0062ff;
     font-size: 16px;
     margin-bottom: 4px;
     cursor: pointer;
 }
 
-.search-results .result-text {
+.simsage-search-results-list .result-text {
     color: black;
     font-size: 16px;
     margin-bottom: 4px;
@@ -547,7 +561,7 @@
 }
 
 @media only screen and (max-width: 900px) {
-    .search-results .search-result {
+    .simsage-search-results-list .search-result {
         display: flex;
     }
     .search-result .search-text-width {
@@ -563,7 +577,7 @@
     width: 100%;
 }
 
-.search-results .result-image {
+.simsage-search-results-list .result-image {
     width: 125px !important;
     height: 125px !important;
     cursor: pointer;
@@ -579,24 +593,24 @@
     cursor: default;
 }
 
-.search-results .navigate-td {
+.simsage-search-results-list .navigate-td {
     height: 40px;
     margin-top: 10px;
 }
 
-.search-results .navigate-left {
+.simsage-search-results-list .navigate-left {
     float: left;
     margin-right: 5px;
     cursor: pointer;
 }
 
-.search-results .no-navigate-left {
+.simsage-search-results-list .no-navigate-left {
     float: left;
     margin-right: 5px;
     cursor: default;
 }
 
-.search-results .navigate-image {
+.simsage-search-results-list .navigate-image {
     width: 32px !important;
     height: 32px !important;
     font-size: 20px;
@@ -606,7 +620,7 @@
     padding: 1px 8px;
 }
 
-.search-results .navigate-image-disabled {
+.simsage-search-results-list .navigate-image-disabled {
     width: 32px !important;
     height: 32px !important;
     font-size: 20px;
@@ -616,19 +630,19 @@
     padding: 1px 8px;
 }
 
-.search-results .navigate-right {
+.simsage-search-results-list .navigate-right {
     float: left;
     margin-right: 5px;
     cursor: pointer;
 }
 
-.search-results .no-navigate-right {
+.simsage-search-results-list .no-navigate-right {
     float: left;
     margin-right: 5px;
     cursor: default;
 }
 
-.search-results .navigate-text {
+.simsage-search-results-list .navigate-text {
     margin-left: 5px;
     margin-top: 6px;
     float: left;
@@ -639,12 +653,12 @@
 }
 
 /** category items at the RHS of the search results **/
-.search-results .category-items-dropdown-header {
+.simsage-search-results-list .category-items-dropdown-header {
     cursor: pointer;
     font-size: 16px;
 }
 
-.search-results .category-item {
+.simsage-search-results-list .category-item {
     padding: 10px;
     border: 1px solid #afafaf;
     background-color: #ededed;
@@ -652,7 +666,7 @@
     margin-bottom: 10px;
 }
 
-.search-results .category-title {
+.simsage-search-results-list .category-title {
     color: black;
     font-size: 14px;
     font-weight: 600;
@@ -661,7 +675,7 @@
     cursor: pointer;
 }
 
-.search-results .category-text {
+.simsage-search-results-list .category-text {
     color: black;
     font-size: 12px;
     width: 100%;
@@ -672,7 +686,7 @@
 
 /** search pagination **/
 
-.search-results .pagination-box {
+.simsage-search-results-list .pagination-box {
     float: left;
     border: 0 solid;
     background-color: #ffffff;
@@ -684,29 +698,29 @@
 }
 
 @media only screen and (max-width: 750px) {
-    .search-results .pagination-box .page-size-left {
+    .simsage-search-results-list .pagination-box .page-size-left {
         display: block;
         padding-left: calc(100vw - 320px);
     }
-    .search-results .pagination-box .page-size-sel {
+    .simsage-search-results-list .pagination-box .page-size-sel {
         display: block;
     }
-    .search-results .pagination-box .pagination-left {
+    .simsage-search-results-list .pagination-box .pagination-left {
         display: block;
         clear: left;
         margin-left: 0;
     }
-    .search-results  .pagination-left, .next-page-box {
+    .simsage-search-results-list  .pagination-left, .next-page-box {
         margin-top: 8px;
     }
-    .search-results .pagination-box .pagination-text {
+    .simsage-search-results-list .pagination-box .pagination-text {
         margin-top: 10px;
     }
 
 }
 
 @media only screen and (max-width: 1060px) {
-    .search-results .pagination-box {
+    .simsage-search-results-list .pagination-box {
         position: relative;
         float: initial;
         clear: both;
@@ -715,7 +729,7 @@
         width: initial;
     }
 
-    .search-results .pagination-box .view-type-box {
+    .simsage-search-results-list .pagination-box .view-type-box {
         float: right;
         margin-top: 5px;
         margin-bottom: 2px;
@@ -723,61 +737,61 @@
     }
 }
 
-.search-results .clear {
+.simsage-search-results-list .clear {
     clear: both;
 }
 
 /* prev and next images */
-.search-results .prev-page-image {
+.simsage-search-results-list .prev-page-image {
     width: 21px !important;
     height: 21px !important;
 }
 
-.search-results .prev-page-box {
+.simsage-search-results-list .prev-page-box {
     float: left;
     margin-right: 10px;
     cursor: pointer;
 }
 
-.search-results .prev-page-box-disabled {
+.simsage-search-results-list .prev-page-box-disabled {
     float: left;
     margin-right: 10px;
     cursor: default;
 }
 
-.search-results .next-page-image {
+.simsage-search-results-list .next-page-image {
     width: 21px !important;
     height: 21px !important;
 }
 
-.search-results .arrow-disabled {
+.simsage-search-results-list .arrow-disabled {
     float: left;
     font-size: 22px;
     color: #878787;
     margin-top: -6px;
 }
 
-.search-results .arrow-enabled {
+.simsage-search-results-list .arrow-enabled {
     float: left;
     font-size: 22px;
     color: #000000;
     margin-top: -6px;
 }
 
-.search-results .next-page-box {
+.simsage-search-results-list .next-page-box {
     float: left;
     margin-right: 4px;
     cursor: pointer;
 }
 
-.search-results .next-page-box-disabled {
+.simsage-search-results-list .next-page-box-disabled {
     float: left;
     margin-right: 4px;
     cursor: default;
 }
 
 /* pagination text   1 result, page 1 of 1  */
-.search-results .pagination-text {
+.simsage-search-results-list .pagination-text {
     float: left;
     margin-top: 4px;
     margin-right: 10px;
@@ -786,14 +800,14 @@
     cursor: default;
 }
 
-.search-results .dd-chevron-2 {
+.simsage-search-results-list .dd-chevron-2 {
     float: left;
     margin-left: 4px;
     margin-top: -10px;
     font-size: 22px;
 }
 
-.search-results .page-size-select {
+.simsage-search-results-list .page-size-select {
     float: left;
     margin-top: -5px !important;
     font-size: 14px;
@@ -804,26 +818,26 @@
     box-sizing: border-box;
 }
 
-.search-results .page-size-sel {
+.simsage-search-results-list .page-size-sel {
     float: left;
     margin-top: 2px;
 }
 
-.search-results .pagination-left {
+.simsage-search-results-list .pagination-left {
     margin-left: 60px;
 }
 
-.search-results .page-size-left {
+.simsage-search-results-list .page-size-left {
     margin-left: 20px;
 }
 
 /*  view selector, image view or text view */
 
-.search-results .view-results-as-box {
+.simsage-search-results-list .view-results-as-box {
     margin-top: 6px;
 }
 
-.search-results .view-results-as-text-disabled {
+.simsage-search-results-list .view-results-as-text-disabled {
     float: left;
     font-size: 12px;
     color: #2d2d2d;
@@ -832,7 +846,7 @@
     margin-right: 4px;
 }
 
-.search-results .view-text-outer-box-disabled {
+.simsage-search-results-list .view-text-outer-box-disabled {
     float: left;
     display: inline-block;
     padding: 4px;
@@ -844,7 +858,7 @@
     cursor: pointer;
 }
 
-.search-results .view-text-outer-box {
+.simsage-search-results-list .view-text-outer-box {
     float: left;
     display: inline-block;
     padding: 4px;
@@ -857,7 +871,7 @@
     cursor: pointer;
 }
 
-.search-results .view-images-box-disabled {
+.simsage-search-results-list .view-images-box-disabled {
     float: left;
     display: inline-block;
     padding: 4px;
@@ -870,7 +884,7 @@
 }
 
 
-.search-results .view-images-box {
+.simsage-search-results-list .view-images-box {
     float: left;
     display: inline-block;
     padding: 4px;
@@ -883,7 +897,7 @@
     cursor: pointer;
 }
 
-.search-results .view-results-as-text {
+.simsage-search-results-list .view-results-as-text {
     float: left;
     font-size: 12px;
     color: #ffffff;
@@ -893,12 +907,12 @@
     margin-right: 4px;
 }
 
-.search-results .view-type-box {
+.simsage-search-results-list .view-type-box {
     float: right;
     margin-top: 4px;
 }
 
-.search-results .view-text-box {
+.simsage-search-results-list .view-text-box {
     float: left;
     display: inline-block;
     color: #cccccc;
@@ -909,7 +923,7 @@
     cursor: pointer;
 }
 
-.search-results .view-text-box-disabled {
+.simsage-search-results-list .view-text-box-disabled {
     float: left;
     display: inline-block;
     color: black;
@@ -920,7 +934,7 @@
     cursor: pointer;
 }
 
-.search-results .view-image-box {
+.simsage-search-results-list .view-image-box {
     float: left;
     display: inline-block;
     color: #cccccc;
@@ -931,7 +945,7 @@
     cursor: pointer;
 }
 
-.search-results .view-image-box-disabled {
+.simsage-search-results-list .view-image-box-disabled {
     float: left;
     color: black;
     display: inline-block;
@@ -942,11 +956,11 @@
     cursor: pointer;
 }
 
-.search-results select::-ms-expand {
+.simsage-search-results-list select::-ms-expand {
     display: none;
 }
 
-.search-results select {
+.simsage-search-results-list select {
     border: none;
     background: #ffffff;
     padding-left: 5px;
@@ -957,14 +971,14 @@
     text-overflow: '';
 }
 
-.search-results .dd-chevron {
+.simsage-search-results-list .dd-chevron {
     margin-left: 4px;
     font-size: 22px;
 }
 
 /* image display from render */
 
-.search-results .search-result-images {
+.simsage-search-results-list .search-result-images {
     border: 0 solid;
     background-color: #fafafa;
     width: 100%;
@@ -973,14 +987,14 @@
     border-radius: 10px;
 }
 
-.search-results .image-result {
+.simsage-search-results-list .image-result {
     float: left;
     padding: 10px;
     height: 420px;
     margin-bottom: 10px;
 }
 
-.search-results .image-text {
+.simsage-search-results-list .image-text {
     color: #000000;
     margin-top: 4px;
     font-size: 0.8em;
@@ -989,11 +1003,11 @@
     max-width: 200px;
 }
 
-.search-results .end-marker-images {
+.simsage-search-results-list .end-marker-images {
     clear: both;
 }
 
-.search-results .result-image-image {
+.simsage-search-results-list .result-image-image {
     width: 200px;
     max-width: 200px;
     max-height: 300px;
@@ -1001,20 +1015,20 @@
     cursor: pointer;
 }
 
-.search-results .result-image {
+.simsage-search-results-list .result-image {
     width: 100px;
     height: 100px;
     cursor: pointer;
 }
 
 /* synset items */
-.search-results .synset-entry {
+.simsage-search-results-list .synset-entry {
     background-color: #fafafa;
     padding: 5px;
     margin-bottom: 10px;
 }
 
-.search-results .synset-title {
+.simsage-search-results-list .synset-title {
     font-size: 1.0em;
     font-weight: 600;
     width: 80%;
@@ -1022,7 +1036,7 @@
     cursor: default;
 }
 
-.search-results .synset-selector {
+.simsage-search-results-list .synset-selector {
     width: 150px;
 }
 

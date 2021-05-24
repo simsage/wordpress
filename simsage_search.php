@@ -42,6 +42,8 @@ class simsage_search
     	// make sure we have the right versions of WP and php, notify the user if not
         simsage_check_versions(); // defined in inc/simsage_utilities.php
         flush_rewrite_rules();
+
+        simsage_add_search_page();
     }
 
     /**
@@ -50,6 +52,8 @@ class simsage_search
     public function plugin_deactivate() {
         wp_clear_scheduled_hook( 'simsage_twicedaily' );
         flush_rewrite_rules();
+
+        // add_filter('template_include', 'simsage_override_search_template');
     }
 
 	/**
@@ -72,6 +76,21 @@ class simsage_search
         }
 	}
 
+    public function get_view_context( $additional_params = array() ) {
+        return array_merge( $additional_params, array(
+            'account_server' => sanitize_text_field( $this->get_account_setting( "server" ) ),
+            'account_id' => sanitize_text_field( $this->get_account_setting( "id" ) ),
+            'site_kbId' => sanitize_text_field( $this->get_site_setting( "kbId" ) ),
+            'operator_enabled' => $this->get_plan_boolean_value( "operatorEnabled", true ),
+            'context_enabled' => sanitize_text_field( $this->context ),
+            'context_match_boost' => sanitize_text_field( $this->context_boost ),
+            'bot_threshold' => $this->get_user_value( "bot_threshold", 0.8125 ),
+            'simsage_classes' => $this->get_user_value( "simsage_styling", "" ),
+            'asset_folder' => $this->asset_folder,
+            'simsage_search_width' => $this->get_user_value( "simsage_search_width", 500 ),
+            'search_counter' => $this->search_counter,
+        ) );
+    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -165,50 +184,114 @@ class simsage_search
 
 
     // init our shortcode, style loaders and js loaders using actions
-	function init() {
-    	// this is the [simsage-search] shortcode render function: simsage_handle_shortcode()
-		add_shortcode( 'simsage-search', array( $this, 'simsage_handle_shortcode' ) );
+    function init() {
+        // this is the [simsage-search] shortcode render function: simsage_handle_shortcode()
+        add_shortcode( 'simsage-search', array( $this, 'simsage_handle_shortcode' ) );
         add_shortcode( 'simsage-search-results', array( $this, 'simsage_results_handle_shortcode' ) );
 
-		add_action( 'init', array( $this, 'register_script_and_style' ) );
-		// styles into the head
-		add_action( 'wp_head', array( $this, 'simsage_print_styles' ), 999 );
-		// include the simSage javascript files as part of the footer
-		add_action( 'wp_footer', array( $this, 'simsage_print_script' ) );
-		// setup an action to optionally (setup through settings) change the default WordPress search form
-		add_action('get_search_form', array( $this, 'get_search_form') );
-		// Admin notices for the plugin.
-		add_action( 'admin_notices', array( $this, 'activation_admin_notice' ) );
-	}
+        add_shortcode( 'simsage-static-search', array( $this, 'simsage_handle_search_form_shortcode' ) );
+        add_shortcode( 'simsage-static-results', array( $this, 'simsage_handle_search_results_shortcode' ) );
 
-	// simsage short-code renderer
-	function simsage_handle_shortcode( $attrs ) {
+        add_action( 'init', array( $this, 'register_script_and_style' ) );
+        // styles into the head
+        add_action( 'wp_head', array( $this, 'simsage_print_styles' ), 999 );
+        // include the simSage javascript files as part of the footer
+        add_action( 'wp_footer', array( $this, 'simsage_print_script' ) );
+        // setup an action to optionally (setup through settings) change the default WordPress search form
+        add_action( 'get_search_form', array( $this, 'get_search_form' ) );
+        // Admin notices for the plugin.
+        add_action( 'admin_notices', array( $this, 'activation_admin_notice' ) );
+    }
+
+    function simsage_handle_search_form_shortcode( $attrs ) {
         $this->search_counter += 1;
-        $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
-		$this->add_script = true;
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
+        $this->add_script = true;
 
-		// get the context and context-boost settings
-		$this->context = "";
-		if ( isset($attrs["context"]) ) {
-		    $this->context = sanitize_text_field($attrs["context"]);
+        // get the context and context-boost settings
+        $this->context = "";
+        if (array_key_exists( 'context', $attrs )) {
+            $this->context = sanitize_text_field($attrs["context"]);
         }
         $this->context_boost = "0.2";
-        if ( isset($attrs["context-boost"]) ) {
+        if (array_key_exists( 'context_boost', $attrs )) {
+            $this->context_boost = sanitize_text_field($attrs["context-boost"]);
+        }
+
+        $style_file_is_overridden = apply_filters( 'simsage_styles', false );
+        $remove_styles = wp_style_is('simsage-search-style-1', 'registered')
+            || $style_file_is_overridden;
+
+        if (!$remove_styles) {
+            wp_enqueue_style('simsage-search-style-1'); // add our style-sheets
+        }
+
+        $search_slug = array_key_exists( 'main-search', $attrs ) && $attrs['main-search']
+            ? '/'
+            : apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_PAGE_SLUG );
+
+        if (simsage_get_kb() != null) {
+            // render simsage_search_view.php in the context of this class
+            ob_start();
+            $view_context = $this->get_view_context( array(
+                'action' => $search_slug,
+                'remove_styles' => $remove_styles,
+                'main_search' => $attrs['main-search'],
+            ) );
+            simsage_load_overrideable_template('simsage_search_static_view', $view_context);
+            return ob_get_clean();
+        } else {
+            return "<div>SimSage-search plugin not configured.  Please configure your plugin first!</div>";
+        }
+    }
+
+    // simsage short-code renderer
+    function simsage_handle_shortcode( $attrs ) {
+        $this->search_counter += 1;
+        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
+        $this->add_script = true;
+
+        // get the context and context-boost settings
+        $this->context = "";
+        if (isset($attrs["context"])) {
+            $this->context = sanitize_text_field($attrs["context"]);
+        }
+        $this->context_boost = "0.2";
+        if (isset($attrs["context-boost"])) {
             $this->context_boost = sanitize_text_field($attrs["context-boost"]);
         }
 
         wp_enqueue_style('simsage-search-style-1'); // add our style-sheets
 
-        if ( simsage_get_kb() != null ) {
+        if (simsage_get_kb() != null) {
             // render simsage_search_view.php in the context of this class
             ob_start();
-            include SIMSAGE_PLUGIN_DIR . 'inc/simsage_search_view.php';
+            $view_context = $this->get_view_context();
+            simsage_load_overrideable_template('simsage_search_view', $view_context);
             return ob_get_clean();
         } else {
             return "<div>SimSage-search plugin not configured.  Please configure your plugin first!</div>";
         }
-	}
+    }
 
+    // simsage-search-results short-code renderer
+    function simsage_handle_search_results_shortcode( $attrs ) {
+        $this->search_counter += 1;
+        $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
+        $this->add_script = true;
+
+        wp_enqueue_style( 'simsage-search-style-1' ); // add our style-sheets
+
+        if ( simsage_get_kb() != null ) {
+            // render simsage_search_result_view.php in the context of this class
+            ob_start();
+            $view_context = $this->get_view_context();
+            simsage_load_overrideable_template( 'simsage_search_result_static_view', $view_context );
+            return ob_get_clean();
+        } else {
+            return "<div>SimSage-search plugin not configured.  Please configure your plugin first!</div>";
+        }
+    }
 
     // simsage-search-results short-code renderer
     function simsage_results_handle_shortcode( $attrs ) {
@@ -221,7 +304,8 @@ class simsage_search
         if ( simsage_get_kb() != null ) {
             // render simsage_search_result_view.php in the context of this class
             ob_start();
-            include SIMSAGE_PLUGIN_DIR . 'inc/simsage_search_result_view.php';
+            $view_context = $this->get_view_context();
+            simsage_load_overrideable_template( 'simsage_search_result_view', $view_context );
             return ob_get_clean();
         } else {
             return "<div>SimSage-search plugin not configured.  Please configure your plugin first!</div>";
@@ -229,23 +313,24 @@ class simsage_search
     }
 
     // SimSage override default search
-	public function get_search_form( $content ) {
+    public function get_search_form( $content ) {
         $this->search_counter += 1;
         $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
         // only replace the search_form if the plugin has been configured and it has been configured to do so by the user
-		if ( isset( $plugin_options["simsage_override_default_search"] ) && $plugin_options["simsage_override_default_search"] && simsage_get_kb() != null ) {
+        if ( isset( $plugin_options["simsage_override_default_search"] ) && $plugin_options["simsage_override_default_search"] && simsage_get_kb() != null ) {
             $this->add_script = true;
 
-            wp_enqueue_style('simsage-search-style-1'); // add our style-sheets
+            wp_enqueue_style( 'simsage-search-style-1' ); // add our style-sheets
 
-			// render simsage_search_view.php in the context of this class
-			ob_start();
-			include SIMSAGE_PLUGIN_DIR . 'inc/simsage_default_search_override_view.php';
-			return ob_get_clean();
-		} else {
-			return $content;
-		}
-	}
+            // render simsage_search_view.php in the context of this class
+            ob_start();
+            $view_context = $this->get_view_context( array( 'main_search' => true ) );
+            simsage_load_overrideable_template( 'simsage_search_static_view', $view_context );
+            return ob_get_clean();
+        } else {
+            return $content;
+        }
+    }
 
     // register all our javascript and css styles for this plugin
     function register_script_and_style() {
@@ -257,7 +342,21 @@ class simsage_search
         // specific implementation
         wp_register_script( 'simsage-search-script-3', plugins_url( 'assets/js/simsage-search.js', __FILE__ ), array('jquery'), '1.0', true );
         // and the required styles for search.css
-        wp_register_style( 'simsage-search-style-1', plugins_url( 'assets/css/simsage-search.css', __FILE__ ) );
+
+        $simsage_style = array(
+            'path' => plugins_url( 'assets/css/simsage-search.css', __FILE__ ),
+            'ver' => NULL,
+            'media' => NULL,
+        );
+
+        /**
+         * Filter hook to allow stylesheet to be modified, can return NULL or false if none is to be added
+         */
+        $style_file = apply_filters( 'simsage_styles', $simsage_style );
+
+        if ($style_file) {
+            wp_register_style( 'simsage-search-style-1', $style_file['path'], $style_file['ver'], $style_file['media'] );
+        }
     }
 
     // output our css as an "include" on each page using our plugin

@@ -558,7 +558,7 @@ let search_options_control = {
     open: false,  // is the menu open or closed?
 
     // perform the initial startup setup
-    init: function(control_id, settings) {
+    init: function(control_id, settings, cb) {
         let self = this;
         if (!settings || !settings.organisation_id || !settings.base_url) {
             console.error("SimSage init() failed, settings must be set with an 'organisation_id' and a 'base_url'")
@@ -651,14 +651,18 @@ let search_options_control = {
                 }, 1000);
             }
 
+            if (cb) {
+                cb(true);
+            }
         }, function(err) {
             console.log(err);
             if (self.connection_retry_count > 1) {
                 self.error('not connected, trying to re-connect, please wait (try ' + self.connection_retry_count + ')');
             } else {
                 self.error(err);
+                cb(false);
             }
-            setTimeout(function() { self.init() }, 5000); // try and re-connect as a one-off in 5 seconds
+            setTimeout(function() { self.init(null, null, cb) }, 5000); // try and re-connect as a one-off in 5 seconds
             self.connection_retry_count += 1;
         });
     },
@@ -708,8 +712,8 @@ let no_results = {
     show_no_search_results: function() {
         this.close_bot();
         jQuery(".no-search-results").show();
-        jQuery(".not-found-words").html(this.adjust_size(jQuery(".search-text").val(), 25));
-        jQuery(".search-results").hide();
+        jQuery(".not-found-words").html(this.adjust_size(simsage.search_query, 25));
+        jQuery(".simsage-search-results-list").hide();
         if (this.know_email) {
             jQuery(".ask-email-box").hide();
             jQuery(".ask-emailed-box").show();
@@ -904,7 +908,7 @@ let spelling_control = {
     },
 
     use_spelling_suggestion: function() {
-        if (this.text && this.text.length > 0) {
+        if (this.text && this.text.length > 0 && jQuery(".search-text")) {
             jQuery(".search-text").val(this.text);
         }
     },
@@ -1487,7 +1491,7 @@ let chat_control = {
 let search_results_control = {
 
     show_search_results: function() {
-        jQuery(".search-results").show();
+        jQuery(".simsage-search-results-list").show();
         jQuery(".search-display").show();
         this.close_no_search_results();
     },
@@ -1652,7 +1656,7 @@ let search_results_control = {
     },
 
     clear_search_results: function() {
-        jQuery(".search-results").hide();
+        jQuery(".simsage-search-results-list").hide();
         jQuery(".search-results-td").html("");
     },
 
@@ -1862,10 +1866,13 @@ function super_search_query_str(text) {
 // setup search
 simsage.instantiate();
 jQuery('.search-form').on('keydown keyup keypress', function(e) {
-    let keyCode = e.keyCode || e.which;
-    if (keyCode === 13) {
-        e.preventDefault();
-        return false;
+    const $ = jQuery;
+    if (!$(this).hasClass("search-form-static")) {
+        let keyCode = e.keyCode || e.which;
+        if (keyCode === 13) {
+            e.preventDefault();
+            return false;
+        }
     }
 });
 jQuery('.search-button-box').on('click', function(e) {
@@ -1874,5 +1881,9 @@ jQuery('.search-button-box').on('click', function(e) {
 });
 // init when ready
 jQuery(document).ready(function () {
-    simsage.init("", settings);
+    simsage.init("", settings, function(isSuccess) {
+        if (isSuccess && document.querySelector('.simsage-static-query')) {
+            simsage.do_search('simsage-static-query');
+        }
+    });
 });
