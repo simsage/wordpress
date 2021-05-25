@@ -70,11 +70,12 @@ function simsage_add_search_page() {
     global $wpdb;
     $page_slug = apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_PAGE_SLUG );
 
+    // insert a new search-result page if it doesn't exist yet
     if ( null === $wpdb->get_row( "SELECT post_name FROM {$wpdb->prefix}posts WHERE post_name = $page_slug", 'ARRAY_A' ) ) {
         $current_user = wp_get_current_user();
         // create post object
         $page = array(
-            'post_title'  => __( 'Simsage Search' ),
+            'post_title'  => __( 'SimSage Search' ),
             'post_status' => 'publish',
             'post_author' => $current_user->ID,
             'post_type'   => 'page',
@@ -85,6 +86,7 @@ function simsage_add_search_page() {
     }
 }
 
+//
 function simsage_inject_search_results( $content ) {
     $page_slug = apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_PAGE_SLUG );
     $override = apply_filters( 'simsage_search_page_override', true );

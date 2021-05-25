@@ -4,9 +4,16 @@
  */
 
 $is_main_search = $args['main_search'];
-$has_action = !!$args['action'];
+$has_action = false;
+if (isset($args['action'])) {
+    $has_action = !!$args['action'];
+}
+$remove_styles = false;
+if (isset($args['remove_styles'])) {
+    $remove_styles = $args['remove_styles'];
+}
 
-$action_url = $args['action'];
+$action_url = isset($args['action']) ?? $args['action'];
 
 $action_attr = !$is_main_search && $has_action ? "action='$action_url'" : '';
 
@@ -37,7 +44,7 @@ $action_attr = !$is_main_search && $has_action ? "action='$action_url'" : '';
 
     <div class="simsage-search <?php echo $args['simsage_classes']; ?>">
 
-        <?php if ( !$args['remove_styles'] ) : ?>
+        <?php if ( ! $remove_styles ) : ?>
             <style>
                 .search-form input[type=search] {
                     background: #fff url(<?php echo $args['asset_folder'] ?>/images/dark-magnifying-glass.svg) no-repeat 9px center;

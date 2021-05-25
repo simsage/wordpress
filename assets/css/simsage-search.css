@@ -1324,8 +1324,13 @@
 }
 
 .bot-box .bot-link {
+    color: black;
     margin-left: 20px;
     margin-top: 5px;
+}
+
+.bot-link a {
+    color: black !important;
 }
 
 .bot-box .bot-images-box {
@@ -1341,7 +1346,6 @@
 }
 
 .bot-box .bot-link-text {
-    color: #1e74ff;
     font-size: 14px;
     cursor: pointer;
 }
