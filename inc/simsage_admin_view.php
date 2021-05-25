@@ -9,7 +9,7 @@ $plan = simsage_get_plan();
 $options = get_option(SIMSAGE_PLUGIN_NAME);
 $has_account = isset($options['simsage_account'] ) && isset($options['simsage_account']['id']);
 $has_kb = $has_account && isset($options['simsage_account']['kbId']);
-$has_access = ($plan != null && isset( $plan['analyticsWindowInMonths'] ) && $plan['analyticsWindowInMonths'] > 0);
+$has_access = ($plan != null && isset( $plan['upfrontCost'] ) && $plan['upfrontCost'] > 0);
 // does this plan have operator access?
 $operator_has_access = ($plan != null && isset($plan['operatorEnabled']) && $plan['operatorEnabled']);
 // when we have selected a site, this variable will be set
@@ -117,12 +117,6 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
             <a href="<?php echo $this->get_portal_server(); ?>/#/create?origin=plugin" target="_blank">Register here</a> if you don't have an account.
         </div>
     <?php } ?>
-
-
-    <?php
-        // set when connected to SimSage
-        $has_sites = (simsage_get_kb() != null);
-    ?>
 
     <div class="nav-tab-wrapper">
         <a href="?page=simsage&tab=account" class="nav-tab <?php echo ($active_tab == 'account' || $active_tab == '') ? 'nav-tab-active' : ''; ?>">Account</a>
