@@ -39,6 +39,10 @@ registerBlockType( 'simsage/search', {
 			type: 'boolean',
 			default: false,
 		},
+		disable_styles: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 	keywords: [
 		__( 'search' ),
@@ -70,6 +74,13 @@ registerBlockType( 'simsage/search', {
 									label="Redirect to main search"
 									checked={attributes.main_search}
 									onChange={(isMainSearch) => setAttributes({ main_search: isMainSearch })}
+								/>
+							</PanelRow>
+							<PanelRow title="Disable styles" initialOpen={true}>
+								<ToggleControl
+									label="Disable default styles"
+									checked={attributes.disable_styles}
+									onChange={(disableStyles) => setAttributes({ disable_styles: disableStyles })}
 								/>
 							</PanelRow>
 						</PanelBody>

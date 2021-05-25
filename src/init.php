@@ -14,9 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function simsage_render_search( $block_attributes ) {
-    $is_main_search = $block_attributes['main_search'];
-    $shortcode = "[simsage-static-search main-search=\"$is_main_search\"]";
-    return do_shortcode($shortcode);
+	$is_main_search = array_key_exists('main_search', $block_attributes) && $block_attributes['main_search'];
+	$disable_styles = array_key_exists('disable_styles', $block_attributes) && $block_attributes['disable_styles'];
+	$shortcode = "[simsage-static-search main-search=\"$is_main_search\" remove-styles=\"$disable_styles\"]";
+	return do_shortcode($shortcode);
 }
 
 /**
@@ -90,7 +91,7 @@ function search_cgb_block_assets() { // phpcs:ignore
 			'editor_script' => 'search-cgb-block-js',
 			// Enqueue blocks.editor.build.css in the editor only.
 			'editor_style'  => 'search-cgb-block-editor-css',
-            'render_callback' => 'simsage_render_search'
+			'render_callback' => 'simsage_render_search'
 		)
 	);
 }

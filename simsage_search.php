@@ -219,8 +219,8 @@ class simsage_search
         }
 
         $style_file_is_overridden = apply_filters( 'simsage_styles', false );
-        $remove_styles = wp_style_is('simsage-search-style-1', 'registered')
-            || $style_file_is_overridden;
+
+        $remove_styles =  $style_file_is_overridden || $attrs['remove-styles'];
 
         if (!$remove_styles) {
             wp_enqueue_style('simsage-search-style-1'); // add our style-sheets
