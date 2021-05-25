@@ -235,6 +235,7 @@ class simsage_admin
 
             // check the registration-key size
             if (strlen(trim($registration_key)) != 19) {
+                debug_log('Invalid SimSage registration-key' );
                 add_settings_error('simsage_settings', 'invalid_registration_key', 'Invalid SimSage registration-key', $type = 'error');
 
             } else {
@@ -251,6 +252,7 @@ class simsage_admin
                     $body = simsage_get_json($json["body"]); // convert to an object
                     if (!isset($body['kbId']) || !isset($body['sid']) || !isset($body['plan'])  || !isset($body['server']) ||
                         !isset($body['id']) || !isset($body['email'])) {
+                        debug_log('Invalid SimSage response (missing return values in valid response).  Please upgrade your plugin.' );
                         add_settings_error('simsage_settings', 'invalid_response',
                                             'Invalid SimSage response (missing return values in valid response).  Please upgrade your plugin.',
                                             $type = 'error');
@@ -267,15 +269,18 @@ class simsage_admin
                         // setup other parts of the plugin according to plan
                         $this->add_admin_menus();
                         // show we've successfully connected
+                        debug_log('Successfully retrieved your SimSage account information.' );
                         add_settings_error('simsage_settings', 'success',
                             "Successfully retrieved your SimSage account information.",
                             $type = 'info');
                     }
                 } else {
+                    debug_log('SimSage error: ' . $error_str );
                     add_settings_error('simsage_settings', 'error', $error_str, $type = 'error');
                 }
             }
         }
+        settings_errors('simsage_settings');
     }
 
 
@@ -299,6 +304,7 @@ class simsage_admin
             if ( $error_str != null ) {
                 add_settings_error('simsage_settings', 'simsage_bot_qa', $error_str, $type = 'error');
                 $has_error = true;
+                settings_errors('simsage_settings');
             }
         }
         return !$has_error;
@@ -324,6 +330,7 @@ class simsage_admin
             if ( $error_str != null ) {
                 add_settings_error('simsage_settings', 'simsage_synonyms', $error_str, $type = 'error');
                 $has_errors = true;
+                settings_errors('simsage_settings');
             }
         }
         return !$has_errors;
@@ -342,6 +349,7 @@ class simsage_admin
             if ( !isset($this->plugin_defaults[$key]) ) {
                 if ( $check_keys ) {
                     add_settings_error('simsage_settings', 'invalid_value', 'We encountered an unknown value on the form:' . $key . ", cannot process this form.", $type = 'error');
+                    settings_errors('simsage_settings');
                     return false;
                 }
             } else {
@@ -353,6 +361,7 @@ class simsage_admin
                     if ( $sanitized_value < $default["min"] || $sanitized_value > $default["max"] ) {
                         $err_str = 'The value for ' . $default["name"] . ' must be between ' . $default["min"] . ' and ' . $default["max"];
                         add_settings_error('simsage_settings', 'invalid_value', $err_str, $type = 'error');
+                        settings_errors('simsage_settings');
                         return false;  // abort
                     } // if value within min and max
 
@@ -441,10 +450,12 @@ class simsage_admin
                   'body' => $bodyStr)));
         $error_str = simsage_check_json_response( $this->api_server, $json );
         if ($error_str != "") {
-            if ( function_exists('add_settings_error') )
+            if ( function_exists('add_settings_error') ) {
                 add_settings_error('simsage_settings', 'simsage_close_account', $error_str, $type = 'error');
-            else
+                settings_errors('simsage_settings');
+            } else {
                 debug_log('ERROR: simsage-close-account-error:' . $error_str);
+            }
             return false;
         }
         return true;
