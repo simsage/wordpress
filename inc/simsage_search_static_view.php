@@ -13,7 +13,7 @@ if (isset($args['remove_styles'])) {
     $remove_styles = $args['remove_styles'];
 }
 
-$action_url = $args['action'];
+$action_url = isset($args['action']) ?? $args['action'];
 
 $action_attr = !$is_main_search && $has_action ? "action='$action_url'" : '';
 

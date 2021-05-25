@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function simsage_render_search( $block_attributes ) {
-    $is_main_search = $block_attributes['main_search'];
+    $is_main_search = isset( $block_attributes['main_search'] ) && $block_attributes['main_search'];
     $shortcode = "[simsage-static-search main-search=\"$is_main_search\"]";
     return do_shortcode($shortcode);
 }
