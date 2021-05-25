@@ -3,19 +3,23 @@
  * SimSage Search Rendering
  */
 
-$is_main_search = $args['main_search'];
+$is_main_search = array_key_exists('main_search', $args) && $args['main_search'];
+$action_url = '/';
 $has_action = false;
-if (isset($args['action'])) {
+
+if (array_key_exists('action', $args)) {
     $has_action = !!$args['action'];
+    if ($has_action) {
+        $action_url = $args['action'];
+    }
 }
+
 $remove_styles = false;
-if (isset($args['remove_styles'])) {
+if (array_key_exists('remove_styles', $args)) {
     $remove_styles = $args['remove_styles'];
 }
 
-$action_url = isset($args['action']) ?? $args['action'];
-
-$action_attr = !$is_main_search && $has_action ? "action='$action_url'" : '';
+$action_attr = !$is_main_search && $has_action ? "action='$action_url'" : 'action="/"';
 
 ?>
     <script lang="js">

@@ -15,8 +15,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function simsage_render_search( $block_attributes ) {
 	$is_main_search = array_key_exists('main_search', $block_attributes) && $block_attributes['main_search'];
-	$disable_styles = array_key_exists('disable_styles', $block_attributes) && $block_attributes['disable_styles'];
-	$shortcode = "[simsage-static-search main-search=\"$is_main_search\" remove-styles=\"$disable_styles\"]";
+	$main_search = $is_main_search ? "main-search=\"1\"" : '';
+	$disable_styles = array_key_exists('disable_styles', $block_attributes) && $block_attributes['disable_styles']
+		? "disable-styles=\"1\" "
+		: '';
+	$code_and_params = trim("simsage-static-search $main_search $disable_styles");
+	$shortcode = "[$code_and_params]";
 	return do_shortcode($shortcode);
 }
 
