@@ -9,7 +9,7 @@ $plan = simsage_get_plan();
 $options = get_option(SIMSAGE_PLUGIN_NAME);
 $has_account = isset($options['simsage_account'] ) && isset($options['simsage_account']['id']);
 $has_kb = $has_account && isset($options['simsage_account']['kbId']);
-$has_access = ($plan != null && isset( $plan['upfrontCost'] ) && $plan['upfrontCost'] > 0);
+$has_access = ($plan != null && (isset( $plan['upfrontCost'] ) && $plan['upfrontCost'] > 0) || (isset( $plan['analyticsWindowInMonths'] ) && $plan['analyticsWindowInMonths'] > 0));
 // does this plan have operator access?
 $operator_has_access = ($plan != null && isset($plan['operatorEnabled']) && $plan['operatorEnabled']);
 // when we have selected a site, this variable will be set
