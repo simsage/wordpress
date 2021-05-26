@@ -4,8 +4,9 @@
  */
 
 $is_main_search = array_key_exists('main_search', $args) && $args['main_search'];
-$action_url = '/';
 $has_action = false;
+
+$action_url = '/';
 
 if (array_key_exists('action', $args)) {
     $has_action = !!$args['action'];
@@ -19,7 +20,7 @@ if (array_key_exists('remove_styles', $args)) {
     $remove_styles = $args['remove_styles'];
 }
 
-$action_attr = !$is_main_search && $has_action ? "action='$action_url'" : 'action="/"';
+$action_attr = "action='$action_url'";
 
 ?>
     <script lang="js">
@@ -62,13 +63,8 @@ $action_attr = !$is_main_search && $has_action ? "action='$action_url'" : 'actio
             <!-- search box -->
             <div class="search-box-container">
                 <form class="search-form search-form-static" title="Search" <?php echo $action_attr ?>>
-                    <?php if ($args['main_search']) : ?>
-                        <input type="search" value="" name="s" autocomplete="off" class="search-text search-text-static search-text-<?php echo $args['search_counter']; ?>" maxlength="100"
-                               placeholder="Search ..." >
-                    <?php else : ?>
-                        <input type="search" value="" name="simsage_search" autocomplete="off" class="search-text search-text-static search-text-<?php echo $args['search_counter']; ?>" maxlength="100"
-                               placeholder="Search ..." >
-                    <?php endif; ?>
+                    <input type="search" value="" name="simsage_search" autocomplete="off" class="search-text search-text-static search-text-<?php echo $args['search_counter']; ?>" maxlength="100"
+                           placeholder="Search ..." >
                 </form>
             </div>
 

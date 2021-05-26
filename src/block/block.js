@@ -69,13 +69,6 @@ registerBlockType( 'simsage/search', {
                 <InspectorControls>
 					<Panel title="Search options">
 						<PanelBody>
-							<PanelRow title="Main search" initialOpen={true}>
-								<ToggleControl
-									label="Redirect to main search"
-									checked={attributes.main_search}
-									onChange={(isMainSearch) => setAttributes({ main_search: isMainSearch })}
-								/>
-							</PanelRow>
 							<PanelRow title="Disable styles" initialOpen={true}>
 								<ToggleControl
 									label="Disable default styles"
