@@ -101,3 +101,20 @@ function simsage_inject_search_results( $content ) {
 }
 
 add_filter('the_content', 'simsage_inject_search_results');
+
+function simsage_filter_query( $query ) {
+  if ( is_search() ) {
+    $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
+
+    if (array_key_exists( "simsage_override_default_search", $plugin_options )
+        && $plugin_options["simsage_override_default_search"]
+        && simsage_get_kb() != null) {
+      $query->is_search = false;
+      $search_query = $query->query_vars['s'];
+      $search_page_slug = apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_PAGE_SLUG );
+      wp_redirect("$search_page_slug?simsage_search=$search_query");
+    }
+  }
+}
+
+add_filter('parse_query', 'simsage_filter_query');
