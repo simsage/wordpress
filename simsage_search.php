@@ -42,8 +42,6 @@ class simsage_search
     	// make sure we have the right versions of WP and php, notify the user if not
         simsage_check_versions(); // defined in inc/simsage_utilities.php
         flush_rewrite_rules();
-
-        simsage_add_search_page();
     }
 
     /**

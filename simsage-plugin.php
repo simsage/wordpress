@@ -66,12 +66,12 @@ register_activation_hook(__FILE__, array($search, 'plugin_activate'));
 register_deactivation_hook(__FILE__, array($search, 'plugin_deactivate'));
 
 // Called when plugin is activated
-function simsage_add_search_page() {
+function simsage_check_and_add_search_page() {
     global $wpdb;
     $page_slug = apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_PAGE_SLUG );
 
     // insert a new search-result page if it doesn't exist yet
-    if ( null === $wpdb->get_row( "SELECT post_name FROM {$wpdb->prefix}posts WHERE post_name = $page_slug", 'ARRAY_A' ) ) {
+    if ( null === $wpdb->get_row( "SELECT post_name FROM {$wpdb->prefix}posts WHERE post_name = '$page_slug'", 'ARRAY_A' ) ) {
         $current_user = wp_get_current_user();
         // create post object
         $page = array(
@@ -85,6 +85,8 @@ function simsage_add_search_page() {
         wp_insert_post( $page );
     }
 }
+
+add_action('init', 'simsage_check_and_add_search_page');
 
 //
 function simsage_inject_search_results( $content ) {
