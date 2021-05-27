@@ -19,7 +19,7 @@ function simsage_render_search( $block_attributes ) {
 	$disable_styles = array_key_exists('disable_styles', $block_attributes) && $block_attributes['disable_styles']
 		? "remove-styles=\"1\" "
 		: '';
-	$code_and_params = trim("simsage-static-search $main_search $disable_styles");
+	$code_and_params = trim("simsage-search $main_search $disable_styles");
 	$shortcode = "[$code_and_params]";
 	return do_shortcode($shortcode);
 }

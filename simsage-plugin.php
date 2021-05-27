@@ -94,7 +94,7 @@ function simsage_inject_search_results( $content ) {
     $override = apply_filters( 'simsage_search_page_override', true );
 
     if ( $override && $page_slug === get_post()->post_name ) {
-        return do_shortcode('[simsage-static-results]');
+        return do_shortcode('[simsage-search-results]');
     }
 
     return $content;
