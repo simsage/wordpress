@@ -88,11 +88,16 @@ let simsage = {
     do_search: function(control_class) {
         let self = this;
         let text = "";
-        if (control_class)
+        // get the search text from the dom
+        if (control_class) {
             text = jQuery("." + control_class).val();
-        else
+        } else {
             text = jQuery(".search-text").val();
-        if (this.kb && (this.is_custom_render || text.trim() !== '')) {
+        }
+        if (!text) {
+            text = jQuery(".simsage-static-query").val();
+        }
+        if (this.kb && (this.is_custom_render || (text && text.trim() !== ''))) {
             // do we need to reset the pagination?
             if (this.reset_pagination(text)) {
                 this.close_bot();
@@ -140,7 +145,7 @@ let simsage = {
         } else if (!this.kb) {
             this.error("Server not responding, not connected.");
 
-        } else if (!this.is_custom_render && text.trim() === '') {
+        } else if (!this.is_custom_render && (text && text.trim() === '')) {
             this.render_pagination();
         }
     },
@@ -1054,7 +1059,7 @@ let pagination_control = {
             "<option value=\"10\" " + (ps===10 ? "selected" : "") + ">10 results per page</option>\n" +
             "<option value=\"15\" " + (ps===15 ? "selected" : "") + ">15 results per page</option>\n" +
             "<option value=\"20\" " + (ps===20 ? "selected" : "") + ">20 results per page</option>\n" +
-            "</select><span class=\"dd-chevron-2\" title=\"please click on the text\">&#x2304;</span>\n" +
+            "</select>\n" +
             "</label>\n" +
             "</span>\n";
 
@@ -1875,15 +1880,20 @@ jQuery('.search-form').on('keydown keyup keypress', function(e) {
         }
     }
 });
+
 jQuery('.search-button-box').on('click', function(e) {
     e.preventDefault();
     return false;
 });
-// init when ready
+
+// init when ready and do the search from the query parameters
 jQuery(document).ready(function () {
     simsage.init("", settings, function(isSuccess) {
         if (isSuccess && document.querySelector('.simsage-static-query')) {
+            const query_str = jQuery(".simsage-static-query").val();
             simsage.do_search('simsage-static-query');
+            jQuery(".search-text").val(query_str);
+            jQuery(".search-text").focus();
         }
     });
 });
