@@ -4,9 +4,9 @@ Donate link: https://simsage.ai/
 Tags: plugin, commercial, readme
 Author URI: https://github.com/peter3125
 Requires at least: 5.0
-Tested up to: 5.7
+Tested up to: 5.7.2
 Requires PHP: 7.0
-Stable Tag: 1.4.0
+Stable Tag: 2.0.0
 Description: this Plugin adds SimSage Semantic Search and operator help to your web-site.
 License: GPLv3
 
@@ -32,6 +32,11 @@ SimSage currently only supports English.  Other languages might be supported in 
 
 
 == Changelog ==
+
+= 2.0.0 =
+* new Gutenberg block component for SimSage search
+* new automatically generated search-result page for SimSage search
+* new styling options for SimSage search dialog box
 
 = 1.4.0 =
 * updated styling and layouts
@@ -86,6 +91,11 @@ SimSage currently only supports English.  Other languages might be supported in 
 
 
 == Upgrade Notice ==
+
+= 2.0.0 =
+* new Gutenberg block component for SimSage search
+* new automatically generated search-result page for SimSage search
+* new styling options for SimSage search dialog box
 
 = 1.4.0 =
 * updated styling and layouts
