@@ -1,4 +1,6 @@
 *.log
 .idea/
-
+temp/
+copy.sh
+wp-copy.sh
 node_modules
