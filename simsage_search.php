@@ -229,7 +229,7 @@ class simsage_search
         $search_slug = apply_filters( 'simsage_search_page_slug', SIMSAGE_DEFAULT_SEARCH_PAGE_SLUG );
 
         if (simsage_get_kb() != null) {
-            // render simsage_search_view.php in the context of this class
+            // render simsage_search_static_view.php in the context of this class
             ob_start();
             $view_context = $this->get_view_context( array(
                 'action' => $search_slug,
@@ -252,7 +252,7 @@ class simsage_search
         wp_enqueue_style( 'simsage-search-style-1' ); // add our style-sheets
 
         if ( simsage_get_kb() != null ) {
-            // render simsage_search_result_view.php in the context of this class
+            // render simsage_search_result_static_view.php in the context of this class
             ob_start();
             $view_context = $this->get_view_context();
             simsage_load_overrideable_template( 'simsage_search_result_static_view', $view_context );
@@ -272,7 +272,7 @@ class simsage_search
 
             wp_enqueue_style( 'simsage-search-style-1' ); // add our style-sheets
 
-            // render simsage_search_view.php in the context of this class
+            // render simsage_search_static_view.php in the context of this class
             ob_start();
             $view_context = $this->get_view_context( array( 'main_search' => true ) );
             simsage_load_overrideable_template( 'simsage_search_static_view', $view_context );
