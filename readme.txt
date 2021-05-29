@@ -6,7 +6,7 @@ Author URI: https://github.com/peter3125
 Requires at least: 5.0
 Tested up to: 5.7.2
 Requires PHP: 7.0
-Stable Tag: 2.0.0
+Stable Tag: 2.0.1
 Description: this Plugin adds SimSage Semantic Search and operator help to your web-site.
 License: GPLv3
 
@@ -32,6 +32,9 @@ SimSage currently only supports English.  Other languages might be supported in 
 
 
 == Changelog ==
+
+= 2.0.1 =
+* brought back Australasian system settings
 
 = 2.0.0 =
 * new Gutenberg block component for SimSage search
@@ -91,6 +94,9 @@ SimSage currently only supports English.  Other languages might be supported in 
 
 
 == Upgrade Notice ==
+
+= 2.0.1 =
+* brought back Australasian system settings
 
 = 2.0.0 =
 * new Gutenberg block component for SimSage search
