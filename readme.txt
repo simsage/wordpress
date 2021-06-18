@@ -35,6 +35,7 @@ SimSage currently only supports English.  Other languages might be supported in 
 
 = 2.0.1 =
 * brought back Australasian system settings
+* simplified plan activation / has-access to analytics
 
 = 2.0.0 =
 * new Gutenberg block component for SimSage search
@@ -97,6 +98,7 @@ SimSage currently only supports English.  Other languages might be supported in 
 
 = 2.0.1 =
 * brought back Australasian system settings
+* simplified plan activation / has-access to analytics
 
 = 2.0.0 =
 * new Gutenberg block component for SimSage search
