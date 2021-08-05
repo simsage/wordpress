@@ -267,7 +267,7 @@ class simsage_search
         $this->search_counter += 1;
         $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
         // only replace the search_form if the plugin has been configured and it has been configured to do so by the user
-        if ( isset( $plugin_options["simsage_override_default_search"] ) && $plugin_options["simsage_override_default_search"] && simsage_get_kb() != null ) {
+        if ( !is_admin() && isset( $plugin_options["simsage_override_default_search"] ) && $plugin_options["simsage_override_default_search"] && simsage_get_kb() != null ) {
             $this->add_script = true;
 
             wp_enqueue_style( 'simsage-search-style-1' ); // add our style-sheets
