@@ -4,9 +4,9 @@ Donate link: https://simsage.ai/
 Tags: plugin, commercial, readme
 Author URI: https://github.com/peter3125
 Requires at least: 5.0
-Tested up to: 5.8.0
+Tested up to: 5.8.1
 Requires PHP: 7.0
-Stable Tag: 2.0.2
+Stable Tag: 2.0.3
 Description: this Plugin adds SimSage Semantic Search and operator help to your web-site.
 License: GPLv3
 
@@ -26,12 +26,15 @@ SimSage currently only supports English.  Other languages might be supported in 
 
 == Screenshots ==
 
-1. The plugin's short-code `[simsage-search]` and `[simsage-search-results]` in action.
+1. The plugin's short-code `[simsage-search]` in action.
 2. SimSage data view, viewing keyword search/ask frequencies.
 3. An operator interacting with a user.
 
 
 == Changelog ==
+
+= 2.0.3 =
+* removed region selector (no longer applicable)
 
 = 2.0.2 =
 * added !is_admin() check for search-form override
@@ -98,6 +101,9 @@ SimSage currently only supports English.  Other languages might be supported in 
 
 
 == Upgrade Notice ==
+
+= 2.0.3 =
+* removed region selector (no longer applicable)
 
 = 2.0.2 =
 * added !is_admin() check for search-form override

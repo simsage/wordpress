@@ -98,8 +98,7 @@ class simsage_admin
      * @return string the portal server's URL
      */
     public function get_portal_server() {
-        $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
-        $servers = simsage_get_servers( $plugin_options );
+        $servers = simsage_get_servers();
         if ( isset($servers["portal"]) ) {
             return $servers["portal"];
         }
@@ -197,32 +196,14 @@ class simsage_admin
                 }
             }
 
-        } else if ( $cmd == 'update location' ) {
-            $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
-            $server_location = 0;
-            if ( isset($post_data[SIMSAGE_PLUGIN_NAME]["simsage_server_location"]) ) {
-                $server_location = sanitize_text_field( $post_data[SIMSAGE_PLUGIN_NAME]["simsage_server_location"] );
-            }
-            $plugin_options["simsage_server_location"] = $server_location;
-            // save settings
-            update_option(SIMSAGE_PLUGIN_NAME, $plugin_options);
-            // get the correct servers to talk to
-            $servers = simsage_get_servers( $plugin_options );
-            $this->api_server = $servers["api"];
-
         } else if ( $cmd == 'Connect to SimSage' ) {
 
             debug_log("Connect to SimSage");
 
-            $plugin_options = get_option(SIMSAGE_PLUGIN_NAME);
-            $server_location = 0;
-            if ( isset($post_data[SIMSAGE_PLUGIN_NAME]["simsage_server_location"]) ) {
-                $server_location = sanitize_text_field( $post_data[SIMSAGE_PLUGIN_NAME]["simsage_server_location"] );
-            }
-            $plugin_options["simsage_server_location"] = $server_location;
+            $plugin_options = get_option( SIMSAGE_PLUGIN_NAME );
 
             // get the correct servers to talk to
-            $servers = simsage_get_servers( $plugin_options );
+            $servers = simsage_get_servers();
             $this->api_server = $servers["api"];
 
             // save the user-name parameter but not the password for security reasons
