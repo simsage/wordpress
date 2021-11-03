@@ -111,6 +111,17 @@ $synonym_list = isset($options['simsage_synonyms']) ? $options['simsage_synonyms
 
     <div id="icon-themes" class="icon32"></div>
 
+    <div id="setting-error-error" class="notice notice-error settings-error is-dismissible id-1">
+        <p><strong>https://api.simsage.ai: invalid registration-key</strong></p>
+        <button type="button" class="notice-dismiss" onclick='jQuery(".id-1").hide()'><span class="screen-reader-text">Dismiss this notice.</span></button>
+    </div>
+
+    <?php if ( SIMSAGE_USE_DEV ) { ?>
+        <div class="label-success">
+            DEVELOPMENT: <?php echo "http://" . SIMSAGE_DEV_IP . ":8088"; ?><br />
+        </div>
+    <?php } ?>
+
     <?php if ( !$has_account && ($active_tab == 'account' || $active_tab == '') ) { ?>
         <div class="label-success">
             Please enter your SimSage registration key below.<br />

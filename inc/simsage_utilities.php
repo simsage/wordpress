@@ -693,7 +693,11 @@ function simsage_sanitize_registration_response( $response ) {
  * @return array the appropriate API and Registration server urls
  */
 function simsage_get_servers() {
-    return array( "api" => "https://api.simsage.ai", "portal" => "https://portal.simsage.ai");
+    if ( SIMSAGE_USE_DEV ) {
+        return array("api" => "http://" . SIMSAGE_DEV_IP . ":8088", "portal" => "http://" . SIMSAGE_DEV_IP .":4205");
+    } else {
+        return array("api" => "https://api.simsage.ai", "portal" => "https://portal.simsage.ai");
+    }
 }
 
 /**
