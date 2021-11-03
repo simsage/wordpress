@@ -35,6 +35,9 @@ class simsage_admin
     // the cloud-servers to talk to
     private $api_server = "";
 
+    // error collection array
+    private $errors = array();
+
     // constructor
     public function __construct() {
         // initialize this control - add the required actions
@@ -165,7 +168,7 @@ class simsage_admin
             $params = $post_data[SIMSAGE_PLUGIN_NAME];
             $password = $params['simsage_password']; // do not sanitize the password
             if (strlen(trim($password)) < 8) {
-                add_settings_error('simsage_settings', 'invalid_password', 'Invalid SimSage password (too short)', $type = 'error');
+                add_error( $this->errors, 'Invalid SimSage password (too short)', $type = 'error');
 
             } else {
                 // the user wants to close their account - make sure all values are valid, all values are sanitized
@@ -190,7 +193,7 @@ class simsage_admin
                     update_option(SIMSAGE_PLUGIN_NAME, $plugin_options);
 
                     // show we've successfully removed the user's account
-                    add_settings_error('simsage_settings', 'success',
+                    add_error( $this->errors, 
                         "We've removed all your SimSage account information.  You can now safely remove this plugin.  Thank you for using SimSage!",
                         $type = 'info');
                 }
@@ -217,7 +220,7 @@ class simsage_admin
             // check the registration-key size
             if (strlen(trim($registration_key)) != 19) {
                 debug_log('Invalid SimSage registration-key' );
-                add_settings_error('simsage_settings', 'invalid_registration_key', 'Invalid SimSage registration-key', $type = 'error');
+                add_error( $this->errors, 'Invalid SimSage registration-key', $type = 'error');
 
             } else {
                 // try and sign-into SimSage given the user's key
@@ -234,8 +237,7 @@ class simsage_admin
                     if (!isset($body['kbId']) || !isset($body['sid']) || !isset($body['plan'])  || !isset($body['server']) ||
                         !isset($body['id']) || !isset($body['email'])) {
                         debug_log('Invalid SimSage response (missing return values in valid response).  Please upgrade your plugin.' );
-                        add_settings_error('simsage_settings', 'invalid_response',
-                                            'Invalid SimSage response (missing return values in valid response).  Please upgrade your plugin.',
+                        add_error( $this->errors, 'Invalid SimSage response (missing return values in valid response).  Please upgrade your plugin.',
                                             $type = 'error');
 
                     } else {
@@ -246,22 +248,19 @@ class simsage_admin
                         // save settings
                         update_option(SIMSAGE_PLUGIN_NAME, $plugin_options);
                         // set the current site and upload the current WP content as is as well as any synonyms, and QAs
-                        update_simsage();
+                        update_simsage( $this->errors );
                         // setup other parts of the plugin according to plan
                         $this->add_admin_menus();
                         // show we've successfully connected
                         debug_log('Successfully retrieved your SimSage account information.' );
-                        add_settings_error('simsage_settings', 'success',
-                            "Successfully retrieved your SimSage account information.",
-                            $type = 'info');
+                        add_error( $this->errors, "Successfully retrieved your SimSage account information.", $type = 'info');
                     }
                 } else {
                     debug_log('SimSage error: ' . $error_str );
-                    add_settings_error('simsage_settings', 'error', $error_str, $type = 'error');
+                    add_error( $this->errors, $error_str, $type = 'error');
                 }
             }
         }
-        settings_errors('simsage_settings');
     }
 
 
@@ -283,9 +282,8 @@ class simsage_admin
         foreach ($existing_qa as $id => $qa) {
             $error_str = simsage_is_valid_bot_qa_pair($id, $qa["question"], $qa["answer"], $qa["context"]);
             if ( $error_str != null ) {
-                add_settings_error('simsage_settings', 'simsage_bot_qa', $error_str, $type = 'error');
+                add_error( $this->errors, $error_str, $type = 'error');
                 $has_error = true;
-                settings_errors('simsage_settings');
             }
         }
         return !$has_error;
@@ -309,9 +307,8 @@ class simsage_admin
         foreach ($existing_synonyms as $id => $synonym) {
             $error_str = simsage_is_valid_synonym($id, $synonym["words"]);
             if ( $error_str != null ) {
-                add_settings_error('simsage_settings', 'simsage_synonyms', $error_str, $type = 'error');
+                add_error( $this->errors, $error_str, $type = 'error');
                 $has_errors = true;
-                settings_errors('simsage_settings');
             }
         }
         return !$has_errors;
@@ -329,8 +326,7 @@ class simsage_admin
         foreach ($form_params as $key => $value) {
             if ( !isset($this->plugin_defaults[$key]) ) {
                 if ( $check_keys ) {
-                    add_settings_error('simsage_settings', 'invalid_value', 'We encountered an unknown value on the form:' . $key . ", cannot process this form.", $type = 'error');
-                    settings_errors('simsage_settings');
+                    add_error( $this->errors, 'We encountered an unknown value on the form:' . $key . ", cannot process this form.", $type = 'error');
                     return false;
                 }
             } else {
@@ -341,8 +337,7 @@ class simsage_admin
                     $sanitized_value = sanitize_text_field($value);
                     if ( $sanitized_value < $default["min"] || $sanitized_value > $default["max"] ) {
                         $err_str = 'The value for ' . $default["name"] . ' must be between ' . $default["min"] . ' and ' . $default["max"];
-                        add_settings_error('simsage_settings', 'invalid_value', $err_str, $type = 'error');
-                        settings_errors('simsage_settings');
+                        add_error( $this->errors, $err_str, $type = 'error');
                         return false;  // abort
                     } // if value within min and max
 
@@ -431,12 +426,8 @@ class simsage_admin
                   'body' => $bodyStr)));
         $error_str = simsage_check_json_response( $this->api_server, $json );
         if ($error_str != "") {
-            if ( function_exists('add_settings_error') ) {
-                add_settings_error('simsage_settings', 'simsage_close_account', $error_str, $type = 'error');
-                settings_errors('simsage_settings');
-            } else {
-                debug_log('ERROR: simsage-close-account-error:' . $error_str);
-            }
+            add_error( $this->errors, $error_str, $type = 'error');
+            debug_log('ERROR: simsage-close-account-error:' . $error_str);
             return false;
         }
         return true;

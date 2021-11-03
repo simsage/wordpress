@@ -64,6 +64,22 @@ if ( ! function_exists('debug_log')) {
 
 
 /**
+ * Add an error to the errors array
+ *
+ * @param $errors   array the errors array
+ * @param $message  string the message to display
+ * @param $type     string the type: error, info
+ */
+function add_error( &$errors, $message, $type ) {
+    error_log( "SIMSAGE: [" . $type . "]: " . $message );
+    $count = count( $errors ) + 1;
+    array_push( $errors, array( "id" => $count,
+                        "message" => esc_html__( $message ),
+                        "type" => esc_html__( $type ) ) );
+}
+
+
+/**
  * convert a data object to a json object
  * @param $data string|object
  * @return mixed
@@ -99,9 +115,10 @@ function get_ignore_urls() {
  * @param $archive_file resource an archive file to write to
  * @param $num_docs int the maximum number of allowed documents for this site as per plan
  * @param $ignore_urls array an array of URLs that are to be ignored (not indexed)
+ * @param $errors array an array of error objects to add to if necessary
  * @return string the combined md5s of the content
  */
-function simsage_add_wp_contents_to_archive( $registration_key, $archive_file, $num_docs, $ignore_urls ) {
+function simsage_add_wp_contents_to_archive( $registration_key, $archive_file, $num_docs, $ignore_urls, $errors ) {
     global $wpdb;
     $query = "SELECT * FROM $wpdb->posts WHERE post_status = 'publish'";
     $results = $wpdb->get_results($query);
@@ -157,7 +174,7 @@ function simsage_add_wp_contents_to_archive( $registration_key, $archive_file, $
 
             if ($counter > $num_docs) {  // we've reached the limit
                 // warn the user they have exceeded the allocation for number of pages on their plan
-                add_settings_error('simsage_settings', 'simsage_archive_error', "Your WordPress post count " .
+                add_error( $errors,"Your WordPress post count " .
                     "exceeds the maximum allocated number of posts for your plan (" . $num_docs . ").  " .
                     "We will upload the first " . $num_docs . " pages only.", $type = 'error');
                 break;

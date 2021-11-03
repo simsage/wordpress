@@ -9,7 +9,8 @@ include SIMSAGE_PLUGIN_DIR . 'inc/simsage_utilities.php';
 function simsage_cron_upload_archive() {
     debug_log("CRON: SimSage uploading archive");
     // just save the pages
-    if ( update_simsage() ) {
+    $temp_errors = array();
+    if ( update_simsage( $temp_errors ) ) {
         debug_log("CRON: simsage_cron_upload_archive(): success");
     }
 }
@@ -21,12 +22,10 @@ function simsage_cron_upload_archive() {
  * Queries the WordPress database (wpdb) for its content
  *
  * @param $plan array your subscription plan
- * @param $include_pages bool include the page content in the archive
- * @param $include_bot bool include the bot QA content in the archive
- * @param $include_synonyms bool include the synonyms in the archive
+ * @package $errors array an error array
  * @return array the filename to the zip-file in its temporary file location and its md5 sum or (null, null)
  */
-function create_content_archive( $plan ) {
+function create_content_archive( $plan, $errors ) {
     if ( $plan != null ) {
         $registration_key = simsage_get_registration_key();
 
@@ -39,7 +38,7 @@ function create_content_archive( $plan ) {
         if ($archive_file) {
             debug_log("starting " . $filename);
 
-            $content_md5 = simsage_add_wp_contents_to_archive( $registration_key, $archive_file, $num_docs, get_ignore_urls() );
+            $content_md5 = simsage_add_wp_contents_to_archive( $registration_key, $archive_file, $num_docs, get_ignore_urls(), $errors );
             // done writing the archive file
             fclose( $archive_file );
 
@@ -63,18 +62,12 @@ function create_content_archive( $plan ) {
             }
 
         } else {
-            if (function_exists('add_settings_error')) {
-                add_settings_error('simsage_settings', 'simsage_archive_error', "Failed to create archive file(s) (could not create a temporary file on your system)", $type = 'error');
-            } else {
-                debug_log("Failed to create archive file(s) (could not create a temporary file on your system)");
-            }
+            add_error( $errors, "Failed to create archive file(s) (could not create a temporary file on your system)", $type = 'error');
+            debug_log("Failed to create archive file(s) (could not create a temporary file on your system)");
         }
     } else {
-        if (function_exists('add_settings_error')) {
-            add_settings_error('simsage_settings', 'simsage_archive_error', "invalid plan (null)", $type = 'error');
-        } else {
-            debug_log("invalid plan (null)");
-        }
+        add_error( $errors, "invalid plan (null)", $type = 'error' );
+        debug_log("invalid plan (null)");
     }
     return array(null, null);
 }
@@ -89,9 +82,10 @@ function create_content_archive( $plan ) {
  * @param $kbId             string your site's id (called a knowledge-base Id in SimSage)
  * @param $sid              string a changeable SimSage security id for this site
  * @param $filename         string the location of the zipped archive to upload to SimSage
+ * @param $errors           array of error object
  * @return bool return true on success
  */
-function upload_archive( $server, $organisationId, $kbId, $sid, $filename ) {
+function upload_archive( $server, $organisationId, $kbId, $sid, $filename, $errors ) {
     debug_log("uploading archive " . $filename . ", to: " . $server . ", org: " . $organisationId . ", kb: " . $kbId);
     $fileContent = file_get_contents($filename);
     $data = ";base64," . base64_encode($fileContent);
@@ -103,19 +97,14 @@ function upload_archive( $server, $organisationId, $kbId, $sid, $filename ) {
             'body' => $bodyStr)));
     $error_str = simsage_check_json_response( $server, $json );
     if ( strpos( $error_str, "not time yet ") ) {
-        if (function_exists('add_settings_error')) {
-            add_settings_error('simsage_settings', 'simsage_upload_error', "Content upload scheduled for later", $type = 'info');
-        } else {
-            debug_log('ERROR: simsage-upload-error: Content upload scheduled for later');
-        }
+        add_error( $errors, "Content upload scheduled for later", $type = 'info');
+        debug_log('ERROR: simsage-upload-error: Content upload scheduled for later');
         return false;
 
     } else {
         if ($error_str != "") {
-            if (function_exists('add_settings_error'))
-                add_settings_error('simsage_settings', 'simsage_upload_error', $error_str, $type = 'error');
-            else
-                debug_log('ERROR: simsage-upload-error:' . $error_str);
+            add_error( $errors, $error_str, $type = 'error' );
+            debug_log('ERROR: simsage-upload-error:' . $error_str);
             return false;
         }
     }
@@ -127,32 +116,29 @@ function upload_archive( $server, $organisationId, $kbId, $sid, $filename ) {
  * Check all the settings are valid, create a ZIP of the current content and various language changes
  * and send them all to SimSage for processing
  *
+ * @param $errors array an array of error object items
  * @return bool success, or false if anything went wrong
  */
-function update_simsage() {
+function update_simsage( $errors ) {
     debug_log("update SimSage content");
     $plan = simsage_get_plan();
     $kb = simsage_get_kb();
     if ( $plan != null && $kb != null ) {
         $organisationId = get_organisationId();
         if ($organisationId == null) {
-            if ( function_exists('add_settings_error') )
-                add_settings_error('simsage_settings', 'invalid_id', 'The user\'s id cannot be found.  Please login to SimSage again.', $type = 'error');
-            else
-                debug_log('ERROR: simsage-invalid-id: the user\'s id cannot be found.  Please login to SimSage again.');
+            add_error( $errors, 'The user\'s id cannot be found.  Please login to SimSage again.', $type = 'error' );
+            debug_log('ERROR: simsage-invalid-id: the user\'s id cannot be found.  Please login to SimSage again.');
             return false;
         }
         $server = get_server();
         if ($server == null) {
-            if ( function_exists('add_settings_error') )
-                add_settings_error('simsage_settings', 'invalid_server', 'The SimSage server settings cannot be found.  Please login to SimSage again.', $type = 'error');
-            else
-                debug_log('ERROR: simsage-invalid-server: SimSage server settings cannot be found.  Please login to SimSage again.');
+            add_error( $errors, 'The SimSage server settings cannot be found.  Please login to SimSage again.', $type = 'error');
+            debug_log('ERROR: simsage-invalid-server: SimSage server settings cannot be found.  Please login to SimSage again.');
             return false;
         }
 
         // and index / re-index the data associated with this site
-        $file_md5 = create_content_archive( $plan );
+        $file_md5 = create_content_archive( $plan, $errors );
         $filename = $file_md5[0];
         $file_md5 = $file_md5[1];
         if ($filename != null) {
@@ -167,10 +153,8 @@ function update_simsage() {
             // update the md5 for the next run
             update_archive_md5( $file_md5 );
 
-            if (function_exists('add_settings_error'))
-                add_settings_error('simsage_settings', 'uploaded', 'Content Successfully uploaded to SimSage', $type = 'info');
-            else
-                debug_log('SUCCESS: simsage archive uploaded.');
+            add_error( $errors, 'Content Successfully uploaded to SimSage', $type = 'info');
+            debug_log('SUCCESS: simsage archive uploaded.');
 
             // remove the file after use
             if (!unlink($filename)) {
