@@ -25,7 +25,7 @@ function simsage_cron_upload_archive() {
  * @package $errors array an error array
  * @return array the filename to the zip-file in its temporary file location and its md5 sum or (null, null)
  */
-function create_content_archive( $plan, $errors ) {
+function create_content_archive( $plan, &$errors ) {
     if ( $plan != null ) {
         $registration_key = simsage_get_registration_key();
 
@@ -85,7 +85,7 @@ function create_content_archive( $plan, $errors ) {
  * @param $errors           array of error object
  * @return bool return true on success
  */
-function upload_archive( $server, $organisationId, $kbId, $sid, $filename, $errors ) {
+function upload_archive( $server, $organisationId, $kbId, $sid, $filename, &$errors ) {
     debug_log("uploading archive " . $filename . ", to: " . $server . ", org: " . $organisationId . ", kb: " . $kbId);
     $fileContent = file_get_contents($filename);
     $data = ";base64," . base64_encode($fileContent);
@@ -119,7 +119,7 @@ function upload_archive( $server, $organisationId, $kbId, $sid, $filename, $erro
  * @param $errors array an array of error object items
  * @return bool success, or false if anything went wrong
  */
-function update_simsage( $errors ) {
+function update_simsage( &$errors ) {
     debug_log("update SimSage content");
     $plan = simsage_get_plan();
     $kb = simsage_get_kb();
@@ -146,7 +146,7 @@ function update_simsage( $errors ) {
             $md5_sum = get_archive_md5();
             debug_log("wrote zip to:" . $filename . ", old md5:" . $md5_sum . ", current md5:" . $file_md5);
 
-            if (!upload_archive( $server, $organisationId, $kb["kbId"], $kb["sid"], $filename )) {
+            if ( !upload_archive( $server, $organisationId, $kb["kbId"], $kb["sid"], $filename, $errors ) ) {
                 return false;
             }
 

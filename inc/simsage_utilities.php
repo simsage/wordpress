@@ -118,7 +118,7 @@ function get_ignore_urls() {
  * @param $errors array an array of error objects to add to if necessary
  * @return string the combined md5s of the content
  */
-function simsage_add_wp_contents_to_archive( $registration_key, $archive_file, $num_docs, $ignore_urls, $errors ) {
+function simsage_add_wp_contents_to_archive( $registration_key, $archive_file, $num_docs, $ignore_urls, &$errors ) {
     global $wpdb;
     $query = "SELECT * FROM $wpdb->posts WHERE post_status = 'publish'";
     $results = $wpdb->get_results($query);
