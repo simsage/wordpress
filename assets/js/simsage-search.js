@@ -507,6 +507,7 @@ let common_functions = {
     post_message: function(endPoint, data, callback) {
         const self = this;
         let url = this.base_url + endPoint;
+        url = url.replace("//api", "/api");
         jQuery.ajax({
             headers: {
                 'Content-Type': 'application/json',
@@ -530,6 +531,7 @@ let common_functions = {
     get_message: function(endPoint, callback_success, callback_fail) {
         const self = this;
         let url = this.base_url + endPoint;
+        url = url.replace("//api", "/api");
         jQuery.ajax({
             headers: {
                 'Content-Type': 'application/json',
