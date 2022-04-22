@@ -763,8 +763,9 @@ let search_details = {
     },
 
     get_preview_url: function() {
-        return this.base_url + '/api/document/preview/' + this.organisationId + '/' + this.kb.id + '/' +
+        const preview_url = this.base_url + '/api/document/preview/' + this.organisationId + '/' + this.kb.id + '/' +
             this.get_client_id();
+        return preview_url.replace("//api", "/api");
     },
 
     // render the details of a single result
@@ -1615,9 +1616,10 @@ let search_results_control = {
     get_image_url_by_doc_url: function(url) {
         // set the image for this item
         let urlId = this.get_url_id_from_url(url);
-        return this.base_url + "/api/document/preview/" +
+        const image_url = this.base_url + "/api/document/preview/" +
             this.organisationId + "/" + this.kb.id + "/" +
             this.get_client_id() + "/" + urlId + "/-1";
+        return image_url.replace("//api", "/api");
     },
 
     // update images from ids, ratings, and search result highlighting in records
